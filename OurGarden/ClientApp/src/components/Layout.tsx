@@ -1,17 +1,18 @@
 import * as React from "react";
+
 import AntdLayout from "@core/antd/Layout";
-const { Header, Content, Footer } = AntdLayout;
-import { ConfigProvider, Empty } from "antd";
-import { Text, Paragraph } from "@core/antd/Typography";
+// import { Text, Paragraph } from "@core/antd/Typography";
+// import { ConfigProvider, Empty } from "antd";
 
 import AccountControlComponent from "@core/HOC/AccountControlComponent";
 import NavMenu from "./NavMenu";
 
-const customizeRenderEmpty = () => (
-  <Empty
-    description={<Text>Данных нет</Text>}
-  />
-);
+const { Header, Content, Footer } = AntdLayout;
+// const customizeRenderEmpty = () => (
+//   <Empty
+//     description={<Text>Данных нет</Text>}
+//   />
+// );
 
 export class Layout extends React.Component<{}, {}> {
   render() {
@@ -23,13 +24,13 @@ export class Layout extends React.Component<{}, {}> {
           </Header>
           <Content className="main-content-wrapper">
             <AccountControlComponent>
-              <ConfigProvider renderEmpty={customizeRenderEmpty}>
+              {/* <ConfigProvider renderEmpty={customizeRenderEmpty}> */}
                 {this.props.children}
-              </ConfigProvider>
+              {/* </ConfigProvider> */}
             </AccountControlComponent>
           </Content>
           <Footer className="footer">
-            <Paragraph>
+            {/* <Paragraph>
               Адрес: г. Тула, ул. Эн, 0
             </Paragraph>
             <Paragraph>
@@ -37,7 +38,7 @@ export class Layout extends React.Component<{}, {}> {
             </Paragraph>
             <Paragraph>
               E-mail: med.sister@gmail.com
-            </Paragraph>
+            </Paragraph> */}
             © 2019
           </Footer>
         </AntdLayout>

@@ -1,6 +1,8 @@
 import * as React from "react";
-import { Icon, Input } from "@core/antd";
+
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
+import Icon from "@core/antd/Icon";
+import Input from "@core/antd/Input";
 
 import ModalControlButtons from "../ModalControlButtons";
 

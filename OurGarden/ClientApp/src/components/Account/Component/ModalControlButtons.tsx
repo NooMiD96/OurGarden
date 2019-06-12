@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Button, Typography } from "@core/antd";
+
+import Button from "@core/antd/Button";
+import Typography from "@core/antd/Typography";
 
 const { Text } = Typography;
 

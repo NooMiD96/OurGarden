@@ -2,18 +2,18 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RouterState } from "connected-react-router";
+
 import { Title, Text } from "@core/antd/Typography";
 import Menu from "@core/antd/Menu";
 import Icon from "@core/antd/Icon";
 import Badge from "@core/antd/Badge";
 
 import { ApplicationState } from "@src/Store";
-import { UserTypeEnums } from "@core/constants";
+import { UserTypeEnums, routesArray, routesObject } from "@core/constants";
 import { AccountState, SectionsEnum, TNotify } from "@components/Account/IAccountState";
 import { IMouseClickEvent } from "@core/IEvents";
 
 import Account from "@components/Account";
-import { routesArray, routesObject } from "@core/constants";
 
 interface IComponentState {
   selectedKeys: string[];

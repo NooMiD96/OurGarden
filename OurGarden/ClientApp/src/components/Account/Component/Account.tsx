@@ -1,5 +1,8 @@
 import * as React from "react";
-import { ButtonGroup, Modal, Alert } from "@core/antd";
+
+import ButtonGroup from "@core/antd/ButtonGroup";
+import Modal from "@core/antd/Modal";
+import Alert from "@core/antd/Alert";
 
 import AccountControlButtons from "./AccountControlButtons";
 import ModalContent from "./ModalContent";

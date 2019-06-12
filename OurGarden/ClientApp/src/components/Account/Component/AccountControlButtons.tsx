@@ -1,5 +1,9 @@
 import * as React from "react";
-import { Button, Row, Col, Typography } from "@core/antd";
+
+import Button from "@core/antd/Button";
+import Row from "@core/antd/Row";
+import Col from "@core/antd/Col";
+import Typography from "@core/antd/Typography";
 
 import { ModalTypeEnums } from "../TAccount";
 
