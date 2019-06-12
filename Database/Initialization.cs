@@ -63,7 +63,7 @@ namespace Database
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
+            //InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
         }
     }
 }
