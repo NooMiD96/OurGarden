@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OurGarden</title>
+    <base href="~/" />
+
+    <link rel="icon" href="~/favicon.ico">
+    <link rel="manifest" href="~/manifest.json">
+
+    @foreach (var stylesheetSrc in StartUpVendors.CssVendors)
+    {
+        <link rel="stylesheet" href="@stylesheetSrc" asp-append-version="true" />
+    }
+</head>
+<body>
+    @RenderBody()
+
+    @RenderSection("scripts", required: true)
+</body>
+</html>
