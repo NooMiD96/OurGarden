@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouterState, replace } from "connected-react-router";
 
-import { ApplicationState } from "@src/Store";
+import { IApplicationState } from "@src/Store";
 import { UserTypeEnums } from "@core/constants";
 import { isUserHavePermissions } from "@core/helpers/route/isUserHavePermissions";
 
@@ -18,7 +18,7 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
         props.userType,
         props.location.pathname
       );
-    } catch {}  // tslint:disable-line:no-empty
+    } catch {}  // eslint-disable-line no-empty
 
     this.state = {
       isRenderChildren: isHavePermissions,
@@ -41,7 +41,7 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
    * If the location was changed
    * then that was the changed by the user or app (check permission again)
    */
-  shouldComponentUpdate(nextProps: TComponentProps, nextState: any) {
+  shouldComponentUpdate(nextProps: TComponentProps, _nextState: any) {
     if (this.props.userType !== nextProps.userType) {
       const isHavePermissions = isUserHavePermissions(
         nextProps.userType,
@@ -83,7 +83,7 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
 }
 
 export default connect(
-  (state: ApplicationState): TComponentProps => ({
+  (state: IApplicationState): TComponentProps => ({
     userType: state.account.userType,
     ...state.router,
   })

@@ -3,20 +3,17 @@ import * as React from "react";
 import Authentication from "./Authentication";
 import Registration from "./Registration";
 
-import {
-  ModalTypeEnums,
-  TAuthenticationModel,
-  TRegistrationModel,
-} from "../TState";
+import { ModalTypeEnums } from "../TState";
+import { TAuthenticationModel, TRegistrationModel, } from "../TModel";
 
 type AccountControlButtonsProps = {
-  handleAuthSubmit: (payload: TAuthenticationModel) => void,
-  handleRegSubmit: (payload: TRegistrationModel) => void,
+  handleAuthSubmit: (payload: TAuthenticationModel) => void;
+  handleRegSubmit: (payload: TRegistrationModel) => void;
   generalProps: {
-    handleСlose: () => void,
-    loading: boolean,
-  }
-  modalType: ModalTypeEnums,
+    handleСlose: () => void;
+    loading: boolean;
+  };
+  modalType: ModalTypeEnums;
 };
 
 const AccountControlButtons = (props: AccountControlButtonsProps) => {

@@ -9,16 +9,16 @@ import "./Tag";
 import { MonthPickerProps } from "antd/es/date-picker/interface";
 
 const LocaleDatePicker = (props: MonthPickerProps) => (
-    <DatePicker
-        {...props}
-        locale={locale}
-    />
+  <DatePicker
+    {...props}
+    locale={locale}
+  />
 );
 
 export {
-    LocaleDatePicker,
-    locale,
-    DatePicker,
+  LocaleDatePicker,
+  locale,
+  DatePicker,
 };
 
 export default LocaleDatePicker;

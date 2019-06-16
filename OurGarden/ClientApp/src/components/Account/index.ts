@@ -1,25 +1,26 @@
 
 import { connect } from "react-redux";
 
+import { IApplicationState } from "@src/Store";
+
 import { ActionCreators } from "./actions";
 import {
-    TOwnProps,
-    TMapStateToProps,
-    TMapDispatchToProps,
+  TOwnProps,
+  TMapStateToProps,
+  TMapDispatchToProps,
 } from "./TState";
 import { Account } from "./Component/Account";
-import { ApplicationState } from "@src/Store";
 
-const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.account,
-    ...ownProp,
+const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
+  ...state.account,
+  ...ownProp,
 });
 
 const mapDispatchToProps: TMapDispatchToProps = {
-    ...ActionCreators,
+  ...ActionCreators,
 };
 
-export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
+  mapStateToProps,
+  mapDispatchToProps
 )(Account as any);

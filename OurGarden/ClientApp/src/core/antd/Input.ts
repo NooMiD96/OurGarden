@@ -4,7 +4,7 @@ import { InputProps } from "antd/lib/input/Input";
 import "antd/es/input/style/index.css";
 
 export {
-    InputProps,
-    TextArea,
+  InputProps,
+  TextArea,
 };
 export default Input;

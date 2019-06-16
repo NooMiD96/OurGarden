@@ -6,17 +6,17 @@ import Input from "@core/antd/Input";
 
 import ModalControlButtons from "../ModalControlButtons";
 
-import { TRegistrationModel } from "../../TState";
+import { TRegistrationModel } from "../../TModel";
 
 import localeText from "../Text";
 
-interface Props extends FormComponentProps {
+interface IProps extends FormComponentProps {
   handleSubmit: (payload: TRegistrationModel) => void;
   handleСlose: () => void;
   loading: boolean;
 }
 
-export class Registration extends React.Component<Props, {}> {
+export class Registration extends React.Component<IProps, {}> {
   OnSubmit = () => {
     this.props.form.validateFields((err: any, values: TRegistrationModel & { confirm: string }) => {
       if (!err) {

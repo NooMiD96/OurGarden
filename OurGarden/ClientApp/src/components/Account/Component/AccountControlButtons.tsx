@@ -10,9 +10,9 @@ import { ModalTypeEnums } from "../TState";
 const { Text } = Typography;
 
 type AccountControlButtonsProps = {
-  showModal: (ModalType: ModalTypeEnums) => void,
-  logout: () => void,
-  userName?: string,
+  showModal: (ModalType: ModalTypeEnums) => void;
+  logout: () => void;
+  userName?: string;
 };
 
 const mobileGridOptions = {
@@ -24,7 +24,7 @@ const mobileGridOptions = {
 const MobileButtons = ({
   showModal,
 }: {
-  showModal: (ModalType: ModalTypeEnums) => void,
+  showModal: (ModalType: ModalTypeEnums) => void;
 }) => (
   <Col {...mobileGridOptions}>
     <Button
@@ -52,9 +52,9 @@ const desctopGridOptions = {
 const DesctopButtons = ({
   showModal,
 }: {
-  showModal: (ModalType: ModalTypeEnums) => void,
+  showModal: (ModalType: ModalTypeEnums) => void;
 }) => (
-  <Col  {...desctopGridOptions}>
+  <Col {...desctopGridOptions}>
     <Button
       type="primary"
       size="large"
@@ -76,31 +76,35 @@ const DesctopButtons = ({
 
 const AccountControlButtons = (props: AccountControlButtonsProps) => (
   !props.userName
-    ? <Row>
-      <MobileButtons showModal={props.showModal} />
-      <DesctopButtons showModal={props.showModal} />
-    </Row>
-    : <Row>
-      <Col {...desctopGridOptions}>
-        <Button
-          type="primary"
-          size="large"
-          icon="logout"
-          onClick={() => props.logout()}
-        >
-          <Text className="white-text">Выйти</Text>
-        </Button>
-      </Col>
-      <Col  {...mobileGridOptions}>
-        <Button
-          type="primary"
-          shape="circle"
-          size="large"
-          icon="logout"
-          onClick={() => props.logout()}
-        />
-      </Col>
-    </Row>
+    ? (
+      <Row>
+        <MobileButtons showModal={props.showModal} />
+        <DesctopButtons showModal={props.showModal} />
+      </Row>
+    )
+    : (
+      <Row>
+        <Col {...desctopGridOptions}>
+          <Button
+            type="primary"
+            size="large"
+            icon="logout"
+            onClick={() => props.logout()}
+          >
+            <Text className="white-text">Выйти</Text>
+          </Button>
+        </Col>
+        <Col {...mobileGridOptions}>
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon="logout"
+            onClick={() => props.logout()}
+          />
+        </Col>
+      </Row>
+    )
 );
 
 export default AccountControlButtons;

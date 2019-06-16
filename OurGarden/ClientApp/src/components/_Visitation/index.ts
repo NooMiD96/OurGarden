@@ -7,9 +7,9 @@ import {
     TMapDispatchToProps,
 } from "./TVisitation";
 import { Visitation } from "./Component";
-import { ApplicationState } from "@src/Store";
+import { IApplicationState } from "@src/Store";
 
-const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
+const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
     ...state.visitation,
     ...ownProp,
 }) as TMapStateToProps;
@@ -18,7 +18,7 @@ const mapDispatchToProps: TMapDispatchToProps = {
     ...actionCreators,
 };
 
-export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
+export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
     mapStateToProps,
     mapDispatchToProps
 )(Visitation as any) as any;

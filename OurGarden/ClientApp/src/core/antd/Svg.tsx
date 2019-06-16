@@ -1,15 +1,15 @@
 import * as React from "react";
 import { IconDefinition } from "@antdSvgs/../types";
 // TODO: recursive function
-interface SvgProps {
+interface ISvgProps {
   svgProps?: IconDefinition;
   className?: string;
   style?: object;
 }
 
-const Svg = (props: SvgProps) => {
+const Svg = (props: ISvgProps) => {
   if (!props.svgProps
-    || typeof(props.svgProps.icon) !== "object"
+    || typeof (props.svgProps.icon) !== "object"
   ) {
     return null;
   }
@@ -30,15 +30,13 @@ const Svg = (props: SvgProps) => {
         height="1em"
         width="1em"
         {...icon.attrs}
-        >
+      >
         {
           icon.children && icon.children.map((val, index) => (
             <val.tag
               key={index}
               {...val.attrs}
-            >
-
-            </val.tag>
+            />
           ))
         }
       </svg>

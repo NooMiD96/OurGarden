@@ -11,9 +11,8 @@ import {
   TState,
   ModalTypeEnums,
   TComponentState,
-  TRegistrationModel,
-  TAuthenticationModel,
 } from "../TState";
+import { TAuthenticationModel, TRegistrationModel, } from "../TModel";
 
 export class Account extends React.Component<TState, TComponentState> {
   state = {
@@ -79,13 +78,15 @@ export class Account extends React.Component<TState, TComponentState> {
             footer={null}
           >
             {
-              errorMessage && <Alert
-                message="Ошибка"
-                description={errorMessage}
-                type="error"
-                closable={false}
-                style={{ marginBottom: 10 }}
-              />
+              errorMessage && (
+                <Alert
+                  message="Ошибка"
+                  description={errorMessage}
+                  type="error"
+                  closable={false}
+                  style={{ marginBottom: 10 }}
+                />
+              )
             }
             <ModalContent
               handleAuthSubmit={(payload: TAuthenticationModel) => this.handleSubmit(this.props.authentication, payload)}

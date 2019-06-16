@@ -1,5 +1,5 @@
-import { TUserModel } from "./TState";
 import { XPT } from "@src/core/helpers/auth/xsrf";
+import { TUserModel } from "./TModel";
 // -----------------
 // ACTIONS TYPE
 export const REGISTRATION_REQUEST = "REGISTRATION_REQUEST";
@@ -21,27 +21,28 @@ export const REMOVE_ERROR_MESSAGE = "REMOVE_ERROR_MESSAGE";
 export const SET_XPT = "SET_XPT";
 // -----------------
 // ACTIONS INTERFACE
-export interface IRegistrationRequest { type: typeof REGISTRATION_REQUEST; }
-export interface IRegistrationSuccess { type: typeof REGISTRATION_SUCCESS; }
-export interface IRegistrationError { type: typeof REGISTRATION_ERROR; errorMessage: string; }
+export interface IRegistrationRequest { type: typeof REGISTRATION_REQUEST }
+export interface IRegistrationSuccess { type: typeof REGISTRATION_SUCCESS }
+export interface IRegistrationError { type: typeof REGISTRATION_ERROR; errorMessage: string }
 export type TRegistration = IRegistrationRequest | IRegistrationSuccess | IRegistrationError;
 
-export interface IAuthenticationRequest { type: typeof AUTHENTICATION_REQUEST; }
-export interface IAuthenticationSuccess { type: typeof AUTHENTICATION_SUCCESS; }
-export interface IAuthenticationError { type: typeof AUTHENTICATION_ERROR; errorMessage: string; }
+export interface IAuthenticationRequest { type: typeof AUTHENTICATION_REQUEST }
+export interface IAuthenticationSuccess { type: typeof AUTHENTICATION_SUCCESS }
+export interface IAuthenticationError { type: typeof AUTHENTICATION_ERROR; errorMessage: string }
 export type TAuthentication = IAuthenticationRequest | IAuthenticationSuccess | IAuthenticationError;
 
-export interface ILogoutRequest { type: typeof LOGOUT_REQUEST; }
-export interface ILogoutSuccess { type: typeof LOGOUT_SUCCESS; }
-export interface ILogoutError { type: typeof LOGOUT_ERROR; errorMessage: string; }
+export interface ILogoutRequest { type: typeof LOGOUT_REQUEST }
+export interface ILogoutSuccess { type: typeof LOGOUT_SUCCESS }
+export interface ILogoutError { type: typeof LOGOUT_ERROR; errorMessage: string }
 export type TLogout = ILogoutRequest | ILogoutSuccess | ILogoutError;
 
-export interface ISetUser { type: typeof SET_USER; user: TUserModel; }
+export interface ISetUser { type: typeof SET_USER; user: TUserModel }
 
-export interface IRemoveErrorMessage { type: typeof REMOVE_ERROR_MESSAGE; }
+export interface IRemoveErrorMessage { type: typeof REMOVE_ERROR_MESSAGE }
 
-export interface ISetXPTAction { type: typeof SET_XPT; xpt: XPT; }
+export interface ISetXPTAction { type: typeof SET_XPT; xpt: XPT }
 
 type KnownAction = TRegistration | TAuthentication | TLogout
-    | ISetUser | IRemoveErrorMessage | ISetXPTAction;
+| ISetUser | IRemoveErrorMessage | ISetXPTAction;
+
 export default KnownAction;

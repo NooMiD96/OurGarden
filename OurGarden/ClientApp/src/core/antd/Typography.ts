@@ -4,9 +4,9 @@ import "antd/es/typography/style/index.css";
 const { Paragraph, Text, Title } = Typography;
 
 export {
-    Paragraph,
-    Text,
-    Title,
+  Paragraph,
+  Text,
+  Title,
 };
 
 export default Typography;

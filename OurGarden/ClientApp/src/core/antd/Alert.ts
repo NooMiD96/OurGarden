@@ -3,7 +3,7 @@ import { AlertProps } from "antd/lib/alert";
 import "antd/es/alert/style/index.css";
 
 export {
-    AlertProps,
+  AlertProps,
 };
 
 export default Alert;

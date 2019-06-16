@@ -6,17 +6,17 @@ import Input from "@core/antd/Input";
 
 import ModalControlButtons from "../ModalControlButtons";
 
-import { TAuthenticationModel } from "../../TState";
+import { TAuthenticationModel } from "../../TModel";
 
 import localeText from "../Text";
 
-interface Props extends FormComponentProps {
+interface IProps extends FormComponentProps {
   handleSubmit: (payload: TAuthenticationModel) => void;
   handleСlose: () => void;
   loading: boolean;
 }
 
-export class Authentication extends React.Component<Props, {}> {
+export class Authentication extends React.Component<IProps, {}> {
   onSubmit = () => {
     this.props.form.validateFields((err: any, values: TAuthenticationModel) => {
       if (!err) {

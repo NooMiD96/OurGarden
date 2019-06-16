@@ -1,6 +1,7 @@
 import { IResponse } from "@core/fetchHelper/IResponse";
-import { ApplicationState } from "@src/Store";
+import { IApplicationState } from "@src/Store";
 
+//eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface XPT {
   __xpt_cookie: string;
   __xpt_request: string;
@@ -26,7 +27,7 @@ export const GetXsrf: <TUserModel>(userModel: TUserModel) => Promise<false | XPT
   return JSON.parse(result.data) as XPT;
 });
 
-export const GetXsrfToHeader: (getState: () => ApplicationState) => object = getState => {
+export const GetXsrfToHeader: (getState: () => IApplicationState) => object = getState => {
   const { _xpt } = getState().account;
 
   return _xpt

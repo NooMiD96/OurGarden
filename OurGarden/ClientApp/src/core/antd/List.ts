@@ -6,6 +6,6 @@ import "./Pagination";
 import "antd/es/list/style/index.css";
 
 export {
-    Item,
+  Item,
 };
 export default List;

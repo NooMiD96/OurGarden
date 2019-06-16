@@ -27,8 +27,8 @@ export const errorCatcher = (
 ) => {
   console.warn(`Catch the error at ${componentName}.\r\nCall ${methodName} method.${
     error.stack
-    ? `\r\n${error.stack}`
-    : ` ${error.message}`
+      ? `\r\n${error.stack}`
+      : ` ${error.message}`
   }`);
   dispatch(action(error.message));
 };

@@ -1,13 +1,13 @@
 import { fetch, addTask } from "domain-task";
 
-import { AppThunkAction } from "@src/Store";
+import { IAppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TState";
-import * as t from "./actionsType";
-import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
+import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
+import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TModel";
+import * as t from "./actionsType";
 
 // ----------------
 //#region ACTIONS
@@ -59,7 +59,7 @@ export const ActionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Account";
 export const ActionCreators = {
-  registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, getState) => {
+  registration: (data: TRegistrationModel): IAppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
     const apiUrl = "Registration";
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -100,7 +100,7 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.registrationRequest());
   },
-  authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, getState) => {
+  authentication: (data: TAuthenticationModel): IAppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
     const apiUrl = "Authentication";
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -140,7 +140,7 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.authenticationRequest());
   },
-  logout: (): AppThunkAction<t.TLogout> => (dispatch, getState) => {
+  logout: (): IAppThunkAction<t.TLogout> => (dispatch, getState) => {
     const apiUrl = "Logout";
     const xptToHeader = GetXsrfToHeader(getState);
 

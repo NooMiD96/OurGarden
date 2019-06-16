@@ -1,6 +1,6 @@
 import { fetch, addTask } from "domain-task";
 
-import { AppThunkAction } from "@src/Store";
+import { IAppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 import * as moment from "moment";
@@ -55,7 +55,7 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Visitation";
 export const actionCreators = {
-  getVisitationList: (date?: string): AppThunkAction<t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getVisitationList: (date?: string): IAppThunkAction<t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "GetVisitationList";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -93,7 +93,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getVisitationListRequest());
   },
-  saveVisitationList: (visitationList: IVisitation[]): AppThunkAction<t.TSaveVisitationList | t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  saveVisitationList: (visitationList: IVisitation[]): IAppThunkAction<t.TSaveVisitationList | t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "SaveVisitationList";
     const xptToHeader = GetXsrfToHeader(getState);
     const date = visitationList.length ? visitationList[0].date.format("YYYY-MM-DD") : undefined;

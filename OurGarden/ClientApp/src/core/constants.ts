@@ -116,11 +116,6 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/DownOutline")).default;
     /* END Home.Edit */
 
-    /* Home.View */
-    case "message":
-      return (await import(/* webpackChunkName: "Home.View.icons" */ "@antdSvgs/MessageOutline")).default;
-    /* END Home.View */
-
     /* Medicament */
     case "filter":
       return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/FilterOutline")).default;
@@ -140,9 +135,11 @@ export const getIconAsync = async (type: TIcons) => {
         return (await import(/* webpackChunkName: "Visitation.icons" */ "@antdSvgs/SearchOutline")).default;
     /* END Visitation */
 
-    default:
+    default: {
+      // eslint-disable-next-line
       const exhaustiveCheck: never = type;
       throw new Error(`SVG with "${exhaustiveCheck}" type not found!`);
+    }
   }
 };
 //#endregion

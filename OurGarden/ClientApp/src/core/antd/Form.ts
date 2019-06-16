@@ -5,13 +5,13 @@ import "antd/es/form/style/index.css";
 import "antd/es/grid/style/index.css";
 
 const hasErrors = (fieldsError: any): boolean =>
-    Object.keys(fieldsError).some(field => fieldsError[field]);
+  Object.keys(fieldsError).some(field => fieldsError[field]);
 
 export {
-    FormItem,
-    FormComponentProps,
-    WrappedFormUtils,
-    hasErrors,
+  FormItem,
+  FormComponentProps,
+  WrappedFormUtils,
+  hasErrors,
 };
 
 export default Form;

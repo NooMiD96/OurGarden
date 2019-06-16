@@ -6,11 +6,11 @@ import Typography from "@core/antd/Typography";
 const { Text } = Typography;
 
 type ModalControlButtonsProps = {
-  handleSubmit: () => void,
-  handleCancel: () => void,
-  loading: boolean,
-  returnTitle: string,
-  submitTitle: string,
+  handleSubmit: () => void;
+  handleCancel: () => void;
+  loading: boolean;
+  returnTitle: string;
+  submitTitle: string;
 };
 
 const ModalControlButtons = (props: ModalControlButtonsProps) => (

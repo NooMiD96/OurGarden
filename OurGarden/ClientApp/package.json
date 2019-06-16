@@ -15,7 +15,9 @@
     "react": "^16.8.6",
     "redux-thunk": "^2.3.0",
     "redux": "^4.0.1",
-    "styled-components": "^4.3.1"
+    "styled-components": "^4.3.1",
+    "react-hot-loader": "^4.11.0",
+    "aspnet-prerendering": "^3.0.1"
   },
   "devDependencies": {
     "@types/copy-webpack-plugin": "^5.0.0",
@@ -38,8 +40,7 @@
     "@types/webpack-merge": "^4.1.5",
     "@types/node": "^12.0.8",
     "ts-node": "^8.2.0",
-    "typescript": "^3.5.1",
-    "aspnet-prerendering": "^3.0.1",
+    "typescript": "^3.5.2",
     "aspnet-webpack": "^3.0.0",
     "aspnet-webpack-react": "^4.0.0",
     "awesome-typescript-loader": "^5.2.1",
@@ -52,10 +53,13 @@
     "mini-css-extract-plugin": "^0.7.0",
     "node-noop": "^1.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "react-hot-loader": "^4.11.0",
     "string-replace-webpack-plugin": "^0.1.3",
     "tsconfig-paths": "^3.8.0",
-    "typescript-eslint-parser": "^22.0.0",
+    "@typescript-eslint/parser": "^1.10.2",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
     "uglifyjs-webpack-plugin": "^2.1.3",
     "url-loader": "^2.0.0",
     "webpack": "^4.33.0",
@@ -70,11 +74,7 @@
     "clean": "IF EXIST %CD%\\public\\client rd /s /q %CD%\\public\\client && IF EXIST %CD%\\public\\server rd /s /q %CD%\\public\\server",
     "buildDev": "yarn run clean && webpack --config webpack.config.js --mode development",
     "buildProd": "yarn run clean && webpack --config webpack.config.js --mode production --env.prod",
-    "getBundlsStats": "yarn run clean && webpack --mode production --env.prod --env.show --profile --json > stats.json",
-    "lint": "eslint ./src/**/*.ts ./src/**/*.tsx"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "getBundlsStats": "yarn run clean && webpack --mode production --env.prod --env.show --profile --json > stats.json"
   },
   "browserslist": [
     ">0.2%",

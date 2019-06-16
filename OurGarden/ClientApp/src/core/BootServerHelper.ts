@@ -1,31 +1,31 @@
-import { Store, AnyAction } from "redux";
-import { ApplicationState } from "@src/Store";
+import { Store } from "redux";
+import { IApplicationState } from "@src/Store";
 // import { ActionCreators as FetcherActionCreators } from "@components/Fetcher/actions";
 
-const oneParamSwitcher = (url: string, store: Store<ApplicationState>) => {
-    switch (url.toLowerCase()) {
-        // case "fetcher":
-        //     FetcherActionCreators.GetData()(store.dispatch, store.getState);
-        //     break;
+const oneParamSwitcher = (url: string, _store: Store<IApplicationState>) => {
+  switch (url.toLowerCase()) {
+    // case "fetcher":
+    //     FetcherActionCreators.GetData()(store.dispatch, store.getState);
+    //     break;
 
-        default:
-            break;
-    }
+    default:
+      break;
+  }
 };
 
-export default (splitedUrl: string[], store: Store<ApplicationState>) => {
-    if (!splitedUrl.length) {
-        // Home component
-        return;
-    }
-    switch (splitedUrl.length) {
-        case 1:
-            oneParamSwitcher(splitedUrl[0], store);
-            break;
+export default (splitedUrl: string[], store: Store<IApplicationState>) => {
+  if (!splitedUrl.length) {
+    // Home component
+    return;
+  }
+  switch (splitedUrl.length) {
+    case 1:
+      oneParamSwitcher(splitedUrl[0], store);
+      break;
 
-        default:
-            break;
-    }
+    default:
+      break;
+  }
 };
 
 // prerender bundls

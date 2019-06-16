@@ -1,18 +1,18 @@
 import { RouterState } from "connected-react-router";
 
-import { AccountState } from "@src/components/Account/State";
+import { IAccountState } from "@src/components/Account/State";
 import { reducer as AccountReducer } from "@src/components/Account/reducer";
 
-export interface ApplicationState {
+export interface IApplicationState {
   router: RouterState;
 
-  account: AccountState;
+  account: IAccountState;
 }
 
 export const reducers = {
   account: AccountReducer,
 };
 
-export interface AppThunkAction<TAction> {
-  (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
+export interface IAppThunkAction<TAction> {
+  (dispatch: (action: TAction) => void, getState: () => IApplicationState): void;
 }

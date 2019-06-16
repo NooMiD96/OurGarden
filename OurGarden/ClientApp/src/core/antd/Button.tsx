@@ -3,14 +3,14 @@ import NativeButton, { NativeButtonProps, ButtonType } from "antd/es/button/butt
 import "antd/es/button/style/index.css";
 
 interface IButtonProps extends NativeButtonProps {
-    // type?: ButtonType;
-    href?: string;
+  type?: ButtonType;
+  href?: string;
 }
 
 const Button = (props: IButtonProps) => (
-    <NativeButton
-        {...props}
-    />
+  <NativeButton
+    {...props}
+  />
 );
 
 export default Button;

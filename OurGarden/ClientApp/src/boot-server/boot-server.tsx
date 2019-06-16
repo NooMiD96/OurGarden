@@ -5,15 +5,16 @@ import { renderToString } from "react-dom/server";
 import { createMemoryHistory } from "history";
 import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 
-import configureStore from "./ConfigureStore";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
 import { ActionsList } from "@components/Account/actions";
 import { unloadedState } from "@components/Account/State";
-import { TUserModel } from "@components/Account/TState";
+import { TUserModel } from "@components/Account/TModel";
 import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
 import { routesArray } from "@core/constants";
 import { XPT } from "@src/core/helpers/auth/xsrf";
+
+import configureStore from "./ConfigureStore";
 
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {
@@ -65,8 +66,9 @@ export default createServerRenderer(params =>
           basename={basename}
           context={{}}
           location={params.location.path}
-          children={AppRoutes}
-        />
+        >
+          {AppRoutes}
+        </StaticRouter>
       </Provider>
     );
     // Once any async tasks are done, we can perform the final render

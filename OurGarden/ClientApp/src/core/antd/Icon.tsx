@@ -2,18 +2,18 @@ import * as React from "react";
 import Svg, { IconDefinition } from "./Svg";
 import { getIconAsync, TIcons } from "../constants";
 
-export interface CustomIconProps {
+export interface ICustomIconProps {
   type: TIcons;
   className?: string;
   style?: object;
 }
 
-export interface CustomIconState {
+export interface ICustomIconState {
   svgProps: IconDefinition | null;
 }
 
-class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
-  state: CustomIconState = {
+class CustomIcon extends React.PureComponent<ICustomIconProps, ICustomIconState> {
+  state: ICustomIconState = {
     svgProps: null,
   };
 
@@ -34,12 +34,14 @@ class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
     const { svgProps } = this.state;
     return (
       svgProps
-        ? <Svg
-          className={this.props.className}
-          style={this.props.style}
-          svgProps={svgProps}
-          {...this.props}
-        />
+        ? (
+          <Svg
+            className={this.props.className}
+            style={this.props.style}
+            svgProps={svgProps}
+            {...this.props}
+          />
+        )
         : <span />
     );
   }

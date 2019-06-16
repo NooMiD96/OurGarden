@@ -3,30 +3,26 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RouterState } from "connected-react-router";
 
-import { Title, Text } from "@core/antd/Typography";
+import { Title } from "@core/antd/Typography";
 import Menu from "@core/antd/Menu";
 import Icon from "@core/antd/Icon";
-import Badge from "@core/antd/Badge";
 
-import { ApplicationState } from "@src/Store";
+import { IApplicationState } from "@src/Store";
 import { UserTypeEnums, routesArray, routesObject } from "@core/constants";
-import { AccountState } from "@components/Account/State";
+import { IAccountState } from "@components/Account/State";
 import { IMouseClickEvent } from "@core/IEvents";
 
 import Account from "@components/Account";
 
 interface IComponentState {
   selectedKeys: string[];
-  collapsed: boolean;
 }
 
-interface IComponentProps extends AccountState, RouterState { }
-const badgeColor = { backgroundColor: "#62636bb0" };
+interface IComponentProps extends IAccountState, RouterState { }
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
     selectedKeys: [],
-    collapsed: false,
   };
 
   componentDidMount() {
@@ -48,10 +44,10 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
 
   getUrlKey() {
     const url = this.props.location.pathname;
-    return routesArray[(routesObject as any)[url] || 0];
+    return routesArray[(routesObject as any)[url] || 0] as string;
   }
 
-  onSelectItemHandler = (event: { item: {}, key: string, selectedKeys: string[] }) => {
+  onSelectItemHandler = (event: { item: {}; key: string; selectedKeys: string[] }) => {
     if (!this.state.selectedKeys.includes(event.key)) {
       this.setState({
         selectedKeys: [event.key],
@@ -156,7 +152,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
 }
 
 export default connect(
-  (state: ApplicationState): IComponentProps => ({
+  (state: IApplicationState): IComponentProps => ({
     ...state.account,
     ...state.router,
   })

@@ -1,6 +1,6 @@
 import * as path from "path";
 
-const getAlias = (): { [key: string]: string; } => ({
+const getAlias = (): { [key: string]: string } => ({
   '@src': path.resolve('./src'),
   '@core': path.resolve('./src/core'),
   '@components': path.resolve('./src/components'),

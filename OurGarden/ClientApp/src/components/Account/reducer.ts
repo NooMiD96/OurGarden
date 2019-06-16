@@ -3,10 +3,10 @@
 import { Reducer } from "redux";
 
 import { UserTypeEnums } from "@core/constants";
-import { AccountState, unloadedState } from "./State";
+import { IAccountState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<AccountState> = (state: AccountState = unloadedState, action: KnownAction) => {
+export const reducer: Reducer<IAccountState> = (state: IAccountState = unloadedState, action: KnownAction) => {
   switch (action.type) {
     case t.REGISTRATION_REQUEST:
     case t.AUTHENTICATION_REQUEST:
@@ -14,19 +14,19 @@ export const reducer: Reducer<AccountState> = (state: AccountState = unloadedSta
       return {
         ...state,
         pending: true,
-      } as AccountState;
+      } as IAccountState;
 
     case t.REGISTRATION_SUCCESS:
     case t.AUTHENTICATION_SUCCESS:
       return {
         ...state,
         pending: false,
-      } as AccountState;
+      } as IAccountState;
 
     case t.LOGOUT_SUCCESS:
       return {
         ...unloadedState,
-      } as AccountState;
+      } as IAccountState;
 
     case t.REGISTRATION_ERROR:
     case t.AUTHENTICATION_ERROR:
@@ -35,29 +35,31 @@ export const reducer: Reducer<AccountState> = (state: AccountState = unloadedSta
         ...state,
         pending: false,
         errorMessage: action.errorMessage,
-      } as AccountState;
+      } as IAccountState;
 
     case t.REMOVE_ERROR_MESSAGE:
       return {
         ...state,
         errorMessage: "",
-      } as AccountState;
+      } as IAccountState;
 
     case t.SET_USER:
       return {
         ...state,
         userName: action.user.userName,
         userType: UserTypeEnums[action.user.userType] as any,
-      } as AccountState;
+      } as IAccountState;
 
     case t.SET_XPT:
       return {
         ...state,
         _xpt: action.xpt,
-      } as AccountState;
+      } as IAccountState;
 
-    default:
+    default: {
+      // eslint-disable-next-line
       const exhaustiveCheck: never = action;
+    }
   }
   return state;
 };
