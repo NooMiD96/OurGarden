@@ -3,7 +3,7 @@
 import { Reducer } from "redux";
 
 import { UserTypeEnums } from "@core/constants";
-import { AccountState, unloadedState } from "./IAccountState";
+import { AccountState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<AccountState> = (state: AccountState = unloadedState, action: KnownAction) => {
@@ -54,12 +54,6 @@ export const reducer: Reducer<AccountState> = (state: AccountState = unloadedSta
       return {
         ...state,
         _xpt: action.xpt,
-      } as AccountState;
-
-    case t.SET_NOTIFY:
-      return {
-        ...state,
-        notify: action.notify,
       } as AccountState;
 
     default:

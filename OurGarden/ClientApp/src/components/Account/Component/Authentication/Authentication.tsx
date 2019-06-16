@@ -6,7 +6,7 @@ import Input from "@core/antd/Input";
 
 import ModalControlButtons from "../ModalControlButtons";
 
-import { TAuthenticationModel } from "../../TAccount";
+import { TAuthenticationModel } from "../../TState";
 
 import localeText from "../Text";
 

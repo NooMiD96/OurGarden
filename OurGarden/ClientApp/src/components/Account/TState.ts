@@ -1,5 +1,5 @@
 import { UserTypeEnums } from "@core/constants";
-import { AccountState } from "./IAccountState";
+import { AccountState } from "./State";
 import { ActionCreators } from "./actions";
 // -----------------------------
 // STATE OF COMPONENT

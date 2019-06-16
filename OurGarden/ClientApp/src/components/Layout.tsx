@@ -5,6 +5,7 @@ import AntdLayout from "@core/antd/Layout";
 // import { ConfigProvider, Empty } from "antd";
 
 import AccountControlComponent from "@core/HOC/AccountControlComponent";
+import ErrorHandler from "@core/HOC/ErrorHandler";
 import NavMenu from "./NavMenu";
 
 const { Header, Content, Footer } = AntdLayout;
@@ -17,7 +18,7 @@ const { Header, Content, Footer } = AntdLayout;
 export class Layout extends React.Component<{}, {}> {
   render() {
     return (
-      <React.Fragment>
+      <ErrorHandler>
         <AntdLayout>
           <Header className="antd-header">
             <NavMenu />
@@ -45,7 +46,7 @@ export class Layout extends React.Component<{}, {}> {
         <div
           id="global-modals-container"
         />
-      </React.Fragment>
+      </ErrorHandler>
     );
   }
 }

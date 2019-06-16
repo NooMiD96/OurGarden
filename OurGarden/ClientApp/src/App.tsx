@@ -6,6 +6,7 @@ import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
 export const AppRoutes = (
   <Layout>
+    <div>Hellow</div>
     {/* <Route exact path="/" component={AsyncComponent(() => import(\/* webpackChunkName: "Home" *\/ "@components/Home"))} /> */}
   </Layout>
 );

@@ -7,7 +7,7 @@ import {
   ModalTypeEnums,
   TAuthenticationModel,
   TRegistrationModel,
-} from "../TAccount";
+} from "../TState";
 
 type AccountControlButtonsProps = {
   handleAuthSubmit: (payload: TAuthenticationModel) => void,

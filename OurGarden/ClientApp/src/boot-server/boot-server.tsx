@@ -9,8 +9,8 @@ import configureStore from "./ConfigureStore";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
 import { ActionsList } from "@components/Account/actions";
-import { unloadedState, TNotify } from "@components/Account/IAccountState";
-import { TUserModel } from "@components/Account/TAccount";
+import { unloadedState } from "@components/Account/State";
+import { TUserModel } from "@components/Account/TState";
 import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
 import { routesArray } from "@core/constants";
 import { XPT } from "@src/core/helpers/auth/xsrf";
@@ -27,15 +27,11 @@ export default createServerRenderer(params =>
       userType: unloadedState.userType,
     };
     let xpt: XPT | undefined;
-    let notify: TNotify | undefined;
     if (params.data.user) {
       userModel = JSON.parse(params.data.user);
     }
     if (params.data.xpt) {
       xpt = JSON.parse(params.data.xpt);
-    }
-    if (params.data.notify) {
-      notify = JSON.parse(params.data.notify);
     }
     // check access to the requested url and change history entries
     if (isUserHavePermissions(
@@ -57,9 +53,6 @@ export default createServerRenderer(params =>
       } else {
         store.dispatch(ActionsList.logoutRequest());
       }
-    }
-    if (notify) {
-      store.dispatch(ActionsList.setNotify(notify));
     }
     // init state corresponding to the incoming URL
     const splitedUrl = urlAfterBasename.split("?")[0].split("/").filter(Boolean);

@@ -4,11 +4,10 @@ import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TAccount";
+import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TState";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-import { TNotify } from "./IAccountState";
 
 // ----------------
 //#region ACTIONS
@@ -54,10 +53,6 @@ export const ActionsList = {
     type: t.SET_XPT,
     xpt,
   }),
-  setNotify: (notify: TNotify[]): t.ISetNotifyAction => ({
-    type: t.SET_NOTIFY,
-    notify,
-  }),
 };
 //#endregion
 // ----------------
@@ -89,7 +84,6 @@ export const ActionCreators = {
           dispatch(ActionsList.registrationSuccess());
           dispatch(ActionsList.setUser(value.data));
           dispatch(ActionsList.setXsrf(xpt));
-          ActionCreators.getNotify()(dispatch as any, getState);
         } else {
           return errorCreater(uncatchError);
         }
@@ -131,7 +125,6 @@ export const ActionCreators = {
           dispatch(ActionsList.authenticationSuccess());
           dispatch(ActionsList.setUser(value.data));
           dispatch(ActionsList.setXsrf(xpt));
-          ActionCreators.getNotify()(dispatch as any, getState);
         } else {
           return errorCreater(uncatchError);
         }
@@ -176,25 +169,6 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.logoutRequest());
   },
-  getNotify: (): AppThunkAction<t.ISetNotifyAction> => async (dispatch, getState) => {
-    const apiUrl = "GetNotify";
-    const xptToHeader = GetXsrfToHeader(getState);
-
-    const value: IResponse<TNotify[]> = await fetch(`/api/${controllerName}/${apiUrl}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
-    })
-    .then(responseCatcher);
-
-    if (value && value.error) {
-      return errorCreater(value.error);
-    }
-    dispatch(ActionCreators.setNotify(value.data));
-  },
   removeErrorMessage: ActionsList.removeErrorMessage,
-  setNotify: ActionsList.setNotify,
 };
 //#endregion

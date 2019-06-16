@@ -10,7 +10,7 @@ import Badge from "@core/antd/Badge";
 
 import { ApplicationState } from "@src/Store";
 import { UserTypeEnums, routesArray, routesObject } from "@core/constants";
-import { AccountState, SectionsEnum, TNotify } from "@components/Account/IAccountState";
+import { AccountState } from "@components/Account/State";
 import { IMouseClickEvent } from "@core/IEvents";
 
 import Account from "@components/Account";
@@ -65,34 +65,8 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
     }
   }
 
-  getNotify = () => {
-    let totalCount = 0;
-    let medicamentNotifyCount = 0;
-    let vaccinationNotifyCount = 0;
-    const { notify } = this.props;
-
-    const medicamentNotify = notify.find(x => x.section === SectionsEnum.medicament);
-    if (medicamentNotify) {
-      totalCount += medicamentNotify.count;
-      medicamentNotifyCount = medicamentNotify.count;
-    }
-
-    const vaccinationNotify = notify.find(x => x.section === SectionsEnum.vaccination);
-    if (vaccinationNotify) {
-      totalCount += vaccinationNotify.count;
-      vaccinationNotifyCount = vaccinationNotify.count;
-    }
-
-    return {
-      totalCount,
-      medicamentNotifyCount,
-      vaccinationNotifyCount,
-    };
-  }
-
   render() {
     const { userType } = this.props;
-    const notify = this.getNotify();
 
     const NavLinks = [
       <Menu.Item key={routesArray[0]}>
@@ -112,7 +86,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             to={routesArray[1]}
             onClick={e => this.preventClick(e, routesArray[1])}
           >
-            Медикаменты <Badge count={notify.medicamentNotifyCount} style={badgeColor} />
+            Медикаменты
           </Link>
         </Menu.Item>,
         <Menu.Item key={routesArray[2]}>
@@ -128,7 +102,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             to={routesArray[3]}
             onClick={e => this.preventClick(e, routesArray[3])}
           >
-            Дети <Badge count={notify.vaccinationNotifyCount} style={badgeColor} />
+            Дети
           </Link>
         </Menu.Item>,
         <Menu.Item key={routesArray[4]}>
@@ -164,7 +138,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
                 <React.Fragment>
                   <Icon type="caret-dow" className="header-submenu-more-icon" />
                   <Title className="main-title" level={2}>
-                    OurGarden <Badge count={notify.totalCount} style={badgeColor} />
+                    OurGarden
                   </Title>
                 </React.Fragment>
               )}

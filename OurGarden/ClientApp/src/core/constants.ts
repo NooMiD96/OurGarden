@@ -1,11 +1,6 @@
 //#region Route
 export const routesObject = {
   "/": 0,
-  "/medicament": 1,
-  "/childrengroups": 2,
-  "/search": 3,
-  "/visitation": 4,
-  "/report": 5,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -13,13 +8,6 @@ export const routesArray = Object.keys(routesObject);
 
 export const allowToAllUserLocation = {
   "/": true,
-  "/post": true,
-  "/edit": false,
-  "/medicament": false,
-  "/childrengroups": false,
-  "/search": false,
-  "/visitation": false,
-  "/report": false,
 };
 
 export enum UserTypeEnums {

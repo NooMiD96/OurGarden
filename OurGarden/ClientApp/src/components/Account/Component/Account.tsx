@@ -13,7 +13,7 @@ import {
   TComponentState,
   TRegistrationModel,
   TAuthenticationModel,
-} from "../TAccount";
+} from "../TState";
 
 export class Account extends React.Component<TState, TComponentState> {
   state = {

@@ -5,7 +5,7 @@ import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import Typography from "@core/antd/Typography";
 
-import { ModalTypeEnums } from "../TAccount";
+import { ModalTypeEnums } from "../TState";
 
 const { Text } = Typography;
 

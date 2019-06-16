@@ -6,7 +6,7 @@ import Input from "@core/antd/Input";
 
 import ModalControlButtons from "../ModalControlButtons";
 
-import { TRegistrationModel } from "../../TAccount";
+import { TRegistrationModel } from "../../TState";
 
 import localeText from "../Text";
 

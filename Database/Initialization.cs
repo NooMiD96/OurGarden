@@ -15,7 +15,7 @@ namespace Database
 {
     public static class DatabaseInitialization
     {
-        public const string ASSEMBLY_PATH = "OurGarden";
+        public const string ASSEMBLY_PATH = "Web";
 
         public static void SetupDatabaseSettings(IServiceCollection services, IConfiguration Configuration)
         {
@@ -63,7 +63,7 @@ namespace Database
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            //InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
+            InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
         }
     }
 }

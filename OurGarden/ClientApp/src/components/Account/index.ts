@@ -6,7 +6,7 @@ import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
-} from "./TAccount";
+} from "./TState";
 import { Account } from "./Component/Account";
 import { ApplicationState } from "@src/Store";
 

@@ -1,6 +1,6 @@
 import { RouterState } from "connected-react-router";
 
-import { AccountState } from "@src/components/Account/IAccountState";
+import { AccountState } from "@src/components/Account/State";
 import { reducer as AccountReducer } from "@src/components/Account/reducer";
 
 export interface ApplicationState {
