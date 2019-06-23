@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\AdminApi\" />
     <Folder Include="wwwroot\admin\" />
     <Folder Include="wwwroot\client\" />
   </ItemGroup>
