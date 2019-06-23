@@ -5,8 +5,10 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <SpaRoot>Web\</SpaRoot>
+    <SpaClientRoot>$(SpaRoot)ClientApp\</SpaClientRoot>
+    <SpaAdminRoot>$(SpaRoot)AdminApp\</SpaAdminRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaClientRoot)node_modules\**;$(SpaAdminRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,14 +22,19 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <Content Remove="$(SpaClientRoot)**" />
+    <None Remove="$(SpaClientRoot)**" />
+    <None Include="$(SpaClientRoot)**" Exclude="$(SpaClientRoot)node_modules\**" />
+
+    <Content Remove="$(SpaAdminRoot)**" />
+    <None Remove="$(SpaAdminRoot)**" />
+    <None Include="$(SpaAdminRoot)**" Exclude="$(SpaAdminRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\AdminApi\" />
     <Folder Include="Controllers\Api\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,11 +54,12 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
-    
+
     <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
 
-    <Exec Condition=" Exists('$(SpaRoot)\public\client') OR Exists('$(SpaRoot)\public\server') " WorkingDirectory="$(SpaRoot)" Command="yarn run clean" />
-    <Exec Condition=" !Exists('$(SpaRoot)node_modules') " WorkingDirectory="$(SpaRoot)" Command="yarn" />
+    <Exec Condition=" !Exists('$(SpaClientRoot)node_modules') " WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+
+    <Exec Condition=" !Exists('$(SpaAdminRoot)node_modules') " WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
   </Target>
 
   <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
@@ -67,15 +75,18 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
     
     <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
-    
-    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn run buildProd" />
+
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
+
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="yarn run buildProd" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>

@@ -1,13 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div id="react-app"
+﻿<div id="react-app"
     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
-    asp-prerender-data="new {
-        user = @ViewData["user"],
-        xpt = @ViewData["xpt"],
-    }">Loading...</div>
+    >Loading...</div>
 
 @section scripts {
     @foreach (var scriptSrc in StartUpVendors.JsVendors)

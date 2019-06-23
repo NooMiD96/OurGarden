@@ -45,7 +45,7 @@ namespace Web
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = Configuration.GetValue<string>("SpaPhysicalStaticPath");
+                configuration.RootPath = Configuration.GetValue<string>("SpaPhysicalRootPath");
             });
 
             StartUpVendors.Configuration = Configuration;
@@ -60,7 +60,14 @@ namespace Web
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), Configuration.GetValue<string>("SpaPhysicalRootPath")),
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web/ClientApp"),
+                    HotModuleReplacement = true,
+                    ReactHotModuleReplacement = true
+                });
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web/AdminApp"),
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
                 });
@@ -84,6 +91,15 @@ namespace Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "admin",
+                    template: "{controller}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback-admin",
+                    templatePrefix: "admin",
+                    defaults: new { controller = "Admin", action = "Index" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
@@ -91,16 +107,6 @@ namespace Web
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseReactDevelopmentServer(npmScript: "start");
-            //    }
-            //});
         }
     }
 }

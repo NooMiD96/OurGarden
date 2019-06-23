@@ -1,0 +1,25 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Наш сад - Админ</title>
+    <base href="/admin" />
+
+    <link rel="icon" href="~/admin/favicon.ico">
+
+    <link rel="stylesheet" href="~/admin/server/main-server.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="react-app"
+         asp-prerender-module="wwwroot/admin/server/main-server.js"
+         asp-prerender-data="new {
+            user = @ViewData["user"],
+            xpt = @ViewData["xpt"],
+        }">Loading...</div>
+</body>
+</html>
