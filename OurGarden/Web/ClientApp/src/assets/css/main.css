@@ -1,0 +1,19 @@
+.ant-layout,
+.layout-wrapper,
+.layout-wrapper > .ant-row-flex,
+.layout-wrapper > .ant-row-flex > .ant-col,
+.ant-spin-nested-loading {
+  height: 100%;
+}
+.ant-spin-nested-loading > div > .ant-spin {
+  max-height: unset;
+}
+.ant-layout {
+  background: unset;
+}
+.ant-layout-header {
+  height: auto;
+  padding: unset;
+  background: unset;
+  line-height: initial;
+}

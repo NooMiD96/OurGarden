@@ -7,14 +7,10 @@ import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
-import { ActionsList } from "@components/Account/actions";
-import { unloadedState } from "@components/Account/State";
-import { TUserModel } from "@components/Account/TModel";
-import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
-import { routesArray } from "@core/constants";
-import { XPT } from "@src/core/helpers/auth/xsrf";
 
 import configureStore from "./ConfigureStore";
+
+import "@src/assets/css/main.css";
 
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {

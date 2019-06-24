@@ -18,7 +18,8 @@
     "styled-components": "^4.3.1",
     "react-hot-loader": "^4.11.0",
     "aspnet-prerendering": "^3.0.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "lottie-web": "^5.5.5"
   },
   "devDependencies": {
     "@types/copy-webpack-plugin": "^5.0.0",

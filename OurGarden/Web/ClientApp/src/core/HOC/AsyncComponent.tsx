@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Spin from "@core/antd/Spin";
+import Skeleton from "@core/antd/Skeleton";
 
 export function AsyncComponent(ComponentLoader: any) {
   interface IState {
@@ -22,13 +22,18 @@ export function AsyncComponent(ComponentLoader: any) {
       const { Component } = this.state;
       const isLoading = !Component;
       return (
-        <Spin
-          spinning={isLoading}
-        >
-          <div className={`loading-spin-container ${isLoading ? "hidden" : "visible"}`}>
-            {Component && <Component {...this.props} />}
-          </div>
-        </Spin>
+        <>
+          {Component && <Component {...this.props} />}
+          {isLoading && (
+            <>
+              <Skeleton loading={isLoading} active />
+              <Skeleton loading={isLoading} active />
+              <Skeleton loading={isLoading} active />
+              <Skeleton loading={isLoading} active />
+              <Skeleton loading={isLoading} active />
+            </>
+          )}
+        </>
       );
     }
   }

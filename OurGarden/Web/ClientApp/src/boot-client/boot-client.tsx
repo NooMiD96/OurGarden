@@ -9,6 +9,8 @@ import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
 import ConfigureStore from "./ConfigureStore";
 
+import "@src/assets/css/main.css";
+
 let routes = App.AppRoutes;
 
 // import "@src/css/site.css";
