@@ -11,6 +11,7 @@ import initReduxForComponent from "@core/BootServerHelper";
 import configureStore from "./ConfigureStore";
 
 import "@src/assets/css/main.css";
+import "@src/assets/scss/main.scss";
 
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {

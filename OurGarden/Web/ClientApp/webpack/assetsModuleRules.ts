@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { RuleSetRule } from 'webpack';
 
 const getAssetsModuleRules = (
+  env: { [key: string]: string },
   fileNameTemplate: string
 ): RuleSetRule[] => ([
   // remove depence on icon which size >500Kb
@@ -30,12 +31,24 @@ const getAssetsModuleRules = (
     },
   },
   {
+    test: /\.scss$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      "css-loader",
+      "sass-loader"
+    ]
+  },
+  {
     test: /\.css$/,
     use: [
       MiniCssExtractPlugin.loader,
       require.resolve('css-loader')
     ]
   },
+  {
+    test: /\.svg$/,
+    use: 'react-svg-loader'
+  }
 ]);
 
 export default getAssetsModuleRules;

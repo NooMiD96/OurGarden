@@ -1,19 +1,19 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { Configuration } from 'webpack';
+import { Configuration, Options } from 'webpack';
 
 import getAlias from './alias';
 import getAssetsModuleRules from './assetsModuleRules';
 import getJsModuleRules from './jsModuleRules';
 import getGeneralPlugins from './generalPlugins';
 
-
 // Configuration in common to both client-side and server-side bundles
 const getSharedConfig = (
-  optimizationConfiguration: any,
-  buildModeString: any,
-  devtool: any,
-  fileNameTemplate: any
+  env: { [key: string]: string },
+  optimizationConfiguration: Options.Optimization,
+  buildModeString: "development" | "production",
+  devtool: 'eval-source-map' | '',
+  fileNameTemplate: string
 ): Configuration => {
   const sharedConfig: Configuration = {
     // https://webpack.js.org/configuration/stats/
@@ -31,7 +31,7 @@ const getSharedConfig = (
     // https://webpack.js.org/configuration/module/
     module: {
       rules: [
-        ...getAssetsModuleRules(fileNameTemplate),
+        ...getAssetsModuleRules(env, fileNameTemplate),
         ...getJsModuleRules(),
       ]
     },

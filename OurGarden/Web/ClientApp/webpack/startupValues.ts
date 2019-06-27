@@ -22,7 +22,7 @@ const getStartupValues = (
     ? '[name]'
     : '[name].[contenthash]';
 
-  let buildModeString = "development";
+  let buildModeString: "development" | "production" = "development";
   let optimizationConfiguration: Options.Optimization = {
     minimize: !isDevBuild,
     splitChunks: {

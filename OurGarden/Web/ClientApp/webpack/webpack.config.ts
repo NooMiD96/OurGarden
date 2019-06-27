@@ -14,6 +14,7 @@ module.exports = (env: { [key: string]: string }) => {
   } = getStartupValues(env, __dirname);
 
   const shareConfigFunc = () => getSharedConfig(
+    env,
     optimizationConfiguration,
     buildModeString,
     isDevBuild ? 'eval-source-map' : '',

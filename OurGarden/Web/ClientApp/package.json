@@ -71,7 +71,10 @@
     "webpack-hot-middleware": "^2.25.0",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1",
-    "clean-webpack-plugin": "^3.0.0"
+    "clean-webpack-plugin": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "node-sass": "^4.12.0",
+    "react-svg-loader": "^3.0.3"
   },
 
   "scripts": {
