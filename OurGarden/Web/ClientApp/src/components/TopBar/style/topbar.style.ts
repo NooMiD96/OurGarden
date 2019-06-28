@@ -12,12 +12,6 @@ export default styled.div`
       justify-content: flex-end;
       flex: 0 1 60%;
 
-      .ant-input-affix-wrapper {
-        display: flex;
-        flex: 1 1 auto;
-        width: auto;
-      }
-
       .ant-typography {
         display: flex;
         align-items: flex-end;

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Row, Col } from "@src/core/antd";
-import SearchProduct from "@components/TopBar/SearchProduct";
+import SearchProduct from "@components/SearchProduct";
 import { Text } from "@src/core/antd/Typography";
 
 import Archive from "@core/icons/Archive";
