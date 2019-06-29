@@ -25,7 +25,7 @@ export class NavMenu extends React.Component<RouterState, {}> {
 
   render() {
     const tabList = [
-      { key: "Главная", title: "Главная", link: "" },
+      { key: "Главная", title: "Главная", link: "Главная" },
       { key: "Каталог", title: "Каталог", link: "Каталог" },
       { key: "Акции", title: "Акции", link: "Акции" },
       { key: "Доставка и оплата", title: "Доставка и оплата", link: "Доставка и оплата" },

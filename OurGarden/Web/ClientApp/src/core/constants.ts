@@ -1,3 +1,7 @@
+//#region Style
+export const mainColor = '#76B727';
+//#endregion
+
 //#region SVG Icons
 export type TIcons =
   "loading"
