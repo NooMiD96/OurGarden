@@ -32,14 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\admin\" />
-    <Folder Include="wwwroot\client\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
