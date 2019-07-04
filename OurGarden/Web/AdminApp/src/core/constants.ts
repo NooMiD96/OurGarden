@@ -1,22 +1,3 @@
-//#region Route
-export const routesObject = {
-  "/admin/login": 0,
-};
-
-export const routesArray = Object.keys(routesObject);
-//#endregion
-
-export const allowToAllUserLocation = {
-  "/admin/login": true,
-};
-
-export enum UserTypeEnums {
-  Guest,
-  User,
-  Employee,
-  Admin,
-}
-
 //#region SVG Icons
 export type TIcons =
   "loading"

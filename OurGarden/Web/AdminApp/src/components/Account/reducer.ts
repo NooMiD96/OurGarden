@@ -2,13 +2,11 @@
 // REDUCER
 import { Reducer } from "redux";
 
-import { UserTypeEnums } from "@core/constants";
 import { IAccountState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<IAccountState> = (state: IAccountState = unloadedState, action: KnownAction) => {
   switch (action.type) {
-    case t.REGISTRATION_REQUEST:
     case t.AUTHENTICATION_REQUEST:
     case t.LOGOUT_REQUEST:
       return {
@@ -16,11 +14,11 @@ export const reducer: Reducer<IAccountState> = (state: IAccountState = unloadedS
         pending: true,
       } as IAccountState;
 
-    case t.REGISTRATION_SUCCESS:
     case t.AUTHENTICATION_SUCCESS:
       return {
         ...state,
         pending: false,
+        isUserAuth: true,
       } as IAccountState;
 
     case t.LOGOUT_SUCCESS:
@@ -28,7 +26,6 @@ export const reducer: Reducer<IAccountState> = (state: IAccountState = unloadedS
         ...unloadedState,
       } as IAccountState;
 
-    case t.REGISTRATION_ERROR:
     case t.AUTHENTICATION_ERROR:
     case t.LOGOUT_ERROR:
       return {
@@ -41,13 +38,6 @@ export const reducer: Reducer<IAccountState> = (state: IAccountState = unloadedS
       return {
         ...state,
         errorMessage: "",
-      } as IAccountState;
-
-    case t.SET_USER:
-      return {
-        ...state,
-        userName: action.user.userName,
-        userType: UserTypeEnums[action.user.userType] as any,
       } as IAccountState;
 
     case t.SET_XPT:

@@ -1,17 +1,6 @@
 import { IAccountState } from "./State";
 import { ActionCreators } from "./actions";
 // -----------------------------
-// STATE OF COMPONENT
-export enum ModalTypeEnums {
-  Nothing,
-  Authentication,
-  Registration,
-}
-export type TComponentState = {
-  modalType: ModalTypeEnums;
-  pending: boolean;
-};
-// -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IAccountState;
 export type TOwnProps = {};
