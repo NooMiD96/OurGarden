@@ -1,16 +1,16 @@
 import { RouterState } from "connected-react-router";
 
-// import { IAccountState } from "@src/components/Account/State";
-// import { reducer as AccountReducer } from "@src/components/Account/reducer";
+import { IHomeState } from "@src/components/Home/State";
+import { reducer as HomeReducer } from "@src/components/Home/reducer";
 
 export interface IApplicationState {
   router: RouterState;
 
-  // account: IAccountState;
+  home: IHomeState;
 }
 
 export const reducers = {
-  // account: AccountReducer,
+  home: HomeReducer,
 };
 
 export interface IAppThunkAction<TAction> {

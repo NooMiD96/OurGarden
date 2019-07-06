@@ -16,6 +16,8 @@ export default styled.div`
 
           .nav-link {
             padding: 12px 16px;
+            width: 100%;
+            text-align: center;
           }
         }
 

@@ -1,16 +1,29 @@
-// import { fetch, addTask } from "domain-task";
+import { fetch, addTask } from "domain-task";
 
-// import { IAppThunkAction } from "@src/Store";
-// import { IResponse } from "@core/fetchHelper/IResponse";
-// import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
+import { IAppThunkAction } from "@src/Store";
+import { IResponse } from "@core/fetchHelper/IResponse";
+
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-// import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-// import { errorCreater } from "@core/fetchHelper/ErrorCreater";
+import { INew } from "./State";
 
 // ----------------
 //#region ACTIONS
 export const actionsList = {
+  getNewsListRequest: (): t.IGetNewsListRequest => ({
+    type: t.GET_NEWS_LIST_REQUEST,
+  }),
+  getNewsListSuccess: (payload: INew[]): t.IGetNewsListSuccess => ({
+    type: t.GET_NEWS_LIST_SUCCESS,
+    payload
+  }),
+  getNewsListError: (errorMessage: string): t.IGetNewsListError => ({
+    type: t.GET_NEWS_LIST_ERROR,
+    errorMessage,
+  }),
+  
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -18,46 +31,44 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-// const controllerName = "";
+const controllerName = "Home";
 export const actionCreators = {
-  // getVisitationList: (date?: string): IAppThunkAction<t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-  //   const apiUrl = "GetVisitationList";
-  //   const xptToHeader = GetXsrfToHeader(getState);
+  getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+    const apiUrl = "GetNewsList";
 
-  //   dispatch(actionCreators.cleanErrorInner());
+    dispatch(actionCreators.cleanErrorInner());
 
-  //   const fetchTask = fetch(`/api/${controllerName}/${apiUrl}${date ? `?date=${date}` : ""}`, {
-  //     credentials: "same-origin",
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=UTF-8",
-  //       ...xptToHeader,
-  //     },
-  //   })
-  //     .then(responseCatcher)
-  //     .then((value: IResponse<IVisitation[]>) => {
-  //       if (value && value.error) {
-  //         return errorCreater(value.error);
-  //       }
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<INew[]>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
 
-  //       value.data.forEach(x => {
-  //         x.date = moment(x.date);
-  //       });
+        value.data.forEach(x => {
+          x.date = new Date(x.date);
+        });
 
-  //       dispatch(actionsList.getVisitationListRequestSuccess(value.data));
+        dispatch(actionsList.getNewsListSuccess(value.data));
 
-  //       return Promise.resolve();
-  //     }).catch((err: Error) => errorCatcher(
-  //       controllerName,
-  //       apiUrl,
-  //       err,
-  //       actionsList.getVisitationListRequestError,
-  //       dispatch
-  //     ));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getNewsListError,
+        dispatch
+      ));
 
-  //   addTask(fetchTask);
-  //   dispatch(actionsList.getVisitationListRequest());
-  // },
+    addTask(fetchTask);
+    dispatch(actionsList.getNewsListRequest());
+  },
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

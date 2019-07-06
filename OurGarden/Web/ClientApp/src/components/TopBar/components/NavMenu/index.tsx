@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 
@@ -9,7 +9,9 @@ import Tabs from "@core/antd/Tabs";
 
 import NavMenuWrapper from "./style/navmenu.style";
 
-const NavMenu = (_props: RouterState) => {
+const NavMenu = (props: RouterState) => {
+  let defaultActiveKey = "Главная";
+
   const tabList = [
     { key: "Главная", title: "Главная", link: "Главная" },
     { key: "Каталог", title: "Каталог", link: "Каталог" },
@@ -20,9 +22,25 @@ const NavMenu = (_props: RouterState) => {
     { key: "Контакты", title: "Контакты", link: "Контакты" },
   ];
 
+  if (props.location && props.location.pathname) {
+
+    const routeSplit = props.location.pathname.split("/");
+    if (routeSplit.length > 1) {
+      const mainRoute = routeSplit[1].toLowerCase();
+
+      for (let i = 0; i < tabList.length; i++) {
+        const tab = tabList[i];
+        if (tab.link.replace(" ", "-").toLowerCase() === mainRoute) {
+          defaultActiveKey = tab.key;
+          break;
+        }
+      }
+    }
+  }
+
   return (
     <NavMenuWrapper>
-      <Tabs className="navigation" tabPosition="top">
+      <Tabs className="navigation" tabPosition="top" defaultActiveKey={defaultActiveKey}>
         {
           tabList.map((x) => <Tabs.TabPane key={x.key} tab={<GenerateLink {...x} />} />)
         }

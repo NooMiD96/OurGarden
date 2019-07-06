@@ -34,7 +34,11 @@ export const Breadcrumb = ({
 
     locations.push(
       <React.Fragment key={uri}>
-        <GenerateLink title={location} link={uri} />
+        <GenerateLink
+          title={location}
+          link={uri}
+          active={i !== locationSplit.length - 1}
+        />
         { i !== locationSplit.length - 1 && "/"}
       </React.Fragment>
     );
