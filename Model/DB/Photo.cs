@@ -9,7 +9,7 @@ namespace Model.DB
     public class Photo
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(128)]

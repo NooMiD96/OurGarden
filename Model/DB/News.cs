@@ -28,7 +28,7 @@ namespace Model.DB
         public string Description { get; set; }
 
         [ForeignKey("Photo")]
-        public int PhotoId { get; set; }
+        public Guid PhotoId { get; set; }
 
         public virtual Photo Photo { get; set; }
     }
