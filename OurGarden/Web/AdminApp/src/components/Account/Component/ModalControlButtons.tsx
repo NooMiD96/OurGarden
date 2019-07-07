@@ -7,21 +7,12 @@ const { Text } = Typography;
 
 type ModalControlButtonsProps = {
   handleSubmit: () => void;
-  handleCancel: () => void;
   loading: boolean;
-  returnTitle: string;
   submitTitle: string;
 };
 
 const ModalControlButtons = (props: ModalControlButtonsProps) => (
-  <React.Fragment>
-    <Button
-      key="back"
-      loading={props.loading}
-      onClick={props.handleCancel}
-    >
-      {props.returnTitle}
-    </Button>
+  <>
     <Button
       key="submit"
       type="primary"
@@ -30,7 +21,7 @@ const ModalControlButtons = (props: ModalControlButtonsProps) => (
     >
       <Text>{props.submitTitle}</Text>
     </Button>
-  </React.Fragment>
+  </>
 );
 
 export default ModalControlButtons;

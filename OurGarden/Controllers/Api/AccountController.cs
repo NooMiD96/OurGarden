@@ -21,21 +21,18 @@ namespace Web.Controllers.Api
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AccountService _service;
         private readonly IAntiforgery _antiforgery;
-        private readonly ILogger _logger;
 
         const string _pleaseTryAgain = "Повторите попытку позже";
-        const string _incorrectCredentials = "User Name or Password incorrect";
+        const string _incorrectCredentials = "Неверный логин или пароль";
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IAntiforgery antiforgery,
-                                 ILogger<AccountController> logger)
+                                 IAntiforgery antiforgery)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _service = new AccountService();
             _antiforgery = antiforgery;
-            _logger = logger;
         }
 
         //[HttpPost("[action]")]

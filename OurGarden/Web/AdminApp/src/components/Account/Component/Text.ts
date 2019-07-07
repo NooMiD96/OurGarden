@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 export default {
   _rule_require_userName: "Пожалуйста, введите Ваш логин.",
   _rule_require_email: "Пожалуйста, введите Ваш E-mail.",

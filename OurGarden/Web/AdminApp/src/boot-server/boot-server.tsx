@@ -8,53 +8,33 @@ import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
 import { ActionsList } from "@components/Account/actions";
-import { unloadedState } from "@components/Account/State";
-import { TUserModel } from "@components/Account/TModel";
-import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
 import { XPT } from "@src/core/helpers/auth/xsrf";
 
 import configureStore from "./ConfigureStore";
 
+import "@src/assets/scss/main.scss";
+import "@src/assets/css/main.css";
+
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {
     // Prepare Redux store with in-memory history, and dispatch a navigation event
-    const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
+    const basename = params.data.baseUrl;
     const urlAfterBasename = params.url.substring(basename.length);
     const history = createMemoryHistory();
-    // init user model
-    let userModel: TUserModel = {
-      userName: "",
-      userType: unloadedState.userType,
-    };
-    let xpt: XPT | undefined;
-    if (params.data.user) {
-      userModel = JSON.parse(params.data.user);
-    }
-    if (params.data.xpt) {
-      xpt = JSON.parse(params.data.xpt);
-    }
     // check access to the requested url and change history entries
-    if (isUserHavePermissions(
-      userModel.userType,
-      getUrlPathnameToCheck(urlAfterBasename)
-    )) {
-      history.replace(urlAfterBasename);
-    } else {
-      history.replace(urlAfterBasename);
-      // If there's a redirection, just send this information back to the host application
-      // resolve({ redirectUrl: routesArray[0] });
-      // return;
-    }
+    history.replace(urlAfterBasename);
     // create a store and dispatch the user information
     const store = configureStore(history);
-    if (userModel.userName) {
-      if (xpt) {
-        store.dispatch(ActionsList.setUser(userModel));
-        store.dispatch(ActionsList.setXsrf(xpt));
-      } else {
-        store.dispatch(ActionsList.logoutRequest());
-      }
-    }
+
+    // if (userModel.userName) {
+    //   if (xpt) {
+    //     store.dispatch(ActionsList.setUser(userModel));
+    //     store.dispatch(ActionsList.setXsrf(xpt));
+    //   } else {
+    //     store.dispatch(ActionsList.logoutRequest());
+    //   }
+    // }
+
     // init state corresponding to the incoming URL
     const splitedUrl = urlAfterBasename.split("?")[0].split("/").filter(Boolean);
     initReduxForComponent(splitedUrl, store);

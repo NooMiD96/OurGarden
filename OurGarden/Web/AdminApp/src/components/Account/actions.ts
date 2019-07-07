@@ -6,22 +6,12 @@ import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
-import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TModel";
+import { TAuthenticationModel } from "./TModel";
 import * as t from "./actionsType";
 
 // ----------------
 //#region ACTIONS
 export const ActionsList = {
-  registrationRequest: (): t.IRegistrationRequest => ({
-    type: t.REGISTRATION_REQUEST,
-  }),
-  registrationSuccess: (): t.IRegistrationSuccess => ({
-    type: t.REGISTRATION_SUCCESS,
-  }),
-  registrationError: (errorMessage: string): t.IRegistrationError => ({
-    type: t.REGISTRATION_ERROR,
-    errorMessage,
-  }),
   authenticationRequest: (): t.IAuthenticationRequest => ({
     type: t.AUTHENTICATION_REQUEST,
   }),
@@ -42,10 +32,6 @@ export const ActionsList = {
     type: t.LOGOUT_ERROR,
     errorMessage,
   }),
-  setUser: (user: TUserModel): t.ISetUser => ({
-    type: t.SET_USER,
-    user,
-  }),
   removeErrorMessage: (): t.IRemoveErrorMessage => ({
     type: t.REMOVE_ERROR_MESSAGE,
   }),
@@ -59,48 +45,7 @@ export const ActionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Account";
 export const ActionCreators = {
-  registration: (data: TRegistrationModel): IAppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
-    const apiUrl = "Registration";
-
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
-      body: JSON.stringify(data),
-    })
-      .then(responseCatcher)
-      .then(async (value: IResponse<TUserModel>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
-        let xpt: false | XPT | undefined;
-
-        try {
-          xpt = await GetXsrf(data);
-        } catch (err) {
-          return errorCreater(err.message);
-        }
-
-        if (xpt) {
-          dispatch(ActionsList.registrationSuccess());
-          dispatch(ActionsList.setUser(value.data));
-          dispatch(ActionsList.setXsrf(xpt));
-        } else {
-          return errorCreater(uncatchError);
-        }
-
-        return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        ActionsList.registrationError,
-        dispatch
-      ));
-
-    addTask(fetchTask);
-    dispatch(ActionsList.registrationRequest());
-  },
-  authentication: (data: TAuthenticationModel): IAppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
+  authentication: (data: TAuthenticationModel): IAppThunkAction<t.TAuthentication | t.ISetXPTAction> => (dispatch, _getState) => {
     const apiUrl = "Authentication";
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -109,7 +54,7 @@ export const ActionCreators = {
       body: JSON.stringify(data),
     })
       .then(responseCatcher)
-      .then(async (value: IResponse<TUserModel>) => {
+      .then(async (value: IResponse<void>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
@@ -123,7 +68,6 @@ export const ActionCreators = {
 
         if (xpt) {
           dispatch(ActionsList.authenticationSuccess());
-          dispatch(ActionsList.setUser(value.data));
           dispatch(ActionsList.setXsrf(xpt));
         } else {
           return errorCreater(uncatchError);

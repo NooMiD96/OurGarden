@@ -19,7 +19,6 @@ export default createServerRenderer(params =>
     const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
     const urlAfterBasename = params.url.substring(basename.length);
     const history = createMemoryHistory();
-    // init user model
     // check access to the requested url and change history entries
     history.replace(urlAfterBasename);
     // create a store and dispatch the user information

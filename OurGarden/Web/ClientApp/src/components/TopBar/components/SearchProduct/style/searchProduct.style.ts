@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { mainColor } from "@src/core/constants";
+
 export default styled.div`
   flex: 1 1 auto;
 
@@ -21,9 +23,11 @@ export default styled.div`
         width: 100%;
 
         path {
-          fill: #76B727;
+          fill: ${mainColor};
         }
       }
+
     }
   }
+
 `;
