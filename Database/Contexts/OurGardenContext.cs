@@ -41,6 +41,11 @@ namespace Database.Contexts
 
             modelBuilder.Entity<Product>().HasKey(x => new { x.Title, x.SubcategoryId }).HasName("TitleToSubcategory_Product");
 
+            modelBuilder.Entity<Subcategory>()
+                .HasOne(x => x.Photo)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<Comment>()
             //    .HasOne(x => x.User)
             //    .WithMany()

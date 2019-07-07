@@ -9,7 +9,7 @@ namespace Model.DB
     public class Photo
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -23,12 +23,12 @@ namespace Model.DB
         public string Url { get; set; }
 
         [Required]
-        [ForeignKey("TitleToSubcategory_Product")]
-        public int ProductId { get; set; }
-
-        [Required]
         [ForeignKey("Galery")]
         public int GaleryId { get; set; }
+
+        [Required]
+        [ForeignKey("TitleToSubcategory_Product")]
+        public int ProductId { get; set; }
 
         public virtual Product Product { get; set; }
         public virtual Galery Galery { get; set; }

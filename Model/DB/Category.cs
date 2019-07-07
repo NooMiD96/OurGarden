@@ -18,6 +18,10 @@ namespace Model.DB
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        [Required]
+        public Guid PhotoId { get; set; }
+
         public virtual IEnumerable<Subcategory> Subcategories { get; set; }
+        public virtual Photo Photo { get; set; }
     }
 }

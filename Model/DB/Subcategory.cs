@@ -23,7 +23,12 @@ namespace Model.DB
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
+        [Required]
+        [ForeignKey("Photo")]
+        public Guid PhotoId { get; set; }
+
         public virtual Category Category { get; set; }
+        public virtual Photo Photo { get; set; }
         public virtual IEnumerable<Product> Products { get; set; }
     }
 }

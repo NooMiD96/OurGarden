@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20190707183552_RemovePhoto")]
+    partial class RemovePhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,11 +121,7 @@ namespace Web.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<Guid>("PhotoId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId");
 
                     b.ToTable("Category");
                 });
@@ -167,16 +165,11 @@ namespace Web.Migrations
                         .IsRequired()
                         .HasMaxLength(512);
 
-                    b.Property<Guid>("PhotoId");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId")
-                        .IsUnique();
 
                     b.ToTable("News");
                 });
@@ -230,38 +223,6 @@ namespace Web.Migrations
                     b.HasIndex("ProductTitle", "ProductSubcategoryId");
 
                     b.ToTable("OrderPosition");
-                });
-
-            modelBuilder.Entity("Model.DB.Photo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("GaleryId");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
-
-                    b.Property<int>("ProductId");
-
-                    b.Property<int?>("ProductSubcategoryId");
-
-                    b.Property<string>("ProductTitle");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GaleryId");
-
-                    b.HasIndex("ProductTitle", "ProductSubcategoryId");
-
-                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("Model.DB.Product", b =>
@@ -322,13 +283,9 @@ namespace Web.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<Guid>("PhotoId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("PhotoId");
 
                     b.ToTable("Subcategory");
                 });
@@ -480,22 +437,6 @@ namespace Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Model.DB.Category", b =>
-                {
-                    b.HasOne("Model.DB.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Model.DB.News", b =>
-                {
-                    b.HasOne("Model.DB.Photo", "Photo")
-                        .WithOne("News")
-                        .HasForeignKey("Model.DB.News", "PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Model.DB.Order", b =>
                 {
                     b.HasOne("Model.DB.Status", "Status")
@@ -506,18 +447,6 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.OrderPosition", b =>
                 {
-                    b.HasOne("Model.DB.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductTitle", "ProductSubcategoryId");
-                });
-
-            modelBuilder.Entity("Model.DB.Photo", b =>
-                {
-                    b.HasOne("Model.DB.Galery", "Galery")
-                        .WithMany("Photos")
-                        .HasForeignKey("GaleryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Model.DB.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductTitle", "ProductSubcategoryId");
@@ -537,11 +466,6 @@ namespace Web.Migrations
                         .WithMany("Subcategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Model.DB.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
