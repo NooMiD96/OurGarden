@@ -12,7 +12,7 @@ namespace Model.DB
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey("Product")]
+        [ForeignKey("TitleToSubcategory_Product")]
         public int ProductId { get; set; }
 
         [Required]

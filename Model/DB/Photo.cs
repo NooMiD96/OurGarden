@@ -23,7 +23,7 @@ namespace Model.DB
         public string Url { get; set; }
 
         [Required]
-        [ForeignKey("Product")]
+        [ForeignKey("TitleToSubcategory_Product")]
         public int ProductId { get; set; }
 
         [Required]

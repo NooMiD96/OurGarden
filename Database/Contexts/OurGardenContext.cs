@@ -39,6 +39,8 @@ namespace Database.Contexts
 
             modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
 
+            modelBuilder.Entity<Product>().HasKey(x => new { x.Title, x.SubcategoryId }).HasName("TitleToSubcategory_Product");
+
             //modelBuilder.Entity<Comment>()
             //    .HasOne(x => x.User)
             //    .WithMany()

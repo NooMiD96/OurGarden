@@ -8,8 +8,6 @@ namespace Model.DB
 {
     public class Product
     {
-        [Required]
-        public int Id { get; set; }
 
         [Required]
         [MaxLength(128)]
