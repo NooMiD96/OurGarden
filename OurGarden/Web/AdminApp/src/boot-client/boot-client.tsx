@@ -9,15 +9,10 @@ import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
 import ConfigureStore from "./ConfigureStore";
 
+import "@src/assets/css/main.css";
+import "@src/assets/scss/main.scss";
+
 let routes = App.AppRoutes;
-
-// import "@src/css/site.css";
-
-// TODO: Register only in prod
-//#region ServiceWorker
-// import RegisterServiceWorker from "../registerServiceWorker";
-// RegisterServiceWorker();
-//#endregion
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;

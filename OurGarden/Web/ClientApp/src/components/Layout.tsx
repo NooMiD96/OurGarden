@@ -1,6 +1,10 @@
 import * as React from 'react';
 
 import AntdLayout from '@core/antd/Layout';
+import ConfigProvider from "@core/antd/ConfigProvider";
+import RenderEmptyProvider from '@core/components/RenderEmptyProvider';
+// import Row from '@core/antd/Row';
+// import Col from '@core/antd/Col';
 import { Row, Col } from '@src/core/antd';
 
 import ErrorHandler from '@core/HOC/ErrorHandler';
@@ -40,7 +44,9 @@ export const Layout = ({
               <TopBar />
             </Header>
             <Content className="main-content-wrapper">
-              {children}
+              <ConfigProvider renderEmpty={RenderEmptyProvider}>
+                {children}
+              </ConfigProvider>
             </Content>
             <Footer className="footer">
               © 2019

@@ -2,48 +2,59 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 
-import { Title } from "@core/antd/Typography";
 import Menu from "@core/antd/Menu";
-import Icon from "@core/antd/Icon";
+import Sider from '@core/antd/LayoutSider';
 
 import { IApplicationState } from "@src/Store";
+import GenerateLink from "@src/core/components/GenerateLink";
+import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
-interface IComponentState {
-  selectedKeys: string[];
-}
+export const NavMenu = (props: RouterState) => {
+  const navList = [
+    { key: "Новости и акции", title: "Новости и акции", link: "Новости и акции" },
+    { key: "Заказы", title: "Заказы", link: "Заказы" },
+    { key: "Категории", title: "Категории", link: "Категории" },
+    { key: "Подкатегории", title: "Подкатегории", link: "Подкатегории" },
+    { key: "Товары", title: "Товары", link: "Товары" },
+    { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
+    { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" },
+  ]
 
-export class NavMenu extends React.Component<RouterState, IComponentState> {
-  state: IComponentState = {
-    selectedKeys: [],
-  };
+  const defaultActiveKey = getActiveRoute(navList, props.location);
 
-  render() {
-    const NavLinks = [];
-
-    return (
-      <div className="header-container">
-        <div className="header-menu-container">
-          <Menu
-            theme="dark"
-            mode="inline"
-          >
-            <Menu.SubMenu
-              title={(
-                <React.Fragment>
-                  <Icon type="caret-dow" className="header-submenu-more-icon" />
-                  <Title className="main-title" level={2}>
-                    OurGarden
-                  </Title>
-                </React.Fragment>
-              )}
-            >
-              {NavLinks}
-            </Menu.SubMenu>
-          </Menu>
-        </div>
+  return (
+    <Sider>
+      <div
+        className="logo"
+        style={{
+          height: "32px",
+          background: "rgba(255, 255, 255, 0.2)",
+          margin: "16px",
+          textAlign: "center",
+          paddingTop: "2px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "18px",
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
+          Наш сад
+        </span>
       </div>
-    );
-  }
+      <Menu theme="dark" mode="inline" defaultSelectedKeys={[defaultActiveKey]}>
+        {
+          navList.map(x => (
+            <Menu.Item key={x.key}>
+              <GenerateLink {...x} />
+            </Menu.Item>
+          ))
+        }
+      </Menu>
+    </Sider>
+  );
 }
 
 export default connect(

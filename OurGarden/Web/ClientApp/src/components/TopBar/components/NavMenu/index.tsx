@@ -8,10 +8,9 @@ import { IApplicationState } from "@src/Store";
 import Tabs from "@core/antd/Tabs";
 
 import NavMenuWrapper from "./style/navmenu.style";
+import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
 const NavMenu = (props: RouterState) => {
-  let defaultActiveKey = "Главная";
-
   const tabList = [
     { key: "Главная", title: "Главная", link: "Главная" },
     { key: "Каталог", title: "Каталог", link: "Каталог" },
@@ -21,22 +20,8 @@ const NavMenu = (props: RouterState) => {
     { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" },
     { key: "Контакты", title: "Контакты", link: "Контакты" },
   ];
-
-  if (props.location && props.location.pathname) {
-
-    const routeSplit = props.location.pathname.split("/");
-    if (routeSplit.length > 1) {
-      const mainRoute = routeSplit[1].toLowerCase();
-
-      for (let i = 0; i < tabList.length; i++) {
-        const tab = tabList[i];
-        if (tab.link.replace(" ", "-").toLowerCase() === mainRoute) {
-          defaultActiveKey = tab.key;
-          break;
-        }
-      }
-    }
-  }
+  
+  const defaultActiveKey = getActiveRoute(tabList, props.location);
 
   return (
     <NavMenuWrapper>

@@ -1,19 +1,14 @@
 import * as React from 'react';
 
-import AntdLayout from '@core/antd/Layout';
-// import { Text, Paragraph } from "@core/antd/Typography";
-// import { ConfigProvider, Empty } from "antd";
-
 import AccountControlComponent from '@core/HOC/AccountControlComponent';
 import ErrorHandler from '@core/HOC/ErrorHandler';
-import NavMenu from './NavMenu';
 
-const { Header, Content, Footer } = AntdLayout;
-// const customizeRenderEmpty = () => (
-//   <Empty
-//     description={<Text>Данных нет</Text>}
-//   />
-// );
+import AntdLayout from '@core/antd/Layout';
+import ConfigProvider from "@core/antd/ConfigProvider";
+import RenderEmptyProvider from '@src/core/components/RenderEmptyProvider';
+import NavMenu from '@components/NavMenu';
+
+const { Content } = AntdLayout;
 
 export const Layout = ({
   children
@@ -23,17 +18,17 @@ export const Layout = ({
   <ErrorHandler>
     <AccountControlComponent>
       <AntdLayout>
-        <Header className="antd-header">
-          <NavMenu />
-        </Header>
-        <Content className="main-content-wrapper">
-          {/* <ConfigProvider renderEmpty={customizeRenderEmpty}> */}
-          {children}
-          {/* </ConfigProvider> */}
-        </Content>
-        <Footer className="footer">
-          © 2019
-        </Footer>
+
+        <NavMenu />
+
+        <AntdLayout style={{ marginLeft: "200px" }}>
+          <Content className="main-content-wrapper">
+            <ConfigProvider renderEmpty={RenderEmptyProvider}>
+              {children}
+            </ConfigProvider>
+          </Content>
+        </AntdLayout>
+
       </AntdLayout>
       <div id="global-modals-container" />
     </AccountControlComponent>

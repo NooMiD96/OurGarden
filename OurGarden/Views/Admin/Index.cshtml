@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Наш сад - Админ</title>
-    <base href="~/" />
+    <base href="~/admin" />
 
     <link rel="icon" href="~/admin/favicon.ico">
 
@@ -17,10 +17,11 @@
 <body>
     <div id="react-app"
          asp-prerender-module="wwwroot/admin/server/main-server.js"
-         asp-prerender-data="new {
+         asp-prerender-data='new {
             user = @ViewData["user"],
             xpt = @ViewData["xpt"],
-        }">Loading...</div>
+            baseUrl = "/admin",
+        }'>Loading...</div>
 
     <script src="admin/client/main-client.js" asp-append-version="true"></script>
 

@@ -15,7 +15,7 @@ import configureStore from "./ConfigureStore";
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {
     // Prepare Redux store with in-memory history, and dispatch a navigation event
-    const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
+    const basename = params.data.baseUrl;
     const urlAfterBasename = params.url.substring(basename.length);
     const history = createMemoryHistory();
     // check access to the requested url and change history entries
