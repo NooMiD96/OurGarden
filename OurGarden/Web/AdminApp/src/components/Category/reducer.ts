@@ -2,36 +2,36 @@
 //#region REDUCER
 import { Reducer } from "redux";
 
-import { IHomeState, unloadedState } from "./State";
+import { ICategoryState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<IHomeState> = (state: IHomeState = unloadedState, action: KnownAction) => {
+export const reducer: Reducer<ICategoryState> = (state: ICategoryState = unloadedState, action: KnownAction) => {
   switch (action.type) {
-    case t.GET_NEWS_LIST_REQUEST:
+    case t.GET_CATEGORY_LIST_REQUEST:
       return {
         ...state,
-        pending: true
-      } as IHomeState;
+        pending: true,
+      } as ICategoryState;
 
-    case t.GET_NEWS_LIST_SUCCESS:
+    case t.GET_CATEGORY_LIST_SUCCESS:
       return {
         ...state,
+        listItem: action.payload,
         pending: false,
-        newsList: action.payload
-      } as IHomeState;
+      } as ICategoryState;
 
-    case t.GET_NEWS_LIST_ERROR:
+    case t.GET_CATEGORY_LIST_ERROR:
       return {
         ...state,
+        errorInner: action.errorMessage,
         pending: false,
-        errorInner: action.errorMessage
-      } as IHomeState;
+      } as ICategoryState;
 
     case t.CLEAN_ERROR_INNER:
       return {
         ...state,
         errorInner: "",
-      } as IHomeState;
+      } as ICategoryState;
 
     default:
       // eslint-disable-next-line
