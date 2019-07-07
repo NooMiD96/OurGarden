@@ -21,11 +21,11 @@ const NavMenu = (props: RouterState) => {
     { key: "Контакты", title: "Контакты", link: "Контакты" },
   ];
   
-  const defaultActiveKey = getActiveRoute(tabList, props.location);
+  const activeKey = getActiveRoute(tabList, props.location);
 
   return (
     <NavMenuWrapper>
-      <Tabs className="navigation" tabPosition="top" defaultActiveKey={defaultActiveKey}>
+      <Tabs className="navigation" tabPosition="top" activeKey={activeKey}>
         {
           tabList.map((x) => <Tabs.TabPane key={x.key} tab={<GenerateLink {...x} />} />)
         }

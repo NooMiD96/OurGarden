@@ -12,6 +12,9 @@ import { XPT } from "@src/core/helpers/auth/xsrf";
 
 import configureStore from "./ConfigureStore";
 
+import "@src/assets/scss/main.scss";
+import "@src/assets/css/main.css";
+
 export default createServerRenderer(params =>
   new Promise<RenderResult>(async (resolve, reject) => {
     // Prepare Redux store with in-memory history, and dispatch a navigation event
