@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Model.DB
@@ -21,7 +22,9 @@ namespace Model.DB
         [Required]
         public Guid PhotoId { get; set; }
 
+        [NotMapped]
         public virtual IEnumerable<Subcategory> Subcategories { get; set; }
+        [NotMapped]
         public virtual Photo Photo { get; set; }
     }
 }

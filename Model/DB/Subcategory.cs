@@ -27,8 +27,11 @@ namespace Model.DB
         [ForeignKey("Photo")]
         public Guid PhotoId { get; set; }
 
+        [NotMapped]
         public virtual Category Category { get; set; }
+        [NotMapped]
         public virtual Photo Photo { get; set; }
+        [NotMapped]
         public virtual IEnumerable<Product> Products { get; set; }
     }
 }

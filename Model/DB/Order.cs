@@ -34,6 +34,7 @@ namespace Model.DB
         [ForeignKey("Status")]
         public int StatusId { get; set; }
 
+        [NotMapped]
         public virtual Status Status { get; set; }
     }
 }

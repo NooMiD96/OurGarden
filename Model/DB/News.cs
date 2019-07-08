@@ -30,6 +30,7 @@ namespace Model.DB
         [ForeignKey("Photo")]
         public Guid PhotoId { get; set; }
 
+        [NotMapped]
         public virtual Photo Photo { get; set; }
     }
 }
