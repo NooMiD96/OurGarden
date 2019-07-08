@@ -30,8 +30,11 @@ namespace Model.DB
         [ForeignKey("TitleToSubcategory_Product")]
         public int ProductId { get; set; }
 
+        [NotMapped]
         public virtual Product Product { get; set; }
+        [NotMapped]
         public virtual Galery Galery { get; set; }
+        [NotMapped]
         public virtual News News { get; set; }
     }
 }

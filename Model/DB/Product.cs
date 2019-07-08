@@ -30,6 +30,8 @@ namespace Model.DB
         [ForeignKey("Subcategory")]
         public int SubcategoryId { get; set;}
 
+
+        [NotMapped]
         public virtual Subcategory Subcategory { get; set; }
     }
 }

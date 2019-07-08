@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Model.DB
@@ -22,6 +23,7 @@ namespace Model.DB
         [MaxLength(256)]
         public string Description { get; set; }
 
+        [NotMapped]
         public virtual IEnumerable<Photo> Photos { get; set; }
     }
 }

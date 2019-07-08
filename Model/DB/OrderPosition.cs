@@ -18,6 +18,7 @@ namespace Model.DB
         [Required]
         public int Number { get; set; }
 
+        [NotMapped]
         public virtual Product Product { get; set; }
     }
 }
