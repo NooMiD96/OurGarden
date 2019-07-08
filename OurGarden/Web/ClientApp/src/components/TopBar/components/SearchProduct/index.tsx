@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import Search from "@core/antd/Search";
 import debounce from "lodash.debounce";
 import AutoComplete from "@core/antd/AutoComplete";
-import Loading from "@src/core/icons/Loading";
+import LoadingIcon from "@src/core/icons/Loading";
+import SearchIcon from "@src/core/icons/Search";
 
 import Product from "./Product";
 
@@ -11,24 +12,27 @@ import SearchProductWrapper from "./style/searchProduct.style";
 
 const { Option } = AutoComplete;
 
-
 const loadingComponent = () => (
   <Option
     key="loading-auto-select"
     className="loading-auto-select"
     disabled
-    style={{display: 'flex'}}
+    style={{display: "flex"}}
   >
-    <Loading />
+    <LoadingIcon />
   </Option>
 );
 
 const SearchProduct = () => {
+  const autoCompleteEl: React.RefObject<AutoComplete> = useRef(null);
+
   const [pending, setLoading] = useState(false);
   const [producdList, setProductList] = useState([] as any[]);
+  const [searchIsActive, setSearchActive] = useState(false as boolean);
 
-  const onSearch = async (_value: string) => {
+  const onSearch = async (value: string) => {
     try {
+      setSearchActive(!!value);
       setLoading(true);
 
       const data = await fetch("https://randomuser.me/api/?results=5").then(res => res.json());
@@ -51,6 +55,7 @@ const SearchProduct = () => {
   return (
     <SearchProductWrapper>
       <AutoComplete
+        ref={autoCompleteEl}
         enterButton="Найти"
         placeholder="Поиск..."
         dataSource={(
@@ -59,10 +64,18 @@ const SearchProduct = () => {
             : producdList.map(Product)
         )}
         onSearch={debounceOnSearch}
-        getPopupContainer={() => document.getElementById('product-popup-container')!}
+        getPopupContainer={() => document.getElementById("product-popup-container")!}
         optionLabelProp="title"
       >
         <Search
+          prefix={(
+            <SearchIcon
+              isActive={searchIsActive}
+              onClick={() => {
+                autoCompleteEl.current!.select.rcSelect.setInputValue("");
+              }}
+            />
+          )}
           enterButton="Найти"
           onSearch={onSearch}
         />

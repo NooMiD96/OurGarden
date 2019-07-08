@@ -1,7 +1,6 @@
 ﻿<div id="react-app"
-    asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
-     style="height:100%"
-    >Loading...</div>
+     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
+>Loading...</div>
 
 @section scripts {
     @foreach (var scriptSrc in StartUpVendors.JsVendors)
