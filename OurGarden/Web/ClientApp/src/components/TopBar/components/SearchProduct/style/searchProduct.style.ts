@@ -6,6 +6,9 @@ export default styled.div`
   flex: 1 1 auto;
   align-items: flex-end;
   display: flex;
+  height: 28px;
+  display: flex;
+  align-self: flex-end;
 
   .ant-select.ant-select-auto-complete {
     width: 100%;
@@ -16,6 +19,8 @@ export default styled.div`
       .ant-select-selection__placeholder {
         margin-left: 40px;
         color: ${lightGreyColor};
+        font-style: italic;
+        font-weight: 100;
       }
 
       .ant-select-search {
@@ -57,9 +62,15 @@ export default styled.div`
           }
 
           .ant-btn {
+            font-style: italic;
             height: 28px;
+            font-size: 16px;
             background-color: ${lightGreyColor};
             border-color: ${lightGreyColor};
+
+            &:hover {
+              background-color: ${greyColor};
+            }
           }
         }
       }

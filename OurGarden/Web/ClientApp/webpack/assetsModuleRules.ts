@@ -42,7 +42,7 @@ const getAssetsModuleRules = (
   // https://webpack.js.org/loaders/url-loader/
   // https://webpack.js.org/loaders/file-loader/
   {
-    test: /\.(png|jpg|jpeg|gif|eot|ttf|woff)$/,
+    test: /\.(png|jpg|jpeg|gif)$/,
     loader: "url-loader",
     options: {
       limit: 10000,
@@ -53,7 +53,7 @@ const getAssetsModuleRules = (
   },
   {
     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-    loader: "url-loader",
+    loader: "file-loader",
     options: {
       limit: 10000,
       name: `${fileNameTemplate}.[ext]`,

@@ -29,21 +29,26 @@ export default styled.div`
       }
 
       > div {
-        margin-left: 1.5em;
+        margin-left: 2em;
       }
 
       .company-info {
         display: flex;
         align-items: flex-end;
+        font-size: 18px;
 
-        color: ${greyColor}
+        color: ${greyColor};
+
+        + .company-info {
+          margin-left: 1em;
+        }
       }
 
       .anticon {
         color: ${lightGreyColor};
         width: 18px;
         margin-right: 0.25em;
-        vertical-align: -0.35em;
+        padding-bottom: 0.15em;
 
         > svg {
           fill: currentColor;

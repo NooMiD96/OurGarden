@@ -25,7 +25,7 @@ const NavMenu = (props: RouterState) => {
 
   return (
     <NavMenuWrapper>
-      <Tabs className="navigation" tabPosition="top" activeKey={activeKey}>
+      <Tabs className="navigation" activeKey={activeKey}>
         {
           tabList.map((x) => <Tabs.TabPane key={x.key} tab={<GenerateLink {...x} />} />)
         }

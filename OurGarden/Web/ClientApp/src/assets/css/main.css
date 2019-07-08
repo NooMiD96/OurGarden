@@ -1,19 +1,17 @@
-/* .ant-layout,
-.layout-wrapper,
-.layout-wrapper > .ant-row-flex,
-.layout-wrapper > .ant-row-flex > .ant-col,
-.ant-spin-nested-loading {
-  height: 100%;
+@font-face {
+  font-family: 'ProbaPro';
+  src: url(../fonts/ProbaPro-Medium.ttf);
 }
-.ant-spin-nested-loading > div > .ant-spin {
-  max-height: unset;
+
+@font-face {
+  font-family: 'ProbaPro';
+  src: url(../fonts/ProbaPro-ExtraLightItalic.ttf);
+  font-weight: 100;
+  font-style: italic;
 }
-.ant-layout {
-  background: unset;
+
+@font-face {
+  font-family: 'ProbaPro';
+  src: url(../fonts/ProbaPro-Italic.ttf);
+  font-style: italic;
 }
-.ant-layout-header {
-  height: auto;
-  padding: unset;
-  background: unset;
-  line-height: initial;
-} */
