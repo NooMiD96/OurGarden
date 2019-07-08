@@ -1,3 +1,11 @@
+#react-app {
+  height: 100%;
+  background: no-repeat url(../image/mainBackground.png);
+  background-position-x: center;
+  background-position-y: top;
+  background-size: cover;
+}
+
 .layout-wrapper {
   height: 100%;
 
@@ -27,5 +35,10 @@
     padding: unset;
     background: unset;
     line-height: initial;
+
+    background: no-repeat url(../image/logo.png);
+    background-position-x: 2rem;
+    background-position-y: top;
+    background-size: unset;
   }
 }

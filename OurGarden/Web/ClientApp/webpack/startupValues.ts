@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import path from 'path';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import path from "path";
+import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import { Options } from "webpack";
 
@@ -9,7 +9,7 @@ const getStartupValues = (
   env: { [key: string]: string },
   dirname: string
 ) => {
-  const projectFolder = path.join(dirname, '../../../');
+  const projectFolder = path.join(dirname, "../../../");
   let isDevBuild = true;
   let isShowInBrowser = false;
 
@@ -19,14 +19,14 @@ const getStartupValues = (
   }
 
   const fileNameTemplate = isDevBuild
-    ? '[name]'
-    : '[name].[contenthash]';
+    ? "[name]"
+    : "[name].[contenthash]";
 
   let buildModeString: "development" | "production" = "development";
   let optimizationConfiguration: Options.Optimization = {
     minimize: !isDevBuild,
     splitChunks: {
-      automaticNameDelimiter: '.',
+      automaticNameDelimiter: ".",
       maxInitialRequests: Infinity,
       minSize: 0,
       name: true,

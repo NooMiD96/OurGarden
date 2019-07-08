@@ -26,7 +26,6 @@ export class Home extends React.PureComponent<TState, TComponentState> {
             />
           )
         }
-        HELLOW
       </HomeWrapper>
     );
   }

@@ -1,8 +1,9 @@
 import styled from "styled-components";
-
-const svgColor = '#595959';
+import { greyColor, lightGreyColor } from "@src/core/constants";
 
 export default styled.div`
+  margin-bottom: 1.5em;
+
   .header-wrapper {
     justify-content: flex-end;
     margin-top: 10em;
@@ -34,10 +35,12 @@ export default styled.div`
       .company-info {
         display: flex;
         align-items: flex-end;
+
+        color: ${greyColor}
       }
 
       .anticon {
-        color: ${svgColor};
+        color: ${lightGreyColor};
         width: 18px;
         margin-right: 0.25em;
         vertical-align: -0.35em;
@@ -55,7 +58,7 @@ export default styled.div`
         display: flex;
 
         path {
-          stroke: ${svgColor};
+          stroke: ${greyColor};
         }
       }
 

@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import ManifestPlugin from 'webpack-manifest-plugin';
-// import CopyWebpackPlugin from 'copy-webpack-plugin';
-import merge from 'webpack-merge';
-import path from 'path';
-import { Configuration, Plugin } from 'webpack';
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import ManifestPlugin from "webpack-manifest-plugin";
+// import CopyWebpackPlugin from "copy-webpack-plugin";
+import merge from "webpack-merge";
+import path from "path";
+import { Configuration, Plugin } from "webpack";
 
 import AppSettings from "../../../appsettings.json";
 
@@ -22,7 +22,7 @@ const clientPlugins = (
 
   // https://github.com/webpack-contrib/webpack-bundle-analyzer
   new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
+    analyzerMode: "static",
     openAnalyzer: isShowInBrowser,
     analyzerHost: "0.0.0.0",
     analyzerPort: 5500,
@@ -45,7 +45,7 @@ const getClientBundleConfig = (
 ): Configuration => {
   const clientBundleConfig = merge(sharedConfig(), {
     entry: {
-      [AppSettings.SpaClientFileName]: './src/boot-client/boot-client.tsx'
+      [AppSettings.SpaClientFileName]: "./src/boot-client/boot-client.tsx"
     },
     output: {
       filename: `${fileNameTemplate}.js`,
@@ -58,24 +58,24 @@ const getClientBundleConfig = (
         chunks: "all",
         cacheGroups: {
           "react.redux": {
-            chunks: 'all',
+            chunks: "all",
             // The all *react* and *redux* modules without "react-beautiful-dnd"
             // 'cause it is used only in TodoList component
             test: /[\\/]node_modules[\\/][^\\/]*(react(?!-beautiful-dnd)|redux)[^\\/]*[\\/]/,
             priority: 2
           },
           "react.dnd": {
-            chunks: 'all',
+            chunks: "all",
             test: /[\\/]node_modules[\\/][^\\/]*react-beautiful-dnd[^\\/]*[\\/]/,
             priority: 2
           },
           antd: {
-            chunks: 'all',
+            chunks: "all",
             test: /[\\/]node_modules[\\/][^\\/]*(antd|ant-design)[^\\/]*[\\/]/,
             priority: 1,
           },
           rc: {
-            chunks: 'all',
+            chunks: "all",
             // rc-[componentName] - used in the antd etc. components
             test: /[\\/]node_modules[\\/][^\\/]*rc-[^\\/]*[\\/]/,
             priority: 1,
@@ -94,11 +94,11 @@ const getClientBundleConfig = (
     //   // https://github.com/webpack-contrib/copy-webpack-plugin
     //   new CopyWebpackPlugin([{
     //     from: "src/sw.ts",
-    //     to: 'service-worker.js',
+    //     to: "service-worker.js",
     //   }])
     // );
   } else {
-    // clientBundleConfig.entry['service-worker'] = './src/sw.ts';
+    // clientBundleConfig.entry["service-worker"] = "./src/sw.ts";
   }
 
   return clientBundleConfig;

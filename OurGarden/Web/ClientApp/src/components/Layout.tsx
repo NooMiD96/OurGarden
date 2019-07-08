@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react";
 
-import AntdLayout from '@core/antd/Layout';
+import AntdLayout from "@core/antd/Layout";
 import ConfigProvider from "@core/antd/ConfigProvider";
-import RenderEmptyProvider from '@core/components/RenderEmptyProvider';
-import Row from '@core/antd/Row';
-import Col from '@core/antd/Col';
+import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
+import Row from "@core/antd/Row";
+import Col from "@core/antd/Col";
 
-import ErrorHandler from '@core/HOC/ErrorHandler';
-import TopBar from './TopBar';
+import ErrorHandler from "@core/HOC/ErrorHandler";
+import TopBar from "./TopBar";
 import LayoutWrapper from "./Layout.style";
 
-const { Header, Content, Footer } = AntdLayout;
+const { Header, Content } = AntdLayout;
 
 const colStyle = {
   // xs	<576px
@@ -22,9 +22,9 @@ const colStyle = {
   // lg	≥992px
   lg: { offset: 2, span: 20 },
   // xl	≥1200px
-  xl: { offset: 3, span: 18 },
+  xl: { offset: 4, span: 16 },
   // xxl	≥1600px
-  xxl: { offset: 4, span: 16 },
+  xxl: { offset: 5, span: 14 },
 }
 
 export const Layout = ({
@@ -45,9 +45,6 @@ export const Layout = ({
                 {children}
               </ConfigProvider>
             </Content>
-            <Footer className="footer">
-              © 2019
-            </Footer>
           </AntdLayout>
         </Col>
       </Row>

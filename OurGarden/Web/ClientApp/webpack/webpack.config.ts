@@ -1,7 +1,7 @@
-import getStartupValues from './startupValues';
-import getSharedConfig from './shareConfig';
-import getServerBundleConfig from './serverBundleConfig';
-import getClientBundleConfig from './clientBundleConfig';
+import getStartupValues from "./startupValues";
+import getSharedConfig from "./shareConfig";
+import getServerBundleConfig from "./serverBundleConfig";
+import getClientBundleConfig from "./clientBundleConfig";
 
 module.exports = (env: { [key: string]: string }) => {
   const {
@@ -17,7 +17,7 @@ module.exports = (env: { [key: string]: string }) => {
     env,
     optimizationConfiguration,
     buildModeString,
-    isDevBuild ? 'eval-source-map' : '',
+    isDevBuild ? "eval-source-map" : "",
     fileNameTemplate
   );
 

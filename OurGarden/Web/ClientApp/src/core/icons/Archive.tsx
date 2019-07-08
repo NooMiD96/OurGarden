@@ -37,6 +37,7 @@ const Archive = () => {
       ref={archiveEl}
       style={{maxWidth: "32px"}}
       className="archive-icon"
+      style={{maxWidth: "32px"}}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     />

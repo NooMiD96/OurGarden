@@ -7,20 +7,20 @@ import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<IHomeState> = (state: IHomeState = unloadedState, action: KnownAction) => {
   switch (action.type) {
-    case "GET_NEWS_LIST_REQUEST":
+    case t.GET_NEWS_LIST_REQUEST:
       return {
         ...state,
         pending: true
       } as IHomeState;
 
-    case "GET_NEWS_LIST_SUCCESS":
+    case t.GET_NEWS_LIST_SUCCESS:
       return {
         ...state,
         pending: false,
         newsList: action.payload
       } as IHomeState;
 
-    case "GET_NEWS_LIST_ERROR":
+    case t.GET_NEWS_LIST_ERROR:
       return {
         ...state,
         pending: false,

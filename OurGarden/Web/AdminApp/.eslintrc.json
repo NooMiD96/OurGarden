@@ -35,6 +35,8 @@
         "@typescript-eslint/no-object-literal-type-assertion": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 0 }],
-        "no-console": "off"
+        "no-console": "off",
+        "react/prop-types": "off",
+        "import/order": "off"
     }
 }
