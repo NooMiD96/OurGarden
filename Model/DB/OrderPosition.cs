@@ -8,17 +8,12 @@ namespace Model.DB
 {
     public class OrderPosition
     {
-        [Required]
-        public int Id { get; set; }
-
-        [Required]
-        [ForeignKey("TitleToSubcategory_Product")]
-        public int ProductId { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderPositionId { get; set; }
 
         [Required]
         public int Number { get; set; }
 
-        [NotMapped]
-        public virtual Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

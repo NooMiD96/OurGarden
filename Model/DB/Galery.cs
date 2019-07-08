@@ -8,8 +8,8 @@ namespace Model.DB
 {
     public class Galery
     {
-        [Required]
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GaleryId { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -23,7 +23,6 @@ namespace Model.DB
         [MaxLength(256)]
         public string Description { get; set; }
 
-        [NotMapped]
-        public virtual IEnumerable<Photo> Photos { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }

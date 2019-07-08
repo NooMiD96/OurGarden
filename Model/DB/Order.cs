@@ -8,8 +8,8 @@ namespace Model.DB
 {
     public class Order
     {
-        [Required]
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderId { get; set; }
 
         [Required]
         [Phone]
@@ -21,7 +21,7 @@ namespace Model.DB
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(256)]
+        [MaxLength(128)]
         public string FIO { get; set; }
 
         [Required]
@@ -30,11 +30,7 @@ namespace Model.DB
         [Required]
         public double TotalPrice { get; set; }
 
-        [Required]
-        [ForeignKey("Status")]
-        public int StatusId { get; set; }
-
-        [NotMapped]
-        public virtual Status Status { get; set; }
+        public ICollection<OrderPosition> OrderPositions { get; set; }
+        public Status Status { get; set; }
     }
 }

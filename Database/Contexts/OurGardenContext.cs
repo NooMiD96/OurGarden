@@ -39,12 +39,20 @@ namespace Database.Contexts
 
             modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
 
-            modelBuilder.Entity<Product>().HasKey(x => new { x.Title, x.SubcategoryId }).HasName("TitleToSubcategory_Product");
+            modelBuilder.Entity<Subcategory>().HasKey(x => new {
+                x.SubcategoryId,
+                x.CategoryId
+            });
+            modelBuilder.Entity<Product>().HasKey(x => new {
+                x.ProductId,
+                x.SubcategoryId,
+                x.CategoryId
+            });
 
-            modelBuilder.Entity<Subcategory>()
-                .HasOne(x => x.Photo)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Subcategory>()
+            //    .HasOne(x => x.Photo)
+            //    .WithMany()
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.Entity<Comment>()
             //    .HasOne(x => x.User)

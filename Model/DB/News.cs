@@ -8,8 +8,8 @@ namespace Model.DB
 {
     public class News
     {
-        [Required]
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int NewsId { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -19,18 +19,12 @@ namespace Model.DB
         public DateTime Date { get; set; }
 
         [Required]
-
         [MaxLength(128)]
         public string Alias { get; set; }
 
         [Required]
-        [MaxLength(512)]
         public string Description { get; set; }
 
-        [ForeignKey("Photo")]
-        public Guid PhotoId { get; set; }
-
-        [NotMapped]
-        public virtual Photo Photo { get; set; }
+        public Photo Photo { get; set; }
     }
 }

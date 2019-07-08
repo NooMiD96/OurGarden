@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Model.DB
 {
     public class Category
     {
-        [Required]
-        public int Id { get; set; }
-
-        [Required]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(64)]
-        public string Name { get; set; }
+        public string CategoryId { get; set; }
 
         [Required]
         [MaxLength(64)]
         public string Alias { get; set; }
 
-        [Required]
-        public Guid PhotoId { get; set; }
-
-        [NotMapped]
-        public virtual IEnumerable<Subcategory> Subcategories { get; set; }
-        [NotMapped]
-        public virtual Photo Photo { get; set; }
+        //Childrens
+        public ICollection<Subcategory> Subcategories { get; set; }
+        public Photo Photo { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace Model.DB
 {
     public class Photo
     {
-        [Required]
-        public Guid Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid PhotoId { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -21,20 +21,5 @@ namespace Model.DB
         [Required]
         [MaxLength(256)]
         public string Url { get; set; }
-
-        [Required]
-        [ForeignKey("Galery")]
-        public int GaleryId { get; set; }
-
-        [Required]
-        [ForeignKey("TitleToSubcategory_Product")]
-        public int ProductId { get; set; }
-
-        [NotMapped]
-        public virtual Product Product { get; set; }
-        [NotMapped]
-        public virtual Galery Galery { get; set; }
-        [NotMapped]
-        public virtual News News { get; set; }
     }
 }

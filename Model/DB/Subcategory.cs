@@ -9,29 +9,22 @@ namespace Model.DB
     public class Subcategory
     {
         [Required]
-        public int Id { get; set; }
+        [MaxLength(64)]
+        public string SubcategoryId { get; set; }
 
         [Required]
         [MaxLength(64)]
-        public string Name { get; set; }
+        public string CategoryId { get; set; }
 
         [Required]
         [MaxLength(64)]
         public string Alias { get; set; }
 
-        [Required]
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; }
+        //Parent
+        public Category Category { get; set; }
 
-        [Required]
-        [ForeignKey("Photo")]
-        public Guid PhotoId { get; set; }
-
-        [NotMapped]
-        public virtual Category Category { get; set; }
-        [NotMapped]
-        public virtual Photo Photo { get; set; }
-        [NotMapped]
-        public virtual IEnumerable<Product> Products { get; set; }
+        //Childrens
+        public Photo Photo { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

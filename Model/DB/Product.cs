@@ -8,10 +8,15 @@ namespace Model.DB
 {
     public class Product
     {
-
         [Required]
         [MaxLength(128)]
-        public string Title { get; set; }
+        public string ProductId { get; set; }
+        [Required]
+        [MaxLength(64)]
+        public string SubcategoryId { get; set; }
+        [Required]
+        [MaxLength(64)]
+        public string CategoryId { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -20,18 +25,12 @@ namespace Model.DB
         [Required]
         public double Price { get; set; }
 
-        public string VendorCode { get; set; }
-
-        public string Manufacturer { get; set; }
-
         public string Descriprion { get; set; }
 
-        [Required]
-        [ForeignKey("Subcategory")]
-        public int SubcategoryId { get; set;}
+        //Parent
+        public Subcategory Subcategory { get; set; }
+        //Childrens
+        public ICollection<Photo> Products { get; set; }
 
-
-        [NotMapped]
-        public virtual Subcategory Subcategory { get; set; }
     }
 }
