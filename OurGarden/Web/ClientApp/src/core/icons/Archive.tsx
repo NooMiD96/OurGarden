@@ -35,6 +35,7 @@ const Archive = () => {
   return (
     <div
       ref={archiveEl}
+      style={{maxWidth: "32px"}}
       className="archive-icon"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
