@@ -40,7 +40,7 @@ export const Layout = ({
           <Header className="antd-header">
             <TopBar />
           </Header>
-          <AntdLayout className="ant-layout-has-sider">
+          <AntdLayout hasSider>
             <Sider />
             <AntdLayout>
               <Content className="main-content-wrapper">

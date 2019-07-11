@@ -8,8 +8,24 @@ import Loading from "@src/core/components/Loading";
 import HomeWrapper from "./style/Home.style";
 
 export class Home extends React.PureComponent<TState, TComponentState> {
+  caruselRef: Carousel | null = null;
+
   componentDidMount() {
     this.props.getNewsList();
+  }
+
+  prevSlide = () => {
+    this.callSlideChange("prev");
+  }
+
+  nextSlide = () => {
+    this.callSlideChange("next");
+  }
+
+  callSlideChange = (slideChangeFuncName: "next" | "prev") => {
+    if (this.caruselRef) {
+      this.caruselRef[slideChangeFuncName]();
+    }
   }
 
   render() {
@@ -35,25 +51,47 @@ export class Home extends React.PureComponent<TState, TComponentState> {
           )
         }
         {
-          pending && <Loading />
-        }
-        <Carousel
-          autoplay
-          effect="fade"
-        >
-          {
-            newsList.map(x => (
-              <div className="slick-slide-content" key={x.id}>
-                <div
-                  className="slick-slide-content-image"
-                  style={{background: `center / contain no-repeat url(${x.photo})`}}
+          pending
+            ? <Loading />
+            : (
+              <>
+                <Carousel
+                  autoplay
+                  effect="fade"
+                  ref={ref => this.caruselRef = ref}
                 >
-                  {x.description}
-                </div>
-              </div>
-            ))
-          }
-        </Carousel>
+                  {
+                    newsList.map(x => (
+                      <div className="slick-slide-content" key={x.id}>
+                        <div
+                          className="slick-slide-content-image"
+                          style={{background: `center / contain no-repeat url(${x.photo})`}}
+                        />
+                      </div>
+                    ))
+                  }
+                </Carousel>
+                <span
+                  className="carousel-slide-changer carousel-prev-slide"
+                  onClick={this.prevSlide}
+                  onKeyDown={this.prevSlide}
+                  role="button"
+                  tabIndex={-1}
+                >
+                  prev
+                </span>
+                <span
+                  className="carousel-slide-changer carousel-next-slide"
+                  onClick={this.nextSlide}
+                  onKeyDown={this.nextSlide}
+                  role="button"
+                  tabIndex={-1}
+                >
+                  next
+                </span>
+              </>
+            )
+        }
       </HomeWrapper>
     );
   }

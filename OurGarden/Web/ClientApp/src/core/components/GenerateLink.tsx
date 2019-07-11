@@ -9,29 +9,29 @@ const GenerateLink = ({
   title: string;
   link?: string;
   active?: boolean;
-}) => (
-  active
-    ? (
-      <Link
-        to={(
-          "/" +
-          (
-            link === undefined
-              ? title
-              : link
-          ).replace(/\s/g, "-")
-        )}
-        
-        className="nav-link"
-      >
-        {title}
-      </Link>
-    )
-    : (
-      <span>
-        {title}
-      </span>
-    )
-)
+}) => {
+  const displayTitle = title.replace(/-/g, " ");
+  const toLink = (
+    link === undefined
+      ? title
+      : link
+  ).replace(/\s/g, "-")
+
+  return (
+    active
+      ? (
+        <Link
+          to={`/${toLink}`}
+          className="nav-link active"
+        >
+          {displayTitle}
+        </Link>
+      ) : (
+        <span className="nav-link disabled">
+          {displayTitle}
+        </span>
+      )
+  )
+};
 
 export default GenerateLink;

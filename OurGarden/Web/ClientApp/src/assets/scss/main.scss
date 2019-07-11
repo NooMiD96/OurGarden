@@ -26,6 +26,24 @@ html {
       .main-content-wrapper {
         display: flex;
         flex-direction: column;
+        padding-left: 3em;
+
+        .ant-layout-header {
+          background: unset;
+          line-height: inherit;
+          padding: unset;
+          height: auto;
+
+          .breadcrumb {
+            display: flex;
+            align-items: center;
+            height: 60px;
+
+            .slash {
+              padding: 0 5px;
+            }
+          }
+        }
       }
     }
   }

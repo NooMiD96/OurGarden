@@ -12,27 +12,42 @@ export const Breadcrumb = ({
   location
 }: IBreadcrumbParams
 ) => {
-  const locationSplit = location.pathname.split("/");
+  const locationSplit = location.pathname.split("/").filter(Boolean);
+
+  const isRootLocation = (
+    locationSplit.length === 0
+    || (locationSplit.length === 1 && locationSplit[0] === "Главная")
+  );
+
+  if (isRootLocation) {
+    return null;
+  }
+
+  const slash = (<span className="slash">/</span>);
+
   const locations = [
     <React.Fragment key="Главная">
-      <GenerateLink title="Главная" link="Главная" />
-      { locationSplit.length !== 1 && "/"}
+      <GenerateLink
+        title="Главная"
+        link="Главная"
+        active
+      />
+      {slash}
     </React.Fragment>
-  ]
+  ];
 
-  let uri = "";
-  for (let i = 1; i < locationSplit.length; i++) {
-    const location = locationSplit[i];
-    uri+=`${location}/`;
+  for (let i = 0; i < locationSplit.length; i++) {
+    const link = locationSplit.slice(0, i + 1).reduce((a, b) => `${a}/${b}`)
+    const title = locationSplit[i];
 
     locations.push(
-      <React.Fragment key={uri}>
+      <React.Fragment key={`${title}`}>
         <GenerateLink
-          title={location}
-          link={uri}
+          title={title}
+          link={link}
           active={i !== locationSplit.length - 1}
         />
-        { i !== locationSplit.length - 1 && "/"}
+        {i !== locationSplit.length - 1 && slash}
       </React.Fragment>
     );
   }
