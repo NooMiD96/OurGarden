@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import StringReplacePlugin from 'string-replace-webpack-plugin';
-import { CheckerPlugin } from 'awesome-typescript-loader';
-import webpack, { Plugin } from 'webpack';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import StringReplacePlugin from "string-replace-webpack-plugin";
+import { CheckerPlugin } from "awesome-typescript-loader";
+import webpack, { Plugin } from "webpack";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
@@ -20,14 +20,14 @@ const getGeneralPlugins = (): Plugin[] => [
   new StringReplacePlugin(),
 
   // hide warning in the webpack
-  new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
+  new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, "node-noop"),
 
   // https://webpack.js.org/guides/caching/#module-identifiers
   new webpack.HashedModuleIdsPlugin(),
 
   // https://webpack.js.org/plugins/environment-plugin
   new webpack.EnvironmentPlugin({
-    'PUBLIC_URL': AppSettings.SpaPublicPath
+    "PUBLIC_URL": AppSettings.SpaPublicPath
   }),
 ];
 

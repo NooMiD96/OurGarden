@@ -8,7 +8,7 @@ const getJsModuleRules = (): RuleSetRule[] => ([
   {
     test: /\.(ts|tsx)?$/,
     include: /src/,
-    use: 'awesome-typescript-loader?silent=true'
+    use: "awesome-typescript-loader?silent=true",
   },
 ]);
 

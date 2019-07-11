@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import path from "path";
-import UglifyJsPlugin from "uglifyjs-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import { Options } from "webpack";
 
@@ -35,7 +35,7 @@ const getStartupValues = (
   if (!isDevBuild) {
     buildModeString = "production";
     optimizationConfiguration.minimizer = [
-      new UglifyJsPlugin({ parallel: true }),
+      new TerserPlugin({ parallel: true }),
       new OptimizeCSSAssetsPlugin({})
     ];
   }

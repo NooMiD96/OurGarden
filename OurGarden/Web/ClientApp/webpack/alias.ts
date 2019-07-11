@@ -6,6 +6,8 @@ const getAlias = (): { [key: string]: string } => ({
   "@components": path.resolve("./src/components"),
   "@antdSvgs": path.resolve("./node_modules/@ant-design/icons/lib/outline"),
   "styles": path.resolve("./src/assets/scss"),
+  "indexof": "component-indexof/index",
+  "~/component-indexof.js": "component-indexof",
 });
 
 export default getAlias;

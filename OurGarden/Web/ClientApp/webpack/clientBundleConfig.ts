@@ -57,6 +57,13 @@ const getClientBundleConfig = (
       splitChunks: {
         chunks: "all",
         cacheGroups: {
+          "lottie-web": {
+            chunks: "all",
+            // The all *react* and *redux* modules without "react-beautiful-dnd"
+            // 'cause it is used only in TodoList component
+            test: /[\\/]node_modules[\\/][^\\/]*lottie-web[^\\/]*[\\/]/,
+            priority: 2
+          },
           "react.redux": {
             chunks: "all",
             // The all *react* and *redux* modules without "react-beautiful-dnd"
