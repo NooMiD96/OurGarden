@@ -1,3 +1,7 @@
+@import './loadingComponent.scss';
+@import './sider.scss';
+@import './topbar/index.scss';
+
 html {
   --antd-wave-shadow-color: rgb(98, 98, 98);
 }
@@ -10,16 +14,21 @@ html {
   background-size: cover;
 }
 
-.layout-wrapper {
+.layout-wrapper.ant-row-flex {
   height: 100%;
 
-    > .ant-row-flex {
+  > .ant-col {
+    height: 100%;
+
+    > .ant-layout {
       height: 100%;
 
-      > .ant-col {
-        height: 100%;
+      .main-content-wrapper {
+        display: flex;
+        flex-direction: column;
       }
     }
+  }
 
   .ant-spin-nested-loading {
     height: 100%;
@@ -34,7 +43,7 @@ html {
   height: 100%;
   background: unset;
   
-  .ant-layout-header {
+  .antd-header.ant-layout-header {
     font-family: "ProbaPro";
     height: auto;
     padding: unset;
@@ -45,5 +54,10 @@ html {
     background-position-x: 2rem;
     background-position-y: top;
     background-size: unset;
+  }
+
+  .ant-layout-sider {
+    background: #fff;
+    max-height: 600px;
   }
 }

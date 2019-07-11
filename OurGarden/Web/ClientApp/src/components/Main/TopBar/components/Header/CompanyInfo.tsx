@@ -9,7 +9,7 @@ const CompanyInfo = () => (
       <i className="anticon">
         <MapPin />
       </i>
-      <span className="info">ул. 9 мая, 96</span>
+      <span className="info">ул. 9 мая, 36</span>
     </div>
 
     <div className="company-info number">

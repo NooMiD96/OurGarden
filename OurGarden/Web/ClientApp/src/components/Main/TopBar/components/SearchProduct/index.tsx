@@ -1,14 +1,12 @@
 import React, { useState, useRef } from "react";
 
 import Search from "@core/antd/Search";
-import debounce from "lodash.debounce";
 import AutoComplete from "@core/antd/AutoComplete";
 import LoadingIcon from "@src/core/icons/Loading";
 import SearchIcon from "@src/core/icons/Search";
-
 import Product from "./Product";
 
-import SearchProductWrapper from "./style/searchProduct.style";
+import debounce from "lodash.debounce";
 
 const { Option } = AutoComplete;
 
@@ -53,7 +51,7 @@ const SearchProduct = () => {
   const debounceOnSearch = debounce(onSearch, 350);
 
   return (
-    <SearchProductWrapper>
+    <>
       <AutoComplete
         ref={autoCompleteEl}
         enterButton="Найти"
@@ -80,9 +78,8 @@ const SearchProduct = () => {
           onSearch={onSearch}
         />
       </AutoComplete>
-
-      <div id="product-popup-container" />
-    </SearchProductWrapper>
+      <span id="product-popup-container" />
+    </>
   )
 }
 

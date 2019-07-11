@@ -16,7 +16,11 @@ const Loading = () => {
       animationData: loadingJson
     });
 
-    return () => loadingAnimation!.destroy();
+    return () => {
+      if (loadingAnimation) {
+        loadingAnimation.destroy()
+      }
+    };
   }, [])
 
   return (

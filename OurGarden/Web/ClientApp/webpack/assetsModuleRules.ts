@@ -25,7 +25,12 @@ const getAssetsModuleRules = (
     use: [
       MiniCssExtractPlugin.loader,
       "css-loader",
-      "sass-loader"
+      {
+        loader: "sass-loader",
+        options: {
+          data: "@import '@src/assets/scss/_variables.scss';"
+        }
+      }
     ]
   },
   {

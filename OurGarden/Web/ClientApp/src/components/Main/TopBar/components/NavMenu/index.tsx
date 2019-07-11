@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 
 import GenerateLink from "@src/core/components/GenerateLink";
-
-import { IApplicationState } from "@src/Store";
 import Tabs from "@core/antd/Tabs";
 
-import NavMenuWrapper from "./style/navmenu.style";
 import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
+
+import { IApplicationState } from "@src/Store";
 
 const NavMenu = (props: RouterState) => {
   const tabList = [
@@ -24,13 +23,13 @@ const NavMenu = (props: RouterState) => {
   const activeKey = getActiveRoute(tabList, props.location);
 
   return (
-    <NavMenuWrapper>
+    <>
       <Tabs className="navigation" activeKey={activeKey}>
         {
           tabList.map((x) => <Tabs.TabPane key={x.key} tab={<GenerateLink {...x} />} />)
         }
       </Tabs>
-    </NavMenuWrapper>
+    </>
   );
 }
 

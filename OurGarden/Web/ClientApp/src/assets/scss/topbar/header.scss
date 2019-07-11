@@ -1,0 +1,67 @@
+.header-wrapper {
+  justify-content: flex-end;
+  margin: 10em 0 1.5em 0;
+
+  .ant-col {
+    display: flex;
+    justify-content: flex-end;
+    flex: 0 1 60%;
+
+    @media (max-width: 580px) {
+      flex-wrap: wrap;
+      flex: 0 1 100%;
+    }
+    @media (min-width: 580px) {
+      > div:first-child {
+        margin-left: 0;
+      }
+
+      flex: 0 1 100%;
+    }
+    @media (min-width: 1200px) {
+      flex: 0 1 70%;
+    }
+
+    > div {
+      margin-left: 2em;
+    }
+
+    .company-info {
+      display: flex;
+      align-items: flex-end;
+      font-size: 18px;
+      flex: 1 0 auto;
+
+      color: $greyColor;
+
+      + .company-info {
+        margin-left: 1em;
+      }
+    }
+
+    .anticon {
+      color: $lightGreyColor;
+      width: 18px;
+      margin-right: 0.25em;
+      padding-bottom: 0.15em;
+
+      > svg {
+        fill: currentColor;
+
+        > circle {
+          color: white;
+        }
+      }
+    }
+
+    .archive-icon {
+      display: flex;
+      flex: 1 0 auto;
+
+      path {
+        stroke: $greyColor;
+      }
+    }
+
+  }
+}

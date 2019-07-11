@@ -1,7 +1,7 @@
-﻿import * as React from 'react';
+﻿import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import { Layout } from '@components/Layout';
+import { Layout } from "@components/Layout";
 import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
 export const AppRoutes = (

@@ -29,7 +29,11 @@ const Archive = () => {
       animationData: archiveJson
     });
 
-    return () => archiveAnimation!.destroy();
+    return () => {
+      if (archiveAnimation) {
+        archiveAnimation.destroy()
+      }
+    };
   }, [])
 
   return (

@@ -1,21 +1,14 @@
 import React from "react";
 
-import { match } from "react-router";
 import { Location } from "history";
 
 import GenerateLink from "./GenerateLink";
 
 interface IBreadcrumbParams {
-  match: match<{
-    categoty: string;
-    subcategory: string;
-    product: string;
-  }>;
   location: Location;
 }
 
 export const Breadcrumb = ({
-  match,
   location
 }: IBreadcrumbParams
 ) => {

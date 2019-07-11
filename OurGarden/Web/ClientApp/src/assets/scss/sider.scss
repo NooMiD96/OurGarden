@@ -1,0 +1,44 @@
+@import 'styles/_variables.scss';
+
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .sider-catalog-header {
+    padding: 0.5em 0em;
+    text-align: center;
+    
+    background-color: $darkGreenColor;
+    
+    .ant-typography {
+      margin: 0 !important;
+      color: white;
+    }
+  }
+
+  .ant-menu.ant-menu-root {
+    flex: 1 1 auto;
+    border: 1px solid $borderColor;
+    border-top: unset;
+
+    color: $darkGreyColor;
+    font-size: 16px;
+
+    .ant-menu-item {
+      &.ant-menu-item-selected {
+        color: #fff;
+        background-color: $darkGreenColor;
+
+      }
+      &::after {
+        border-right-color: $greenColor;
+      }
+
+      &:hover {
+        color: #fff;
+        background-color: $darkGreenColor;
+      }
+    }
+  }
+}

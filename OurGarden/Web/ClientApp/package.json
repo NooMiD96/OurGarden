@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^2.1.0",
-    "antd": "^3.19.3",
+    "antd": "^3.20.1",
     "connected-react-router": "^6.4.0",
     "domain-task": "^3.0.3",
     "history": "^4.9.0",

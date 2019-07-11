@@ -16,7 +16,11 @@ const Search = (props: {isActive: boolean; onClick: () => void}) => {
       animationData: searchJson
     }));
 
-    return () => searchAnimation!.destroy();
+    return () => {
+      if (searchAnimation) {
+        searchAnimation.destroy()
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -30,6 +34,7 @@ const Search = (props: {isActive: boolean; onClick: () => void}) => {
     <div
       ref={searchEl}
       className="search-icon"
+      role="presentation"
       style={{maxWidth: "22px"}}
       onClick={props.onClick}
     />

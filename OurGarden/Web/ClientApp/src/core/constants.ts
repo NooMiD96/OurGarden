@@ -2,13 +2,15 @@
 //rgb(191, 190, 190)
 export const lightGreyColor = "#bfbebe";
 export const greyColor = "#626262";
-export const greyShadowStyle = "box-shadow: 0 0 0 2px rgba(98, 98, 98, 0.2);"
-export const darkGreyColor = "#151515"
+export const greyShadowStyle = "box-shadow: 0 0 0 2px rgba(98, 98, 98, 0.2);";
+export const darkGreyColor = "#151515";
 
 export const darkGreenColor = "#75b726";
 export const greenColor = "#50ae2f";
 export const mainColor = greenColor;
 export const lightGreenColor = "#78ff59";
+
+export const borderColor = "#CECECE";
 //#endregion
 
 //#region SVG Icons

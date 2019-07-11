@@ -1,11 +1,8 @@
-import styled from "styled-components";
+@import 'styles/_variables.scss';
 
-import { mainColor } from "@src/core/constants";
-
-export default styled.div`
+.loading-wrapper {
   display: flex;
-  height: 100%;
-
+  flex: 1 0 auto;
   padding: 1.5em 0;
 
   align-items: center;
@@ -16,7 +13,7 @@ export default styled.div`
     width: 25%;
 
     path {
-      fill: ${mainColor};
+      fill: $mainColor;
     }
   }
-`;
+}

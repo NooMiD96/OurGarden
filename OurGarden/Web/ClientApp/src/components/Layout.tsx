@@ -7,8 +7,9 @@ import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 
 import ErrorHandler from "@core/HOC/ErrorHandler";
-import TopBar from "./TopBar";
-import LayoutWrapper from "./Layout.style";
+import TopBar from "@components/Main/TopBar";
+import Sider from "@components/Main/Sider";
+import Breadcrumb from "@components/Main/Breadcrumb";
 
 const { Header, Content } = AntdLayout;
 
@@ -33,22 +34,26 @@ export const Layout = ({
   children?: React.ReactNode;
 }) => (
   <ErrorHandler>
-    <LayoutWrapper className="layout-wrapper">
-      <Row type="flex">
-        <Col {...colStyle}>
-          <AntdLayout>
-            <Header className="antd-header">
-              <TopBar />
-            </Header>
-            <Content className="main-content-wrapper">
-              <ConfigProvider renderEmpty={RenderEmptyProvider}>
-                {children}
-              </ConfigProvider>
-            </Content>
+    <Row type="flex" className="layout-wrapper">
+      <Col {...colStyle}>
+        <AntdLayout>
+          <Header className="antd-header">
+            <TopBar />
+          </Header>
+          <AntdLayout className="ant-layout-has-sider">
+            <Sider />
+            <AntdLayout>
+              <Content className="main-content-wrapper">
+                <ConfigProvider renderEmpty={RenderEmptyProvider}>
+                  <Breadcrumb />
+                  {children}
+                </ConfigProvider>
+              </Content>
+            </AntdLayout>
           </AntdLayout>
-        </Col>
-      </Row>
-    </LayoutWrapper>
+        </AntdLayout>
+      </Col>
+    </Row>
     <div id="global-modals-container" />
   </ErrorHandler>
 )

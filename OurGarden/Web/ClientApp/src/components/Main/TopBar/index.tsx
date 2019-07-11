@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import Header from "@components/TopBar/components/Header";
-import NavMenu from "@components/TopBar/components/NavMenu";
+import Header from "@components/Main/TopBar/components/Header";
+import NavMenu from "@components/Main/TopBar/components/NavMenu";
 
 const TopBar = () => {
   return (

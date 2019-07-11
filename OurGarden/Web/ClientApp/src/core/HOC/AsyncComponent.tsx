@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Skeleton from "@core/antd/Skeleton";
+import LoadingIcon from "@src/core/components/Loading";
 
 export function AsyncComponent(ComponentLoader: any) {
   interface IState {
@@ -20,19 +20,14 @@ export function AsyncComponent(ComponentLoader: any) {
 
     render() {
       const { Component } = this.state;
-      const isLoading = !Component;
+
       return (
         <>
-          {Component && <Component {...this.props} />}
-          {isLoading && (
-            <>
-              <Skeleton loading={isLoading} active />
-              <Skeleton loading={isLoading} active />
-              <Skeleton loading={isLoading} active />
-              <Skeleton loading={isLoading} active />
-              <Skeleton loading={isLoading} active />
-            </>
-          )}
+          {
+            Component
+              ? <Component {...this.props} />
+              : <LoadingIcon />
+          }
         </>
       );
     }
