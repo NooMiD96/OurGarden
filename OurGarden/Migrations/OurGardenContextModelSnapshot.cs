@@ -123,7 +123,7 @@ namespace Web.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("Model.DB.Galery", b =>
+            modelBuilder.Entity("Model.DB.Gallery", b =>
                 {
                     b.Property<int>("GaleryId")
                         .ValueGeneratedOnAdd()
@@ -229,6 +229,21 @@ namespace Web.Migrations
                     b.ToTable("OrderPosition");
                 });
 
+            modelBuilder.Entity("Model.DB.OrderStatus", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.HasKey("StatusId");
+
+                    b.ToTable("Status");
+                });
+
             modelBuilder.Entity("Model.DB.Photo", b =>
                 {
                     b.Property<Guid>("PhotoId")
@@ -236,7 +251,7 @@ namespace Web.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int?>("GaleryId");
+                    b.Property<int?>("GalleryGaleryId");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -254,7 +269,7 @@ namespace Web.Migrations
 
                     b.HasKey("PhotoId");
 
-                    b.HasIndex("GaleryId");
+                    b.HasIndex("GalleryGaleryId");
 
                     b.HasIndex("ProductId", "ProductSubcategoryId", "ProductCategoryId");
 
@@ -285,21 +300,6 @@ namespace Web.Migrations
                     b.HasIndex("SubcategoryId", "CategoryId");
 
                     b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Model.DB.Status", b =>
-                {
-                    b.Property<int>("StatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128);
-
-                    b.HasKey("StatusId");
-
-                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("Model.DB.Subcategory", b =>
@@ -488,7 +488,7 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Order", b =>
                 {
-                    b.HasOne("Model.DB.Status", "Status")
+                    b.HasOne("Model.DB.OrderStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId");
                 });
@@ -506,12 +506,12 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Photo", b =>
                 {
-                    b.HasOne("Model.DB.Galery")
+                    b.HasOne("Model.DB.Gallery")
                         .WithMany("Photos")
-                        .HasForeignKey("GaleryId");
+                        .HasForeignKey("GalleryGaleryId");
 
                     b.HasOne("Model.DB.Product")
-                        .WithMany("Products")
+                        .WithMany("Photos")
                         .HasForeignKey("ProductId", "ProductSubcategoryId", "ProductCategoryId");
                 });
 

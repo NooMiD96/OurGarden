@@ -30,7 +30,7 @@ namespace Model.DB
         //Parent
         public Subcategory Subcategory { get; set; }
         //Childrens
-        public ICollection<Photo> Products { get; set; }
+        public ICollection<Photo> Photos { get; set; }
 
     }
 }

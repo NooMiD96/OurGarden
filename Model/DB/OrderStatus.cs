@@ -6,23 +6,13 @@ using System.Text;
 
 namespace Model.DB
 {
-    public class Galery
+    public class OrderStatus
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GaleryId { get; set; }
+        public int StatusId { get; set; }
 
         [Required]
         [MaxLength(128)]
         public string Name { get; set; }
-
-        [Required]
-        [MaxLength(128)]
-        public string Alias { get; set; }
-
-        [Required]
-        [MaxLength(256)]
-        public string Description { get; set; }
-
-        public ICollection<Photo> Photos { get; set; }
     }
 }

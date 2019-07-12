@@ -31,6 +31,6 @@ namespace Model.DB
         public double TotalPrice { get; set; }
 
         public ICollection<OrderPosition> OrderPositions { get; set; }
-        public Status Status { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }
