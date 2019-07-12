@@ -1,5 +1,5 @@
 ﻿using Database.Contexts;
-
+using Database.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +59,7 @@ namespace Database
                 //    options.LoginPath = "";
                 //    options.AccessDeniedPath = "";
                 //});
+            services.AddTransient<IOurGardenRepository, OurGardenRepository>();
         }
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
