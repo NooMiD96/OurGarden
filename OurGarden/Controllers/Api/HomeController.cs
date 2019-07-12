@@ -1,11 +1,5 @@
-﻿using Database.Service;
-
-using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Identity;
+﻿using Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-using Model.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,8 +12,11 @@ namespace Web.Controllers.Api
     [ApiController]
     public class HomeController : BaseController
     {
-        public HomeController()
+        private readonly IOurGardenRepository _repository;
+
+        public HomeController([FromServices] IOurGardenRepository repository)
         {
+            _repository = repository;
         }
 
         [HttpGet("[action]")]
@@ -45,5 +42,39 @@ namespace Web.Controllers.Api
 
             return Success(new List<object>() { any1, any2 });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCategories()
+        {
+            var result = _repository.GetCategories();
+
+            return Success(result);
+        }
+
+        [HttpGet("{categoryId}")]
+        public async Task<IActionResult> GetSubategories([FromRoute] string categoryId)
+        {
+            if (categoryId==null)
+            {
+                return BadRequest();
+            }
+
+            var result = _repository.GetSubcategories(categoryId);
+            return Success(result);
+        }     
+
+        [HttpGet("{categoryId}/{subcategoryId}/")]
+        public async Task<IActionResult> GetProduct([FromRoute] string categoryId, [FromRoute] string subcategoryId)
+        {
+            if (categoryId == null || subcategoryId == null) 
+            {
+                return BadRequest();
+            }
+
+            var result = _repository.GetProducts(categoryId, subcategoryId);           
+            return Success(result);
+        }
+
+
     }
 }
