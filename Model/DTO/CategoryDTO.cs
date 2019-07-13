@@ -10,6 +10,7 @@ namespace Model.DTO
     {
         public string CategoryId { get; set; }
 
+        [Required]
         [MaxLength(64)]
         public string Alias { get; set; }
 
