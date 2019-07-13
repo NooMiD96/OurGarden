@@ -54,30 +54,19 @@ namespace Web.Controllers.AdminApi
 
             try
             {
-                using (var ms = new MemoryStream())
+                var fileHelper = new FileHelper(_repository);
+                var file = fileHelper.AddFileToRepository(subcategoryDTO.Photo);
+
+                var subcategory = new Subcategory()
                 {
-                    subcategoryDTO.Photo.CopyTo(ms);
-                    var fileBytes = ms.ToArray();
-                    var file = new Photo()
-                    {
-                        Date = DateTime.Now,
-                        Name = subcategoryDTO.Photo.Name,
-                        PhotoId = Guid.NewGuid(),
-                        BinaryData = fileBytes,
-                    };
-                    _repository.AddFile(file);
+                    Alias = subcategoryDTO.Alias,
+                    SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
+                    CategoryId = subcategoryDTO.NewCategoryId,
+                    Photo = file
+                };
+                _repository.AddSubcategory(subcategory);
 
-                    var subcategory = new Subcategory()
-                    {
-                        Alias = subcategoryDTO.Alias,
-                        SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
-                        CategoryId = subcategoryDTO.NewCategoryId,
-                        Photo = file
-                    };
-                    _repository.AddSubcategory(subcategory);
-
-                    return Ok(subcategory);
-                }
+                return Ok(subcategory);
             }
             catch (Exception ex)
             {
@@ -99,20 +88,9 @@ namespace Web.Controllers.AdminApi
                 var file = oldSubcategory.Photo;
 
                 if (subcategoryDTO.Photo?.Length != 0)
-                {                    
-                    using (var ms = new MemoryStream())
-                    {
-                        subcategoryDTO.Photo.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        file = new Photo()
-                        {
-                            Date = DateTime.Now,
-                            Name = subcategoryDTO.Photo.Name,
-                            PhotoId = Guid.NewGuid(),
-                            BinaryData = fileBytes,
-                        };
-                        _repository.AddFile(file);
-                    }
+                {
+                    var fileHelper = new FileHelper(_repository);
+                    file = fileHelper.AddFileToRepository(subcategoryDTO.Photo);
                 }
 
                 if (subcategoryDTO.Alias != oldSubcategory.Alias || subcategoryDTO.CategoryId != subcategoryDTO.NewCategoryId)

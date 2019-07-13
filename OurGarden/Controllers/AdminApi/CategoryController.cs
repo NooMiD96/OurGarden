@@ -52,29 +52,18 @@ namespace Web.Controllers.AdminApi
 
             try
             {
-                using (var ms = new MemoryStream())
+                var fileHelper = new FileHelper(_repository);
+                var file = fileHelper.AddFileToRepository(categoryDTO.Photo);
+
+                var category = new Category()
                 {
-                    categoryDTO.Photo.CopyTo(ms);
-                    var fileBytes = ms.ToArray();
-                    var file = new Photo()
-                    {
-                        Date = DateTime.Now,
-                        Name = categoryDTO.Photo.Name,
-                        PhotoId = Guid.NewGuid(),
-                        BinaryData = fileBytes,
-                    };
-                    _repository.AddFile(file);
+                    Alias = categoryDTO.Alias,
+                    CategoryId = StringHelper.Transform(categoryDTO.Alias),
+                    Photo = file
+                };
+                _repository.AddCategory(category);
 
-                    var category = new Category()
-                    {
-                        Alias = categoryDTO.Alias,
-                        CategoryId = StringHelper.Transform(categoryDTO.Alias),
-                        Photo = file
-                    };
-                    _repository.AddCategory(category);
-
-                    return Ok(category);
-                }
+                return Ok(category);
             }
             catch (Exception ex)
             {
@@ -96,20 +85,9 @@ namespace Web.Controllers.AdminApi
                 var file = oldCategory.Photo;
 
                 if (categoryDTO.Photo?.Length != 0)
-                {                    
-                    using (var ms = new MemoryStream())
-                    {
-                        categoryDTO.Photo.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        file = new Photo()
-                        {
-                            Date = DateTime.Now,
-                            Name = categoryDTO.Photo.Name,
-                            PhotoId = Guid.NewGuid(),
-                            BinaryData = fileBytes,
-                        };
-                        _repository.AddFile(file);
-                    }
+                {
+                    var fileHelper = new FileHelper(_repository);
+                    file = fileHelper.AddFileToRepository(categoryDTO.Photo);
                 }
 
                 if (categoryDTO.Alias != oldCategory.Alias)
