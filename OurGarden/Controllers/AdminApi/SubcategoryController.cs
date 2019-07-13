@@ -95,7 +95,7 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-                var oldSubcategory = _repository.GetSubcategory( subcategoryDTO.SubategoryId, subcategoryDTO.CategoryId);
+                var oldSubcategory = _repository.GetSubcategory( subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
                 var file = oldSubcategory.Photo;
 
                 if (subcategoryDTO.Photo?.Length != 0)

@@ -8,7 +8,7 @@ namespace Model.DTO
 {
     public class SubcategoryDTO
     {
-        public string SubategoryId { get; set; }
+        public string SubcategoryId { get; set; }
 
         public string CategoryId { get; set; }
 
