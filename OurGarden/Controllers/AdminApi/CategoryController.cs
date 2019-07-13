@@ -123,7 +123,7 @@ namespace Web.Controllers.AdminApi
                     _repository.AddCategory(category);
                     _repository.DeleteCategory(oldCategory.CategoryId);
                 }
-                else
+                else if (categoryDTO.Photo?.Length != 0)
                 {
                     oldCategory.Photo = file;
                     _repository.UpdateCategory(oldCategory);
