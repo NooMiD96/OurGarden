@@ -45,7 +45,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> AddCategory(
             [FromForm]CategoryDTO categoryDTO)
         {
-            if (!ModelState.IsValid || categoryDTO.Photo.Length == 0)
+            if (!ModelState.IsValid || categoryDTO.Photo?.Length == 0)
             {
                 return BadRequest();
             }

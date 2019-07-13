@@ -46,7 +46,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> AddSubcategory(
             [FromForm]SubcategoryDTO subcategoryDTO)
         {
-            if (!ModelState.IsValid || subcategoryDTO.Photo.Length == 0 
+            if (!ModelState.IsValid || subcategoryDTO.Photo?.Length == 0 
                 || string.IsNullOrEmpty(subcategoryDTO.NewCategoryId))
             {
                 return BadRequest();
