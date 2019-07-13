@@ -19,7 +19,6 @@ namespace Model.DB
         public DateTime Date { get; set; }
 
         [Required]
-        [MaxLength(256)]
-        public string Url { get; set; }
+        public Byte[] BinaryData { get; set; }
     }
 }

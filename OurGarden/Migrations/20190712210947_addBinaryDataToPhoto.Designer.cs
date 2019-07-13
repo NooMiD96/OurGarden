@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20190712210947_addBinaryDataToPhoto")]
+    partial class addBinaryDataToPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,6 +267,10 @@ namespace Web.Migrations
                     b.Property<string>("ProductId");
 
                     b.Property<string>("ProductSubcategoryId");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(256);
 
                     b.HasKey("PhotoId");
 
