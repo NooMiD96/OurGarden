@@ -93,13 +93,8 @@ namespace Web.Controllers.AdminApi
                     return BadRequest();
                 }
                 var oldCategory = _repository.GetCategory(categoryDTO.CategoryId);
-
-                if (categoryDTO.Alias == oldCategory.Alias && categoryDTO.Photo?.Length == 0)
-                {
-                    return Ok();
-                }
-
                 var file = oldCategory.Photo;
+
                 if (categoryDTO.Photo?.Length != 0)
                 {                    
                     using (var ms = new MemoryStream())
