@@ -27,6 +27,12 @@ namespace Database.Repositories
         void UpdateProduct(Product product);
         void DeleteProduct(string productId, string subcategoryId, string categoryId);
 
+        IEnumerable<News> GetNews();
+        News GetNews(int newsId);
+        void AddNews(News news);
+        void UpdateNews(News news);
+        void DeleteNews(int newsId);
+
         void AddFile(Photo photo);
 
 

@@ -127,7 +127,39 @@ namespace Database.Repositories
             _context.Product.Remove(product);
             _context.SaveChanges();
         }
-        #endregion        
+        #endregion
+
+        #region News
+        public IEnumerable<News> GetNews() => _context.News.Include(x => x.Photo);
+
+        public News GetNews(int newsId) => _context.News.Include(x => x.Photo).FirstOrDefault(x => x.NewsId == newsId);
+
+        public void AddNews(News news)
+        {
+            var chek = _context.News.FirstOrDefault(x => x.NewsId == news.NewsId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            _context.News.Add(news);
+            _context.SaveChanges();
+        }
+
+        public void UpdateNews(News news)
+        {
+            _context.News.Update(news);
+            _context.SaveChanges();
+        }
+
+        public void DeleteNews(int newsId)
+        {
+            var news = _context.News.FirstOrDefault(x => x.NewsId == newsId);
+            if (news == null)
+                return;
+            _context.News.Remove(news);
+            _context.SaveChanges();
+        }
+        #endregion
 
         public void AddFile(Photo photo)
         {

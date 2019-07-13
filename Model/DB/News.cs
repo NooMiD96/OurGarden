@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,5 +27,8 @@ namespace Model.DB
         public string Description { get; set; }
 
         public Photo Photo { get; set; }
+
+        [NotMapped]
+        public IFormFile File{get;set;}
     }
 }
