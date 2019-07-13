@@ -7,8 +7,17 @@ namespace Database.Repositories
 {
     public interface IOurGardenRepository
     {
-       IEnumerable<Category> GetCategories();
        IEnumerable<Subcategory> GetSubcategories(string categoryId);
-       IEnumerable<Product> GetProducts(string categoryId, string subcategoryId);
+        IEnumerable<Category> GetCategories();
+        Category GetCategory(string categoryId);
+        void AddCategory(Category category);
+        void UpdateCategory(Category category);
+        void DeleteCategory(string categoryId);
+
+
+        IEnumerable<Product> GetProducts(string categoryId, string subcategoryId);
+        void AddFile(Photo photo);
+
+
     }
 }
