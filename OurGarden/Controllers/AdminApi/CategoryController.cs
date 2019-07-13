@@ -22,13 +22,6 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet("trans")]
-        public async Task<IActionResult> GetTransStr([FromQuery]string text)
-        {
-            var res = StringHelper.Transform(text);
-            return Ok(res);
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
