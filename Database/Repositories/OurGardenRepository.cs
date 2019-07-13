@@ -88,7 +88,46 @@ namespace Database.Repositories
         }
         #endregion
 
-        public IEnumerable<Product> GetProducts(string categoryId, string subcategoryId) => _context.Product.Include(x => x.Photos).Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId);
+        #region Product
+
+        public IEnumerable<Product> GetAllProducts() =>
+            _context.Product;
+
+        public IEnumerable<Product> GetProducts(string categoryId, string subcategoryId) =>
+            _context.Product.Include(x => x.Photos).Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId);
+
+        public Product GetProduct(string productId, string subcategoryId, string categoryId) =>
+            _context.Product.Include(x => x.Photos)
+            .FirstOrDefault(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
+
+        public void AddProduct(Product product)
+        {
+            var chek = _context.Product.FirstOrDefault(x => x.ProductId == product.ProductId 
+            && x.SubcategoryId == product.SubcategoryId && x.CategoryId == product.CategoryId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            _context.Product.Add(product);
+            _context.SaveChanges();
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            _context.Product.Update(product);
+            _context.SaveChanges();
+        }
+
+        public void DeleteProduct(string productId, string subcategoryId, string categoryId)
+        {
+            var product = _context.Product
+                .FirstOrDefault(x => x.ProductId == productId && x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+            if (product == null)
+                return;
+            _context.Product.Remove(product);
+            _context.SaveChanges();
+        }
+        #endregion        
 
         public void AddFile(Photo photo)
         {

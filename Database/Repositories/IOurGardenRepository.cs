@@ -20,8 +20,13 @@ namespace Database.Repositories
         void UpdateSubategory(Subcategory subcategory);
         void DeleteSubcategory(string subcategoryId, string categoryId);
 
-
+        IEnumerable<Product> GetAllProducts();
         IEnumerable<Product> GetProducts(string categoryId, string subcategoryId);
+        Product GetProduct(string productId, string subcategoryId, string categoryId);
+        void AddProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(string productId, string subcategoryId, string categoryId);
+
         void AddFile(Photo photo);
 
 
