@@ -26,7 +26,7 @@ namespace Database.Repositories
         public void AddCategory(Category category)
         {
             var chek = _context.Category.FirstOrDefault(x =>  x.CategoryId == category.CategoryId);
-            if (chek == null)
+            if (chek != null)
             {
                 throw new Exception();
             }
