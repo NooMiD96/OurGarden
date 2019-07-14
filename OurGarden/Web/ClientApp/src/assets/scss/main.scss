@@ -60,9 +60,10 @@ html {
 .ant-layout {
   height: 100%;
   background: unset;
+  font-family: "ProbaPro";
   
   .antd-header.ant-layout-header {
-    font-family: "ProbaPro";
+    font-weight: 500;
     height: auto;
     padding: unset;
     background: unset;
@@ -74,8 +75,21 @@ html {
     background-size: unset;
   }
 
-  .ant-layout-sider {
-    background: #fff;
-    max-height: 600px;
+  .antd-layout.ant-layout.ant-layout-has-sider {
+    .ant-layout-sider {
+      background: #fff;
+      max-height: 600px;
+      font-weight: 500;
+      font-size: 16px;
+
+      .sider-catalog-header {
+        font-family: 'BerlingskeSerif';
+        font-weight: bolder;
+      }
+    }
+  }
+
+  .breadcrumb {
+    font-weight: 500;
   }
 }

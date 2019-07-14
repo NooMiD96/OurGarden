@@ -39,6 +39,10 @@ export default createServerRenderer(params =>
         </StaticRouter>
       </Provider>
     );
+
+    // This kick off any async tasks started by React components
+    renderToString(app);
+
     // Once any async tasks are done, we can perform the final render
     // We also send the redux store state, so the client can continue execution where the server left off
     params.domainTasks.then(() => {
@@ -46,6 +50,7 @@ export default createServerRenderer(params =>
         html: renderToString(app),
         globals: {
           initialReduxState: store.getState(),
+          domainTasks:params
         },
       });
     }, reject); // Also propagate any errors back into the host application

@@ -1,11 +1,9 @@
 // -----------------
 //#region STATE
 export interface ICategory {
-  id: number;
-  title: string;
-  date: Date;
-  description: string;
-  photo: string;
+  categoryId: string;
+  alias: string;
+  photo: any;
 }
 
 export interface ISiderState {

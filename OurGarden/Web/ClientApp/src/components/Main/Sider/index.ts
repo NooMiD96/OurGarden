@@ -12,6 +12,7 @@ import { Sider } from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
   ...state.sider,
+  ...state.router,
   ...ownProp,
 }) as TMapStateToProps;
 

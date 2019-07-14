@@ -1,3 +1,4 @@
+import { RouterState } from "connected-react-router";
 import { ISiderState } from "./State";
 import { actionCreators } from "./actions";
 
@@ -6,7 +7,7 @@ import { actionCreators } from "./actions";
 export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = ISiderState;
+export type TStateToProps = ISiderState & RouterState;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
 & TOwnProps;

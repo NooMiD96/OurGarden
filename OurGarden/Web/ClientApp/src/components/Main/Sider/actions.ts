@@ -34,7 +34,7 @@ export const actionsList = {
 const controllerName = "Home";
 export const actionCreators = {
   getCategoryList: (): IAppThunkAction<t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
-    const apiUrl = "GetCategoryList";
+    const apiUrl = "GetCategories";
 
     dispatch(actionCreators.cleanErrorInner());
 
@@ -50,10 +50,6 @@ export const actionCreators = {
         if (value && value.error) {
           return errorCreater(value.error);
         }
-
-        value.data.forEach(x => {
-          x.date = new Date(x.date);
-        });
 
         dispatch(actionsList.getCategoryListSuccess(value.data));
 
