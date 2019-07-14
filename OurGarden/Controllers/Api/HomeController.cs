@@ -1,10 +1,10 @@
 ﻿using Database.Repositories;
+
 using Microsoft.AspNetCore.Mvc;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using static Core.Antiforgery.Xsrf;
 
 namespace Web.Controllers.Api
 {
@@ -43,7 +43,7 @@ namespace Web.Controllers.Api
             return Success(new List<object>() { any1, any2 });
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetCategories()
         {
             var result = _repository.GetCategories();
@@ -51,30 +51,28 @@ namespace Web.Controllers.Api
             return Success(result);
         }
 
-        [HttpGet("{categoryId}")]
-        public async Task<IActionResult> GetSubategories([FromRoute] string categoryId)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetSubategories([FromQuery] string categoryId)
         {
-            if (categoryId==null)
+            if (String.IsNullOrEmpty(categoryId))
             {
                 return BadRequest();
             }
 
             var result = _repository.GetSubcategories(categoryId);
             return Success(result);
-        }     
+        }
 
-        [HttpGet("{categoryId}/{subcategoryId}/")]
-        public async Task<IActionResult> GetProduct([FromRoute] string categoryId, [FromRoute] string subcategoryId)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProduct([FromQuery] string categoryId, [FromQuery] string subcategoryId)
         {
-            if (categoryId == null || subcategoryId == null) 
+            if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {
                 return BadRequest();
             }
 
-            var result = _repository.GetProducts(categoryId, subcategoryId);           
+            var result = _repository.GetProducts(categoryId, subcategoryId);
             return Success(result);
         }
-
-
     }
 }

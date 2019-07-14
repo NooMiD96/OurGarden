@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Helpers;
+﻿using Core.Constants;
+
 using Database.Repositories;
-using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Model.DB;
+
+using System;
+using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
+    //[ValidateAntiForgeryToken]
+    //[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class NewsController : ControllerBase

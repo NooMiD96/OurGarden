@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Core.Constants;
 using Core.Helpers;
+
 using Database.Repositories;
-using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Model.DB;
 using Model.DTO;
 
+using System;
+using System.Threading.Tasks;
+
 namespace Web.Controllers.AdminApi
 {
+    //[ValidateAntiForgeryToken]
+    //[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class SubcategoryController : ControllerBase
