@@ -5,6 +5,7 @@ import Menu from "@core/antd/Menu";
 
 import { ICategory } from "../State";
 import { getActiveCategory } from "@src/core/helpers/route/getActiveRoute";
+import GenerateLink from "@src/core/components/GenerateLink";
 
 const CategoryList = ({
   categoryList,
@@ -23,7 +24,10 @@ const CategoryList = ({
       {
         categoryList.map(x => (
           <Menu.Item key={x.categoryId}>
-            <span>{x.alias}</span>
+            <GenerateLink
+              link={`Каталог/${x.categoryId}`}
+              title={x.alias}
+            />
           </Menu.Item>
         ))
       }

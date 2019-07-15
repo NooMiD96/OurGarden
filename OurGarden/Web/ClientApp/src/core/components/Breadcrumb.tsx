@@ -38,7 +38,7 @@ export const Breadcrumb = ({
 
   for (let i = 0; i < locationSplit.length; i++) {
     const link = locationSplit.slice(0, i + 1).reduce((a, b) => `${a}/${b}`)
-    const title = locationSplit[i];
+    const title = locationSplit[i][0].toUpperCase() + locationSplit[i].slice(1);
 
     locations.push(
       <React.Fragment key={`${title}`}>

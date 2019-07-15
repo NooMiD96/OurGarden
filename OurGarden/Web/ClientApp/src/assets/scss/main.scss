@@ -14,6 +14,14 @@ html {
   background-size: cover;
 }
 
+a {
+  color: $darkGreenColor;
+
+  &:hover {
+    color: $greenColor;
+  }
+}
+
 .layout-wrapper.ant-row-flex {
   height: 100%;
 
@@ -38,6 +46,8 @@ html {
             display: flex;
             align-items: center;
             height: 60px;
+            font-size: 18px;
+            font-weight: 500;
 
             .slash {
               padding: 0 5px;
@@ -73,23 +83,5 @@ html {
     background-position-x: 2rem;
     background-position-y: top;
     background-size: unset;
-  }
-
-  .antd-layout.ant-layout.ant-layout-has-sider {
-    .ant-layout-sider {
-      background: #fff;
-      max-height: 600px;
-      font-weight: 500;
-      font-size: 16px;
-
-      .sider-catalog-header {
-        font-family: 'BerlingskeSerif';
-        font-weight: bolder;
-      }
-    }
-  }
-
-  .breadcrumb {
-    font-weight: 500;
   }
 }

@@ -1,43 +1,67 @@
 @import 'styles/_variables.scss';
 
-.ant-layout-sider-children {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 
-  .sider-catalog-header {
-    padding: 0.5em 0em;
-    text-align: center;
-    
-    background-color: $darkGreenColor;
-    
-    .ant-typography {
-      margin: 0 !important;
-      color: white;
+.antd-layout.ant-layout.ant-layout-has-sider .ant-layout-sider {
+  background: #fff;
+  max-height: 600px;
+  font-weight: 500;
+
+  .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .sider-catalog-header {
+      font-family: 'BerlingskeSerif';
+      font-weight: bolder;
+      padding: 0.5em 0em;
+      text-align: center;
+      
+      background-color: $darkGreenColor;
+      
+      .ant-typography {
+        margin: 0 !important;
+        color: white;
+      }
     }
-  }
 
-  .ant-menu.ant-menu-root {
-    flex: 1 1 auto;
-    border: 1px solid $borderColor;
-    border-top: unset;
+    .ant-menu.ant-menu-root {
+      flex: 1 1 auto;
+      border: 1px solid $borderColor;
+      border-top: unset;
 
-    color: $darkGreyColor;
-    font-size: 16px;
+      color: $darkGreyColor;
 
-    .ant-menu-item {
-      &.ant-menu-item-selected {
-        color: #fff;
-        background-color: $darkGreenColor;
+      .ant-menu-item {
+        font-size: 16px;
+        
+        > a.nav-link {
+          max-height: 600px;
+          font-weight: 500;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
-      }
-      &::after {
-        border-right-color: $greenColor;
-      }
+          &:hover {
+            color: #fff;
+          }
+        }
 
-      &:hover {
-        color: #fff;
-        background-color: $darkGreenColor;
+        &.ant-menu-item-selected {
+          background-color: $darkGreenColor;
+
+          > a.nav-link {
+            color: #fff;
+          }
+        }
+
+        &::after {
+          border-right-color: $greenColor;
+        }
+
+        &:hover {
+          color: #fff;
+          background-color: $darkGreenColor;
+        }
       }
     }
   }
