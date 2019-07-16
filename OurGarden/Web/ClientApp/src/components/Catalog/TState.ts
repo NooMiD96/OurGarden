@@ -1,6 +1,7 @@
 import { RouteComponentProps } from "react-router-dom";
+import { RouterState } from "connected-react-router";
 
-import { IHomeState } from "./State";
+import { ICatalogState } from "./State";
 import { actionCreators } from "./actions";
 
 // -----------------------------
@@ -9,14 +10,14 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IHomeState & RouteComponentProps<{
+export type TStateToProps = ICatalogState & RouterState & RouteComponentProps<{
   categoty: string;
   subcategory: string;
   product: string;
 }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
-& TOwnProps;
+  & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
@@ -24,4 +25,4 @@ export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps
-& TMapDispatchToProps;
+  & TMapDispatchToProps;

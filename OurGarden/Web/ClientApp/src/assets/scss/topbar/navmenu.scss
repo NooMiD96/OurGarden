@@ -23,10 +23,10 @@
 
             text-align: center;
           }
-          
+
           &.ant-tabs-tab-active {
             .nav-link {
-              color: $darkGreenColor
+              color: $darkGreenColor;
             }
           }
 
@@ -36,7 +36,6 @@
             }
           }
         }
-
       }
 
       .ant-tabs-ink-bar {
@@ -44,5 +43,4 @@
       }
     }
   }
-
 }

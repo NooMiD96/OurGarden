@@ -25,14 +25,10 @@ const colStyle = {
   // xl	≥1200px
   xl: { offset: 4, span: 16 },
   // xxl	≥1600px
-  xxl: { offset: 5, span: 14 },
-}
+  xxl: { offset: 5, span: 14 }
+};
 
-export const Layout = ({
-  children
-}: {
-  children?: React.ReactNode;
-}) => (
+export const Layout = ({ children }: { children?: React.ReactNode }) => (
   <ErrorHandler>
     <Row type="flex" className="layout-wrapper">
       <Col {...colStyle}>
@@ -56,4 +52,4 @@ export const Layout = ({
     </Row>
     <div id="global-modals-container" />
   </ErrorHandler>
-)
+);

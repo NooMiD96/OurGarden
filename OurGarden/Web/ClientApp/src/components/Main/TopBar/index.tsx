@@ -9,7 +9,7 @@ const TopBar = () => {
       <Header />
       <NavMenu />
     </>
-  )
-}
+  );
+};
 
 export default TopBar;

@@ -23,7 +23,7 @@ export const actionsList = {
     type: t.GET_CATEGORY_LIST_ERROR,
     errorMessage,
   }),
-  
+
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),

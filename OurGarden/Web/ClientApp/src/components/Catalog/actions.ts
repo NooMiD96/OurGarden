@@ -1,16 +1,42 @@
-// import { fetch, addTask } from "domain-task";
+import { fetch, addTask } from "domain-task";
 
-// import { IAppThunkAction } from "@src/Store";
-// import { IResponse } from "@core/fetchHelper/IResponse";
-// import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
+import { IAppThunkAction } from "@src/Store";
+import { IResponse } from "@core/fetchHelper/IResponse";
 
 import * as t from "./actionsType";
-// import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-// import { errorCreater } from "@core/fetchHelper/ErrorCreater";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
+
+import { ISubcategory } from "./State";
+import { IProduct } from "@components/Product/State";
 
 // ----------------
 //#region ACTIONS
 export const actionsList = {
+  getSubcategoryListRequest: (): t.IGetSubcategoryListRequest => ({
+    type: t.GET_SUBCATEGORY_LIST_REQUEST,
+  }),
+  getSubcategoryListSuccess: (payload: ISubcategory[]): t.IGetSubcategoryListSuccess => ({
+    type: t.GET_SUBCATEGORY_LIST_SUCCESS,
+    payload
+  }),
+  getSubcategoryListError: (errorMessage: string): t.IGetSubcategoryListError => ({
+    type: t.GET_SUBCATEGORY_LIST_ERROR,
+    errorMessage,
+  }),
+
+  getProductListRequest: (): t.IGetProductListRequest => ({
+    type: t.GET_PRODUCT_LIST_REQUEST,
+  }),
+  getProductListSuccess: (payload: IProduct[]): t.IGetProductListSuccess => ({
+    type: t.GET_PRODUCT_LIST_SUCCESS,
+    payload
+  }),
+  getProductListError: (errorMessage: string): t.IGetProductListError => ({
+    type: t.GET_PRODUCT_LIST_ERROR,
+    errorMessage,
+  }),
+
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -18,46 +44,72 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-// const controllerName = "";
+const controllerName = "Home";
 export const actionCreators = {
-  // getVisitationList: (date?: string): IAppThunkAction<t.TGetVisitationList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-  //   const apiUrl = "GetVisitationList";
-  //   const xptToHeader = GetXsrfToHeader(getState);
+  getSubcategoryList: (): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+    const apiUrl = "GetSubcategoryList";
 
-  //   dispatch(actionCreators.cleanErrorInner());
+    dispatch(actionCreators.cleanErrorInner());
 
-  //   const fetchTask = fetch(`/api/${controllerName}/${apiUrl}${date ? `?date=${date}` : ""}`, {
-  //     credentials: "same-origin",
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=UTF-8",
-  //       ...xptToHeader,
-  //     },
-  //   })
-  //     .then(responseCatcher)
-  //     .then((value: IResponse<IVisitation[]>) => {
-  //       if (value && value.error) {
-  //         return errorCreater(value.error);
-  //       }
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<ISubcategory[]>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
 
-  //       value.data.forEach(x => {
-  //         x.date = moment(x.date);
-  //       });
+        dispatch(actionsList.getSubcategoryListSuccess(value.data));
 
-  //       dispatch(actionsList.getVisitationListRequestSuccess(value.data));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getSubcategoryListError,
+        dispatch
+      ));
 
-  //       return Promise.resolve();
-  //     }).catch((err: Error) => errorCatcher(
-  //       controllerName,
-  //       apiUrl,
-  //       err,
-  //       actionsList.getVisitationListRequestError,
-  //       dispatch
-  //     ));
+    addTask(fetchTask);
+    dispatch(actionsList.getSubcategoryListRequest());
+  },
+  getProductList: (): IAppThunkAction<t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+    const apiUrl = "GetProductList";
 
-  //   addTask(fetchTask);
-  //   dispatch(actionsList.getVisitationListRequest());
-  // },
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IProduct[]>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.getProductListSuccess(value.data));
+
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getProductListError,
+        dispatch
+      ));
+
+    addTask(fetchTask);
+    dispatch(actionsList.getProductListRequest());
+  },
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion
