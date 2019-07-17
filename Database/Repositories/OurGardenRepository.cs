@@ -181,10 +181,65 @@ namespace Database.Repositories
         }
         #endregion
 
-        public async Task AddFile(Photo photo)
+        #region Gallery
+        public async Task<IEnumerable<Gallery>> GetGalleries() =>
+            await _context.Gallery
+            .Include(x => x.Photos)
+            .ToListAsync();
+
+        public async Task<Gallery> GetGallery(int galleryId) =>
+            await _context.Gallery
+            .Include(x => x.Photos)
+            .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
+
+        public async Task AddGallery(Gallery gallery)
         {
-            await _context.AddAsync(photo);
+            var chek = await _context.Gallery.FirstOrDefaultAsync(x => x.GalleryId == gallery.GalleryId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            await _context.Gallery.AddAsync(gallery);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateGallery(Gallery gallery)
+        {
+            _context.Gallery.Update(gallery);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteGallery(int galleryId)
+        {
+            var gallery = await _context.Gallery
+                .Include(x =>x.Photos)
+                .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
+            if (gallery == null)
+                return;
+            _context.Photo.RemoveRange(gallery.Photos);
+            _context.Gallery.Remove(gallery);
+            await _context.SaveChangesAsync();
+        }
+        #endregion
+
+        #region Files
+        public async Task AddFile(Photo photo)
+        {
+            await _context.Photo.AddAsync(photo);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteFile(Guid photoId)
+        {
+            var photo = await _context.Photo.FirstOrDefaultAsync(x => x.PhotoId == photoId);
+            if (photo == null)
+            {
+                return;
+            }
+            _context.Photo.Remove(photo);
+            await _context.SaveChangesAsync();
+        }
+        #endregion
+
     }
 }

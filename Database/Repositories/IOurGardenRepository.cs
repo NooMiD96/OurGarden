@@ -8,7 +8,6 @@ namespace Database.Repositories
 {
     public interface IOurGardenRepository
     {
-
         Task<IEnumerable<Category>> GetCategories();
         Task<Category> GetCategory(string categoryId);
         Task AddCategory(Category category);
@@ -34,9 +33,15 @@ namespace Database.Repositories
         Task AddNews(News news);
         Task UpdateNews(News news);
         Task DeleteNews(int newsId);
-        
+
+        Task<IEnumerable<Gallery>> GetGalleries();
+        Task<Gallery> GetGallery(int galleryId);
+        Task AddGallery(Gallery gallery);
+        Task UpdateGallery(Gallery gallery);
+        Task DeleteGallery(int galleryId);
+
         Task AddFile(Photo photo);
-        
+        Task DeleteFile(Guid photoId);
         
     }   
 }       

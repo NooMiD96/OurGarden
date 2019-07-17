@@ -13,7 +13,7 @@ namespace Database.Contexts
         static private object lockObj = new object();
 
         public DbSet<Category> Category { get; set; }
-        public DbSet<Gallery> Galery { get; set; }
+        public DbSet<Gallery> Gallery { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderPosition> OrderPosition { get; set; }
