@@ -1,52 +1,75 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { AgGridReact } from 'ag-grid-react';
-import { GridApi, ColDef, GridReadyEvent } from "ag-grid-community";
-import columnTypesDef from "./columnTypesDef";
+import { AgGridReact } from "ag-grid-react";
+import { GridApi, GridReadyEvent } from "ag-grid-community";
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import { columnTypesDef, defaultColDef } from "./columnTypesDef";
+import { IAgGridProps, IAgGridState } from "./IAgGrid";
 
-interface IAgGridProps<T> {
-  columns: ColDef[];
-  rowData: T[];
-  onDoubleClickHandler: (data: T) => void;
-}
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
-const AgGrid: <T>(props: IAgGridProps<T>) => JSX.Element = (props) => {
-  const [gridApi, setGridApi] = useState(null as null | GridApi);
+export class AgGrid<T> extends React.PureComponent<
+  IAgGridProps<T>,
+  IAgGridState
+> {
+  state: IAgGridState = {
+    columns: [],
+    gridApi: {} as GridApi
+  };
 
-  const onGridReady = (params: GridReadyEvent) => {
-    setGridApi(params.api);
-    params.columnApi.autoSizeAllColumns();
+  componentDidMount() {
+    this.setState({
+      columns: [
+        {
+          headerName: "Выбор",
+          field: "select",
+          type: ["selectColumn"],
+          width: 65,
+          checkboxSelection: true,
+          suppressSizeToFit: true,
+          pinned: "left"
+        },
+        ...this.props.columns,
+        {
+          headerName: "Действие",
+          field: "action",
+          type: ["actionColumn"],
+          width: 80,
+          suppressSizeToFit: true,
+          pinned: "right"
+        }
+      ]
+    });
   }
 
-  const columns: ColDef[] = [
-    { headerName: "Выбор", field: "select", type: ['selectColumn'], width: 65, },
-    ...props.columns,
-    { headerName: "Действие", field: "action", type: ['actionColumn'], width: 150, }
-  ];
+  onGridReady = (params: GridReadyEvent) => {
+    this.setState({
+      gridApi: params.api
+    });
+    params.api.sizeColumnsToFit();
+  };
 
-  return (
-    <div
-      className="ag-theme-balham"
-      style={{
-        height: '100%',
-        width: '100%'
-      }}
-    >
-      <AgGridReact
-        columnDefs={columns}
-        rowData={props.rowData}
-        onGridReady={onGridReady}
-        columnTypes={columnTypesDef}
-        context={{
-          componentProps: props
-        }}
-        onRowDoubleClicked={params => props.onDoubleClickHandler(params.data)}
-      />
-    </div>
-  )
-};
+  render() {
+    const { rowData, onDoubleClickHandler } = this.props;
+    const { columns = [] } = this.state;
+
+    return (
+      <div className="ag-theme-balham">
+        <AgGridReact
+          columnDefs={columns}
+          rowData={rowData}
+          onGridReady={this.onGridReady}
+          columnTypes={columnTypesDef}
+          defaultColDef={defaultColDef}
+          context={{
+            componentProps: this.props
+          }}
+          onRowDoubleClicked={params => onDoubleClickHandler(params.data)}
+        />
+      </div>
+    );
+  }
+}
 
 export default AgGrid;

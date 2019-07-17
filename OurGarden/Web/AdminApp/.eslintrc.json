@@ -1,42 +1,59 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "./tsconfig.json"
-    },
-    "plugins": [
-        "@typescript-eslint"
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "airbnb-base",
+    "airbnb",
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/interface-name-prefix": ["warn", "always"],
+    "@typescript-eslint/prefer-interface": "off",
+    "import/no-named-as-default": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "react/destructuring-assignment": "off",
+    "operator-linebreak": [2, "before"],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".tsx", ".jsx"]
+      }
     ],
-    "extends": [
-        "airbnb-base",
-        "airbnb",
-        "eslint:recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:import/typescript",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+    "import/newline-after-import": ["warn"],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
     ],
-    "rules": {
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-member-accessibility": "off",
-        "@typescript-eslint/indent": ["warn", 2],
-        "@typescript-eslint/interface-name-prefix": ["warn", "always"],
-        "@typescript-eslint/prefer-interface": "off",
-        "import/no-named-as-default": "off",
-        "import/no-unresolved": "off",
-        "import/prefer-default-export": "off",
-        "react/destructuring-assignment": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".jsx"] }],
-        "import/newline-after-import": ["warn"],
-        "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],
-        "eol-last": "warn",
-        "no-undef": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-object-literal-type-assertion": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 0 }],
-        "no-console": "off",
-        "react/prop-types": "off",
-        "import/order": "off"
-    }
+    "eol-last": "warn",
+    "no-undef": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 2,
+        "maxEOF": 0
+      }
+    ],
+    "no-console": "off",
+    "quotes": ["error", "double"],
+    "import/order": "off",
+    "react/jsx-fragments": "off",
+    "react/prop-types": "off"
+  }
 }

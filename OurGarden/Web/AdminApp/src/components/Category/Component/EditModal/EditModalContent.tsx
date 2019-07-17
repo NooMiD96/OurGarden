@@ -4,28 +4,28 @@ import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 
-import ModalControlButtons from "../ModalControlButtons";
+// import ModalControlButtons from "../ModalControlButtons";
 
-import { TAuthenticationModel } from "../../TModel";
+// import { TAuthenticationModel } from "../../TModel";
 
-import localeText from "../Text";
+// import localeText from "../Text";
 
-export interface IProps extends FormComponentProps {
-  handleSubmit: (payload: TAuthenticationModel) => void;
+interface IProps extends FormComponentProps {
+  // handleSubmit: (payload: TAuthenticationModel) => void;
   loading: boolean;
 }
 
-export const Authentication = (props: IProps) => {
-  const { form, loading } = props;
+export const EditModalContent = (props: IProps) => {
+  const { form } = props;
   const { getFieldDecorator } = form;
 
   const onSubmit = () => {
-    props.form.validateFields((err: any, values: TAuthenticationModel) => {
+    props.form.validateFields((err: any, _values: any) => {
       if (!err) {
-        props.handleSubmit({
-          password: values.password,
-          userName: values.userName
-        });
+        // props.handleSubmit({
+        //   password: values.password,
+        //   userName: values.userName,
+        // });
         props.form.resetFields(["password"]);
       }
     });
@@ -33,40 +33,42 @@ export const Authentication = (props: IProps) => {
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
-      <FormItem label={localeText._label_userName}>
+      <FormItem>
         {getFieldDecorator("userName", {
           rules: [
-            { required: true, message: localeText._rule_require_userName }
+            { required: true, message: "localeText._rule_require_userName" }
           ]
         })(
           <Input
             prefix={<Icon type="user" className="input-prefix-color" />}
-            placeholder={localeText._label_userName}
+            // placeholder={localeText._label_userName}
             onPressEnter={onSubmit}
           />
         )}
       </FormItem>
-      <FormItem label={localeText._label_password}>
+      <FormItem>
         {getFieldDecorator("password", {
           rules: [
-            { required: true, message: localeText._rule_require_password }
+            { required: true, message: "localeText._rule_require_password" }
           ]
         })(
           <Input
             prefix={<Icon type="lock" className="input-prefix-color" />}
             type="password"
-            placeholder={localeText._label_password}
+            // placeholder={localeText._label_password}
             onPressEnter={onSubmit}
           />
         )}
       </FormItem>
       <div className="ant-modal-footer">
-        <ModalControlButtons
+        {/* <ModalControlButtons
           handleSubmit={onSubmit}
           loading={loading}
           submitTitle="Войти"
-        />
+        /> */}
       </div>
     </Form>
   );
 };
+
+export default Form.create<IProps>()(EditModalContent);

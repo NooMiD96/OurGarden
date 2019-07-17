@@ -19,5 +19,11 @@ const columnTypesDef: { [key: string]: ColDef } = {
   }
 };
 
+const defaultColDef: { [key: string]: ColDef } = {
 
-export default columnTypesDef;
+}
+
+export {
+  columnTypesDef,
+  defaultColDef
+};

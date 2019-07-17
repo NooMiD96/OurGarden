@@ -8,7 +8,7 @@ import {
   TMapStateToProps,
   TMapDispatchToProps,
 } from "./TState";
-import { Home } from "./Component";
+import { Category } from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
   ...state.category,
@@ -22,4 +22,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
   mapStateToProps,
   mapDispatchToProps
-)(Home as any) as any;
+)(Category as any) as any;

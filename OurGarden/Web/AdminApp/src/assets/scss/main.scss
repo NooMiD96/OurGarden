@@ -14,3 +14,19 @@
   position: fixed;
   left: 0;
 }
+
+.ag-theme-balham {
+  flex: 1 1 auto;
+}
+
+.main-content-wrapper .loading-spin-container.visible:first-of-type {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.buttons-control {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  padding: 5px 0;
+}
