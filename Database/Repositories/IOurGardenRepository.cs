@@ -2,39 +2,42 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Database.Repositories
 {
     public interface IOurGardenRepository
     {
-        IEnumerable<Category> GetCategories();
-        Category GetCategory(string categoryId);
-        void AddCategory(Category category);
-        void UpdateCategory(Category category);
-        void DeleteCategory(string categoryId);
 
-        IEnumerable<Subcategory> GetAllSubcategories();
-        IEnumerable<Subcategory> GetSubcategories(string categoryId);
-        Subcategory GetSubcategory(string subcategoryId, string categoryId);
-        void AddSubcategory(Subcategory subcategory);
-        void UpdateSubategory(Subcategory subcategory);
-        void DeleteSubcategory(string subcategoryId, string categoryId);
-
-        IEnumerable<Product> GetAllProducts();
-        IEnumerable<Product> GetProducts(string categoryId, string subcategoryId);
-        Product GetProduct(string productId, string subcategoryId, string categoryId);
-        void AddProduct(Product product);
-        void UpdateProduct(Product product);
-        void DeleteProduct(string productId, string subcategoryId, string categoryId);
-
-        IEnumerable<News> GetNews();
-        News GetNews(int newsId);
-        void AddNews(News news);
-        void UpdateNews(News news);
-        void DeleteNews(int newsId);
-
-        void AddFile(Photo photo);
-
-
-    }
-}
+        Task<IEnumerable<Category>> GetCategories();
+        Task<Category> GetCategory(string categoryId);
+        Task AddCategory(Category category);
+        Task UpdateCategory(Category category);
+        Task DeleteCategory(string categoryId);
+        
+        Task<IEnumerable<Subcategory>> GetAllSubcategories();
+        Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId);
+        Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId);
+        Task AddSubcategory(Subcategory subcategory);
+        Task UpdateSubategory(Subcategory subcategory);
+        Task DeleteSubcategory(string subcategoryId, string categoryId);
+        
+        Task<IEnumerable<Product>> GetAllProducts();
+        Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId);
+        Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
+        Task AddProduct(Product product);
+        Task UpdateProduct(Product product);
+        Task DeleteProduct(string productId, string subcategoryId, string categoryId);
+        
+        Task<IEnumerable<News>> GetNews();
+        Task<News> GetNews(int newsId);
+        Task AddNews(News news);
+        Task UpdateNews(News news);
+        Task DeleteNews(int newsId);
+        
+        Task AddFile(Photo photo);
+        
+        
+    }   
+}       
+        

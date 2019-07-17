@@ -27,7 +27,7 @@ namespace Web.Controllers.AdminApi
         [HttpGet]
         public async Task<IActionResult> GetNews()
         {
-            var news = _repository.GetNews();
+            var news = await _repository.GetNews();
             return Ok(news);
         }
 
@@ -35,7 +35,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetNews(
             [FromRoute]int newsId)
         {
-            var news = _repository.GetNews(newsId);
+            var news = await _repository.GetNews(newsId);
 
             if (news == null)
                 return BadRequest();
@@ -55,9 +55,9 @@ namespace Web.Controllers.AdminApi
             try
             {
                 var fileHelper = new FileHelper(_repository);
-                news.Photo = fileHelper.AddFileToRepository(news.File);
+                news.Photo = await fileHelper.AddFileToRepository(news.File);
 
-                _repository.AddNews(news);
+                await _repository.AddNews(news);
                 return Ok(news);
             }
             catch (Exception ex)
@@ -80,9 +80,9 @@ namespace Web.Controllers.AdminApi
                 if (news.File?.Length != 0)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    news.Photo = fileHelper.AddFileToRepository(news.File);
+                    news.Photo = await fileHelper.AddFileToRepository(news.File);
                 }
-                _repository.UpdateNews(news);
+                await _repository.UpdateNews(news);
 
                 return Ok();
             }
@@ -96,7 +96,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> DeleteNews(
             [FromRoute]int newsId)
         {
-            _repository.DeleteNews(newsId);
+            await _repository.DeleteNews(newsId);
             return Ok();
         }
     }

@@ -29,7 +29,7 @@ namespace Web.Controllers.AdminApi
         [HttpGet]
         public async Task<IActionResult> GetSubcategories()
         {
-            var subcategories = _repository.GetAllSubcategories();
+            var subcategories = await _repository.GetAllSubcategories();
             return Ok(subcategories);
         }
 
@@ -38,7 +38,7 @@ namespace Web.Controllers.AdminApi
             [FromRoute]string categoryId,
             [FromRoute]string subcategoryId)
         {
-            var subcategory = _repository.GetSubcategory(subcategoryId, categoryId);
+            var subcategory = await _repository.GetSubcategory(subcategoryId, categoryId);
 
             if (subcategory == null)
                 return BadRequest();
@@ -59,7 +59,7 @@ namespace Web.Controllers.AdminApi
             try
             {
                 var fileHelper = new FileHelper(_repository);
-                var file = fileHelper.AddFileToRepository(subcategoryDTO.Photo);
+                var file = await fileHelper.AddFileToRepository(subcategoryDTO.Photo);
 
                 var subcategory = new Subcategory()
                 {
@@ -68,7 +68,7 @@ namespace Web.Controllers.AdminApi
                     CategoryId = subcategoryDTO.NewCategoryId,
                     Photo = file
                 };
-                _repository.AddSubcategory(subcategory);
+                await _repository.AddSubcategory(subcategory);
 
                 return Ok(subcategory);
             }
@@ -88,13 +88,13 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-                var oldSubcategory = _repository.GetSubcategory( subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
+                var oldSubcategory = await _repository.GetSubcategory( subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
                 var file = oldSubcategory.Photo;
 
                 if (subcategoryDTO.Photo?.Length != 0)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    file = fileHelper.AddFileToRepository(subcategoryDTO.Photo);
+                    file = await fileHelper.AddFileToRepository(subcategoryDTO.Photo);
                 }
 
                 if (subcategoryDTO.Alias != oldSubcategory.Alias || subcategoryDTO.CategoryId != subcategoryDTO.NewCategoryId)
@@ -106,13 +106,13 @@ namespace Web.Controllers.AdminApi
                         CategoryId = subcategoryDTO.NewCategoryId,
                         Photo = file
                     };
-                    _repository.AddSubcategory(subcategory);
-                    _repository.DeleteSubcategory(oldSubcategory.SubcategoryId, oldSubcategory.CategoryId);
+                    await _repository.AddSubcategory(subcategory);
+                    await _repository.DeleteSubcategory(oldSubcategory.SubcategoryId, oldSubcategory.CategoryId);
                 }
                 else if (subcategoryDTO.Photo?.Length != 0)
                 {
                     oldSubcategory.Photo = file;
-                    _repository.UpdateSubategory(oldSubcategory);
+                    await _repository.UpdateSubategory(oldSubcategory);
                 }
 
                 return Ok();
@@ -128,7 +128,7 @@ namespace Web.Controllers.AdminApi
             [FromRoute]string categoryId,
             [FromRoute]string subcategoryId)
         {
-            _repository.DeleteSubcategory(subcategoryId, categoryId);
+            await _repository.DeleteSubcategory(subcategoryId, categoryId);
             return Ok();
         }
     }

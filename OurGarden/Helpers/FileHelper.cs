@@ -17,7 +17,7 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        public Photo AddFileToRepository(IFormFile photo)
+        public async Task<Photo> AddFileToRepository(IFormFile photo)
         {
             using (var ms = new MemoryStream())
             {
@@ -31,7 +31,7 @@ namespace Web.Controllers.AdminApi
                     PhotoId = Guid.NewGuid(),
                     Url = imreBase64Data
                 };
-                _repository.AddFile(file);
+                await _repository.AddFile(file);
                 return file;
             }
         }

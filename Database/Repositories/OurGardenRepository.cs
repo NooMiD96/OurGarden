@@ -18,153 +18,173 @@ namespace Database.Repositories
         }
 
         #region Category
-        public IEnumerable<Category> GetCategories() => _context.Category.Include(x => x.Photo);
+        public async Task<IEnumerable<Category>> GetCategories() => 
+            await _context.Category
+            .Include(x => x.Photo)
+            .ToListAsync();
 
-        public Category GetCategory(string categoryId) => _context.Category.Include(x => x.Photo).FirstOrDefault(x => x.CategoryId == categoryId);
+        public async Task<Category> GetCategory(string categoryId) => 
+            await _context.Category
+            .Include(x => x.Photo)
+            .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
 
-        public void AddCategory(Category category)
+        public async Task AddCategory(Category category)
         {
-            var chek = _context.Category.FirstOrDefault(x =>  x.CategoryId == category.CategoryId);
+            var chek = await _context.Category.FirstOrDefaultAsync(x =>  x.CategoryId == category.CategoryId);
             if (chek != null)
             {
                 throw new Exception();
             }
-            _context.Category.Add(category);
-            _context.SaveChanges();
+            await _context.Category.AddAsync(category);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateCategory(Category category)
+        public async Task UpdateCategory(Category category)
         {
             _context.Category.Update(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteCategory(string categoryId)
+        public async Task DeleteCategory(string categoryId)
         {
-            var category = _context.Category.FirstOrDefault(x => x.CategoryId == categoryId);
+            var category = await _context.Category.FirstOrDefaultAsync(x => x.CategoryId == categoryId);
             if (category == null)
                 return;
             _context.Category.Remove(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         #endregion
 
         #region Subcategory      
-        public IEnumerable<Subcategory> GetAllSubcategories() =>
-            _context.Subcategory;
+        public async Task<IEnumerable<Subcategory>> GetAllSubcategories() =>
+            await _context.Subcategory
+            .ToListAsync();
 
-        public IEnumerable<Subcategory> GetSubcategories(string categoryId) =>
-            _context.Subcategory.Where(x => x.CategoryId == categoryId);
+        public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId) =>
+            await _context.Subcategory
+            .Where(x => x.CategoryId == categoryId)
+            .ToListAsync();
 
-        public Subcategory GetSubcategory(string subcategoryId, string categoryId) =>
-            _context.Subcategory.Include(x => x.Photo)
-            .FirstOrDefault(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+        public async Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId) =>
+            await _context.Subcategory
+            .Include(x => x.Photo)
+            .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
 
-        public void AddSubcategory(Subcategory subcategory)
+        public async Task AddSubcategory(Subcategory subcategory)
         {
-            var chek = _context.Subcategory.FirstOrDefault(x => x.SubcategoryId == subcategory.SubcategoryId && x.CategoryId == subcategory.CategoryId);
+            var chek = await _context.Subcategory.FirstOrDefaultAsync(x => x.SubcategoryId == subcategory.SubcategoryId && x.CategoryId == subcategory.CategoryId);
             if (chek != null) 
             {
                 throw new Exception();
             }
-            _context.Subcategory.Add(subcategory);
-            _context.SaveChanges();
+            await _context.Subcategory.AddAsync(subcategory);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateSubategory(Subcategory subcategory)
+        public async Task UpdateSubategory(Subcategory subcategory)
         {
             _context.Subcategory.Update(subcategory);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteSubcategory(string subcategoryId, string categoryId)
+        public async Task DeleteSubcategory(string subcategoryId, string categoryId)
         {
-            var subcategory = _context.Subcategory
-                .FirstOrDefault(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+            var subcategory = await _context.Subcategory
+                .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
             if (subcategory == null)
                 return;
             _context.Subcategory.Remove(subcategory);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         #endregion
 
         #region Product
 
-        public IEnumerable<Product> GetAllProducts() =>
-            _context.Product;
+        public async Task<IEnumerable<Product>> GetAllProducts() =>
+            await _context.Product
+            .ToListAsync();
 
-        public IEnumerable<Product> GetProducts(string categoryId, string subcategoryId) =>
-            _context.Product.Include(x => x.Photos).Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId);
+        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId) =>
+            await _context.Product
+            .Include(x => x.Photos)
+            .Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId)
+            .ToListAsync();
 
-        public Product GetProduct(string productId, string subcategoryId, string categoryId) =>
-            _context.Product.Include(x => x.Photos)
-            .FirstOrDefault(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
+        public async Task<Product> GetProduct(string productId, string subcategoryId, string categoryId) =>
+            await _context.Product.Include(x => x.Photos)
+            .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
 
-        public void AddProduct(Product product)
+        public async Task AddProduct(Product product)
         {
-            var chek = _context.Product.FirstOrDefault(x => x.ProductId == product.ProductId 
+            var chek = await _context.Product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId 
             && x.SubcategoryId == product.SubcategoryId && x.CategoryId == product.CategoryId);
             if (chek != null)
             {
                 throw new Exception();
             }
-            _context.Product.Add(product);
-            _context.SaveChanges();
+            await _context.Product.AddAsync(product);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateProduct(Product product)
+        public async Task UpdateProduct(Product product)
         {
             _context.Product.Update(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteProduct(string productId, string subcategoryId, string categoryId)
+        public async Task DeleteProduct(string productId, string subcategoryId, string categoryId)
         {
-            var product = _context.Product
-                .FirstOrDefault(x => x.ProductId == productId && x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+            var product = await _context.Product
+                .FirstOrDefaultAsync(x => x.ProductId == productId && x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
             if (product == null)
                 return;
             _context.Product.Remove(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         #endregion
 
         #region News
-        public IEnumerable<News> GetNews() => _context.News.Include(x => x.Photo);
+        public async Task<IEnumerable<News>> GetNews() => 
+            await _context.News
+            .Include(x => x.Photo)
+            .ToListAsync();
 
-        public News GetNews(int newsId) => _context.News.Include(x => x.Photo).FirstOrDefault(x => x.NewsId == newsId);
+        public async Task<News> GetNews(int newsId) => 
+            await _context.News
+            .Include(x => x.Photo)
+            .FirstOrDefaultAsync(x => x.NewsId == newsId);
 
-        public void AddNews(News news)
+        public async Task AddNews(News news)
         {
-            var chek = _context.News.FirstOrDefault(x => x.NewsId == news.NewsId);
+            var chek = await _context.News.FirstOrDefaultAsync(x => x.NewsId == news.NewsId);
             if (chek != null)
             {
                 throw new Exception();
             }
-            _context.News.Add(news);
-            _context.SaveChanges();
+            await _context.News.AddAsync(news);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateNews(News news)
+        public async Task UpdateNews(News news)
         {
             _context.News.Update(news);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteNews(int newsId)
+        public async Task DeleteNews(int newsId)
         {
-            var news = _context.News.FirstOrDefault(x => x.NewsId == newsId);
+            var news = await _context.News.FirstOrDefaultAsync(x => x.NewsId == newsId);
             if (news == null)
                 return;
             _context.News.Remove(news);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         #endregion
 
-        public void AddFile(Photo photo)
+        public async Task AddFile(Photo photo)
         {
-            _context.Add(photo);
-            _context.SaveChanges();
+            await _context.AddAsync(photo);
+            await _context.SaveChangesAsync();
         }
     }
 }

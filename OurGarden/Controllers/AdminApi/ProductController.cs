@@ -31,7 +31,7 @@ namespace Web.Controllers.AdminApi
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = _repository.GetAllProducts();
+            var products = await _repository.GetAllProducts();
             return Ok(products);
         }
 
@@ -41,7 +41,7 @@ namespace Web.Controllers.AdminApi
             [FromRoute]string subcategoryId,
             [FromRoute]string productId)
         {
-            var product = _repository.GetProduct( productId, subcategoryId, categoryId);
+            var product = await _repository.GetProduct( productId, subcategoryId, categoryId);
 
             if (product == null)
                 return BadRequest();
@@ -65,7 +65,7 @@ namespace Web.Controllers.AdminApi
                 foreach (var photo in productDTO.AddPhotos)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    var file = fileHelper.AddFileToRepository(photo);
+                    var file = await fileHelper.AddFileToRepository(photo);
                     photos.Add(file);
                 }
 
@@ -77,7 +77,7 @@ namespace Web.Controllers.AdminApi
                     CategoryId = productDTO.NewCategoryId,
                     Photos = photos
                 };
-                _repository.AddProduct(product);
+                await _repository.AddProduct(product);
 
                 return Ok(product);
             }
@@ -97,7 +97,7 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-                var oldProduct = _repository.GetProduct( productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
+                var oldProduct = await _repository.GetProduct( productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
                 var files = oldProduct.Photos;
 
 
@@ -108,7 +108,7 @@ namespace Web.Controllers.AdminApi
                 foreach (var photo in productDTO.AddPhotos)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    var file = fileHelper.AddFileToRepository(photo);
+                    var file = await fileHelper.AddFileToRepository(photo);
                     files.Add(file);
                 }
 
@@ -124,13 +124,13 @@ namespace Web.Controllers.AdminApi
                         CategoryId = productDTO.NewCategoryId,
                         Photos = files
                     };
-                    _repository.AddProduct(product);
-                    _repository.DeleteSubcategory(oldProduct.SubcategoryId, oldProduct.CategoryId);
+                    await _repository.AddProduct(product);
+                    await _repository.DeleteSubcategory(oldProduct.SubcategoryId, oldProduct.CategoryId);
                 }
                 else if (productDTO.AddPhotos.Any() || productDTO.RemovePhotos.Any())
                 {
                     oldProduct.Photos = files;
-                    _repository.UpdateProduct(oldProduct);
+                    await _repository.UpdateProduct(oldProduct);
                 }
 
                 return Ok();
@@ -147,7 +147,7 @@ namespace Web.Controllers.AdminApi
             [FromRoute]string subcategoryId,
             [FromRoute]string productId)
         {
-            _repository.DeleteProduct(productId, subcategoryId, categoryId);
+            await _repository.DeleteProduct(productId, subcategoryId, categoryId);
             return Ok();
         }
     }

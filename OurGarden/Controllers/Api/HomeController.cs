@@ -46,7 +46,7 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCategories()
         {
-            var result = _repository.GetCategories();
+            var result = await _repository.GetCategories();
 
             return Success(result);
         }
@@ -59,7 +59,7 @@ namespace Web.Controllers.Api
                 return BadRequest();
             }
 
-            var result = _repository.GetSubcategories(categoryId);
+            var result = await _repository.GetSubcategories(categoryId);
             return Success(result);
         }
 
@@ -71,7 +71,7 @@ namespace Web.Controllers.Api
                 return BadRequest();
             }
 
-            var result = _repository.GetProducts(categoryId, subcategoryId);
+            var result = await _repository.GetProducts(categoryId, subcategoryId);
             return Success(result);
         }
     }

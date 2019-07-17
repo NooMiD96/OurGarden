@@ -29,7 +29,7 @@ namespace Web.Controllers.AdminApi
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = _repository.GetCategories();
+            var categories = await _repository.GetCategories();
             return Ok(categories);
         }
 
@@ -37,7 +37,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetCategory(
             [FromRoute]string categoryId)
         {
-            var category = _repository.GetCategory(categoryId);
+            var category = await _repository.GetCategory(categoryId);
 
             if (category == null)
                 return BadRequest();
@@ -57,7 +57,7 @@ namespace Web.Controllers.AdminApi
             try
             {
                 var fileHelper = new FileHelper(_repository);
-                var file = fileHelper.AddFileToRepository(categoryDTO.Photo);
+                var file = await fileHelper.AddFileToRepository(categoryDTO.Photo);
 
                 var category = new Category()
                 {
@@ -65,7 +65,7 @@ namespace Web.Controllers.AdminApi
                     CategoryId = StringHelper.Transform(categoryDTO.Alias),
                     Photo = file
                 };
-                _repository.AddCategory(category);
+                await _repository.AddCategory(category);
 
                 return Ok(category);
             }
@@ -85,13 +85,13 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-                var oldCategory = _repository.GetCategory(categoryDTO.CategoryId);
+                var oldCategory = await _repository.GetCategory(categoryDTO.CategoryId);
                 var file = oldCategory.Photo;
 
                 if (categoryDTO.Photo?.Length != 0)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    file = fileHelper.AddFileToRepository(categoryDTO.Photo);
+                    file = await fileHelper.AddFileToRepository(categoryDTO.Photo);
                 }
 
                 if (categoryDTO.Alias != oldCategory.Alias)
@@ -102,13 +102,13 @@ namespace Web.Controllers.AdminApi
                         CategoryId = StringHelper.Transform(categoryDTO.Alias),
                         Photo = file
                     };
-                    _repository.AddCategory(category);
-                    _repository.DeleteCategory(oldCategory.CategoryId);
+                    await _repository.AddCategory(category);
+                    await _repository.DeleteCategory(oldCategory.CategoryId);
                 }
                 else if (categoryDTO.Photo?.Length != 0)
                 {
                     oldCategory.Photo = file;
-                    _repository.UpdateCategory(oldCategory);
+                    await _repository.UpdateCategory(oldCategory);
                 }
 
                 return Ok();
@@ -123,7 +123,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> DeleteCategory(
             [FromRoute]string categoryId)
         {
-            _repository.DeleteCategory(categoryId);
+            await _repository.DeleteCategory(categoryId);
             return Ok();
         }
     }
