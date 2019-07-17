@@ -23,12 +23,13 @@ namespace Web.Controllers.AdminApi
             {
                 photo.CopyTo(ms);
                 var fileBytes = ms.ToArray();
+                string imreBase64Data = Convert.ToBase64String(fileBytes);
                 var file = new Photo()
                 {
                     Date = DateTime.Now,
                     Name = photo.Name,
                     PhotoId = Guid.NewGuid(),
-                    BinaryData = fileBytes,
+                    Url = imreBase64Data
                 };
                 _repository.AddFile(file);
                 return file;

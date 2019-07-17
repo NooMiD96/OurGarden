@@ -19,6 +19,6 @@ namespace Model.DB
         public DateTime Date { get; set; }
 
         [Required]
-        public Byte[] BinaryData { get; set; }
+        public string Url { get; set; }
     }
 }
