@@ -1,13 +1,20 @@
+import { RouteComponentProps } from "react-router-dom";
 import { RouterState } from "connected-react-router";
-import { ISiderState } from "./State";
+
+import { IProductState } from "./State";
 import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = {
+};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = ISiderState & RouterState;
+export type TStateToProps = IProductState & RouterState & RouteComponentProps<{
+  categoty: string;
+  subcategory: string;
+  product: string;
+}>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
   & TOwnProps;

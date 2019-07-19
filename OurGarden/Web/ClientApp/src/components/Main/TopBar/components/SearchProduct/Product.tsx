@@ -14,7 +14,7 @@ const Product = ({
   imgSrc: string;
 }) => (
   <Option title={title} key={key}>
-    <img src={imgSrc} style={{float: "left"}} alt={title} />
+    <img src={imgSrc} style={{ float: "left" }} alt={title} />
     <div>
       Hellow
       {title}

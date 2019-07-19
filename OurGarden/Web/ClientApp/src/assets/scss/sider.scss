@@ -1,5 +1,4 @@
-@import 'styles/_variables.scss';
-
+@import "styles/_variables.scss";
 
 .antd-layout.ant-layout.ant-layout-has-sider .ant-layout-sider {
   background: #fff;
@@ -12,13 +11,13 @@
     height: 100%;
 
     .sider-catalog-header {
-      font-family: 'BerlingskeSerif';
+      font-family: "BerlingskeSerif";
       font-weight: bolder;
       padding: 0.5em 0em;
       text-align: center;
-      
+
       background-color: $darkGreenColor;
-      
+
       .ant-typography {
         margin: 0 !important;
         color: white;
@@ -34,7 +33,7 @@
 
       .ant-menu-item {
         font-size: 16px;
-        
+
         > a.nav-link {
           max-height: 600px;
           font-weight: 500;

@@ -11,7 +11,8 @@ import {
 import Component from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-  // ...state.visitation,
+  ...state.catalog,
+  ...state.router,
   ...ownProp,
 }) as TMapStateToProps;
 

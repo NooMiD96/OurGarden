@@ -12,15 +12,13 @@ const { Header } = Layout;
 const Breadcrumb = (props: RouterState) => {
   return (
     <Header>
-      <CoreBreadcrumb
-        location={props.location}
-      />
+      <CoreBreadcrumb location={props.location} />
     </Header>
-  )
-}
+  );
+};
 
 export default connect(
   (state: IApplicationState): RouterState => ({
-    ...state.router,
+    ...state.router
   })
 )(Breadcrumb);

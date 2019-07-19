@@ -1,6 +1,6 @@
 import Form from "@core/antd/Form";
-import { Authentication } from "./Authentication";
+import { Authentication, IProps } from "./Authentication";
 
-const FormAuthentication = Form.create()(Authentication);
+const FormAuthentication = Form.create<IProps>()(Authentication);
 
 export default FormAuthentication as any;

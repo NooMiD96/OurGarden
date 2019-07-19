@@ -1,11 +1,12 @@
 import * as React from "react";
 
-import { TState, TComponentState } from "@components/Home/TState";
 import Alert from "@core/components/Alert";
 import Carousel from "@core/antd/Carousel";
 import Loading from "@src/core/components/Loading";
 
 import HomeWrapper from "./style/Home.style";
+
+import { TState, TComponentState } from "../TState";
 
 export class Home extends React.PureComponent<TState, TComponentState> {
   caruselRef: Carousel | null = null;

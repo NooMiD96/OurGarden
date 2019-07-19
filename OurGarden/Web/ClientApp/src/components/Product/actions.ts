@@ -3,24 +3,23 @@ import { fetch, addTask } from "domain-task";
 import { IAppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 
+import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import * as t from "./actionsType";
-import { INew } from "./State";
+import { IProduct } from "./State";
 
 // ----------------
 //#region ACTIONS
 export const actionsList = {
-  getNewsListRequest: (): t.IGetNewsListRequest => ({
-    type: t.GET_NEWS_LIST_REQUEST,
+  getProductRequest: (): t.IGetProductRequest => ({
+    type: t.GET_PRODUCT_REQUEST,
   }),
-  getNewsListSuccess: (payload: INew[]): t.IGetNewsListSuccess => ({
-    type: t.GET_NEWS_LIST_SUCCESS,
+  getProductSuccess: (payload: IProduct): t.IGetProductSuccess => ({
+    type: t.GET_PRODUCT_SUCCESS,
     payload
   }),
-  getNewsListError: (errorMessage: string): t.IGetNewsListError => ({
-    type: t.GET_NEWS_LIST_ERROR,
+  getProductError: (errorMessage: string): t.IGetProductError => ({
+    type: t.GET_PRODUCT_ERROR,
     errorMessage,
   }),
 
@@ -33,8 +32,8 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Home";
 export const actionCreators = {
-  getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
-    const apiUrl = "GetNewsList";
+  getProduct: (): IAppThunkAction<t.TGetProduct | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+    const apiUrl = "GetProduct";
 
     dispatch(actionCreators.cleanErrorInner());
 
@@ -42,32 +41,28 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
+        "Content-Type": "application/json; charset=UTF-8"
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<INew[]>) => {
+      .then((value: IResponse<IProduct>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
 
-        value.data.forEach(x => {
-          x.date = new Date(x.date);
-        });
-
-        dispatch(actionsList.getNewsListSuccess(value.data));
+        dispatch(actionsList.getProductSuccess(value.data));
 
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
         apiUrl,
         err,
-        actionsList.getNewsListError,
+        actionsList.getProductError,
         dispatch
       ));
 
     addTask(fetchTask);
-    dispatch(actionsList.getNewsListRequest());
+    dispatch(actionsList.getProductRequest());
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

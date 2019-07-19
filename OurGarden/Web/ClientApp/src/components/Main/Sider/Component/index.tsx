@@ -28,9 +28,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
     return (
       <AntdSider width={250}>
         <div className="sider-catalog-header">
-          <Title>
-            Каталог
-          </Title>
+          <Title>Каталог</Title>
         </div>
         <CategoryList categoryList={categoryList} location={location} />
       </AntdSider>

@@ -1,9 +1,6 @@
 import * as React from "react";
 
 import Button from "@core/antd/Button";
-import Typography from "@core/antd/Typography";
-
-const { Text } = Typography;
 
 type ModalControlButtonsProps = {
   handleSubmit: () => void;
@@ -19,7 +16,7 @@ const ModalControlButtons = (props: ModalControlButtonsProps) => (
       loading={props.loading}
       onClick={props.handleSubmit}
     >
-      <Text>{props.submitTitle}</Text>
+      {props.submitTitle}
     </Button>
   </>
 );

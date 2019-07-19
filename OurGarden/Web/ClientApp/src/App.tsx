@@ -8,9 +8,26 @@ export const AppRoutes = (
   <Layout>
     <Switch>
       <Redirect from="/главная" to="/" />
-      <Route exact path="/" component={AsyncComponent(() => import(/* webpackChunkName: "Home" */ "@components/Home"))} />
+      <Route
+        exact
+        path="/"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "Home" */ "@components/Home")
+        )}
+      />
     </Switch>
-    
-    <Route path="/каталог/:categoty?/:subcategory?/:product?" component={AsyncComponent(() => import(/* webpackChunkName: "Catalog" */ "@components/Catalog"))} />
+
+    <Route
+      path="/каталог/:categoty?/:subcategory?"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Catalog" */ "@components/Catalog")
+      )}
+    />
+    <Route
+      path="/каталог/:categoty?/:subcategory?/:product?"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Product" */ "@components/Product")
+      )}
+    />
   </Layout>
 );

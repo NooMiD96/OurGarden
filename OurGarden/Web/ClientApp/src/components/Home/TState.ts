@@ -9,7 +9,7 @@ export type TComponentState = {};
 export type TStateToProps = IHomeState;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
-& TOwnProps;
+  & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
@@ -17,4 +17,4 @@ export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps
-& TMapDispatchToProps;
+  & TMapDispatchToProps;

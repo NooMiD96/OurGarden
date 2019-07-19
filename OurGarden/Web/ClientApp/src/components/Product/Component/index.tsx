@@ -3,13 +3,13 @@ import React from "react";
 // import Alert from "@core/components/Alert";
 import Layout from "@core/antd/Layout";
 
-import HomeWrapper from "./style/Catalog.style";
+import HomeWrapper from "./style/Product.style";
 
 import { TState, TComponentState } from "../TState";
 
 const { Content } = Layout;
 
-export class Catalog extends React.PureComponent<TState, TComponentState> {
+export class Product extends React.PureComponent<TState, TComponentState> {
   componentDidMount() {}
 
   componentDidUpdate() {}
@@ -20,11 +20,11 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
     return (
       <HomeWrapper>
         <Layout>
-          <Content>hellow Catalog</Content>
+          <Content>hellow Product</Content>
         </Layout>
       </HomeWrapper>
     );
   }
 }
 
-export default Catalog;
+export default Product;

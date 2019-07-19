@@ -1,6 +1,6 @@
-@import './loadingComponent.scss';
-@import './sider.scss';
-@import './topbar/index.scss';
+@import "./loadingComponent.scss";
+@import "./sider.scss";
+@import "./topbar/index.scss";
 
 html {
   --antd-wave-shadow-color: rgb(98, 98, 98);
@@ -60,7 +60,7 @@ a {
 
   .ant-spin-nested-loading {
     height: 100%;
-    
+
     > div > .ant-spin {
       max-height: unset;
     }
@@ -71,7 +71,7 @@ a {
   height: 100%;
   background: unset;
   font-family: "ProbaPro";
-  
+
   .antd-header.ant-layout-header {
     font-weight: 500;
     height: auto;
