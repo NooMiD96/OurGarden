@@ -100,6 +100,11 @@ namespace Database.Repositories
 
         #region Product
 
+        public async Task<IEnumerable<Product>> GetSearchProducts(string search) =>
+           await _context.Product.
+            Where(x => x.Alias.Contains(search))
+            .ToListAsync();
+
         public async Task<IEnumerable<Product>> GetAllProducts() =>
             await _context.Product
             .ToListAsync();

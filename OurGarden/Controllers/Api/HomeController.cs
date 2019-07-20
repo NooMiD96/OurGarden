@@ -74,5 +74,16 @@ namespace Web.Controllers.Api
             var result = await _repository.GetProducts(categoryId, subcategoryId);
             return Success(result);
         }
+
+        [HttpGet("search/")]
+        public async Task<IActionResult> SearchProduct([FromQuery] string search)
+        {
+            if (String.IsNullOrEmpty(search))
+            {
+                return BadRequest();
+            }
+            var result = await _repository.GetSearchProducts(search);
+            return Ok(result);
+        }
     }
 }
