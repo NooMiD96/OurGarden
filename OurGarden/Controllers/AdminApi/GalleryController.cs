@@ -34,9 +34,9 @@ namespace Web.Controllers.AdminApi
             return Ok(galleries);
         }
 
-        [HttpGet("{galleryId}")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetGallery(
-            [FromRoute]int galleryId)
+            [FromQuery]int galleryId)
         {
             var gallery = await _repository.GetGallery(galleryId);
 
@@ -118,9 +118,9 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("{galleryId}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteGallery(
-            [FromRoute]int galleryId)
+            [FromQuery]int galleryId)
         {
             await _repository.DeleteGallery(galleryId);
             return Ok();

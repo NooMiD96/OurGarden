@@ -31,9 +31,9 @@ namespace Web.Controllers.AdminApi
             return Ok(news);
         }
 
-        [HttpGet("{newsId}")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetNews(
-            [FromRoute]int newsId)
+            [FromQuery]int newsId)
         {
             var news = await _repository.GetNews(newsId);
 
@@ -92,9 +92,9 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("{newsId}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteNews(
-            [FromRoute]int newsId)
+            [FromQuery]int newsId)
         {
             await _repository.DeleteNews(newsId);
             return Ok();
