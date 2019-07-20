@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
-    //[ValidateAntiForgeryToken]
-    //[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -41,26 +41,28 @@ namespace Web.Controllers.AdminApi
             [FromRoute]string subcategoryId,
             [FromRoute]string productId)
         {
-            var product = await _repository.GetProduct( productId, subcategoryId, categoryId);
+            var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
 
             if (product == null)
                 return BadRequest();
 
             return Ok(product);
-        }        
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(
             [FromForm]ProductDTO productDTO)
         {
-            if (!ModelState.IsValid || string.IsNullOrEmpty(productDTO.NewSubcategoryId) 
-            || string.IsNullOrEmpty(productDTO.NewCategoryId) || !productDTO.AddPhotos.Any())
+            if (!ModelState.IsValid
+                || String.IsNullOrEmpty(productDTO.NewSubcategoryId)
+                || String.IsNullOrEmpty(productDTO.NewCategoryId) || !productDTO.AddPhotos.Any()
+            )
             {
                 return BadRequest();
             }
 
             try
-            {                
+            {
                 var photos = new List<Photo>();
                 foreach (var photo in productDTO.AddPhotos)
                 {
@@ -81,10 +83,10 @@ namespace Web.Controllers.AdminApi
 
                 return Ok(product);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
-            }            
+            }
         }
 
         [HttpPut]
@@ -97,7 +99,7 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-                var oldProduct = await _repository.GetProduct( productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
+                var oldProduct = await _repository.GetProduct(productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
                 var files = oldProduct.Photos;
 
 
@@ -112,8 +114,8 @@ namespace Web.Controllers.AdminApi
                     files.Add(file);
                 }
 
-                if (productDTO.Alias != oldProduct.Alias 
-                    || productDTO.SubcategoryId != productDTO.NewSubcategoryId 
+                if (productDTO.Alias != oldProduct.Alias
+                    || productDTO.SubcategoryId != productDTO.NewSubcategoryId
                     || productDTO.CategoryId != productDTO.NewCategoryId)
                 {
                     var product = new Product()
@@ -135,7 +137,7 @@ namespace Web.Controllers.AdminApi
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }

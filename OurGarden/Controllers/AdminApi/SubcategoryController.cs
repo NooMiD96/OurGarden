@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
-    //[ValidateAntiForgeryToken]
-    //[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class SubcategoryController : ControllerBase
@@ -72,7 +72,7 @@ namespace Web.Controllers.AdminApi
 
                 return Ok(subcategory);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }            
@@ -112,12 +112,12 @@ namespace Web.Controllers.AdminApi
                 else if (subcategoryDTO.Photo?.Length != 0)
                 {
                     oldSubcategory.Photo = file;
-                    await _repository.UpdateSubategory(oldSubcategory);
+                    await _repository.UpdateSubcategory(oldSubcategory);
                 }
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }

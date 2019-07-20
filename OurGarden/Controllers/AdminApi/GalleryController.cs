@@ -1,16 +1,22 @@
-﻿using System;
+﻿using Core.Constants;
+using Core.Helpers;
+
+using Database.Repositories;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using Model.DB;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Helpers;
-using Database.Repositories;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Model.DB;
-using Model.DTO;
 
 namespace Web.Controllers.AdminApi
 {
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class GalleryController : ControllerBase
@@ -61,7 +67,7 @@ namespace Web.Controllers.AdminApi
                 await _repository.AddGallery(gallery);
                 return Ok(gallery);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }
@@ -106,7 +112,7 @@ namespace Web.Controllers.AdminApi
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }

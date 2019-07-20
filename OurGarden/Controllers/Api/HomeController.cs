@@ -20,7 +20,7 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetNewsList()
+        public IActionResult GetNewsList()
         {
             var any1 = new
             {
@@ -52,7 +52,7 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetSubategories([FromQuery] string categoryId)
+        public async Task<IActionResult> GetSubcategories([FromQuery] string categoryId)
         {
             if (String.IsNullOrEmpty(categoryId))
             {

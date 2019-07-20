@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
-    //[ValidateAntiForgeryToken]
-    //[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
     public class NewsController : ControllerBase
@@ -60,7 +60,7 @@ namespace Web.Controllers.AdminApi
                 await _repository.AddNews(news);
                 return Ok(news);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }
@@ -86,7 +86,7 @@ namespace Web.Controllers.AdminApi
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }

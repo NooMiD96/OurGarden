@@ -39,7 +39,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\admin\" />
+    <Folder Include="wwwroot\client\" />
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">

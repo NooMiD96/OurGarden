@@ -81,7 +81,7 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateSubategory(Subcategory subcategory)
+        public async Task UpdateSubcategory(Subcategory subcategory)
         {
             _context.Subcategory.Update(subcategory);
             await _context.SaveChangesAsync();
