@@ -1,9 +1,11 @@
+import { IPhoto } from "@src/core/IPhoto";
+
 // -----------------
 //#region STATE
 export interface ICategory {
   categoryId: string;
   alias: string;
-  photo: any;
+  photo: IPhoto;
 }
 
 export interface ISiderState {

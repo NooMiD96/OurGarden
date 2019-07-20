@@ -1,21 +1,22 @@
-import { IProduct } from "@components/Product/State";
+import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
 //#region STATE
 export interface ISubcategory {
-
+  subcategoryId: string;
+  categoryId: string;
+  alias: string;
+  photo: IPhoto;
 }
 
 export interface ICatalogState {
   subcategoryList: ISubcategory[];
-  productList: IProduct[];
   pending: boolean;
   errorInner: string;
 }
 
 export const unloadedState: ICatalogState = {
   subcategoryList: [],
-  productList: [],
   pending: false,
   errorInner: "",
 };

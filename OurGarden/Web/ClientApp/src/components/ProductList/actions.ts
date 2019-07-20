@@ -6,27 +6,23 @@ import { IResponse } from "@core/fetchHelper/IResponse";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import { ISubcategory } from "./State";
+import { IProduct } from "@components/Product/State";
 
 // ----------------
 //#region ACTIONS
 export const actionsList = {
-  getSubcategoryListRequest: (): t.IGetSubcategoryListRequest => ({
-    type: t.GET_SUBCATEGORY_LIST_REQUEST,
+  getProductListRequest: (): t.IGetProductListRequest => ({
+    type: t.GET_PRODUCT_LIST_REQUEST,
   }),
-  getSubcategoryListSuccess: (payload: ISubcategory[]): t.IGetSubcategoryListSuccess => ({
-    type: t.GET_SUBCATEGORY_LIST_SUCCESS,
+  getProductListSuccess: (payload: IProduct[]): t.IGetProductListSuccess => ({
+    type: t.GET_PRODUCT_LIST_SUCCESS,
     payload
   }),
-  getSubcategoryListError: (errorMessage: string): t.IGetSubcategoryListError => ({
-    type: t.GET_SUBCATEGORY_LIST_ERROR,
+  getProductListError: (errorMessage: string): t.IGetProductListError => ({
+    type: t.GET_PRODUCT_LIST_ERROR,
     errorMessage,
   }),
 
-  cleanSubcategoryList: (): t.ICleanSubcategoryList => ({
-    type: t.CLEAN_SUBCATEGORY_LIST,
-  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -36,12 +32,12 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Home";
 export const actionCreators = {
-  getSubcategoryList: (category: string): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
-    const apiUrl = "GetSubcategories";
+  getProductList: (categoryId: string, subcategoryId: string): IAppThunkAction<t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+    const apiUrl = "GetProducts";
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${category}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -49,26 +45,25 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<ISubcategory[]>) => {
+      .then((value: IResponse<IProduct[]>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.getSubcategoryListSuccess(value.data));
+        dispatch(actionsList.getProductListSuccess(value.data));
 
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
         apiUrl,
         err,
-        actionsList.getSubcategoryListError,
+        actionsList.getProductListError,
         dispatch
       ));
 
     addTask(fetchTask);
-    dispatch(actionsList.getSubcategoryListRequest());
+    dispatch(actionsList.getProductListRequest());
   },
-  cleanSubcategoryList: actionsList.cleanSubcategoryList,
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

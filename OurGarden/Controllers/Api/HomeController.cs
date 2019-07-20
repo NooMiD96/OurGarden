@@ -64,7 +64,7 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetProduct([FromQuery] string categoryId, [FromQuery] string subcategoryId)
+        public async Task<IActionResult> GetProducts([FromQuery] string categoryId, [FromQuery] string subcategoryId)
         {
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {

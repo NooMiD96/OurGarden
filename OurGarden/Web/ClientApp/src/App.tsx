@@ -17,17 +17,28 @@ export const AppRoutes = (
       />
     </Switch>
 
-    <Route
-      path="/каталог/:categoty?/:subcategory?"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Catalog" */ "@components/Catalog")
-      )}
-    />
-    <Route
-      path="/каталог/:categoty?/:subcategory?/:product?"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Product" */ "@components/Product")
-      )}
-    />
+    <Switch>
+      <Route
+        path="/каталог/:categoty/:subcategory/:product"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "Product" */ "@components/Product")
+        )}
+      />
+
+      <Route
+        path="/каталог/:categoty/:subcategory"
+        component={AsyncComponent(() =>
+          import(
+            /* webpackChunkName: "ProductList" */ "@components/ProductList"
+          )
+        )}
+      />
+      <Route
+        path="/каталог/:categoty?"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "Catalog" */ "@components/Catalog")
+        )}
+      />
+    </Switch>
   </Layout>
 );

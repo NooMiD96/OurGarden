@@ -8,7 +8,6 @@ import KnownAction, * as t from "./actionsType";
 export const reducer: Reducer<ICatalogState> = (state: ICatalogState = unloadedState, action: KnownAction) => {
   switch (action.type) {
     case t.GET_SUBCATEGORY_LIST_REQUEST:
-    case t.GET_PRODUCT_LIST_REQUEST:
       return {
         ...state,
         pending: true,
@@ -21,19 +20,17 @@ export const reducer: Reducer<ICatalogState> = (state: ICatalogState = unloadedS
         subcategoryList: action.payload,
       } as ICatalogState;
 
-    case t.GET_PRODUCT_LIST_SUCCESS:
-      return {
-        ...state,
-        pending: false,
-        categoryList: action.payload
-      } as ICatalogState;
-
     case t.GET_SUBCATEGORY_LIST_ERROR:
-    case t.GET_PRODUCT_LIST_ERROR:
       return {
         ...state,
         pending: false,
         errorInner: action.errorMessage
+      } as ICatalogState;
+
+    case t.CLEAN_SUBCATEGORY_LIST:
+      return {
+        ...state,
+        subcategoryList: []
       } as ICatalogState;
 
     case t.CLEAN_ERROR_INNER:
