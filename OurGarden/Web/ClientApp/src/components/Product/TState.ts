@@ -10,11 +10,13 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IProductState & RouterState & RouteComponentProps<{
-  categoty: string;
-  subcategory: string;
-  product: string;
-}>;
+export type TStateToProps = IProductState
+  & RouterState
+  & RouteComponentProps<{
+    categoty: string;
+    subcategory: string;
+    product: string;
+  }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
   & TOwnProps;

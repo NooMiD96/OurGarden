@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
@@ -12,15 +11,13 @@ import {
 import Component from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-  categoryList: state.sider.categoryList,
-  ...state.catalog,
+  ...state.productList,
   ...state.router,
   ...ownProp,
 }) as TMapStateToProps;
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
-  push
 };
 
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(

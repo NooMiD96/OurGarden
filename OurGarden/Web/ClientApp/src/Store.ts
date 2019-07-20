@@ -9,6 +9,9 @@ import { reducer as SiderReducer } from "@components/Main/Sider/reducer";
 import { ICatalogState } from "@components/Catalog/State";
 import { reducer as CatalogReducer } from "@components/Catalog/reducer";
 
+import { IProductListState } from "@components/ProductList/State";
+import { reducer as ProductListReducer } from "@components/ProductList/reducer";
+
 import { IProductState } from "@components/Product/State";
 import { reducer as ProductReducer } from "@components/Product/reducer";
 
@@ -19,13 +22,16 @@ export interface IApplicationState {
   sider: ISiderState;
 
   catalog: ICatalogState;
+  productList: IProductListState;
   product: IProductState;
 }
 
 export const reducers = {
   home: HomeReducer,
   sider: SiderReducer,
+
   catalog: CatalogReducer,
+  productList: ProductListReducer,
   product: ProductReducer,
 };
 

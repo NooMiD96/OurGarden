@@ -1,9 +1,8 @@
 import { RouteComponentProps } from "react-router-dom";
-import { RouterState, Push } from "connected-react-router";
+import { RouterState } from "connected-react-router";
 
-import { ICatalogState } from "./State";
+import { IProductListState } from "./State";
 import { actionCreators } from "./actions";
-import { ICategory } from "../Main/Sider/State";
 
 // -----------------------------
 // STATE OF COMPONENT
@@ -11,22 +10,19 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = ICatalogState
+export type TStateToProps = IProductListState
   & RouterState
   & RouteComponentProps<{
     categoty: string;
-  }>
-  & {
-    categoryList: ICategory[];
-  };
+    subcategory: string;
+  }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
   & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps
-  & { push: Push };
+export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps
