@@ -21,6 +21,7 @@ namespace Database.Repositories
         Task UpdateSubcategory(Subcategory subcategory);
         Task DeleteSubcategory(string subcategoryId, string categoryId);
         
+        Task<IEnumerable<Product>> GetSearchProducts(string search);
         Task<IEnumerable<Product>> GetAllProducts();
         Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId);
         Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
