@@ -1,10 +1,12 @@
 import React from "react";
 
+import Card from "@core/antd/Card";
+import Row from "@src/core/antd/Row";
+import Col from "@src/core/antd/Col";
+
 import HomeWrapper from "./style/Catalog.style";
 
-import Card from "@core/antd/Card";
 import { TState, TComponentState } from "../TState";
-import { Row, Col } from "@src/core/antd";
 
 export class Catalog extends React.PureComponent<TState, TComponentState> {
   cardStyle = {

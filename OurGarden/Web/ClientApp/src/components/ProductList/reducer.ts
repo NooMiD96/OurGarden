@@ -17,7 +17,7 @@ export const reducer: Reducer<IProductListState> = (state: IProductListState = u
       return {
         ...state,
         pending: false,
-        product: action.payload
+        productList: action.payload
       } as IProductListState;
 
     case t.GET_PRODUCT_LIST_ERROR:
