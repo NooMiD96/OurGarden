@@ -28,7 +28,7 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _repository.GetAllProducts();
@@ -49,7 +49,7 @@ namespace Web.Controllers.AdminApi
             return Ok(product);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> AddProduct(
             [FromForm]ProductDTO productDTO)
         {
@@ -89,7 +89,7 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task<IActionResult> UpdateProduct(
             [FromForm]ProductDTO productDTO)
         {
@@ -143,11 +143,11 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("{categoryId}/{subcategoryId}/{productId}")]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteCategory(
-            [FromRoute]string categoryId,
-            [FromRoute]string subcategoryId,
-            [FromRoute]string productId)
+            [FromQuery]string categoryId,
+            [FromQuery]string subcategoryId,
+            [FromQuery]string productId)
         {
             await _repository.DeleteProduct(productId, subcategoryId, categoryId);
             return Ok();

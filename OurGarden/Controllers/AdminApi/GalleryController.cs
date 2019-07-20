@@ -27,7 +27,7 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetGalleries()
         {
             var galleries = await _repository.GetGalleries();
@@ -46,7 +46,7 @@ namespace Web.Controllers.AdminApi
             return Ok(gallery);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> AddGallery(
             [FromForm]Gallery gallery)
         {
@@ -73,7 +73,7 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task<IActionResult> UpdateGallery(
             [FromForm]Gallery gallery)
         {
@@ -118,7 +118,7 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteGallery(
             [FromQuery]int galleryId)
         {

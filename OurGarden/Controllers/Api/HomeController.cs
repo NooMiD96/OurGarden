@@ -75,7 +75,7 @@ namespace Web.Controllers.Api
             return Success(result);
         }
 
-        [HttpGet("search/")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> SearchProduct([FromQuery] string search)
         {
             if (String.IsNullOrEmpty(search))

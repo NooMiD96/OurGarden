@@ -26,7 +26,7 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetSubcategories()
         {
             var subcategories = await _repository.GetAllSubcategories();
@@ -46,7 +46,7 @@ namespace Web.Controllers.AdminApi
             return Ok(subcategory);
         }        
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> AddSubcategory(
             [FromForm]SubcategoryDTO subcategoryDTO)
         {
@@ -78,7 +78,7 @@ namespace Web.Controllers.AdminApi
             }            
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task<IActionResult> UpdateSubcategory(
             [FromForm]SubcategoryDTO subcategoryDTO)
         {
@@ -123,7 +123,7 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteCategory(
             [FromQuery]string categoryId,
             [FromQuery]string subcategoryId)
