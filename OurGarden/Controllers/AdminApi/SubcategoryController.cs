@@ -33,10 +33,10 @@ namespace Web.Controllers.AdminApi
             return Ok(subcategories);
         }
 
-        [HttpGet("{categoryId}/{subcategoryId}")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetSubcategory(
-            [FromRoute]string categoryId,
-            [FromRoute]string subcategoryId)
+            [FromQuery]string categoryId,
+            [FromQuery]string subcategoryId)
         {
             var subcategory = await _repository.GetSubcategory(subcategoryId, categoryId);
 
@@ -123,10 +123,10 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("{categoryId}/{subcategoryId}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteCategory(
-            [FromRoute]string categoryId,
-            [FromRoute]string subcategoryId)
+            [FromQuery]string categoryId,
+            [FromQuery]string subcategoryId)
         {
             await _repository.DeleteSubcategory(subcategoryId, categoryId);
             return Ok();

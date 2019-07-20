@@ -35,11 +35,11 @@ namespace Web.Controllers.AdminApi
             return Ok(products);
         }
 
-        [HttpGet("{categoryId}/{subcategoryId}/{productId}")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetProduct(
-            [FromRoute]string categoryId,
-            [FromRoute]string subcategoryId,
-            [FromRoute]string productId)
+            [FromQuery]string categoryId,
+            [FromQuery]string subcategoryId,
+            [FromQuery]string productId)
         {
             var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
 

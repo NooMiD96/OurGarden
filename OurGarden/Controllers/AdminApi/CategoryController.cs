@@ -33,9 +33,9 @@ namespace Web.Controllers.AdminApi
             return Ok(categories);
         }
 
-        [HttpGet("{categoryId}")]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetCategory(
-            [FromRoute]string categoryId)
+            [FromQuery]string categoryId)
         {
             var category = await _repository.GetCategory(categoryId);
 
@@ -119,9 +119,9 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("{categoryId}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteCategory(
-            [FromRoute]string categoryId)
+            [FromQuery]string categoryId)
         {
             await _repository.DeleteCategory(categoryId);
             return Ok();
