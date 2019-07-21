@@ -3,13 +3,13 @@ import React from "react";
 // import Alert from "@core/components/Alert";
 import Layout from "@core/antd/Layout";
 
-import ProductWrapper from "./style/Product.style";
+import UserCardWrapper from "./style/UserCard.style";
 
 import { TState, TComponentState } from "../TState";
 
 const { Content } = Layout;
 
-export class Product extends React.PureComponent<TState, TComponentState> {
+export class UserCard extends React.PureComponent<TState, TComponentState> {
   componentDidMount() {}
 
   componentDidUpdate() {}
@@ -18,13 +18,13 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { errorInner, cleanErrorInner } = this.props;
 
     return (
-      <ProductWrapper>
+      <UserCardWrapper>
         <Layout>
-          <Content>hellow Product</Content>
+          <Content>hellow UserCard</Content>
         </Layout>
-      </ProductWrapper>
+      </UserCardWrapper>
     );
   }
 }
 
-export default Product;
+export default UserCard;

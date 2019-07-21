@@ -40,5 +40,12 @@ export const AppRoutes = (
         )}
       />
     </Switch>
+
+    <Route
+      path="/Корзина"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "UserCard" */ "@components/UserCard")
+      )}
+    />
   </Layout>
 );
