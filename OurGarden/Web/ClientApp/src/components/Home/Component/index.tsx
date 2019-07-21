@@ -64,24 +64,24 @@ export class Home extends React.PureComponent<TState, TComponentState> {
                 </div>
               ))}
             </Carousel>
-            <span
-              className="carousel-slide-changer carousel-prev-slide"
+            <div
+              className="carousel-slide-changer carousel-slide-prev"
               onClick={this.prevSlide}
               onKeyDown={this.prevSlide}
               role="button"
               tabIndex={-1}
             >
-              prev
-            </span>
-            <span
-              className="carousel-slide-changer carousel-next-slide"
+              <span className="carousel-slide" />
+            </div>
+            <div
+              className="carousel-slide-changer carousel-slide-next"
               onClick={this.nextSlide}
               onKeyDown={this.nextSlide}
               role="button"
               tabIndex={-1}
             >
-              next
-            </span>
+              <span className="carousel-slide" />
+            </div>
           </React.Fragment>
         )}
       </HomeWrapper>
