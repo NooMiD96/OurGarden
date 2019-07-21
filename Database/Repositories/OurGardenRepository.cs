@@ -246,5 +246,43 @@ namespace Database.Repositories
         }
         #endregion
 
+        #region Video
+
+        public async Task<IEnumerable<Video>> GetVideo() =>
+           await _context.Video
+           .ToListAsync();
+
+        public async Task<Video> GetVideo(int videoId) =>
+            await _context.Video
+            .FirstOrDefaultAsync(x => x.VideoId == videoId);
+
+        public async Task AddVideo(Video video)
+        {
+            var chek = await _context.Video.FirstOrDefaultAsync(x => x.VideoId == video.VideoId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            await _context.Video.AddAsync(video);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateVideo(Video video)
+        {
+            _context.Video.Update(video);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteVideo(int videoId)
+        {
+            var video = await _context.Video.FirstOrDefaultAsync(x => x.VideoId == videoId);
+            if (video == null)
+                return;
+            _context.Video.Remove(video);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
     }
 }
