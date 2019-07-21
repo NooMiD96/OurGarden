@@ -9,7 +9,7 @@ import CompanyInfo from "./CompanyInfo";
 import Card from "./Card";
 
 export const Header = () => (
-  <>
+  <React.Fragment>
     <Row type="flex" className="header-wrapper">
       <Col>
         <SearchProduct />
@@ -19,7 +19,7 @@ export const Header = () => (
         <Card />
       </Col>
     </Row>
-  </>
+  </React.Fragment>
 );
 
 export default Header;

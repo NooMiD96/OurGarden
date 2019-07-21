@@ -26,6 +26,10 @@ export default styled.div`
             border-radius: 0;
             border-color: ${darkGreenColor};
             font-weight: 100;
+
+            &:focus {
+              box-shadow: none;
+            }
           }
 
           .ant-input-group-addon {
@@ -38,6 +42,10 @@ export default styled.div`
               border-color: ${darkGreenColor};
 
               font-weight: 500;
+
+              &:hover {
+                color: #fff;
+              }
             }
           }
         }
