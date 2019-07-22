@@ -49,6 +49,13 @@ namespace Database.Repositories
         Task AddVideo(Video video);
         Task UpdateVideo(Video video);
         Task DeleteVideo(int videoId);
+
+        Task<IEnumerable<Order>> GetOrders();
+        Task<Order> GetOrder(int orderId);
+        Task AddOrder(Order order);
+        Task UpdateOrder(Order order);
+        Task DeleteOrder(int orderId);
+        Task<OrderStatus> GetStatus(int statusId);
     }   
 }       
         
