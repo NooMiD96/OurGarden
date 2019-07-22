@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Push } from "connected-react-router";
 
 import Card from "@core/antd/Card";
+import Button from "@src/core/antd/Button";
+import NumberInput from "@src/core/components/NumberInput";
 
 import { IProduct } from "@src/components/Product/State";
-import Input from "@src/core/antd/Input";
-import Button from "@src/core/antd/Button";
 
 export interface IProductCard {
   pending: boolean;
@@ -15,6 +15,7 @@ export interface IProductCard {
 
 const ProductCard = (props: IProductCard) => {
   const { pending, product, push } = props;
+  const [itemCount, setItemCount] = useState("1");
 
   return (
     <Card
@@ -36,7 +37,11 @@ const ProductCard = (props: IProductCard) => {
               р.
             </span>
             <span>
-              <Input addonAfter={<Button type="default" block>В корзину</Button>} />
+              <NumberInput
+                value={itemCount}
+                onValueChange={setItemCount}
+                addonAfter={<Button type="default" block>В корзину</Button>}
+              />
             </span>
           </div>
         )}

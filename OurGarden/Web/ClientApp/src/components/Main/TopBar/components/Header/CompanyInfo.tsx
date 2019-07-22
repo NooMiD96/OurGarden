@@ -4,7 +4,7 @@ import Phone from "@src/assets/svg/phone.svg";
 import MapPin from "@src/assets/svg/map-pin.svg";
 
 const CompanyInfo = () => (
-  <>
+  <React.Fragment>
     <div className="company-info place">
       <i className="anticon">
         <MapPin />
@@ -18,7 +18,7 @@ const CompanyInfo = () => (
       </i>
       <span className="info">8 800 520 55 66</span>
     </div>
-  </>
+  </React.Fragment>
 );
 
 export default CompanyInfo;

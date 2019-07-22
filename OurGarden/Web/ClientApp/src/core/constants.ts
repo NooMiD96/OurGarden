@@ -10,7 +10,8 @@ export const greenColor = "#50ae2f";
 export const mainColor = greenColor;
 export const lightGreenColor = "#78ff59";
 
-export const borderColor = "#CECECE";
+export const borderColor = "#cecece";
+export const arrowBorderColor = "#bad150";
 //#endregion
 
 //#region SVG Icons

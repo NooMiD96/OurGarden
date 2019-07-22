@@ -22,7 +22,8 @@
       flex: 0 1 70%;
     }
 
-    > div {
+    > div,
+    > span {
       margin-left: 2em;
     }
 
@@ -54,13 +55,19 @@
       }
     }
 
-    .archive-icon {
+    .archive-icon,
+    .ant-badge {
       display: flex;
       flex: 1 0 auto;
+    }
 
-      path {
-        stroke: $greyColor;
-      }
+    .ant-badge .ant-badge-count {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .archive-icon path {
+      stroke: $greyColor;
     }
   }
 }

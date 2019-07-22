@@ -28,6 +28,12 @@
   src: url(../fonts/ProbaPro-Italic.ttf);
   font-style: italic;
 }
+
+@font-face {
+  font-family: "ProbaPro";
+  src: url(../fonts/ProbaPro-Bold.ttf);
+  font-weight: 700;
+}
 /* END ProbaPro */
 
 /* BerlingskeSerif */
