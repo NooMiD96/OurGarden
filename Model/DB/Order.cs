@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,10 +28,13 @@ namespace Model.DB
         [Required]
         public DateTime Date { get; set; }
 
+        public string Description { get; set; }
+
         [Required]
         public double TotalPrice { get; set; }
 
         public ICollection<OrderPosition> OrderPositions { get; set; }
+
         public OrderStatus Status { get; set; }
     }
 }
