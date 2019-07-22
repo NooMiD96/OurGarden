@@ -25,14 +25,14 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetAll()
         {
             var news = await _repository.GetOrders();
             return Ok(news);
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetOrder(
+        public async Task<IActionResult> Get(
             [FromQuery]int orderId)
         {
             var order = await _repository.GetOrder(orderId);
@@ -41,32 +41,10 @@ namespace Web.Controllers.AdminApi
                 return BadRequest();
 
             return Ok(order);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrder(
-            [FromForm]Order order)
-        {
-            //todo: убрать Requared у CreationDate
-            order.Date = DateTime.Now;
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                await _repository.AddOrder(order);
-                return Ok(order);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        }        
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateOrder(
+        public async Task<IActionResult> Update(
             [FromQuery]int orderId,
             [FromQuery]int statusId,
             [FromQuery]string description)
@@ -98,7 +76,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteOrder(
+        public async Task<IActionResult> Delete(
             [FromQuery]int orderId)
         {
             await _repository.DeleteNews(orderId);

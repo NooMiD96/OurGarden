@@ -24,27 +24,8 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllNews()
-        {
-            var news = await _repository.GetNews();
-            return Ok(news);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetNews(
-            [FromQuery]int newsId)
-        {
-            var news = await _repository.GetNews(newsId);
-
-            if (news == null)
-                return BadRequest();
-
-            return Ok(news);
-        }
-
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddNews(
+        public async Task<IActionResult> Add(
             [FromForm]News news)
         {
             if (!ModelState.IsValid || news.File?.Length == 0)
@@ -67,7 +48,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateNews(
+        public async Task<IActionResult> Update(
             [FromForm]News news)
         {
             try
@@ -93,7 +74,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteNews(
+        public async Task<IActionResult> Delete(
             [FromQuery]int newsId)
         {
             await _repository.DeleteNews(newsId);

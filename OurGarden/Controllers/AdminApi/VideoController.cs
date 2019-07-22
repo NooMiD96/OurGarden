@@ -24,27 +24,8 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllVideo()
-        {
-            var video = await _repository.GetVideo();
-            return Ok(video);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetVideo(
-            [FromQuery]int videoId)
-        {
-            var video = await _repository.GetVideo(videoId);
-
-            if (video == null)
-                return BadRequest();
-
-            return Ok(video);
-        }
-
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddVideo(
+        public async Task<IActionResult> Add(
             [FromForm]Video video)
         {
             if (!ModelState.IsValid)
@@ -64,7 +45,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateVideo(
+        public async Task<IActionResult> Update(
             [FromForm]Video video)
         {
             try
@@ -85,7 +66,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteVideo(
+        public async Task<IActionResult> Delete(
             [FromQuery]int videoId)
         {
             await _repository.DeleteVideo(videoId);
