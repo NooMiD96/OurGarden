@@ -246,5 +246,96 @@ namespace Database.Repositories
         }
         #endregion
 
+        #region Video
+
+        public async Task<IEnumerable<Video>> GetVideo() =>
+           await _context.Video
+           .ToListAsync();
+
+        public async Task<Video> GetVideo(int videoId) =>
+            await _context.Video
+            .FirstOrDefaultAsync(x => x.VideoId == videoId);
+
+        public async Task AddVideo(Video video)
+        {
+            var chek = await _context.Video.FirstOrDefaultAsync(x => x.VideoId == video.VideoId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            await _context.Video.AddAsync(video);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateVideo(Video video)
+        {
+            _context.Video.Update(video);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteVideo(int videoId)
+        {
+            var video = await _context.Video.FirstOrDefaultAsync(x => x.VideoId == videoId);
+            if (video == null)
+                return;
+            _context.Video.Remove(video);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Order
+
+        public async Task<IEnumerable<Order>> GetOrders() =>
+           await _context.Order
+            .Include(x => x.OrderPositions)
+            .Include(x => x.Status)
+           .ToListAsync();
+
+        public async Task<Order> GetOrder(int orderId)
+        {
+            var order = await _context.Order
+            .Include(x => x.OrderPositions)
+            .Include(x => x.Status)
+            .FirstOrDefaultAsync(x => x.OrderId == orderId);
+            order.AllStatuses = await _context.Status.ToListAsync();
+            return order;
+        }
+            
+
+        public async Task AddOrder(Order order)
+        {
+            var chek = await _context.Order.FirstOrDefaultAsync(x => x.OrderId == order.OrderId);
+            if (chek != null)
+            {
+                throw new Exception();
+            }
+            await _context.Order.AddAsync(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateOrder(Order order)
+        {
+            _context.Order.Update(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteOrder(int orderId)
+        {
+            var order = await _context.Order
+                .Include(x => x.OrderPositions)
+                .Include(x => x.Status)
+                .FirstOrDefaultAsync(x => x.OrderId == orderId);
+            if (order == null)
+                return;
+            _context.Order.Remove(order);
+            //_context.OrderPosition.RemoveRange(order.OrderPositions);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<OrderStatus> GetStatus(int statusId) => 
+            await _context.Status.FirstOrDefaultAsync(x => x.StatusId == statusId);
+
+        #endregion
     }
 }

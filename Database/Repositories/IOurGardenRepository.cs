@@ -44,6 +44,18 @@ namespace Database.Repositories
         Task AddFile(Photo photo);
         Task DeleteFile(Guid photoId);
         
+        Task<IEnumerable<Video>> GetVideo();
+        Task<Video> GetVideo(int videoId);
+        Task AddVideo(Video video);
+        Task UpdateVideo(Video video);
+        Task DeleteVideo(int videoId);
+
+        Task<IEnumerable<Order>> GetOrders();
+        Task<Order> GetOrder(int orderId);
+        Task AddOrder(Order order);
+        Task UpdateOrder(Order order);
+        Task DeleteOrder(int orderId);
+        Task<OrderStatus> GetStatus(int statusId);
     }   
 }       
         

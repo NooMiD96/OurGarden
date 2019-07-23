@@ -16,30 +16,27 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : ControllerBase
+    public class VideoController : ControllerBase
     {
         public readonly IOurGardenRepository _repository;
-        public NewsController(IOurGardenRepository repository)
+        public VideoController(IOurGardenRepository repository)
         {
             _repository = repository;
         }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Add(
-            [FromForm]News news)
+            [FromForm]Video video)
         {
-            if (!ModelState.IsValid || news.File?.Length == 0)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
             try
             {
-                var fileHelper = new FileHelper(_repository);
-                news.Photo = await fileHelper.AddFileToRepository(news.File);
-
-                await _repository.AddNews(news);
-                return Ok(news);
+                await _repository.AddVideo(video);
+                return Ok(video);
             }
             catch (Exception)
             {
@@ -49,7 +46,7 @@ namespace Web.Controllers.AdminApi
 
         [HttpPut("[action]")]
         public async Task<IActionResult> Update(
-            [FromForm]News news)
+            [FromForm]Video video)
         {
             try
             {
@@ -57,13 +54,8 @@ namespace Web.Controllers.AdminApi
                 {
                     return BadRequest();
                 }
-
-                if (news.File?.Length != 0)
-                {
-                    var fileHelper = new FileHelper(_repository);
-                    news.Photo = await fileHelper.AddFileToRepository(news.File);
-                }
-                await _repository.UpdateNews(news);
+               
+                await _repository.UpdateVideo(video);
 
                 return Ok();
             }
@@ -75,9 +67,9 @@ namespace Web.Controllers.AdminApi
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> Delete(
-            [FromQuery]int newsId)
+            [FromQuery]int videoId)
         {
-            await _repository.DeleteNews(newsId);
+            await _repository.DeleteVideo(videoId);
             return Ok();
         }
     }

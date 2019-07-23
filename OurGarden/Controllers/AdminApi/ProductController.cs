@@ -29,28 +29,14 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetAll()
         {
             var products = await _repository.GetAllProducts();
             return Ok(products);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetProduct(
-            [FromQuery]string categoryId,
-            [FromQuery]string subcategoryId,
-            [FromQuery]string productId)
-        {
-            var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
-
-            if (product == null)
-                return BadRequest();
-
-            return Ok(product);
-        }
-
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddProduct(
+        public async Task<IActionResult> Add(
             [FromForm]ProductDTO productDTO)
         {
             if (!ModelState.IsValid
@@ -90,7 +76,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateProduct(
+        public async Task<IActionResult> Update(
             [FromForm]ProductDTO productDTO)
         {
             try
@@ -144,7 +130,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteCategory(
+        public async Task<IActionResult> Delete(
             [FromQuery]string categoryId,
             [FromQuery]string subcategoryId,
             [FromQuery]string productId)

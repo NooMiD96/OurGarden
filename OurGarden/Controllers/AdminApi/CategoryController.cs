@@ -24,17 +24,10 @@ namespace Web.Controllers.AdminApi
         public CategoryController(IOurGardenRepository repository)
         {
             _repository = repository;
-        }
+        }        
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetCategories()
-        {
-            var categories = await _repository.GetCategories();
-            return Ok(categories);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetCategory(
+        public async Task<IActionResult> Get(
             [FromQuery]string categoryId)
         {
             var category = await _repository.GetCategory(categoryId);
@@ -46,7 +39,7 @@ namespace Web.Controllers.AdminApi
         }        
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddCategory(
+        public async Task<IActionResult> Add(
             [FromForm]CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid || categoryDTO.Photo?.Length == 0)
@@ -76,7 +69,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateCategory(
+        public async Task<IActionResult> Update(
             [FromForm]CategoryDTO categoryDTO)
         {
             try
@@ -120,7 +113,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteCategory(
+        public async Task<IActionResult> Delete(
             [FromQuery]string categoryId)
         {
             await _repository.DeleteCategory(categoryId);
