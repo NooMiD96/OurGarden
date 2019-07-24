@@ -18,7 +18,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class SubcategoryController : ControllerBase
+    public class SubcategoryController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public SubcategoryController(IOurGardenRepository repository)
@@ -30,7 +30,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetAll()
         {
             var subcategories = await _repository.GetAllSubcategories();
-            return Ok(subcategories);
+            return Success(subcategories);
         }
 
         [HttpGet("[action]")]
@@ -41,9 +41,9 @@ namespace Web.Controllers.AdminApi
             var subcategory = await _repository.GetSubcategory(subcategoryId, categoryId);
 
             if (subcategory == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(subcategory);
+            return Success(subcategory);
         }        
 
         [HttpPost("[action]")]
@@ -53,7 +53,7 @@ namespace Web.Controllers.AdminApi
             if (!ModelState.IsValid || subcategoryDTO.Photo?.Length == 0 
                 || string.IsNullOrEmpty(subcategoryDTO.NewCategoryId))
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
@@ -70,11 +70,11 @@ namespace Web.Controllers.AdminApi
                 };
                 await _repository.AddSubcategory(subcategory);
 
-                return Ok(subcategory);
+                return Success(subcategory);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }            
         }
 
@@ -86,7 +86,7 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
                 var oldSubcategory = await _repository.GetSubcategory( subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
                 var file = oldSubcategory.Photo;
@@ -115,11 +115,11 @@ namespace Web.Controllers.AdminApi
                     await _repository.UpdateSubcategory(oldSubcategory);
                 }
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -129,7 +129,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]string subcategoryId)
         {
             await _repository.DeleteSubcategory(subcategoryId, categoryId);
-            return Ok();
+            return Success(true);
         }
     }
 }

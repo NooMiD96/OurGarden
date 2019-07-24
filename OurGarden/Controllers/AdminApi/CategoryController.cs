@@ -18,7 +18,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public CategoryController(IOurGardenRepository repository)
@@ -33,9 +33,9 @@ namespace Web.Controllers.AdminApi
             var category = await _repository.GetCategory(categoryId);
 
             if (category == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(category);
+            return Success(category);
         }        
 
         [HttpPost("[action]")]
@@ -44,7 +44,7 @@ namespace Web.Controllers.AdminApi
         {
             if (!ModelState.IsValid || categoryDTO.Photo?.Length == 0)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
@@ -60,11 +60,11 @@ namespace Web.Controllers.AdminApi
                 };
                 await _repository.AddCategory(category);
 
-                return Ok(category);
+                return Success(category);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }            
         }
 
@@ -76,7 +76,7 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
                 var oldCategory = await _repository.GetCategory(categoryDTO.CategoryId);
                 var file = oldCategory.Photo;
@@ -104,11 +104,11 @@ namespace Web.Controllers.AdminApi
                     await _repository.UpdateCategory(oldCategory);
                 }
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -117,7 +117,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]string categoryId)
         {
             await _repository.DeleteCategory(categoryId);
-            return Ok();
+            return Success(true);
         }
     }
 }

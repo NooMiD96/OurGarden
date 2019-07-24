@@ -16,7 +16,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : ControllerBase
+    public class NewsController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public NewsController(IOurGardenRepository repository)
@@ -30,7 +30,7 @@ namespace Web.Controllers.AdminApi
         {
             if (!ModelState.IsValid || news.File?.Length == 0)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
@@ -39,11 +39,11 @@ namespace Web.Controllers.AdminApi
                 news.Photo = await fileHelper.AddFileToRepository(news.File);
 
                 await _repository.AddNews(news);
-                return Ok(news);
+                return Success(news);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -55,7 +55,7 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
 
                 if (news.File?.Length != 0)
@@ -65,11 +65,11 @@ namespace Web.Controllers.AdminApi
                 }
                 await _repository.UpdateNews(news);
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -78,7 +78,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]int newsId)
         {
             await _repository.DeleteNews(newsId);
-            return Ok();
+            return Success(true);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoController : ControllerBase
+    public class VideoController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public VideoController(IOurGardenRepository repository)
@@ -30,17 +30,17 @@ namespace Web.Controllers.AdminApi
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
             {
                 await _repository.AddVideo(video);
-                return Ok(video);
+                return Success(video);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -52,16 +52,16 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
                
                 await _repository.UpdateVideo(video);
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -70,7 +70,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]int videoId)
         {
             await _repository.DeleteVideo(videoId);
-            return Ok();
+            return Success(true);
         }
     }
 }

@@ -24,6 +24,17 @@ const loadingComponent = () => (
   </Option>
 );
 
+const searchListIsEmpty = () => (
+  <Option
+    key="search-list-is-empty"
+    className="search-list-is-empty"
+    disabled
+    style={{ display: "flex" }}
+  >
+    По вашему запросу ничего не найдено...
+  </Option>
+);
+
 const fetchProducts = async (search: string) => {
   return await fetch(`/api/Home/SearchProduct?search=${search}`, {
     credentials: "same-origin",
@@ -47,7 +58,7 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
         return;
       }
 
-      const data: IProduct[] = await fetchProducts(value);
+      const { data }: { data: IProduct[] } = await fetchProducts(value);
       setProductList(data);
     } catch (err) {
       console.warn(err);
@@ -68,13 +79,23 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
 
   const debounceOnSearch = debounce(onSearch, 350);
 
+  let dataSource: any[] = [];
+
+  if (pending) {
+    dataSource.push(loadingComponent());
+  } else if (!productList.length && searchIsActive) {
+    dataSource.push(searchListIsEmpty());
+  } else if (productList.length) {
+    dataSource = productList.map(Product);
+  }
+
   return (
     <React.Fragment>
       <AutoComplete
         ref={autoCompleteEl}
         enterButton="Найти"
         placeholder="Поиск..."
-        dataSource={pending ? [loadingComponent()] : productList.map(Product)}
+        dataSource={dataSource}
         onSearch={debounceOnSearch}
         getPopupContainer={() =>
           document.getElementById("product-popup-container")!

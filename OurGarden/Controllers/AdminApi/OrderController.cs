@@ -16,7 +16,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public OrderController(IOurGardenRepository repository)
@@ -28,7 +28,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetAll()
         {
             var news = await _repository.GetOrders();
-            return Ok(news);
+            return Success(news);
         }
 
         [HttpGet("[action]")]
@@ -38,9 +38,9 @@ namespace Web.Controllers.AdminApi
             var order = await _repository.GetOrder(orderId);
 
             if (order == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(order);
+            return Success(order);
         }        
 
         [HttpPut("[action]")]
@@ -67,11 +67,11 @@ namespace Web.Controllers.AdminApi
 
                 await _repository.UpdateOrder(order);
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]int orderId)
         {
             await _repository.DeleteNews(orderId);
-            return Ok();
+            return Success(true);
         }
     }
 }

@@ -1,11 +1,14 @@
+import { IPhoto } from "@src/core/IPhoto";
+
 // -----------------
 //#region STATE
 export interface INew {
-  id: number;
+  newsId: number;
   title: string;
   date: Date;
+  alias: string;
   description: string;
-  photo: string;
+  photo: IPhoto;
 }
 
 export interface IHomeState {

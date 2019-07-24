@@ -19,36 +19,11 @@ namespace Web.Controllers.Api
             _repository = repository;
         }
 
-        //todo: убрать
-        [HttpGet("[action]")]
-        public IActionResult GetNewsList()
-        {
-            var any1 = new
-            {
-                id = 0,
-                title = "Title 1",
-                date = DateTime.Parse("2019-07-06T15:00:00"),
-                description = "Test title 1 record",
-                photo = "http://xn----7sbbgjb4cubzsm.xn--p1ai/uploads/catalog/mini/0bb6dac67c3d9659eaeb416f74b428bb.jpg"
-            };
-
-            var any2 = new
-            {
-                id = 1,
-                title = "Title 2",
-                date = DateTime.Parse("2019-07-06T16:00:00"),
-                description = "Test title 2 record",
-                photo = "http://xn----7sbbgjb4cubzsm.xn--p1ai/uploads/catalog/mini/b09422b13492b92718db06ac132f3397.jpg"
-            };
-
-            return Success(new List<object>() { any1, any2 });
-        }
-
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllNews()
         {
             var news = await _repository.GetNews();
-            return Ok(news);
+            return Success(news);
         }
 
         [HttpGet("[action]")]
@@ -58,9 +33,9 @@ namespace Web.Controllers.Api
             var news = await _repository.GetNews(newsId);
 
             if (news == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(news);
+            return Success(news);
         }
 
         [HttpGet("[action]")]
@@ -76,7 +51,7 @@ namespace Web.Controllers.Api
         {
             if (String.IsNullOrEmpty(categoryId))
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             var result = await _repository.GetSubcategories(categoryId);
@@ -88,7 +63,7 @@ namespace Web.Controllers.Api
         {
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             var result = await _repository.GetProducts(categoryId, subcategoryId);
@@ -105,15 +80,15 @@ namespace Web.Controllers.Api
 
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId) || String.IsNullOrEmpty(productId))
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
 
             if (product == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(product);
+            return Success(product);
         }
 
         [HttpGet("[action]")]
@@ -121,17 +96,17 @@ namespace Web.Controllers.Api
         {
             if (String.IsNullOrEmpty(search))
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
             var result = await _repository.GetSearchProducts(search);
-            return Ok(result);
+            return Success(result);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetGalleries()
         {
             var galleries = await _repository.GetGalleries();
-            return Ok(galleries);
+            return Success(galleries);
         }
 
         [HttpGet("[action]")]
@@ -141,9 +116,9 @@ namespace Web.Controllers.Api
             var gallery = await _repository.GetGallery(galleryId);
 
             if (gallery == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(gallery);
+            return Success(gallery);
         }
 
         [HttpPost("[action]")]
@@ -154,17 +129,17 @@ namespace Web.Controllers.Api
             order.Date = DateTime.Now;
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
             {
                 await _repository.AddOrder(order);
-                return Ok(order);
+                return Success(order);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -172,7 +147,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetAllVideo()
         {
             var video = await _repository.GetVideo();
-            return Ok(video);
+            return Success(video);
         }
 
         [HttpGet("[action]")]
@@ -182,9 +157,9 @@ namespace Web.Controllers.Api
             var video = await _repository.GetVideo(videoId);
 
             if (video == null)
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
 
-            return Ok(video);
+            return Success(video);
         }
     }
 }

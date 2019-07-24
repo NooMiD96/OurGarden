@@ -47,5 +47,40 @@ export const AppRoutes = (
         import(/* webpackChunkName: "UserCard" */ "@components/UserCard")
       )}
     />
+
+    <Route
+      path="/Акции"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "News" */ "@components/News")
+      )}
+    />
+
+    <Route
+      path="/Доставка-и-оплата"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Payment" */ "@components/Payment")
+      )}
+    />
+
+    <Route
+      path="/Ландшафтный-дизайн"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Design" */ "@components/Design")
+      )}
+    />
+
+    <Route
+      path="/Видеогалерея"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Videogalery" */ "@components/Videogalery")
+      )}
+    />
+
+    <Route
+      path="/Контакты"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Contacts" */ "@components/Contacts")
+      )}
+    />
   </Layout>
 );

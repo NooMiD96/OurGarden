@@ -19,7 +19,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class GalleryController : ControllerBase
+    public class GalleryController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public GalleryController(IOurGardenRepository repository)
@@ -33,7 +33,7 @@ namespace Web.Controllers.AdminApi
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
@@ -46,11 +46,11 @@ namespace Web.Controllers.AdminApi
                     gallery.Photos.Add(photo);
                 }
                 await _repository.AddGallery(gallery);
-                return Ok(gallery);
+                return Success(gallery);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -62,7 +62,7 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
 
                 var oldGallery = await _repository.GetGallery(gallery.GalleryId);
@@ -91,11 +91,11 @@ namespace Web.Controllers.AdminApi
 
                 await _repository.UpdateGallery(gallery);
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -104,7 +104,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]int galleryId)
         {
             await _repository.DeleteGallery(galleryId);
-            return Ok();
+            return Success(true);
         }
     }
 }

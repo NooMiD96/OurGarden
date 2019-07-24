@@ -34,7 +34,7 @@ export const actionsList = {
 const controllerName = "Home";
 export const actionCreators = {
   getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
-    const apiUrl = "GetNewsList";
+    const apiUrl = "GetAllNews";
 
     dispatch(actionCreators.cleanErrorInner());
 

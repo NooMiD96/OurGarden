@@ -44,7 +44,6 @@
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
-    <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
@@ -63,7 +62,6 @@
   </Target>
 
   <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
-    <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
@@ -85,18 +83,17 @@
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
+    <!--<Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />-->
 
     <!-- Include the newly-built files in the publish output -->
-    <ItemGroup>
-      <!--$(SpaRoot)build-ssr\**-->
+    <!--<ItemGroup>
       <DistFiles Include="$(SpaRoot)public\**;" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
-    </ItemGroup>
+    </ItemGroup>-->
   </Target>
 
 </Project>

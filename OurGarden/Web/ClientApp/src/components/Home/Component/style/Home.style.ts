@@ -82,6 +82,7 @@ export default styled.div`
 
     &.carousel-slide-prev {
       left: 0;
+      /* left: -28px; */
 
       > .carousel-slide {
         left: calc(50% - 12px);
@@ -101,6 +102,7 @@ export default styled.div`
     }
     &.carousel-slide-next {
       right: 0;
+      /* right: -28px; */
 
       > .carousel-slide {
         right: calc(50% + 8px);

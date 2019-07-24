@@ -20,7 +20,7 @@ namespace Web.Controllers.AdminApi
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         public readonly IOurGardenRepository _repository;
         public ProductController(IOurGardenRepository repository)
@@ -32,7 +32,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetAll()
         {
             var products = await _repository.GetAllProducts();
-            return Ok(products);
+            return Success(products);
         }
 
         [HttpPost("[action]")]
@@ -44,7 +44,7 @@ namespace Web.Controllers.AdminApi
                 || String.IsNullOrEmpty(productDTO.NewCategoryId) || !productDTO.AddPhotos.Any()
             )
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
 
             try
@@ -67,11 +67,11 @@ namespace Web.Controllers.AdminApi
                 };
                 await _repository.AddProduct(product);
 
-                return Ok(product);
+                return Success(product);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -83,7 +83,7 @@ namespace Web.Controllers.AdminApi
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
                 var oldProduct = await _repository.GetProduct(productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
                 var files = oldProduct.Photos;
@@ -121,11 +121,11 @@ namespace Web.Controllers.AdminApi
                     await _repository.UpdateProduct(oldProduct);
                 }
 
-                return Ok();
+                return Success(true);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
 
@@ -136,7 +136,7 @@ namespace Web.Controllers.AdminApi
             [FromQuery]string productId)
         {
             await _repository.DeleteProduct(productId, subcategoryId, categoryId);
-            return Ok();
+            return Success(true);
         }
     }
 }

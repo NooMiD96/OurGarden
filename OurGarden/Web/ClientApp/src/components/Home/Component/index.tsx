@@ -54,11 +54,12 @@ export class Home extends React.PureComponent<TState, TComponentState> {
               ref={ref => (this.caruselRef = ref)}
             >
               {newsList.map(x => (
-                <div className="slick-slide-content" key={x.id}>
+                <div className="slick-slide-content" key={x.newsId}>
                   <div
                     className="slick-slide-content-image"
                     style={{
-                      background: `center / contain no-repeat url(${x.photo})`
+                      background: `center / contain no-repeat url(${x.photo
+                        && x.photo.url})`
                     }}
                   />
                 </div>
