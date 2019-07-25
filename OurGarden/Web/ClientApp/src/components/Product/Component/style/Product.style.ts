@@ -6,6 +6,7 @@ export default styled.div`
   background: #fff;
   border: 1px solid ${borderColor};
   padding: 2rem;
+  overflow: auto;
 
   .product-photo {
     max-width: 40%;

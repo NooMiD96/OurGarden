@@ -1,8 +1,9 @@
 import React from "react";
 
-import Card from "@core/antd/Card";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
+import Card from "@core/antd/Card";
+import Loading from "@src/core/components/Loading";
 
 import HomeWrapper from "./style/Catalog.style";
 
@@ -55,6 +56,10 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.cleanSubcategoryList();
+  }
+
   render() {
     const { categoryList, subcategoryList, pending } = this.props;
 
@@ -70,22 +75,25 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
 
     return (
       <HomeWrapper>
-        <Row type="flex" gutter={16}>
-          {dataList.map(x => (
-            <Col {...this.cardStyle} key={x.link} className="card-wrapper">
-              <Card
-                loading={pending}
-                hoverable
-                cover={<img alt={x.alias} src={x.photo && x.photo.url} />}
-                onClick={() => {
-                  this.props.push(x.link);
-                }}
-              >
-                <Card.Meta title={x.alias} />
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {pending ? (
+          <Loading />
+        ) : (
+          <Row type="flex" gutter={16}>
+            {dataList.map(x => (
+              <Col {...this.cardStyle} key={x.link} className="card-wrapper">
+                <Card
+                  hoverable
+                  cover={<img alt={x.alias} src={x.photo && x.photo.url} />}
+                  onClick={() => {
+                    this.props.push(x.link);
+                  }}
+                >
+                  <Card.Meta title={x.alias} />
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </HomeWrapper>
     );
   }

@@ -5,23 +5,30 @@ import NumberInput from "@src/core/components/NumberInput";
 
 import AddToCardButtonWrapper from "./style/AddToCardButton.style";
 
+import { IMouseClickEvent } from "../IEvents";
+
 export interface IAddToCardButton {
   itemCount: string;
   setItemCount: (value: string) => void;
+  addToCard: (e: IMouseClickEvent) => void;
 }
 
 const AddToCardButton = (props: IAddToCardButton) => {
-  const { itemCount, setItemCount } = props;
+  const { itemCount, setItemCount, addToCard } = props;
 
   return (
     <AddToCardButtonWrapper className="card-add-button">
       <NumberInput
         value={itemCount}
         onValueChange={setItemCount}
-        addonAfter={<Button type="default" block>В корзину</Button>}
+        addonAfter={(
+          <Button type="default" block onClick={addToCard}>
+            В корзину
+          </Button>
+        )}
       />
     </AddToCardButtonWrapper>
-  )
-}
+  );
+};
 
 export default AddToCardButton;

@@ -27,7 +27,13 @@ export default styled.span`
         font-weight: 500;
 
         &:hover {
+          background-color: ${darkGreenColor};
           color: #fff;
+        }
+
+        &:focus,
+        &:active {
+          color: ${darkGreenColor};
         }
       }
     }

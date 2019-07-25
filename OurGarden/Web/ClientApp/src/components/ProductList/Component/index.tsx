@@ -3,6 +3,7 @@ import React from "react";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import ProductCard from "./ProductCard";
+import Loading from "@src/core/components/Loading";
 
 import ProductListWrapper from "./style/ProductList.style";
 
@@ -37,6 +38,10 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
 
   componentDidUpdate() {}
 
+  componentWillUnmount() {
+    this.props.cleanProductList();
+  }
+
   render() {
     const { productList, pending, push } = this.props;
 
@@ -47,13 +52,17 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
 
     return (
       <ProductListWrapper>
-        <Row type="flex" gutter={16}>
-          {dataList.map(x => (
-            <Col {...this.cardStyle} key={x.link} className="card-wrapper">
-              <ProductCard pending={pending} product={x} push={push} />
-            </Col>
-          ))}
-        </Row>
+        {pending ? (
+          <Loading />
+        ) : (
+          <Row type="flex" gutter={16}>
+            {dataList.map(x => (
+              <Col {...this.cardStyle} key={x.link} className="card-wrapper">
+                <ProductCard pending={pending} product={x} push={push} />
+              </Col>
+            ))}
+          </Row>
+        )}
       </ProductListWrapper>
     );
   }

@@ -27,6 +27,12 @@ export const reducer: Reducer<IProductListState> = (state: IProductListState = u
         errorInner: action.errorMessage
       } as IProductListState;
 
+    case t.CLEAN_PRODUCT_LIST:
+      return {
+        ...state,
+        productList: []
+      } as IProductListState;
+
     case t.CLEAN_ERROR_INNER:
       return {
         ...state,

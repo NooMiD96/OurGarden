@@ -7,6 +7,8 @@ import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import { IUserOrderModel } from "./IModel";
+import { IUserCardProduct } from "./State";
+import { IProduct } from "@components/Product/State";
 
 // ----------------
 //#region ACTIONS
@@ -22,14 +24,17 @@ export const actionsList = {
     errorMessage,
   }),
 
-  addProductToCard: (): t.IAddProductToCard => ({
+  addProductToCard: (payload: IUserCardProduct): t.IAddProductToCard => ({
     type: t.ADD_PRODUCT_TO_CARD,
+    payload
   }),
-  removeProductFromCard: (): t.IRemoveProductFromCard => ({
+  removeProductFromCard: (payload: IProduct): t.IRemoveProductFromCard => ({
     type: t.REMOVE_PRODUCT_FROM_CARD,
+    payload
   }),
-  changeCountOfProduct: (): t.IChangeCountOfProduct => ({
+  changeCountOfProduct: (payload: IUserCardProduct): t.IChangeCountOfProduct => ({
     type: t.CHANGE_COUNT_OF_PRODUCT,
+    payload
   }),
 
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({

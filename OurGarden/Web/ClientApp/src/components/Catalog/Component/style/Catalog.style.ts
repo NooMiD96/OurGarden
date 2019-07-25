@@ -3,6 +3,7 @@ import { darkGreenColor } from "@src/core/constants";
 
 export default styled.div`
   flex: 1 1 auto;
+  padding: 0 8px;
   overflow: auto;
 
   .ant-col.card-wrapper {

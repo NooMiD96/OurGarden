@@ -23,6 +23,10 @@ export const actionsList = {
     errorMessage,
   }),
 
+
+  cleanProductList: (): t.ICleanProductList => ({
+    type: t.CLEAN_PRODUCT_LIST,
+  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -64,6 +68,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getProductListRequest());
   },
+  cleanProductList: actionsList.cleanProductList,
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

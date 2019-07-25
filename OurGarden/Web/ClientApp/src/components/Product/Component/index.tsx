@@ -7,6 +7,7 @@ import { TState, TComponentState } from "../TState";
 import { Row } from "@src/core/antd";
 import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
+import { IMouseClickEvent } from "@src/core/IEvents";
 
 const contentMoq = `<span>
 Blanditiis et dolores tempora aut. At amet quia cupiditate natus
@@ -34,6 +35,10 @@ labore iste sit.
 </span>`;
 
 export class Product extends React.PureComponent<TState, TComponentState> {
+  state: TComponentState = {
+    itemCount: "1"
+  };
+
   componentDidMount() {
     const {
       getProduct,
@@ -58,8 +63,29 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     }
   }
 
+  setItemCount = (newCount: string) => {
+    this.setState({
+      itemCount: newCount
+    });
+  };
+
+  addToCard = (e: IMouseClickEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.setState({
+      itemCount: "1"
+    });
+
+    this.props.addProductToCard({
+      count: Number.parseInt(this.state.itemCount),
+      product: this.props.product!
+    });
+  };
+
   render() {
     const { product, pending } = this.props;
+    const { itemCount } = this.state;
 
     return (
       <ProductWrapper>
@@ -87,7 +113,11 @@ export class Product extends React.PureComponent<TState, TComponentState> {
               dangerouslySetInnerHTML={{ __html: contentMoq }}
             />
 
-            <AddToCardButton itemCount="1" setItemCount={val => {}} />
+            <AddToCardButton
+              itemCount={itemCount}
+              setItemCount={this.setItemCount}
+              addToCard={this.addToCard}
+            />
           </Row>
         )}
       </ProductWrapper>

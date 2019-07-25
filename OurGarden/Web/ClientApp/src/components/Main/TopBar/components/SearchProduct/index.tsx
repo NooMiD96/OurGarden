@@ -67,8 +67,9 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
     }
   };
 
-  const resetSearchValue = () => {
+  const resetSearchValue = async () => {
     autoCompleteEl.current!.select.rcSelect.setInputValue("");
+    await onSearch("");
   };
 
   const onSelect = (val: any) => {

@@ -8,13 +8,13 @@ const getActiveRoute = (
   if (!tabList || !tabList.length) {
     return "";
   }
-  let defaultActiveKey = tabList[0].key;
+  let defaultActiveKey;
 
   if (location && location.pathname) {
     const routeSplit = location.pathname.split("/");
     if (routeSplit.length > 1) {
       const mainRoute = routeSplit[1].toLowerCase();
-  
+
       for (let i = 0; i < tabList.length; i++) {
         const tab = tabList[i];
         if (tab.link.replace(/\s/g, "-").toLowerCase() === mainRoute) {
@@ -35,7 +35,7 @@ const getActiveCategory = (
   if (
     !categoryList
     || !categoryList.length
-    || !location 
+    || !location
     || !location.pathname
   ) {
     return "";

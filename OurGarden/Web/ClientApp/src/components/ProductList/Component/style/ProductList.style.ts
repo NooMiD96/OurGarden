@@ -3,6 +3,8 @@ import { darkGreenColor } from "@src/core/constants";
 
 export default styled.div`
   flex: 1 1 auto;
+  padding: 0 8px;
+  overflow: auto;
 
   .ant-col.card-wrapper {
     margin-bottom: 32px;
@@ -10,7 +12,6 @@ export default styled.div`
   }
 
   .ant-card.ant-card-hoverable {
-
     .ant-card-meta-description {
       color: black;
     }
