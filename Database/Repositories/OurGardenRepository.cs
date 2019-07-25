@@ -62,6 +62,7 @@ namespace Database.Repositories
 
         public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId) =>
             await _context.Subcategory
+            .Include(x => x.Photo)
             .Where(x => x.CategoryId == categoryId)
             .ToListAsync();
 
@@ -101,8 +102,9 @@ namespace Database.Repositories
         #region Product
 
         public async Task<IEnumerable<Product>> GetSearchProducts(string search) =>
-           await _context.Product.
-            Where(x => x.Alias.Contains(search))
+           await _context.Product
+            .Include(x => x.Photos)
+            .Where(x => x.Alias.Contains(search))
             .ToListAsync();
 
         public async Task<IEnumerable<Product>> GetAllProducts() =>

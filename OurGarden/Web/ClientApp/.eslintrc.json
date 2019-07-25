@@ -54,6 +54,7 @@
     "quotes": ["error", "double"],
     "import/order": "off",
     "react/jsx-fragments": "off",
-    "jsx-a11y/interactive-supports-focus": "off"
+    "jsx-a11y/interactive-supports-focus": "off",
+    "react/no-danger": "off"
   }
 }

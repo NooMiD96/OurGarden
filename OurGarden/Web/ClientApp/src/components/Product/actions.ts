@@ -32,12 +32,12 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Home";
 export const actionCreators = {
-  getProduct: (): IAppThunkAction<t.TGetProduct | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+  getProduct: (categoryId: string, subcategoryId: string, productId: string): IAppThunkAction<t.TGetProduct | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetProduct";
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}&productId=${productId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {

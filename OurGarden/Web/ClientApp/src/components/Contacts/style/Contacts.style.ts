@@ -16,6 +16,7 @@ export default styled.div`
 
     h1 {
       font-family: 'BerlingskeSerif';
+      font-weight: bolder;
       font-size: 30px;
       padding-left: calc(1rem + 24px);
     }

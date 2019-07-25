@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Push } from "connected-react-router";
 
 import Card from "@core/antd/Card";
-import Button from "@src/core/antd/Button";
-import NumberInput from "@src/core/components/NumberInput";
+import AddToCard from "@src/core/components/AddToCard";
 
 import { IProduct } from "@src/components/Product/State";
 
@@ -31,19 +30,11 @@ const ProductCard = (props: IProductCard) => {
       <Card.Meta
         title={product.alias}
         description={(
-          <div className="card-description">
-            <span className="card-cost">
-              {product.price.toLocaleString()}
-              р.
-            </span>
-            <span>
-              <NumberInput
-                value={itemCount}
-                onValueChange={setItemCount}
-                addonAfter={<Button type="default" block>В корзину</Button>}
-              />
-            </span>
-          </div>
+          <AddToCard
+            itemCount={itemCount}
+            setItemCount={setItemCount}
+            product={product}
+          />
         )}
       />
     </Card>

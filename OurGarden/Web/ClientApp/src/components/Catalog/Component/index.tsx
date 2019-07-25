@@ -70,7 +70,7 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
 
     return (
       <HomeWrapper>
-        <Row gutter={16}>
+        <Row type="flex" gutter={16}>
           {dataList.map(x => (
             <Col {...this.cardStyle} key={x.link} className="card-wrapper">
               <Card

@@ -47,7 +47,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
 
     return (
       <ProductListWrapper>
-        <Row gutter={16}>
+        <Row type="flex" gutter={16}>
           {dataList.map(x => (
             <Col {...this.cardStyle} key={x.link} className="card-wrapper">
               <ProductCard pending={pending} product={x} push={push} />

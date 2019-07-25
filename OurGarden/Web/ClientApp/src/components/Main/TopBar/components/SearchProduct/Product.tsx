@@ -6,6 +6,16 @@ import { IProduct } from "@src/components/Product/State";
 
 const { Option } = AutoComplete;
 
+const style = {
+  imgStyle: {
+    maxWidth: "120px"
+  },
+  spanStyle: {
+    fontSize: "16px",
+    marginLeft: "0.5rem"
+  }
+};
+
 const Product = (props: IProduct) => {
   const link = `/Каталог/${props.categoryId}/${props.subcategoryId}/${
     props.productId
@@ -15,10 +25,10 @@ const Product = (props: IProduct) => {
     <Option title={props.alias} key={link}>
       <img
         src={props.photos && props.photos[0].url}
-        style={{ float: "left" }}
+        style={style.imgStyle}
         alt={props.alias}
       />
-      <div>{props.alias}</div>
+      <span style={style.spanStyle}>{props.alias}</span>
     </Option>
   );
 };
