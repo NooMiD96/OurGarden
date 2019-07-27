@@ -22,7 +22,7 @@ const AddToCardButton = (props: IAddToCardButton) => {
         value={itemCount}
         onValueChange={setItemCount}
         addonAfter={(
-          <Button type="default" block onClick={addToCard}>
+          <Button block onClick={addToCard}>
             В корзину
           </Button>
         )}

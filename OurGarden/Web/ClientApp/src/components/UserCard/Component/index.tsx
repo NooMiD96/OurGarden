@@ -1,27 +1,42 @@
 import React from "react";
 
-// import Alert from "@core/components/Alert";
-import Layout from "@core/antd/Layout";
+import CardInfo from "./CardInfo";
+import CardConfirmation from "./CardConfirmation";
 
 import UserCardWrapper from "./style/UserCard.style";
 
-import { TState, TComponentState } from "../TState";
-
-const { Content } = Layout;
+import { TState, TComponentState, DisplayTypeEnum } from "../TState";
 
 export class UserCard extends React.PureComponent<TState, TComponentState> {
+  state: TComponentState = {
+    displayType: DisplayTypeEnum.CardInfo
+  };
+
   componentDidMount() {}
 
   componentDidUpdate() {}
 
   render() {
-    const { errorInner, cleanErrorInner } = this.props;
+    const {
+      productList,
+      removeProductFromCard,
+      changeCountOfProduct
+    } = this.props;
+
+    const renderComponent
+      = this.state.displayType === DisplayTypeEnum.CardInfo ? (
+        <CardInfo
+          productList={productList}
+          removeProductFromCard={removeProductFromCard}
+          changeCountOfProduct={changeCountOfProduct}
+        />
+      ) : (
+        <CardConfirmation productList={productList} />
+      );
 
     return (
       <UserCardWrapper>
-        <Layout>
-          <Content>hellow UserCard</Content>
-        </Layout>
+        {renderComponent}
       </UserCardWrapper>
     );
   }

@@ -55,6 +55,7 @@
     "import/order": "off",
     "react/jsx-fragments": "off",
     "jsx-a11y/interactive-supports-focus": "off",
-    "react/no-danger": "off"
+    "react/no-danger": "off",
+    "react/display-name": "off"
   }
 }

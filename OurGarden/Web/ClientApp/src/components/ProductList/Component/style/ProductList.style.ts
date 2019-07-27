@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { darkGreenColor } from "@src/core/constants";
+import { darkGreenColor, greenColor } from "@src/core/constants";
 
 export default styled.div`
   flex: 1 1 auto;
@@ -25,6 +25,12 @@ export default styled.div`
       .card-description .ant-input-group-addon .ant-btn {
         background-color: ${darkGreenColor};
         color: #fff;
+
+        &:focus,
+        &:active {
+          background-color: ${greenColor};
+          color: #fff;
+        }
       }
     }
   }

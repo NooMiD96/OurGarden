@@ -2,7 +2,7 @@
 //rgb(191, 190, 190)
 export const lightGreyColor = "#bfbebe";
 export const greyColor = "#626262";
-export const greyShadowStyle = "box-shadow: 0 0 0 2px rgba(98, 98, 98, 0.2);";
+export const greyShadowStyle = "0 0 0 2px rgba(98, 98, 98, 0.2);";
 export const darkGreyColor = "#151515";
 
 export const darkGreenColor = "#75b726";

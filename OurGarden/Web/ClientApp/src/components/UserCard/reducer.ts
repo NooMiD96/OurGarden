@@ -2,8 +2,25 @@
 //#region REDUCER
 import { Reducer } from "redux";
 
-import { IUserCardState, unloadedState } from "./State";
+import { IUserCardState, unloadedState, IUserCardProduct } from "./State";
 import KnownAction, * as t from "./actionsType";
+
+const findProduct = (
+  origin: IUserCardProduct,
+  target: IUserCardProduct
+) => {
+  const { product: originProduct } = origin;
+  const { product: targetProduct } = target;
+
+  return (
+    originProduct.categoryId === targetProduct.categoryId
+    && originProduct.subcategoryId === targetProduct.subcategoryId
+    && originProduct.productId === targetProduct.productId
+  );
+}
+
+const getTotalCount = (productList: IUserCardProduct[]) =>
+  productList.map(x => x.count).reduce((count, acc) => count + acc, 0);
 
 export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloadedState, action: KnownAction) => {
   switch (action.type) {
@@ -28,23 +45,59 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
       } as IUserCardState;
 
     case t.ADD_PRODUCT_TO_CARD: {
-      // TODO:
+      const newProductList: IUserCardProduct[] = [];
+      let find = false;
+
+      state.productList.forEach(product => {
+        if (findProduct(product, action.payload)) {
+          newProductList.push({
+            ...product,
+            count: product.count + action.payload.count
+          });
+          find = true;
+        } else {
+          newProductList.push(product);
+        }
+      });
+
+      if (!find) {
+        newProductList.push(action.payload);
+      }
+
       return {
-        ...state
+        ...state,
+        productList: newProductList,
+        totalCount: getTotalCount(newProductList)
       } as IUserCardState;
     }
 
     case t.CHANGE_COUNT_OF_PRODUCT: {
-      // TODO:
+      const newProductList: IUserCardProduct[] = [];
+
+      state.productList.forEach(product => {
+        if (findProduct(product, action.payload)) {
+          newProductList.push({
+            ...product,
+            count: action.payload.count
+          });
+        } else {
+          newProductList.push(product);
+        }
+      });
+
       return {
-        ...state
+        ...state,
+        productList: newProductList,
+        totalCount: getTotalCount(newProductList)
       } as IUserCardState;
     }
 
     case t.REMOVE_PRODUCT_FROM_CARD: {
-      // TODO:
+      const newProductList = state.productList.filter(item => action.payload !== item.product);
       return {
-        ...state
+        ...state,
+        productList: newProductList,
+        totalCount: getTotalCount(newProductList)
       } as IUserCardState;
     }
 

@@ -4,9 +4,14 @@ import { RouterState } from "connected-react-router";
 import { IUserCardState } from "./State";
 import { actionCreators } from "./actions";
 
+export enum DisplayTypeEnum {
+  CardInfo,
+  CardConfirmation,
+}
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
+  displayType: DisplayTypeEnum;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT

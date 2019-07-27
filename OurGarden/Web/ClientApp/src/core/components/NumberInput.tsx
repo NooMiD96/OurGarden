@@ -6,7 +6,7 @@ import { IKeyChangeEvent } from "../IEvents";
 
 interface INumberInput extends InputProps {
   value: string;
-  onValueChange: (value: string) => void;
+  onValueChange?: (value: string) => void;
   onBlur?: () => void;
 }
 
@@ -21,7 +21,7 @@ class NumberInput extends React.Component<INumberInput, {}> {
       (!Number.isNaN((value as any) as number) && reg.test(value))
       || value === ""
     ) {
-      this.props.onValueChange(value);
+      this.props.onValueChange && this.props.onValueChange(value);
     }
   };
 
@@ -30,11 +30,11 @@ class NumberInput extends React.Component<INumberInput, {}> {
     const { value, onBlur, onValueChange } = this.props;
 
     if (value.charAt(value.length - 1) === "." || value === "-") {
-      onValueChange(value.slice(0, -1));
+      onValueChange && onValueChange(value.slice(0, -1));
     }
 
     if (value === "") {
-      onValueChange("1");
+      onValueChange && onValueChange("1");
     }
 
     if (onBlur) {

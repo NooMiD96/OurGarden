@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { darkGreenColor } from "@src/core/constants";
+import { darkGreenColor, greenColor } from "@src/core/constants";
 
 export default styled.span`
   .ant-input-wrapper.ant-input-group {
@@ -21,6 +21,7 @@ export default styled.span`
       border: 0;
 
       .ant-btn {
+        color: ${darkGreenColor}; 
         border-radius: 0;
         border-color: ${darkGreenColor};
 
@@ -33,9 +34,11 @@ export default styled.span`
 
         &:focus,
         &:active {
-          color: ${darkGreenColor};
+          background-color: ${greenColor};
+          color: #fff;
         }
       }
+
     }
   }
 `;

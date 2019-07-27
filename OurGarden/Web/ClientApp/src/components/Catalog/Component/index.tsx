@@ -5,7 +5,7 @@ import Col from "@src/core/antd/Col";
 import Card from "@core/antd/Card";
 import Loading from "@src/core/components/Loading";
 
-import HomeWrapper from "./style/Catalog.style";
+import Wrapper from "./style/Catalog.style";
 
 import { TState, TComponentState } from "../TState";
 
@@ -74,7 +74,7 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
         }));
 
     return (
-      <HomeWrapper>
+      <Wrapper>
         {pending ? (
           <Loading />
         ) : (
@@ -94,7 +94,7 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
             ))}
           </Row>
         )}
-      </HomeWrapper>
+      </Wrapper>
     );
   }
 }

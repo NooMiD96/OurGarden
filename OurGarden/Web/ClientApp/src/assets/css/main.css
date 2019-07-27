@@ -43,3 +43,10 @@
   font-weight: bolder;
 }
 /* END BerlingskeSerif */
+
+/* BerlingskeSerif */
+@font-face {
+  font-family: "Gilroy";
+  src: url(../fonts/Gilroy-Light.otf);
+}
+/* END BerlingskeSerif */
