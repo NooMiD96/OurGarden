@@ -16,29 +16,36 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
   componentDidUpdate() {}
 
+  onChangeOrderStep = (newType: DisplayTypeEnum) => {
+    this.setState({
+      displayType: newType
+    });
+  };
+
   render() {
     const {
       productList,
+      changeCountOfProduct,
       removeProductFromCard,
-      changeCountOfProduct
+      сleanProductCard
     } = this.props;
 
+    const { displayType } = this.state;
+
     const renderComponent
-      = this.state.displayType === DisplayTypeEnum.CardInfo ? (
+      = displayType === DisplayTypeEnum.CardInfo ? (
         <CardInfo
           productList={productList}
           removeProductFromCard={removeProductFromCard}
           changeCountOfProduct={changeCountOfProduct}
+          сleanProductCard={сleanProductCard}
+          onChangeOrderStep={this.onChangeOrderStep}
         />
       ) : (
         <CardConfirmation productList={productList} />
       );
 
-    return (
-      <UserCardWrapper>
-        {renderComponent}
-      </UserCardWrapper>
-    );
+    return <UserCardWrapper>{renderComponent}</UserCardWrapper>;
   }
 }
 

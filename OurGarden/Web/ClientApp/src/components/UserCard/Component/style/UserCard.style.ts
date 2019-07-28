@@ -20,10 +20,6 @@ export default styled.div`
       font-family: 'Gilroy';
       text-align: center;
   
-      .product-name {
-        margin-left: 1rem;
-      }
-
       .product-count-input.ant-input {
         &:hover {
           border-color: ${greyColor};
@@ -33,6 +29,24 @@ export default styled.div`
           border-color: ${greyColor};
           box-shadow: ${greyShadowStyle};
         }
+      }
+
+      .table-product-wrapper {
+        display: flex;
+
+        .product-img {
+          flex: 1 1 auto;
+          max-width: 250px;
+        }
+
+        .product-name {
+          align-self: center;
+          margin-left: 1rem;
+        }
+      }
+
+      .remove-icon path{
+        stroke: ${greyColor};
       }
     }
   }
@@ -84,6 +98,15 @@ export default styled.div`
         }
       }
     }
+  }
+
+  .price-wrapper {
+    padding-left: 1rem;
+  }
+  .buttons-wrapper {
+    justify-content: space-between;
+    display: flex;
+    padding: 1rem;
   }
 
 `;

@@ -101,6 +101,13 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
       } as IUserCardState;
     }
 
+    case t.CLEAN_PRODUCT_CARD: 
+      return {
+        ...state,
+        productList: [],
+        totalCount: 0
+      } as IUserCardState;
+
     case t.CLEAN_ERROR_INNER:
       return {
         ...state,

@@ -28,13 +28,16 @@ export const actionsList = {
     type: t.ADD_PRODUCT_TO_CARD,
     payload
   }),
+  changeCountOfProduct: (payload: IUserCardProduct): t.IChangeCountOfProduct => ({
+    type: t.CHANGE_COUNT_OF_PRODUCT,
+    payload
+  }),
   removeProductFromCard: (payload: IProduct): t.IRemoveProductFromCard => ({
     type: t.REMOVE_PRODUCT_FROM_CARD,
     payload
   }),
-  changeCountOfProduct: (payload: IUserCardProduct): t.IChangeCountOfProduct => ({
-    type: t.CHANGE_COUNT_OF_PRODUCT,
-    payload
+  сleanProductCard: (): t.ICleanProductCard => ({
+    type: t.CLEAN_PRODUCT_CARD,
   }),
 
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
@@ -87,6 +90,7 @@ export const actionCreators = {
   addProductToCard: actionsList.addProductToCard,
   removeProductFromCard: actionsList.removeProductFromCard,
   changeCountOfProduct: actionsList.changeCountOfProduct,
+  сleanProductCard: actionsList.сleanProductCard,
 
   cleanErrorInner: actionsList.cleanErrorInner,
 };
