@@ -25,6 +25,8 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
   render() {
     const {
       productList,
+      pending,
+      sendOrder,
       changeCountOfProduct,
       removeProductFromCard,
       сleanProductCard
@@ -42,7 +44,12 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
           onChangeOrderStep={this.onChangeOrderStep}
         />
       ) : (
-        <CardConfirmation productList={productList} />
+        <CardConfirmation
+          productList={productList}
+          sendOrder={sendOrder}
+          onChangeOrderStep={this.onChangeOrderStep}
+          pending={pending}
+        />
       );
 
     return <UserCardWrapper>{renderComponent}</UserCardWrapper>;

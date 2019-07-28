@@ -1,6 +1,9 @@
 import React from "react";
 
 import Button from "@src/core/antd/Button";
+import TotalPrice from "@src/core/components/TotalPrice";
+
+import ButtonWrapper from "../style/ButtonWrapper.style";
 
 import { ICardInfoFooter } from "./ICardInfo";
 import { DisplayTypeEnum } from "../../TState";
@@ -10,14 +13,10 @@ const CardInfoFooter = (props: ICardInfoFooter) => {
     <React.Fragment>
       {props.isVisible && (
         <React.Fragment>
-          <div className="price-wrapper">
-            <span>Сумма: </span>
-            <span className="price">
-              {props.totalPrice}
-              {" рублей"}
-            </span>
+          <div style={{ paddingLeft: "1rem" }}>
+            <TotalPrice totalPrice={props.totalPrice} />
           </div>
-          <div className="buttons-wrapper">
+          <ButtonWrapper className="buttons-wrapper-with-padding">
             <Button className="clean-button" onClick={props.сleanProductCard}>
               Очистить корзину
             </Button>
@@ -30,7 +29,7 @@ const CardInfoFooter = (props: ICardInfoFooter) => {
             >
               Оформить заказ
             </Button>
-          </div>
+          </ButtonWrapper>
         </React.Fragment>
       )}
     </React.Fragment>

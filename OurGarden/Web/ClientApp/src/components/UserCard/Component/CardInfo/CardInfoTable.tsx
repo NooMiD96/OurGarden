@@ -5,6 +5,8 @@ import { Title } from "@src/core/antd/Typography";
 import NumberInput from "@src/core/components/NumberInput";
 import Remove from "@src/core/icons/Remove";
 
+import Wrapper from "../style/Table.style";
+
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
 import { IDisplayInfo, ICardInfoTable } from "./ICardInfo";
@@ -101,13 +103,13 @@ const CardInfoTable = (props: ICardInfoTable) => {
   );
 
   return (
-    <React.Fragment>
+    <Wrapper>
       <Table
         dataSource={props.dataSource}
         columns={columns}
         rowKey={rowKey}
       />
-    </React.Fragment>
+    </Wrapper>
   );
 };
 

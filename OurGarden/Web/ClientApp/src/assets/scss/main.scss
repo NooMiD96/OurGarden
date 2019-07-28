@@ -94,3 +94,15 @@ a {
     background-color: $tableHoverColor;
   }
 }
+
+.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled),
+.ant-input {
+  &:hover {
+    border-color: $greyColor;
+  }
+
+  &:focus {
+    border-color: $greyColor;
+    box-shadow: $greyShadowStyle;
+  }
+}

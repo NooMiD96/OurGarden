@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { greyColor, greyShadowStyle, borderColor, darkGreenColor, lightGreenColor, greenColor } from "@src/core/constants";
+import { borderColor, darkGreenColor, lightGreenColor, greenColor } from "@src/core/constants";
 
 export default styled.div`
   flex: 0 1 auto;
@@ -7,54 +7,14 @@ export default styled.div`
   background: #fff;
   border: 1px solid ${borderColor};
 
-  .ant-table {
-    color: #000;
-
-    .ant-table-thead > tr {
-      & > th {
-        text-align: center;
-      }
-    }
-  
-    .ant-table-tbody > tr > td {
-      font-family: 'Gilroy';
-      text-align: center;
-  
-      .product-count-input.ant-input {
-        &:hover {
-          border-color: ${greyColor};
-        }
-
-        &:focus {
-          border-color: ${greyColor};
-          box-shadow: ${greyShadowStyle};
-        }
-      }
-
-      .table-product-wrapper {
-        display: flex;
-
-        .product-img {
-          flex: 1 1 auto;
-          max-width: 250px;
-        }
-
-        .product-name {
-          align-self: center;
-          margin-left: 1rem;
-        }
-      }
-
-      .remove-icon path{
-        stroke: ${greyColor};
-      }
-    }
-  }
-
   h1.ant-typography {
     font-family: 'BerlingskeSerif';
     font-weight: bolder;
     margin-bottom: 0.5rem;
+
+    &.confirmation-title {
+      margin: 1rem 0 1rem 7rem;
+    }
   }
   
   .ant-btn {
@@ -99,14 +59,4 @@ export default styled.div`
       }
     }
   }
-
-  .price-wrapper {
-    padding-left: 1rem;
-  }
-  .buttons-wrapper {
-    justify-content: space-between;
-    display: flex;
-    padding: 1rem;
-  }
-
 `;

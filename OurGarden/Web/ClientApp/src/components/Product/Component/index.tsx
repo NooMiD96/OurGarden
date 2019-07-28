@@ -4,7 +4,7 @@ import ProductWrapper from "./style/Product.style";
 import Loading from "@src/core/components/Loading";
 
 import { TState, TComponentState } from "../TState";
-import { Row } from "@src/core/antd";
+import Row from "@src/core/antd/Row";
 import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
 import { IMouseClickEvent } from "@src/core/IEvents";

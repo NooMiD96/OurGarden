@@ -7,8 +7,12 @@ using System.Text;
 
 namespace Model.DTO
 {
-    public class OrderDTO
+    public class OrderCreateDTO
     {
+        [Required]
+        [MaxLength(128)]
+        public string FIO { get; set; }
+
         [Required]
         [Phone]
         [MaxLength(16)]
@@ -19,15 +23,6 @@ namespace Model.DTO
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(128)]
-        public string FIO { get; set; }
-
-        public DateTime Date { get; set; }
-
-        public double TotalPrice { get; set; }
-
         public ICollection<OrderPosition> OrderPositions { get; set; }
-        public OrderStatus Status { get; set; }
-
     }
 }

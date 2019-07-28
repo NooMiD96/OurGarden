@@ -18,19 +18,19 @@ namespace Database.Repositories
         }
 
         #region Category
-        public async Task<IEnumerable<Category>> GetCategories() => 
+        public async Task<IEnumerable<Category>> GetCategories() =>
             await _context.Category
             .Include(x => x.Photo)
             .ToListAsync();
 
-        public async Task<Category> GetCategory(string categoryId) => 
+        public async Task<Category> GetCategory(string categoryId) =>
             await _context.Category
             .Include(x => x.Photo)
             .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
 
         public async Task AddCategory(Category category)
         {
-            var chek = await _context.Category.FirstOrDefaultAsync(x =>  x.CategoryId == category.CategoryId);
+            var chek = await _context.Category.FirstOrDefaultAsync(x => x.CategoryId == category.CategoryId);
             if (chek != null)
             {
                 throw new Exception();
@@ -74,7 +74,7 @@ namespace Database.Repositories
         public async Task AddSubcategory(Subcategory subcategory)
         {
             var chek = await _context.Subcategory.FirstOrDefaultAsync(x => x.SubcategoryId == subcategory.SubcategoryId && x.CategoryId == subcategory.CategoryId);
-            if (chek != null) 
+            if (chek != null)
             {
                 throw new Exception();
             }
@@ -123,7 +123,7 @@ namespace Database.Repositories
 
         public async Task AddProduct(Product product)
         {
-            var chek = await _context.Product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId 
+            var chek = await _context.Product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId
             && x.SubcategoryId == product.SubcategoryId && x.CategoryId == product.CategoryId);
             if (chek != null)
             {
@@ -151,12 +151,12 @@ namespace Database.Repositories
         #endregion
 
         #region News
-        public async Task<IEnumerable<News>> GetNews() => 
+        public async Task<IEnumerable<News>> GetNews() =>
             await _context.News
             .Include(x => x.Photo)
             .ToListAsync();
 
-        public async Task<News> GetNews(int newsId) => 
+        public async Task<News> GetNews(int newsId) =>
             await _context.News
             .Include(x => x.Photo)
             .FirstOrDefaultAsync(x => x.NewsId == newsId);
@@ -219,7 +219,7 @@ namespace Database.Repositories
         public async Task DeleteGallery(int galleryId)
         {
             var gallery = await _context.Gallery
-                .Include(x =>x.Photos)
+                .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
             if (gallery == null)
                 return;
@@ -292,7 +292,7 @@ namespace Database.Repositories
            await _context.Order
             .Include(x => x.OrderPositions)
             .Include(x => x.Status)
-           .ToListAsync();
+            .ToListAsync();
 
         public async Task<Order> GetOrder(int orderId)
         {
@@ -303,16 +303,11 @@ namespace Database.Repositories
             order.AllStatuses = await _context.Status.ToListAsync();
             return order;
         }
-            
+
 
         public async Task AddOrder(Order order)
         {
-            var chek = await _context.Order.FirstOrDefaultAsync(x => x.OrderId == order.OrderId);
-            if (chek != null)
-            {
-                throw new Exception();
-            }
-            await _context.Order.AddAsync(order);
+            _context.Order.Add(order);
             await _context.SaveChangesAsync();
         }
 
@@ -335,7 +330,7 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<OrderStatus> GetStatus(int statusId) => 
+        public async Task<OrderStatus> GetStatus(int statusId) =>
             await _context.Status.FirstOrDefaultAsync(x => x.StatusId == statusId);
 
         #endregion

@@ -1,9 +1,12 @@
 ﻿using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
+
 using Model.DB;
+using Model.DTO;
+
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web.Controllers.Api
@@ -122,18 +125,27 @@ namespace Web.Controllers.Api
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrder(
-            [FromForm]Order order)
+        public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderForm)
         {
-            //todo: убрать Requared у CreationDate
-            order.Date = DateTime.Now;
             if (!ModelState.IsValid)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest("Модель ордера не валидна");
             }
 
             try
             {
+                var order = new Order()
+                {
+                    OrderId = 0,
+                    FIO = orderForm.FIO,
+                    Phone = orderForm.Phone,
+                    Email = orderForm.Email,
+                    Date = DateTime.Now,
+                    Status = new OrderStatus() { StatusId = 0 },
+                    TotalPrice = orderForm.OrderPositions.Select(x => x.Number * x.Product.Price).Sum(),
+                    OrderPositions = orderForm.OrderPositions
+                };
+
                 await _repository.AddOrder(order);
                 return Success(order);
             }

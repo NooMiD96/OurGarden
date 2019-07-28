@@ -41,15 +41,6 @@
           &:not(:first-child) {
             padding-left: 40px;
           }
-
-          &:hover {
-            border-color: $greyColor;
-          }
-
-          &:focus {
-            border-color: $greyColor;
-            box-shadow: $greyShadowStyle;
-          }
         }
 
         .ant-btn {

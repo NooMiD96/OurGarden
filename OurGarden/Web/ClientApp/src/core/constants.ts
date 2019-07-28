@@ -22,6 +22,9 @@ export type TIcons =
   | "down"
   | "close-circle"
   | "close"
+  | "user"
+  | "phone"
+  | "mail"
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -38,6 +41,12 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/CloseCircleOutline")).default;
     case "close":
       return (await import("@antdSvgs/CloseOutline")).default;
+    case "user":
+      return (await import("@antdSvgs/UserOutline")).default;
+    case "phone":
+      return (await import("@antdSvgs/PhoneOutline")).default;
+    case "mail":
+      return (await import("@antdSvgs/MailOutline")).default;
 
     default: {
       // eslint-disable-next-line

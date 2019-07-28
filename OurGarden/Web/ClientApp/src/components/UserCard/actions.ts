@@ -6,7 +6,7 @@ import { IResponse } from "@core/fetchHelper/IResponse";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-import { IUserOrderModel } from "./IModel";
+import { IOrderModel, IOrderPosition, IOrderUserInformation } from "./IModel";
 import { IUserCardProduct } from "./State";
 import { IProduct } from "@components/Product/State";
 
@@ -49,19 +49,26 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Home";
 export const actionCreators = {
-  getProduct: (userModel: IUserOrderModel): IAppThunkAction<t.TSendOrder | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "GetProduct";
+  sendOrder: (userInfo: IOrderUserInformation): IAppThunkAction<t.TSendOrder | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "AddOrder";
     const { productList } = getState().userCard;
 
     dispatch(actionCreators.cleanErrorInner());
 
+    const bodyModel: IOrderModel = {
+      ...userInfo,
+      orderPositions: productList.map((x: IUserCardProduct): IOrderPosition => {
+        return {
+          number: x.count,
+          product: x.product
+        }
+      }),
+    };
+
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
-      body: JSON.stringify({
-        user: userModel,
-        productList
-      }),
+      body: JSON.stringify(bodyModel),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
       },

@@ -14,6 +14,7 @@ namespace Model.DB
         [Required]
         public int Number { get; set; }
 
+        [Required]
         public Product Product { get; set; }
     }
 }
