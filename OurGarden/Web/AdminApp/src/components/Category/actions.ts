@@ -8,7 +8,7 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { ICategoryItem } from "./State";
+import { ICategory, ICategoryDTO } from "./State";
 
 // ----------------
 //#region ACTIONS
@@ -16,12 +16,24 @@ export const actionsList = {
   getCategoryListRequest: (): t.IGetCategoryListRequest => ({
     type: t.GET_CATEGORY_LIST_REQUEST,
   }),
-  getCategoryListSuccess: (payload: ICategoryItem[]): t.IGetCategoryListSuccess => ({
+  getCategoryListSuccess: (payload: ICategory[]): t.IGetCategoryListSuccess => ({
     type: t.GET_CATEGORY_LIST_SUCCESS,
     payload
   }),
   getCategoryListError: (errorMessage: string): t.IGetCategoryListError => ({
     type: t.GET_CATEGORY_LIST_ERROR,
+    errorMessage,
+  }),
+
+  addCategoryRequest: (): t.IAddCategoryRequest => ({
+    type: t.ADD_CATEGORY_REQUEST,
+  }),
+  addCategorySuccess: (payload: boolean): t.IAddCategorySuccess => ({
+    type: t.ADD_CATEGORY_SUCCESS,
+    payload
+  }),
+  addCategoryError: (errorMessage: string): t.IAddCategoryError => ({
+    type: t.ADD_CATEGORY_ERROR,
     errorMessage,
   }),
 
@@ -33,14 +45,15 @@ export const actionsList = {
 // ----------------
 //#region ACTIONS CREATORS
 const controllerName = "Category";
+const defaultControllerName = "Home";
 export const actionCreators = {
   getCategoryList: (): IAppThunkAction<t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "GetCategoryList";
+    const apiUrl = "GetCategories";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${defaultControllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -49,7 +62,7 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<ICategoryItem[]>) => {
+      .then((value: IResponse<ICategory[]>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
@@ -67,6 +80,42 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getCategoryListRequest());
+  },
+  AddCategory: (data: ICategoryDTO): IAppThunkAction<t.TAddCategory | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "Add";
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<ICategory[]>) => {
+        if (value && value.error) {
+          debugger;
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.addCategorySuccess(true));
+
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.addCategoryError,
+        dispatch
+      ));
+
+    addTask(fetchTask);
+    dispatch(actionsList.addCategoryRequest());
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

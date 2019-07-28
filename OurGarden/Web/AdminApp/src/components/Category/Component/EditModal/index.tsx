@@ -1,18 +1,25 @@
 import * as React from "react";
 
 import Modal from "@core/antd/Modal";
-import { ICategoryItem } from "../../State";
+import { ICategory } from "../../State";
 
 import EditModalContent from "./EditModalContent";
 
 interface IEditModalProps {
   isShow: boolean;
-  item: ICategoryItem | null;
+  item: ICategory | null;
+  handleSubmit: Function;
+  handleClose: Function;
 }
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
-    const { isShow, item } = this.props;
+    const {
+      isShow,
+      item,
+      handleSubmit: handleSubmit,
+      handleClose: handleClose
+    } = this.props;
 
     return (
       <Modal
@@ -21,7 +28,13 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         closable={false}
         footer={null}
       >
-        <EditModalContent loading={false} />
+        <EditModalContent
+          loading={false}
+          url={item ? item.photo.url : ""}
+          name={item ? item.alias : ""}
+          handleSubmit={handleSubmit}
+          handleClose={handleClose}
+        />
       </Modal>
     );
   }

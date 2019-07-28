@@ -6,6 +6,8 @@ export type TIcons =
   | "lock"
   | "close-circle"
   | "close"
+  | "edit"
+  | "plus"
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -24,6 +26,10 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/CloseCircleOutline")).default;
     case "close":
       return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/CloseOutline")).default;
+    case "edit":
+      return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/EditOutline")).default;
+    case "plus":
+      return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/PlusOutline")).default;
 
     default: {
       // eslint-disable-next-line

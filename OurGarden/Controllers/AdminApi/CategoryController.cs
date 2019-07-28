@@ -40,9 +40,9 @@ namespace Web.Controllers.AdminApi
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Add(
-            [FromForm]CategoryDTO categoryDTO)
+            [FromBody]CategoryDTO categoryDTO)
         {
-            if (!ModelState.IsValid || categoryDTO.Photo?.Length == 0)
+            if (!ModelState.IsValid || categoryDTO.Url?.Length == 0)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }
@@ -50,7 +50,7 @@ namespace Web.Controllers.AdminApi
             try
             {
                 var fileHelper = new FileHelper(_repository);
-                var file = await fileHelper.AddFileToRepository(categoryDTO.Photo);
+                var file = await fileHelper.AddFileToRepository(categoryDTO.Url);
 
                 var category = new Category()
                 {
@@ -81,10 +81,10 @@ namespace Web.Controllers.AdminApi
                 var oldCategory = await _repository.GetCategory(categoryDTO.CategoryId);
                 var file = oldCategory.Photo;
 
-                if (categoryDTO.Photo?.Length != 0)
+                if (categoryDTO.Url?.Length != 0)
                 {
                     var fileHelper = new FileHelper(_repository);
-                    file = await fileHelper.AddFileToRepository(categoryDTO.Photo);
+                    file = await fileHelper.AddFileToRepository(categoryDTO.Url);
                 }
 
                 if (categoryDTO.Alias != oldCategory.Alias)
@@ -98,7 +98,7 @@ namespace Web.Controllers.AdminApi
                     await _repository.AddCategory(category);
                     await _repository.DeleteCategory(oldCategory.CategoryId);
                 }
-                else if (categoryDTO.Photo?.Length != 0)
+                else if (categoryDTO.Url?.Length != 0)
                 {
                     oldCategory.Photo = file;
                     await _repository.UpdateCategory(oldCategory);
