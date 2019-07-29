@@ -1,9 +1,7 @@
-﻿using Model.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Model.DB
 {
@@ -34,6 +32,9 @@ namespace Model.DB
         public double TotalPrice { get; set; }
 
         public ICollection<OrderPosition> OrderPositions { get; set; }
+
+        [Required]
+        public int StatusId { get; set; }
 
         public OrderStatus Status { get; set; }
 

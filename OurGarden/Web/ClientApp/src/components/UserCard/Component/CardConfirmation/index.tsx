@@ -17,7 +17,9 @@ const CardConfirmation = (props: ICardConfirmation) => {
 
   return (
     <React.Fragment>
-      <Title className="confirmation-title">Данные заказа</Title>
+      {!isOrderCreate && (
+        <Title className="confirmation-title">Данные заказа</Title>
+      )}
       {isOrderCreate ? (
         props.pending ? (
           <Loading />

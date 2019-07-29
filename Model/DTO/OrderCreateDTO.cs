@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Model.DB;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Model.DTO
 {
@@ -23,6 +19,6 @@ namespace Model.DTO
         public string Email { get; set; }
 
         [Required]
-        public ICollection<OrderPosition> OrderPositions { get; set; }
+        public IEnumerable<OrderPositionDTO> OrderPositions { get; set; }
     }
 }

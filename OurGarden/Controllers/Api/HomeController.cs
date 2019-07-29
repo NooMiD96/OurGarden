@@ -127,11 +127,6 @@ namespace Web.Controllers.Api
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderForm)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Модель ордера не валидна");
-            }
-
             try
             {
                 var order = new Order()
@@ -141,9 +136,17 @@ namespace Web.Controllers.Api
                     Phone = orderForm.Phone,
                     Email = orderForm.Email,
                     Date = DateTime.Now,
-                    Status = new OrderStatus() { StatusId = 0 },
+                    StatusId = 1,
                     TotalPrice = orderForm.OrderPositions.Select(x => x.Number * x.Product.Price).Sum(),
-                    OrderPositions = orderForm.OrderPositions
+                    OrderPositions = orderForm.OrderPositions.Select(x =>
+                        new OrderPosition()
+                        {
+                            Number = x.Number,
+                            CategoryId = x.Product.CategoryId,
+                            SubcategoryId = x.Product.SubcategoryId,
+                            ProductId = x.Product.ProductId
+                        })
+                        .ToList()
                 };
 
                 await _repository.AddOrder(order);

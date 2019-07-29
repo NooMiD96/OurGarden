@@ -50,6 +50,14 @@ namespace Database.Contexts
                 x.CategoryId
             });
 
+            modelBuilder.Entity<OrderPosition>().HasOne(x => x.Product)
+                .WithMany()
+                .HasForeignKey(x => new {
+                    x.ProductId,
+                    x.SubcategoryId,
+                    x.CategoryId,
+                });
+
             //modelBuilder.Entity<Subcategory>()
             //    .HasOne(x => x.Photo)
             //    .WithMany()
@@ -60,12 +68,13 @@ namespace Database.Contexts
             //    .WithMany()
             //    .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<HealthGroup>().HasData(
-            //    new HealthGroup() { HealthGroupId = 1, Number = 1, Description = "Группа здоровья I" },
-            //    new HealthGroup() { HealthGroupId = 2, Number = 2, Description = "Группа здоровья II" },
-            //    new HealthGroup() { HealthGroupId = 3, Number = 3, Description = "Группа здоровья III" },
-            //    new HealthGroup() { HealthGroupId = 4, Number = 4, Description = "Группа здоровья IV" },
-            //    new HealthGroup() { HealthGroupId = 5, Number = 5, Description = "Группа здоровья V" });
+            modelBuilder.Entity<OrderStatus>().HasData(
+                new OrderStatus() { StatusId = 1, Name = "Новый заказ"},
+                new OrderStatus() { StatusId = 2, Name = "Заказ подтверждён"},
+                new OrderStatus() { StatusId = 3, Name = "Заказ отправлен" },
+                new OrderStatus() { StatusId = 4, Name = "Заказ ожидает получателя" },
+                new OrderStatus() { StatusId = 5, Name = "Заказ закрыт"},
+                new OrderStatus() { StatusId = -1, Name = "Заказ отменён"});
 
             //modelBuilder.Entity<ChildrenInformation>()
             //    .HasOne(x => x.HealthGroup)

@@ -15,6 +15,13 @@ namespace Model.DB
         public int Number { get; set; }
 
         [Required]
+        public string ProductId { get; set; }
+        [Required]
+        public string SubcategoryId { get; set; }
+        [Required]
+        public string CategoryId { get; set; }
+
+        [Required]
         public Product Product { get; set; }
     }
 }

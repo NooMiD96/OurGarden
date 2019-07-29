@@ -59,4 +59,28 @@ export default styled.div`
       }
     }
   }
+
+  .order-success {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+
+    .text-wrapper {
+      margin: 0.5rem;
+      flex: 1 1 100%;
+      font-size: 32px;
+    }
+    .btn-wrapper {
+      margin: 0.5rem;
+      flex: 1 1 100%;
+
+      .ant-btn {
+        height: auto;
+        font-size: 28px;
+      }
+    }
+  }
+
 `;

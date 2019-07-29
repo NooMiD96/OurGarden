@@ -11,7 +11,7 @@ import { IApplicationState } from "@src/Store";
 
 interface ICard {
   totalCount: number;
-  push: (location: string) => void;
+  push: typeof push;
 }
 
 const Card = (props: ICard) => (

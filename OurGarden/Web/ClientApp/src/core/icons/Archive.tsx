@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import archiveJson from "@src/assets/svg/archive/archive.json";
 import lottie, { AnimationItem } from "lottie-web";
@@ -9,7 +9,10 @@ interface IArchive {
 
 const Archive = (props: IArchive) => {
   const archiveEl: React.RefObject<HTMLDivElement> = useRef(null);
-  let archiveAnimation: AnimationItem | null = null;
+  const [
+    archiveAnimation,
+    setArchiveAnimation
+  ] = useState<AnimationItem | null>(null);
 
   const onMouseEnter = () => {
     if (archiveAnimation) {
@@ -25,13 +28,15 @@ const Archive = (props: IArchive) => {
   };
 
   useEffect(() => {
-    archiveAnimation = lottie.loadAnimation({
-      container: archiveEl.current!,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      animationData: archiveJson
-    });
+    setArchiveAnimation(
+      lottie.loadAnimation({
+        container: archiveEl.current!,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: archiveJson
+      })
+    );
 
     return () => {
       if (archiveAnimation) {
