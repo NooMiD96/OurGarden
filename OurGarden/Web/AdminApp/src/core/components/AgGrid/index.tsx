@@ -58,6 +58,9 @@ export class AgGrid<T> extends React.PureComponent<
       <div className="ag-theme-balham">
         <AgGridReact
           columnDefs={columns}
+          onRowDataUpdated={() => {
+            this.state.gridApi.sizeColumnsToFit();
+          }}
           rowData={rowData}
           onGridReady={this.onGridReady}
           columnTypes={columnTypesDef}

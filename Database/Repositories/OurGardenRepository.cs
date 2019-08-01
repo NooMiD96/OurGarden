@@ -26,6 +26,8 @@ namespace Database.Repositories
         public async Task<Category> GetCategory(string categoryId) => 
             await _context.Category
             .Include(x => x.Photo)
+            .Include(x => x.Subcategories)
+            .ThenInclude(x => x.Products)
             .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
 
         public async Task AddCategory(Category category)
@@ -88,6 +90,22 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateSubcategoriesCategory(IEnumerable<Subcategory> subcategories, string newCategoryId)
+        {
+            var newSubcategory = subcategories.Select(x => new Subcategory()
+            {
+                Alias = x.Alias,
+                Category = null,
+                CategoryId = newCategoryId,
+                Photo = x.Photo,
+                Products = x.Products,
+                SubcategoryId = x.SubcategoryId
+            });
+            _context.Subcategory.RemoveRange(subcategories);
+            _context.Subcategory.AddRange(newSubcategory);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteSubcategory(string subcategoryId, string categoryId)
         {
             var subcategory = await _context.Subcategory
@@ -139,6 +157,23 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateProductsCategory(IEnumerable<Product> products, string newCategoryId)
+        {
+            var newProducts = products.Select(x => new Product()
+            {
+                Alias = x.Alias,
+                CategoryId = newCategoryId,
+                Descriprion = x.Descriprion,
+                Photos = x.Photos,
+                Price = x.Price,
+                ProductId = x.ProductId,
+                Subcategory = x.Subcategory,
+                SubcategoryId = x.SubcategoryId
+            });
+            _context.Product.AddRange(newProducts);
+            _context.Product.RemoveRange(products);
+            await _context.SaveChangesAsync();
+        }
         public async Task DeleteProduct(string productId, string subcategoryId, string categoryId)
         {
             var product = await _context.Product

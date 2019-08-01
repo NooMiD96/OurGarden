@@ -25,15 +25,27 @@ export const actionsList = {
     errorMessage,
   }),
 
-  addCategoryRequest: (): t.IAddCategoryRequest => ({
-    type: t.ADD_CATEGORY_REQUEST,
+  addOrUpdateCategoryRequest: (): t.IAddOrUpdateCategoryRequest => ({
+    type: t.ADD_OR_UPDATE_CATEGORY_REQUEST,
   }),
-  addCategorySuccess: (payload: boolean): t.IAddCategorySuccess => ({
-    type: t.ADD_CATEGORY_SUCCESS,
+  addOrUpdateCategorySuccess: (payload: boolean): t.IAddOrUpdateCategorySuccess => ({
+    type: t.ADD_OR_UPDATE_CATEGORY_SUCCESS,
     payload
   }),
-  addCategoryError: (errorMessage: string): t.IAddCategoryError => ({
-    type: t.ADD_CATEGORY_ERROR,
+  addOrUpdateCategoryError: (errorMessage: string): t.IAddOrUpdateCategoryError => ({
+    type: t.ADD_OR_UPDATE_CATEGORY_ERROR,
+    errorMessage,
+  }),
+
+  deleteCategoryRequest: (): t.IDeleteCategoryRequest => ({
+    type: t.DELETE_CATEGORY_REQUEST,
+  }),
+  deleteCategorySuccess: (payload: boolean): t.IDeleteCategorySuccess => ({
+    type: t.DELETE_CATEGORY_SUCCESS,
+    payload
+  }),
+  deleteCategoryError: (errorMessage: string): t.IDeleteCategoryError => ({
+    type: t.DELETE_CATEGORY_ERROR,
     errorMessage,
   }),
 
@@ -81,8 +93,8 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getCategoryListRequest());
   },
-  AddCategory: (data: ICategoryDTO): IAppThunkAction<t.TAddCategory | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "Add";
+  AddOrUpdateCategory: (data: ICategoryDTO, onSuccess: Function, onError: Function): IAppThunkAction<t.TAddOrUpdateCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "AddOrUpdate";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
@@ -99,24 +111,71 @@ export const actionCreators = {
       .then(responseCatcher)
       .then((value: IResponse<ICategory[]>) => {
         if (value && value.error) {
-          debugger;
+          onError();
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.addCategorySuccess(true));
+
+        onSuccess();
+        dispatch(actionsList.addOrUpdateCategorySuccess(true));
+        actionCreators.getCategoryList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.addCategoryError,
-        dispatch
-      ));
+      }).catch((err: Error) => {
+        onError();
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.addOrUpdateCategoryError,
+          dispatch
+        );
+      });
 
     addTask(fetchTask);
-    dispatch(actionsList.addCategoryRequest());
+    dispatch(actionsList.addOrUpdateCategoryRequest());
   },
+  RemoveCategory: (data: string, onError: Function): IAppThunkAction<t.IDeleteCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "Delete";
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "DELETE",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<boolean>) => {
+        if (value && value.error) {
+          onError();
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.deleteCategorySuccess(true));
+        actionCreators.getCategoryList()(dispatch, getState);
+
+        return Promise.resolve();
+      }).catch((err: Error) => {
+        onError();
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.addOrUpdateCategoryError,
+          dispatch
+        );
+      });
+
+    addTask(fetchTask);
+    dispatch(actionsList.deleteCategoryRequest());
+  },
+
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

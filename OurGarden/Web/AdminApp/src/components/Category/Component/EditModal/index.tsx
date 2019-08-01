@@ -8,7 +8,7 @@ import EditModalContent from "./EditModalContent";
 interface IEditModalProps {
   isShow: boolean;
   item: ICategory | null;
-  handleSubmit: Function;
+  handleCreateSubmit: Function;
   handleClose: Function;
 }
 
@@ -17,7 +17,7 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
     const {
       isShow,
       item,
-      handleSubmit: handleSubmit,
+      handleCreateSubmit: handleCreateSubmit,
       handleClose: handleClose
     } = this.props;
 
@@ -26,13 +26,13 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         title={<span>{item ? "Редактирование" : "Создание"}</span>}
         visible={isShow}
         closable={false}
+        destroyOnClose
         footer={null}
       >
         <EditModalContent
           loading={false}
-          url={item ? item.photo.url : ""}
-          name={item ? item.alias : ""}
-          handleSubmit={handleSubmit}
+          item={item}
+          handleCreateSubmit={handleCreateSubmit}
           handleClose={handleClose}
         />
       </Modal>

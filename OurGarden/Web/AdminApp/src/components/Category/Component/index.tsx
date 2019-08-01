@@ -8,13 +8,14 @@ import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
+import message from "@src/core/antd/message";
 
 export class Category extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     editItem: null,
     showModal: false
   };
-  gridRef: React.RefObject<AgGrid<ICategory>> | null = createRef();
+  gridRef: React.RefObject<AgGrid<ICategory>> = createRef();
 
   columns = [
     {
@@ -44,8 +45,8 @@ export class Category extends React.PureComponent<TState, TComponentState> {
       cancelText: "Отмена",
       type: "confirm",
       onOk: () => {
-        // Через state.gridApi получить selectedItems
-        this.gridRef;
+        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as ICategory[];
+        this.props.RemoveCategory(data[0].categoryId, this.onSubmitError);
       }
     });
   };
@@ -57,14 +58,22 @@ export class Category extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  handleSubmit = (data: ICategoryDTO) => {
-    debugger;
-    this.props.AddCategory(data);
-    console.log(data.alias + data.url);
+  onSubmitError = () => message.error("Ошибка!");
+  onSubmitSuccess = () => message.success("Успешно сохранено!");
+
+  handleCreateSubmit = (data: ICategoryDTO) => {
+    this.props.AddOrUpdateCategory(
+      data,
+      this.onSubmitSuccess,
+      this.onSubmitError
+    );
+    this.setState({
+      editItem: null,
+      showModal: false
+    });
   };
 
   handleClose = () => {
-    debugger;
     this.setState({
       editItem: null,
       showModal: false
@@ -104,7 +113,7 @@ export class Category extends React.PureComponent<TState, TComponentState> {
         <EditModal
           isShow={showModal}
           item={editItem}
-          handleSubmit={this.handleSubmit}
+          handleCreateSubmit={this.handleCreateSubmit}
           handleClose={this.handleClose}
         />
       </React.Fragment>

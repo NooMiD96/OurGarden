@@ -3,6 +3,7 @@ import { IImageUploaderProps, IImageUploaderState } from "./IImageUploader";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import { Icon } from "@src/core/antd";
+import message from "@src/core/antd/message";
 import Uploader from "./style/Uploader.style";
 
 function getBase64(
@@ -20,11 +21,11 @@ function getBase64(
 function beforeUpload(file: UploadFile) {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
-    alert("Вы можете загружать файлы только с расширением JPG/PNG !");
+    message.error("Вы можете загружать файлы только с расширением JPG/PNG !");
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    alert("Фотография должна быть мешьше 2MB!");
+    message.error("Фотография должна быть мешьше 2MB!");
   }
   return isJpgOrPng && isLt2M;
 }

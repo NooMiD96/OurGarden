@@ -3,20 +3,15 @@ import * as React from "react";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
+import localeText from "../Text";
 import { Button } from "@src/core/antd";
 import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
-import localeText from "../Text";
-// import ModalControlButtons from "../ModalControlButtons";
-
-// import { TAuthenticationModel } from "../../TModel";
-
-// import localeText from "../Text";
+import { ICategory } from "../../State";
 
 interface IProps extends FormComponentProps {
-  url: string;
-  name: string;
+  item: ICategory | null;
   loading: boolean;
-  handleSubmit: Function;
+  handleCreateSubmit: Function;
   handleClose: Function;
 }
 
@@ -24,15 +19,20 @@ export const EditModalContent = (props: IProps) => {
   const { form } = props;
   const { getFieldDecorator } = form;
 
+  const categoryId = props.item ? props.item.categoryId : null;
+  const alias = props.item ? props.item.alias : null;
+  const photo = props.item ? props.item.photo : null;
+
   const onSubmit = () => {
     var alias = form.getFieldValue("alias");
     var imageUrl = form.getFieldValue("image");
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
-        props.handleSubmit({
+        props.handleCreateSubmit({
+          categoryId: categoryId,
           alias: alias,
-          url: props.url == imageUrl ? null : imageUrl
+          url: photo == imageUrl ? null : imageUrl
         });
       }
     });
@@ -54,6 +54,7 @@ export const EditModalContent = (props: IProps) => {
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
         {getFieldDecorator("alias", {
+          initialValue: alias,
           rules: [{ required: true, message: localeText._rule_require_alias }]
         })(
           <Input
@@ -64,8 +65,14 @@ export const EditModalContent = (props: IProps) => {
       </FormItem>
       <FormItem>
         {getFieldDecorator("image", {
+          initialValue: photo ? photo.url : null,
           rules: [{ required: true, message: localeText._rule_require_photo }]
-        })(<ImageUploader onUpload={onUploadImage} oldImageUrl={props.url} />)}
+        })(
+          <ImageUploader
+            onUpload={onUploadImage}
+            oldImageUrl={photo ? photo.url : null}
+          />
+        )}
       </FormItem>
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>

@@ -9,7 +9,7 @@ export interface ICategory {
 }
 
 export interface ICategoryDTO {
-  categoryId: string;
+  categoryId: string | null;
   alias: string;
   url: string;
 }
