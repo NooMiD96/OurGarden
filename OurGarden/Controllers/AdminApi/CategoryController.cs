@@ -10,8 +10,9 @@ using Model.DB;
 using Model.DTO;
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
+
+using Web.Services.Controllers.AdminApi;
 
 namespace Web.Controllers.AdminApi
 {
@@ -22,14 +23,15 @@ namespace Web.Controllers.AdminApi
     public class CategoryController : BaseController
     {
         public readonly IOurGardenRepository _repository;
+        public readonly CategoryControllerService _service;
         public CategoryController(IOurGardenRepository repository)
         {
             _repository = repository;
-        }        
+            _service = new CategoryControllerService(_repository);
+        }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> Get(
-            [FromQuery]string categoryId)
+        public async Task<IActionResult> Get([FromQuery]string categoryId)
         {
             var category = await _repository.GetCategory(categoryId);
 
@@ -37,15 +39,15 @@ namespace Web.Controllers.AdminApi
                 return BadRequest("Что-то пошло не так, повторите попытку");
 
             return Success(category);
-        }        
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate(
             [FromBody]CategoryDTO categoryDTO)
         {
-            if (!ModelState.IsValid || categoryDTO.Url?.Length == 0)
+            if (categoryDTO.Url?.Length == 0)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest("Загрузите фотографию!");
             }
 
             try
@@ -68,10 +70,19 @@ namespace Web.Controllers.AdminApi
                 else
                 {
                     var oldCategory = await _repository.GetCategory(categoryDTO.CategoryId);
-                    var file = oldCategory.Photo;
 
-                    if (categoryDTO.Url != oldCategory.Photo.Url)
+                    if (categoryDTO.Alias != oldCategory.Alias)
                     {
+                        var (isSuccess, error) = await _service.UpdateCategory(categoryDTO, oldCategory);
+
+                        if (!isSuccess)
+                        {
+                            return BadRequest(error);
+                        }
+                    }
+                    else if (categoryDTO.Url != oldCategory.Photo.Url)
+                    {
+                        var file = oldCategory.Photo;
                         var fileHelper = new FileHelper(_repository);
                         file = await fileHelper.AddFileToRepository(categoryDTO.Url);
                         if (categoryDTO.Alias == oldCategory.Alias)
@@ -82,30 +93,13 @@ namespace Web.Controllers.AdminApi
                         }
                     }
 
-                    if (categoryDTO.Alias != oldCategory.Alias)
-                    {
-                        var category = new Category()
-                        {
-                            Alias = categoryDTO.Alias,
-                            CategoryId = StringHelper.Transform(categoryDTO.Alias),
-                            Photo = file
-                        };
-                        await _repository.AddCategory(category);
-                        var productList = oldCategory.Subcategories.SelectMany(x => x.Products);
-                        var subcategoryList = oldCategory.Subcategories;
-
-                        await _repository.DeleteCategory(oldCategory.CategoryId);
-                        await _repository.UpdateProductsCategory(productList, category.CategoryId);
-                        await _repository.UpdateSubcategoriesCategory(subcategoryList, category.CategoryId);
-                    }
-
                     return Success(true);
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
-            }            
+            }
         }
 
 

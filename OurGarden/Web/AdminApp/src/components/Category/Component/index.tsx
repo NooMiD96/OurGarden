@@ -8,7 +8,7 @@ import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
-import message from "@src/core/antd/message";
+import Spin from "@core/antd/Spin";
 
 export class Category extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -46,7 +46,7 @@ export class Category extends React.PureComponent<TState, TComponentState> {
       type: "confirm",
       onOk: () => {
         let data = this.gridRef.current!.state.gridApi.getSelectedRows() as ICategory[];
-        this.props.RemoveCategory(data[0].categoryId, this.onSubmitError);
+        this.props.RemoveCategory(data[0].categoryId);
       }
     });
   };
@@ -58,15 +58,8 @@ export class Category extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  onSubmitError = () => message.error("Ошибка!");
-  onSubmitSuccess = () => message.success("Успешно сохранено!");
-
   handleCreateSubmit = (data: ICategoryDTO) => {
-    this.props.AddOrUpdateCategory(
-      data,
-      this.onSubmitSuccess,
-      this.onSubmitError
-    );
+    this.props.AddOrUpdateCategory(data);
     this.setState({
       editItem: null,
       showModal: false
@@ -81,11 +74,11 @@ export class Category extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem } = this.props;
+    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
     const { showModal, editItem } = this.state;
 
     return (
-      <React.Fragment>
+      <Spin spinning={pending}>
         {errorInner && (
           <Alert
             message="Ошибка"
@@ -116,7 +109,7 @@ export class Category extends React.PureComponent<TState, TComponentState> {
           handleCreateSubmit={this.handleCreateSubmit}
           handleClose={this.handleClose}
         />
-      </React.Fragment>
+      </Spin>
     );
   }
 }

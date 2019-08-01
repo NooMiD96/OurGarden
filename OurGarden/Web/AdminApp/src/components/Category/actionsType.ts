@@ -25,7 +25,7 @@ export type TGetCategoryList = IGetCategoryListRequest | IGetCategoryListSuccess
 
 export interface IAddOrUpdateCategoryRequest { type: typeof ADD_OR_UPDATE_CATEGORY_REQUEST }
 export interface IAddOrUpdateCategorySuccess { type: typeof ADD_OR_UPDATE_CATEGORY_SUCCESS; payload: boolean }
-export interface IAddOrUpdateCategoryError { type: typeof ADD_OR_UPDATE_OR_UPDATE_CATEGORY_ERROR; errorMessage: string }
+export interface IAddOrUpdateCategoryError { type: typeof ADD_OR_UPDATE_CATEGORY_ERROR; errorMessage: string }
 export type TAddOrUpdateCategory = IAddOrUpdateCategoryRequest | IAddOrUpdateCategorySuccess | IAddOrUpdateCategoryError;
 
 export interface IDeleteCategoryRequest { type: typeof DELETE_CATEGORY_REQUEST }
@@ -35,7 +35,8 @@ export type IDeleteCategory = IDeleteCategoryRequest | IDeleteCategorySuccess | 
 
 export interface ICleanErrorInnerAction { type: typeof CLEAN_ERROR_INNER }
 
-type KnownAction = TGetCategoryList | ICleanErrorInnerAction;
+type KnownAction = TGetCategoryList | TAddOrUpdateCategory | IDeleteCategory
+  | ICleanErrorInnerAction;
 
 export default KnownAction;
 //#endregion

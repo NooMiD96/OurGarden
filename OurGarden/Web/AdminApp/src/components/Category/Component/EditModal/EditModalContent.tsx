@@ -3,10 +3,13 @@ import * as React from "react";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
+import Button from "@core/antd/Button";
 import localeText from "../Text";
-import { Button } from "@src/core/antd";
+
 import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
+
 import { ICategory } from "../../State";
+import { IPressEnterEvent } from "@src/core/IEvents";
 
 interface IProps extends FormComponentProps {
   item: ICategory | null;
@@ -23,7 +26,9 @@ export const EditModalContent = (props: IProps) => {
   const alias = props.item ? props.item.alias : null;
   const photo = props.item ? props.item.photo : null;
 
-  const onSubmit = () => {
+  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
+    e && e.preventDefault();
+
     var alias = form.getFieldValue("alias");
     var imageUrl = form.getFieldValue("image");
 
@@ -60,6 +65,7 @@ export const EditModalContent = (props: IProps) => {
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
             placeholder={localeText._label_alias}
+            onPressEnter={onSubmit}
           />
         )}
       </FormItem>

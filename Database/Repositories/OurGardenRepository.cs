@@ -26,17 +26,15 @@ namespace Database.Repositories
         public async Task<Category> GetCategory(string categoryId) => 
             await _context.Category
             .Include(x => x.Photo)
-            .Include(x => x.Subcategories)
-            .ThenInclude(x => x.Products)
             .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
 
         public async Task AddCategory(Category category)
         {
-            var chek = await _context.Category.FirstOrDefaultAsync(x =>  x.CategoryId == category.CategoryId);
-            if (chek != null)
-            {
-                throw new Exception();
-            }
+            // var chek = await _context.Category.FirstOrDefaultAsync(x =>  x.CategoryId == category.CategoryId);
+            // if (chek != null)
+            // {
+            //     throw new Exception();
+            // }
             await _context.Category.AddAsync(category);
             await _context.SaveChangesAsync();
         }
@@ -56,6 +54,7 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
         #endregion
+
 
         #region Subcategory      
         public async Task<IEnumerable<Subcategory>> GetAllSubcategories() =>
@@ -90,16 +89,18 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateSubcategoriesCategory(IEnumerable<Subcategory> subcategories, string newCategoryId)
+        public async Task UpdateSubcategories(IEnumerable<Subcategory> subcategories,
+                                              string newCategoryId)
         {
             var newSubcategory = subcategories.Select(x => new Subcategory()
             {
-                Alias = x.Alias,
-                Category = null,
                 CategoryId = newCategoryId,
+                SubcategoryId = x.SubcategoryId,
+                Alias = x.Alias,
+                //Category = null,
+
                 Photo = x.Photo,
-                Products = x.Products,
-                SubcategoryId = x.SubcategoryId
+                //Products = x.Products,
             });
             _context.Subcategory.RemoveRange(subcategories);
             _context.Subcategory.AddRange(newSubcategory);
@@ -117,8 +118,8 @@ namespace Database.Repositories
         }
         #endregion
 
-        #region Product
 
+        #region Product
         public async Task<IEnumerable<Product>> GetSearchProducts(string search) =>
            await _context.Product
             .Include(x => x.Photos)
@@ -141,8 +142,11 @@ namespace Database.Repositories
 
         public async Task AddProduct(Product product)
         {
-            var chek = await _context.Product.FirstOrDefaultAsync(x => x.ProductId == product.ProductId 
-            && x.SubcategoryId == product.SubcategoryId && x.CategoryId == product.CategoryId);
+            var chek = await _context.Product.FirstOrDefaultAsync(
+                x => x.ProductId == product.ProductId
+                     && x.SubcategoryId == product.SubcategoryId
+                     && x.CategoryId == product.CategoryId
+            );
             if (chek != null)
             {
                 throw new Exception();
@@ -157,19 +161,35 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateProductsCategory(IEnumerable<Product> products, string newCategoryId)
+        public async Task UpdateProducts(IEnumerable<Product> products,
+                                         string newCategoryId,
+                                         string newSubcategoryId)
         {
-            var newProducts = products.Select(x => new Product()
+            var newProducts = products.Select(product => new Product()
             {
-                Alias = x.Alias,
                 CategoryId = newCategoryId,
-                Descriprion = x.Descriprion,
-                Photos = x.Photos,
-                Price = x.Price,
-                ProductId = x.ProductId,
-                Subcategory = x.Subcategory,
-                SubcategoryId = x.SubcategoryId
-            });
+                SubcategoryId = newSubcategoryId,
+                ProductId = product.ProductId,
+
+                Alias = product.Alias,
+                Price = product.Price,
+                Descriprion = product.Descriprion,
+
+                //Subcategory = x.Subcategory,
+                Photos = product.Photos.Select(photo => {
+                    var id = Guid.NewGuid();
+
+                    _context.Remove(photo);
+
+                    return new Photo()
+                    {
+                        Date = DateTime.Now,
+                        Name = id.ToString(),
+                        PhotoId = id,
+                        Url = photo.Url
+                    };
+                }).ToList(),
+            }).ToList();
             _context.Product.AddRange(newProducts);
             _context.Product.RemoveRange(products);
             await _context.SaveChangesAsync();
