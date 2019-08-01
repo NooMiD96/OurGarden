@@ -3,69 +3,90 @@ import * as React from "react";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
+import Button from "@core/antd/Button";
+import localeText from "../Text";
 
-// import ModalControlButtons from "../ModalControlButtons";
+import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
 
-// import { TAuthenticationModel } from "../../TModel";
-
-// import localeText from "../Text";
+import { ICategory } from "../../State";
+import { IPressEnterEvent } from "@src/core/IEvents";
 
 interface IProps extends FormComponentProps {
-  // handleSubmit: (payload: TAuthenticationModel) => void;
+  item: ICategory | null;
   loading: boolean;
+  handleCreateSubmit: Function;
+  handleClose: Function;
 }
 
 export const EditModalContent = (props: IProps) => {
   const { form } = props;
   const { getFieldDecorator } = form;
 
-  const onSubmit = () => {
+  const categoryId = props.item ? props.item.categoryId : null;
+  const alias = props.item ? props.item.alias : null;
+  const photo = props.item ? props.item.photo : null;
+
+  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
+    e && e.preventDefault();
+
+    var alias = form.getFieldValue("alias");
+    var imageUrl = form.getFieldValue("image");
+
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
-        // props.handleSubmit({
-        //   password: values.password,
-        //   userName: values.userName,
-        // });
-        props.form.resetFields(["password"]);
+        props.handleCreateSubmit({
+          categoryId: categoryId,
+          alias: alias,
+          url: photo == imageUrl ? null : imageUrl
+        });
       }
     });
+  };
+
+  const onClose = () => {
+    form.resetFields(["alias", "image"]);
+    props.handleClose();
+  };
+
+  const onUploadImage = (imageUrl: string | ArrayBuffer) => {
+    var value = {
+      image: imageUrl
+    };
+    form.setFieldsValue(value);
   };
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("userName", {
-          rules: [
-            { required: true, message: "localeText._rule_require_userName" }
-          ]
+        {getFieldDecorator("alias", {
+          initialValue: alias,
+          rules: [{ required: true, message: localeText._rule_require_alias }]
         })(
           <Input
-            prefix={<Icon type="user" className="input-prefix-color" />}
-            // placeholder={localeText._label_userName}
+            prefix={<Icon type="edit" className="input-prefix-color" />}
+            placeholder={localeText._label_alias}
             onPressEnter={onSubmit}
           />
         )}
       </FormItem>
       <FormItem>
-        {getFieldDecorator("password", {
-          rules: [
-            { required: true, message: "localeText._rule_require_password" }
-          ]
+        {getFieldDecorator("image", {
+          initialValue: photo ? photo.url : null,
+          rules: [{ required: true, message: localeText._rule_require_photo }]
         })(
-          <Input
-            prefix={<Icon type="lock" className="input-prefix-color" />}
-            type="password"
-            // placeholder={localeText._label_password}
-            onPressEnter={onSubmit}
+          <ImageUploader
+            onUpload={onUploadImage}
+            oldImageUrl={photo ? photo.url : null}
           />
         )}
       </FormItem>
       <div className="ant-modal-footer">
-        {/* <ModalControlButtons
-          handleSubmit={onSubmit}
-          loading={loading}
-          submitTitle="Войти"
-        /> */}
+        <Button type="primary" onClick={onSubmit}>
+          Сохранить
+        </Button>
+        <Button type="danger" onClick={onClose}>
+          Отмена
+        </Button>
       </div>
     </Form>
   );

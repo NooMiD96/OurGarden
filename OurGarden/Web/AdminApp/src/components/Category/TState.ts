@@ -1,10 +1,10 @@
-import { ICategoryState, ICategoryItem } from "./State";
+import { ICategoryState, ICategory } from "./State";
 import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
-  editItem: ICategoryItem | null;
+  editItem: ICategory | null;
   showModal: boolean;
 };
 // -----------------------------

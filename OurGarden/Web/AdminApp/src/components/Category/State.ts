@@ -1,11 +1,21 @@
+import { IPhoto } from "@src/core/IPhoto";
+
 // -----------------
 //#region STATE
-export interface ICategoryItem {
-  id: number;
+export interface ICategory {
+  categoryId: string;
+  alias: string;
+  photo: IPhoto;
+}
+
+export interface ICategoryDTO {
+  categoryId: string | null;
+  alias: string;
+  url: string;
 }
 
 export interface ICategoryState {
-  listItem: ICategoryItem[];
+  listItem: ICategory[];
   pending: boolean;
   errorInner: string;
 }

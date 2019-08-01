@@ -1,30 +1,34 @@
 import React, { createRef } from "react";
 
 import { TState, TComponentState } from "../TState";
-import { ICategoryItem } from "../State";
+import { ICategory, ICategoryDTO } from "../State";
 
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
+import Spin from "@core/antd/Spin";
 
 export class Category extends React.PureComponent<TState, TComponentState> {
-  gridRef: React.RefObject<AgGrid<ICategoryItem>> | null = createRef();
-  columns = [
-    {
-      headerName: "Заголовок",
-      field: "field"
-    }
-  ];
-  rowData: ICategoryItem[] = [{} as ICategoryItem];
-
   state: TComponentState = {
     editItem: null,
     showModal: false
   };
+  gridRef: React.RefObject<AgGrid<ICategory>> = createRef();
 
-  onDoubleClickHandler = (data: ICategoryItem) => {
+  columns = [
+    {
+      headerName: "Категория",
+      field: "alias"
+    }
+  ];
+
+  componentDidMount() {
+    this.props.getCategoryList();
+  }
+
+  onDoubleClickHandler = (data: ICategory) => {
     this.setState({
       editItem: data,
       showModal: true
@@ -41,8 +45,8 @@ export class Category extends React.PureComponent<TState, TComponentState> {
       cancelText: "Отмена",
       type: "confirm",
       onOk: () => {
-        // Через state.gridApi получить selectedItems
-        this.gridRef;
+        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as ICategory[];
+        this.props.RemoveCategory(data[0].categoryId);
       }
     });
   };
@@ -54,12 +58,27 @@ export class Category extends React.PureComponent<TState, TComponentState> {
     });
   };
 
+  handleCreateSubmit = (data: ICategoryDTO) => {
+    this.props.AddOrUpdateCategory(data);
+    this.setState({
+      editItem: null,
+      showModal: false
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      editItem: null,
+      showModal: false
+    });
+  };
+
   render() {
-    const { errorInner, cleanErrorInner } = this.props;
+    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
     const { showModal, editItem } = this.state;
 
     return (
-      <React.Fragment>
+      <Spin spinning={pending}>
         {errorInner && (
           <Alert
             message="Ошибка"
@@ -81,11 +100,16 @@ export class Category extends React.PureComponent<TState, TComponentState> {
         <AgGrid
           ref={this.gridRef}
           columns={this.columns}
-          rowData={this.rowData}
+          rowData={listItem}
           onDoubleClickHandler={this.onDoubleClickHandler}
         />
-        <EditModal isShow={showModal} item={editItem} />
-      </React.Fragment>
+        <EditModal
+          isShow={showModal}
+          item={editItem}
+          handleCreateSubmit={this.handleCreateSubmit}
+          handleClose={this.handleClose}
+        />
+      </Spin>
     );
   }
 }

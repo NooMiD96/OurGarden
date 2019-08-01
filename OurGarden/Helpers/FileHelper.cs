@@ -35,5 +35,19 @@ namespace Web.Controllers.AdminApi
                 return file;
             }
         }
+
+        public async Task<Photo> AddFileToRepository(string photoUrl)
+        {
+            var Id = Guid.NewGuid();
+            var file = new Photo()
+            {
+                Date = DateTime.Now,
+                Name = Id.ToString(),
+                PhotoId = Id,
+                Url = photoUrl
+            };
+            await _repository.AddFile(file);
+            return file;
+        }
     }
 }
