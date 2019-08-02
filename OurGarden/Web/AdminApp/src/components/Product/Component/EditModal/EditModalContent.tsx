@@ -4,15 +4,16 @@ import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
+import CKEditor from "@core/components/CKEditor";
 import localeText from "../Text";
 
 import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
 
-import { ICategory } from "../../State";
+import { IProduct } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 
 interface IProps extends FormComponentProps {
-  item: ICategory | null;
+  item: IProduct | null;
   loading: boolean;
   handleCreateSubmit: Function;
   handleClose: Function;
@@ -22,9 +23,9 @@ export const EditModalContent = (props: IProps) => {
   const { form } = props;
   const { getFieldDecorator } = form;
 
-  const categoryId = props.item ? props.item.categoryId : null;
-  const alias = props.item ? props.item.alias : null;
-  const photo = props.item ? props.item.photo : null;
+  const categoryId = props.item && props.item.categoryId;
+  const alias = props.item && props.item.alias;
+  const photo = props.item && props.item.photos && props.item.photos[0];
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -37,7 +38,7 @@ export const EditModalContent = (props: IProps) => {
         props.handleCreateSubmit({
           categoryId: categoryId,
           alias: alias,
-          url: photo == imageUrl ? null : imageUrl
+          url: photo === imageUrl ? null : imageUrl
         });
       }
     });
@@ -49,9 +50,10 @@ export const EditModalContent = (props: IProps) => {
   };
 
   const onUploadImage = (imageUrl: string | ArrayBuffer) => {
-    form.setFieldsValue({
+    const value = {
       image: imageUrl
-    });
+    };
+    form.setFieldsValue(value);
   };
 
   return (
@@ -79,6 +81,7 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
+      <CKEditor />
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>
           Сохранить

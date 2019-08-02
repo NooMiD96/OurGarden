@@ -81,6 +81,18 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@ckeditor/ckeditor5-build-classic@^12.3.1":
+  version "12.3.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-12.3.1.tgz#b37011d5ee2f2590cf8d29a43dc5c62f14cf0b5a"
+  integrity sha512-nlE8wRasM3AF2XkXHJuj91cq46ZvmTBfXePCtjogT8s/niYlFma+Lqu7cAUONxRXh11m1IpgC6i+QOGFZH0p8A==
+
+"@ckeditor/ckeditor5-react@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-react/-/ckeditor5-react-1.1.3.tgz#7d79f3d5390f3f8eaab53ef03cf97fd782c56318"
+  integrity sha512-h5jgUOkGt8up3yjyOP7LXJTuhMtbiUnDn1Bv4FEJ5Bjl4hs5cDk1+U8sghog/KJ3C84kCHn5P81slo0JzUuYyQ==
+  dependencies:
+    prop-types "^15.6.1"
+
 "@emotion/is-prop-valid@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.7.3.tgz#a6bf4fa5387cbba59d44e698a4680f481a8da6cc"
@@ -102,6 +114,11 @@
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
   integrity sha512-/+CRPXpBDpo2RK9C68N3b2cOvO0Cf5B9aPijHsoDQTHivnGSObdOF2BRQOYjojWTDy6nQvMjmqRXIxH55VjxxA==
+
+"@types/ckeditor@^4.9.8":
+  version "4.9.8"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-4.9.8.tgz#2585bfea409c0d9e970d04611fb22726c6a6d219"
+  integrity sha512-UM2t8mRul1vT/Al3c1L5elal925YstzcBQHLHk+hVvEoFOUkQKokePnGgD1L7K9n4h3hoPDDwc5jEKeUU3UxMw==
 
 "@types/copy-webpack-plugin@^5.0.0":
   version "5.0.0"
