@@ -32,6 +32,7 @@ namespace Web.Services.Controllers.AdminApi
             {
                 try
                 {
+                    // Создаём новую категорию
                     var fileHelper = new FileHelper(_repository);
                     var file = await fileHelper.AddFileToRepository(categoryDTO.Url);
 
@@ -42,20 +43,28 @@ namespace Web.Services.Controllers.AdminApi
                         Photo = file
                     };
                     await _repository.AddCategory(newCategory);
+                    var newCategoryId = newCategory.CategoryId;
+                    newCategory = null;
+                    
 
+                    // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
                     await _context.Entry(oldCategory).Collection(x => x.Subcategories).LoadAsync();
 
+                    // Поскольку по окончанию цикла мы сохраняем изменения в БД
+                    // Список подкатегорий уменьшается, поэтому используется цикл while
                     while (oldCategory.Subcategories.Count != 0)
                     {
                         var oldSubcategory = oldCategory.Subcategories.ElementAt(0);
                         var newSubcategory = default(Subcategory);
 
+                        // Загружаем для подкатегории фотографию
                         await _context.Entry(oldSubcategory).Reference(x => x.Photo).LoadAsync();
 
+                        // Создаём новую подкатегорию с "новой" фотографией
                         var guid = Guid.NewGuid();
                         newSubcategory = new Subcategory()
                         {
-                            CategoryId = newCategory.CategoryId,
+                            CategoryId = newCategoryId,
                             SubcategoryId = oldSubcategory.SubcategoryId,
 
                             Alias = oldSubcategory.Alias,
@@ -68,16 +77,19 @@ namespace Web.Services.Controllers.AdminApi
                             }
                         };
 
+                        // Удаляем фотографию для старой
                         _context.Photo.Remove(oldSubcategory.Photo);
 
+                        // Загружаем список продуктов
                         await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
                         newSubcategory.Products = oldSubcategory.Products.Select(product =>
                         {
+                            // Загружаем список фотографий для данного продукта
                             _context.Entry(product).Collection(x => x.Photos).LoadAsync().GetAwaiter().GetResult();
 
                             return new Product()
                             {
-                                CategoryId = newCategory.CategoryId,
+                                CategoryId = newCategoryId,
                                 SubcategoryId = newSubcategory.SubcategoryId,
                                 ProductId = product.ProductId,
 
@@ -103,8 +115,10 @@ namespace Web.Services.Controllers.AdminApi
                         })
                             .ToList();
 
+                        // Добовляем новую подкатегорию
                         _context.Add(newSubcategory);
 
+                        // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
                         var orderList = _context.OrderPosition
                             .Include(x => x.Product)
                             .Where(
@@ -115,9 +129,10 @@ namespace Web.Services.Controllers.AdminApi
                             )
                         ).ToList();
 
+                        // Обновляем ссылку на продукт
                         orderList.ForEach(order =>
                         {
-                            var newProduct = newSubcategory.Products.First(product => product.CategoryId == order.Product.CategoryId
+                            var newProduct = newSubcategory.Products.First(product => oldSubcategory.CategoryId == order.Product.CategoryId
                                                                                       && product.SubcategoryId == order.Product.SubcategoryId
                                                                                       && product.ProductId == order.Product.ProductId);
 
@@ -126,11 +141,14 @@ namespace Web.Services.Controllers.AdminApi
                             _context.Update(order);
                         });
 
+                        // Теперь старая подкатегория не нужно
                         _context.Remove(oldSubcategory);
 
+                        // Сохраняем изменения
                         await _context.SaveChangesAsync();
                     }
 
+                    // Если всё прошло удачно, удаляем старую категорию
                     await _repository.DeleteCategory(oldCategory.CategoryId);
 
                     transaction.Commit();
