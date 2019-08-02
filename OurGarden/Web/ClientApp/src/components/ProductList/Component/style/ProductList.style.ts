@@ -7,7 +7,7 @@ export default styled.div`
   overflow: auto;
 
   .ant-col.card-wrapper {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     flex: 0 1 auto;
   }
 

@@ -1,9 +1,11 @@
 import React from "react";
 
-import Row from "@src/core/antd/Row";
-import Col from "@src/core/antd/Col";
+import Row from "@core/antd/Row";
+import Col from "@core/antd/Col";
+import Loading from "@core/components/Loading";
+import Pagination from "@core/antd/Pagination";
+import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import ProductCard from "./ProductCard";
-import Loading from "@src/core/components/Loading";
 
 import ProductListWrapper from "./style/ProductList.style";
 
@@ -25,6 +27,11 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     // xxl: { span: 8 }
   };
 
+  state: TComponentState = {
+    page: 1,
+    pageSize: 6
+  };
+
   componentDidMount() {
     const {
       match: { params },
@@ -36,14 +43,20 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     }
   }
 
-  componentDidUpdate() {}
-
   componentWillUnmount() {
     this.props.cleanProductList();
   }
 
+  onChange = (page: number, pageSize: number = this.state.pageSize) => {
+    this.setState({
+      page: page,
+      pageSize: pageSize
+    });
+  };
+
   render() {
     const { productList, pending, push } = this.props;
+    const { page, pageSize } = this.state;
 
     const dataList = productList.map(x => ({
       ...x,
@@ -55,13 +68,25 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
         {pending ? (
           <Loading />
         ) : (
-          <Row type="flex" gutter={16}>
-            {dataList.map(x => (
-              <Col {...this.cardStyle} key={x.link} className="card-wrapper">
-                <ProductCard pending={pending} product={x} push={push} />
-              </Col>
-            ))}
-          </Row>
+          <React.Fragment>
+            <Pagination
+              current={page}
+              itemRender={PaginationItemRenderer}
+              defaultCurrent={page}
+              defaultPageSize={pageSize}
+              showTitle={false}
+              hideOnSinglePage
+              total={dataList.length}
+              onChange={this.onChange}
+            />
+            <Row type="flex" gutter={16}>
+              {dataList.slice((page - 1) * pageSize, page * pageSize).map(x => (
+                <Col {...this.cardStyle} key={x.link} className="card-wrapper">
+                  <ProductCard pending={pending} product={x} push={push} />
+                </Col>
+              ))}
+            </Row>
+          </React.Fragment>
         )}
       </ProductListWrapper>
     );

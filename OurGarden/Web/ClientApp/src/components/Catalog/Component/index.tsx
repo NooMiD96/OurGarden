@@ -3,7 +3,9 @@ import React from "react";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import Card from "@core/antd/Card";
-import Loading from "@src/core/components/Loading";
+import Loading from "@core/components/Loading";
+import Pagination from "@core/antd/Pagination";
+import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 
 import Wrapper from "./style/Catalog.style";
 
@@ -23,6 +25,11 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
     xl: { span: 8 }
     // xxl	≥1600px
     // xxl: { span: 8 }
+  };
+
+  state: TComponentState = {
+    page: 1,
+    pageSize: 6
   };
 
   componentDidMount() {
@@ -60,8 +67,16 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
     this.props.cleanSubcategoryList();
   }
 
+  onChange = (page: number, pageSize: number = this.state.pageSize) => {
+    this.setState({
+      page: page,
+      pageSize: pageSize
+    });
+  };
+
   render() {
     const { categoryList, subcategoryList, pending } = this.props;
+    const { page, pageSize } = this.state;
 
     const dataList = subcategoryList.length
       ? subcategoryList.map(x => ({
@@ -78,21 +93,36 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
         {pending ? (
           <Loading />
         ) : (
-          <Row type="flex" gutter={16}>
-            {dataList.map(x => (
-              <Col {...this.cardStyle} key={x.link} className="card-wrapper">
-                <Card
-                  hoverable
-                  cover={<img alt={x.alias} src={x.photo && x.photo.url} />}
-                  onClick={() => {
-                    this.props.push(x.link);
-                  }}
-                >
-                  <Card.Meta title={x.alias} />
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <React.Fragment>
+            <Pagination
+              current={page}
+              itemRender={PaginationItemRenderer}
+              defaultCurrent={page}
+              defaultPageSize={pageSize}
+              showTitle={false}
+              hideOnSinglePage
+              total={dataList.length}
+              onChange={this.onChange}
+            />
+            <Row type="flex" gutter={16}>
+              {dataList.slice((page - 1) * pageSize, page * pageSize).map(x => (
+                <Col {...this.cardStyle} key={x.link} className="card-wrapper">
+                  <Card
+                    hoverable
+                    cover={<img alt={x.alias} src={x.photo && x.photo.url} />}
+                    onClick={() => {
+                      this.setState({
+                        page: 1
+                      });
+                      this.props.push(x.link);
+                    }}
+                  >
+                    <Card.Meta title={x.alias} />
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </React.Fragment>
         )}
       </Wrapper>
     );

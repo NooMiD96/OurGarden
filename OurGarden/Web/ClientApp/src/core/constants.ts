@@ -25,6 +25,8 @@ export type TIcons =
   | "user"
   | "phone"
   | "mail"
+  | "double-right"
+  | "double-left"
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -35,6 +37,10 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/LeftOutline")).default;
     case "right":
       return (await import("@antdSvgs/RightOutline")).default;
+    case "double-left":
+      return (await import("@antdSvgs/DoubleLeftOutline")).default;
+    case "double-right":
+      return (await import("@antdSvgs/DoubleRightOutline")).default;
     case "down":
       return (await import("@antdSvgs/DownOutline")).default;
     case "close-circle":

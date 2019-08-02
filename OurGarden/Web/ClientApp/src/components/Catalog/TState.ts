@@ -8,6 +8,8 @@ import { ICategory } from "../Main/Sider/State";
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
+  page: number;
+  pageSize: number;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT

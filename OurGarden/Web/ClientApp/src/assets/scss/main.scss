@@ -1,6 +1,7 @@
 @import "./loadingComponent.scss";
 @import "./sider.scss";
 @import "./topbar/index.scss";
+@import "./pagination.scss";
 
 html {
   --antd-wave-shadow-color: rgb(98, 98, 98);
@@ -11,7 +12,8 @@ html {
   background: no-repeat url(../image/mainBackground.jpg);
   background-position-x: center;
   background-position-y: top;
-  background-size: cover;
+  // background-size: cover;
+  background-size: 110%;
 }
 
 a {
@@ -105,4 +107,8 @@ a {
     border-color: $greyColor;
     box-shadow: $greyShadowStyle;
   }
+}
+
+.ant-pagination + .ant-row-flex {
+  margin-top: 15px;
 }

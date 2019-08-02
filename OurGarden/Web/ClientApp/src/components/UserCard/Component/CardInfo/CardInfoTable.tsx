@@ -7,6 +7,8 @@ import Remove from "@src/core/icons/Remove";
 
 import Wrapper from "../style/Table.style";
 
+import { getProductPhotoSrc } from "@src/core/helpers/product";
+
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
 import { IDisplayInfo, ICardInfoTable } from "./ICardInfo";
@@ -32,7 +34,7 @@ const getColumns = (
         <div className="table-product-wrapper">
           <img
             className="product-img"
-            src={record.product.photos && record.product.photos[0].url}
+            src={getProductPhotoSrc(record.product)}
             alt={record.product.alias}
             width="250px"
           />

@@ -1,12 +1,15 @@
 import React from "react";
 
-import ProductWrapper from "./style/Product.style";
 import Loading from "@src/core/components/Loading";
-
-import { TState, TComponentState } from "../TState";
 import Row from "@src/core/antd/Row";
 import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
+
+import ProductWrapper from "./style/Product.style";
+
+import { getProductPhotoSrc } from "@src/core/helpers/product";
+
+import { TState, TComponentState } from "../TState";
 import { IMouseClickEvent } from "@src/core/IEvents";
 
 const contentMoq = `<span>
@@ -87,17 +90,21 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { product, pending } = this.props;
     const { itemCount } = this.state;
 
+    const productPhoto = product && getProductPhotoSrc(product);
+
     return (
       <ProductWrapper>
         {pending || !product ? (
           <Loading />
         ) : (
           <Row>
-            <img
-              src={product.photos && product.photos[0].url}
-              alt={product.alias}
-              className="product-photo"
-            />
+            {productPhoto && (
+              <img
+                src={productPhoto}
+                alt={product.alias}
+                className="product-photo"
+              />
+            )}
 
             <div className="product-info">
               <Title>{product.alias}</Title>

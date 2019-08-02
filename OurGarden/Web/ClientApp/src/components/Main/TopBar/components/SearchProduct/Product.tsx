@@ -4,6 +4,8 @@ import AutoComplete from "@core/antd/AutoComplete";
 
 import { IProduct } from "@src/components/Product/State";
 
+import { getProductPhotoSrc } from "@src/core/helpers/product";
+
 const { Option } = AutoComplete;
 
 const style = {
@@ -24,7 +26,7 @@ const Product = (props: IProduct) => {
   return (
     <Option title={props.alias} key={link}>
       <img
-        src={props.photos && props.photos[0].url}
+        src={getProductPhotoSrc(props)}
         style={style.imgStyle}
         alt={props.alias}
       />

@@ -5,6 +5,8 @@ import { Push } from "connected-react-router";
 import Card from "@core/antd/Card";
 import AddToCard from "@src/core/components/AddToCard";
 
+import { getProductPhotoSrc } from "@src/core/helpers/product";
+
 import { IProduct } from "@src/components/Product/State";
 import { IMouseClickEvent } from "@src/core/IEvents";
 import { actionsList } from "@src/components/UserCard/actions";
@@ -37,7 +39,7 @@ const ProductCard = (props: IProductCard) => {
       loading={pending}
       hoverable
       cover={
-        <img alt={product.alias} src={product.photos[0] && product.photos[0].url} />
+        <img alt={product.alias} src={getProductPhotoSrc(product)} />
       }
       onClick={() => {
         push(product.link);

@@ -7,6 +7,8 @@ import { actionCreators } from "./actions";
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
+  page: number;
+  pageSize: number;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
