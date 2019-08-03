@@ -8,22 +8,30 @@ export interface IProduct {
   categoryId: string;
   alias: string;
   price: number;
-  descriprion: string;
+  description: string;
   photos: IPhoto[];
 }
 
 export interface ICategoryDictionary {
   categoryId: string;
-  subcategories: { subcategoryId: string }[];
+  alias: string;
+  subcategories: {
+    subcategoryId: string;
+    alias: string;
+  }[];
 }
 
 export interface IProductDTO {
-  productId: string;
-  subcategoryId: string;
   categoryId: string;
+  subcategoryId: string;
+  productId: string;
+
+  newCategoryId: string;
+  newSubcategoryId: string;
+
   alias: string;
   price: number;
-  descriprion: string;
+  description: string;
   url: string;
 }
 

@@ -16,6 +16,7 @@ const columnTypesDef: { [key: string]: ColDef } = {
   },
   actionColumn: {
     cellRendererFramework: ActionRenderer,
+    checkboxSelection: false,
     editable: false,
     sortable: false,
     filter: false,

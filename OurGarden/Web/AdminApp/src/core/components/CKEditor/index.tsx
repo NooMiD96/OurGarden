@@ -1,27 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Adapter from "./Base64Adapter";
 
-const Component = () => {
-  const [editor, setEditor] = useState(null as any);
+import "@ckeditor/ckeditor5-build-classic/build/translations/ru";
 
-  return (
-    <div className="CKEditor">
-      <h2>Содержимое</h2>
-      <CKEditor
-        editor={ClassicEditor}
-        data="<p>Hello from CKEditor 5!</p>"
-        onInit={api => {
-          setEditor(api);
-        }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          console.log({ event, editor, data });
-        }}
-      />
-    </div>
-  );
-};
+interface IProps {
+  data: string;
+}
+interface IState {
+  editor: any;
+}
+export class Component extends React.PureComponent<IProps, IState> {
+  state: IState = {
+    editor: {}
+  };
+
+  config = {
+    language: "ru"
+  };
+
+  render() {
+    const { data } = this.props;
+
+    return (
+      <div className="CKEditor">
+        <h2>Содержимое</h2>
+        <CKEditor
+          editor={ClassicEditor}
+          data={data}
+          onInit={(api: any) => {
+            this.setState({
+              editor: api
+            });
+            api.plugins.get("FileRepository").createUploadAdapter = (
+              loader: any
+            ) => new Adapter(loader);
+          }}
+          onChange={(event: any, editor: any) => {
+            const data = this.state.editor.getData();
+            console.log({ event, editor, data });
+          }}
+          config={this.config}
+        />
+      </div>
+    );
+  }
+}
 
 export default Component;

@@ -1,63 +1,146 @@
-import * as React from "react";
+import React, {useRef} from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
+import Select from "@core/antd/Select";
 import CKEditor from "@core/components/CKEditor";
+import InputNumber from "@core/antd/InputNumber";
 import localeText from "../Text";
 
 import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
 
-import { IProduct } from "../../State";
+import { ICategoryDictionary, IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
+  categoryList: ICategoryDictionary[];
   loading: boolean;
-  handleCreateSubmit: Function;
-  handleClose: Function;
+  handleCreateSubmit: (data: IProductDTO) => void;
+  handleClose: () => void;
+}
+
+const onSubmitHandler = (
+  props: IProps,
+  ckEditor: React.RefObject<CKEditor>,
+  e?: IPressEnterEvent | React.FormEvent
+) => {
+  e && e.preventDefault();
+
+  const { form, item } = props;
+
+  const newCategoryId = form.getFieldValue("newCategoryId");
+  const newSubcategoryId = form.getFieldValue("newSubcategoryId");
+
+  const description: string = ckEditor.current!.state.editor.getData();
+
+  const alias = form.getFieldValue("alias");
+  const price = form.getFieldValue("price");
+  const imageUrl = form.getFieldValue("image");
+
+  props.form.validateFields((err: any, _values: any) => {
+    if (!err) {
+      props.handleCreateSubmit({
+        categoryId: item ? item.categoryId : "",
+        subcategoryId: item ? item.subcategoryId : "",
+        productId: item ? item.productId : "",
+
+        newCategoryId,
+        newSubcategoryId,
+
+        alias: alias,
+        price,
+        description,
+        url: imageUrl
+      });
+    }
+  });
+};
+
+const onClose = (props: IProps, e?: IPressEnterEvent | React.FormEvent) => {
+  e && e.preventDefault();
+
+  props.handleClose();
+};
+
+const getSubcategoryList = (
+  selectedCategoryId: string,
+  categoryList: ICategoryDictionary[]
+) => {
+  const category = categoryList.find(x => x.categoryId === selectedCategoryId);
+  if (!category) {
+    return [];
+  }
+
+  return category.subcategories || [];
 }
 
 export const EditModalContent = (props: IProps) => {
-  const { form } = props;
+  const ckEditor: React.RefObject<CKEditor> = useRef(null);
+
+  const { form, item, categoryList } = props;
   const { getFieldDecorator } = form;
+  const { categoryId, alias, price, description, photos} = item || {} as IProduct;
+  let { subcategoryId } = item || {} as IProduct;
 
-  const categoryId = props.item && props.item.categoryId;
-  const alias = props.item && props.item.alias;
-  const photo = props.item && props.item.photos && props.item.photos[0];
-
-  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
-    e && e.preventDefault();
-
-    const alias = form.getFieldValue("alias");
-    const imageUrl = form.getFieldValue("image");
-
-    props.form.validateFields((err: any, _values: any) => {
-      if (!err) {
-        props.handleCreateSubmit({
-          categoryId: categoryId,
-          alias: alias,
-          url: photo === imageUrl ? null : imageUrl
-        });
-      }
+  const onUploadImage = (imageUrl: string | ArrayBuffer) => {
+    form.setFieldsValue({
+      image: imageUrl
     });
   };
 
-  const onClose = () => {
-    form.resetFields(["alias", "image"]);
-    props.handleClose();
-  };
+  const selectedCategoryId = form.isFieldTouched("newCategoryId") ? form.getFieldValue("newCategoryId") : categoryId;
+  subcategoryId = form.isFieldTouched("newCategoryId") ? form.getFieldValue("newSubcategoryId") : subcategoryId;
 
-  const onUploadImage = (imageUrl: string | ArrayBuffer) => {
-    const value = {
-      image: imageUrl
-    };
-    form.setFieldsValue(value);
-  };
+  const subcategoryList = getSubcategoryList(selectedCategoryId, categoryList);
+
+  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => onSubmitHandler(props, ckEditor, e);
+
+  const photo = photos[0];
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
+      <FormItem>
+        {getFieldDecorator("newCategoryId", {
+          initialValue: categoryId,
+          rules: [{ required: true, message: localeText._rule_require_select_category }]
+        })(
+          <Select
+            placeholder={localeText._label_category}
+            onChange={() => {
+              form.setFieldsValue({
+                newSubcategoryId: null
+              })
+            }}
+          >
+            {categoryList.map(x => (
+              <Select.Option key={x.categoryId} value={x.categoryId}>
+                {x.alias}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("newSubcategoryId", {
+          initialValue: subcategoryId,
+          rules: [{ required: true, message: localeText._rule_require_select_subcategory }]
+        })(
+          <Select
+            placeholder={localeText._label_subcategory}
+          >
+            {subcategoryList.map(x => (
+              <Select.Option key={x.subcategoryId} value={x.subcategoryId}>
+                {x.alias}
+              </Select.Option>
+            ))}
+          </Select>
+        )}
+      </FormItem>
+
       <FormItem>
         {getFieldDecorator("alias", {
           initialValue: alias,
@@ -70,6 +153,20 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("price", {
+          initialValue: price,
+          rules: [{ required: true, message: localeText._rule_require_price }]
+        })(
+          <InputNumber
+            placeholder={localeText._label_price}
+            onPressEnter={onSubmit}
+            min={0}
+          />
+        )}
+      </FormItem>
+
       <FormItem>
         {getFieldDecorator("image", {
           initialValue: photo ? photo.url : null,
@@ -81,12 +178,12 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
-      <CKEditor />
+      <CKEditor ref={ckEditor} data={description} />
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>
           Сохранить
         </Button>
-        <Button type="danger" onClick={onClose}>
+        <Button type="danger" onClick={(e) => onClose(props, e)}>
           Отмена
         </Button>
       </div>

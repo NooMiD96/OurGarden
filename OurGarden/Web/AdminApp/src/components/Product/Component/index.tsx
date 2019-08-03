@@ -89,7 +89,13 @@ class Product extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    const {
+      errorInner,
+      cleanErrorInner,
+      listItem,
+      categoryList,
+      pending
+    } = this.props;
     const { showModal, editItem } = this.state;
 
     return (
@@ -119,8 +125,9 @@ class Product extends React.PureComponent<TState, TComponentState> {
           onDoubleClickHandler={this.onDoubleClickHandler}
         />
         <EditModal
-          isShow={showModal}
           item={editItem}
+          categoryList={categoryList}
+          isShow={showModal}
           handleCreateSubmit={this.handleCreateSubmit}
           handleClose={this.handleClose}
         />

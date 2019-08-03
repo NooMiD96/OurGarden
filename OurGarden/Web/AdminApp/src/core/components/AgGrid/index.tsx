@@ -36,7 +36,7 @@ export class AgGrid<T> extends React.PureComponent<
           field: "action",
           type: ["actionColumn"],
           width: 80,
-          checkboxSelection: true,
+          checkboxSelection: false,
           suppressSizeToFit: true,
           pinned: "right"
         }
