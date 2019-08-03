@@ -5,7 +5,8 @@ export default {
   _rule_require_select_subcategory: "Пожалуйста, выберите подкатегорию.",
   _rule_require_alias: "Пожалуйста, введите название категории.",
   _rule_require_photo: "Пожалуйста, загрузите фотографию.",
-  _rule_require_price: "Пожалуйста, введите цену",
+  _rule_require_price: "Пожалуйста, введите цену.",
+  _rule_require_description: "Пожалуйста, введите описание.",
 
   _label_category: "Категория",
   _label_subcategory: "Подкатегория",

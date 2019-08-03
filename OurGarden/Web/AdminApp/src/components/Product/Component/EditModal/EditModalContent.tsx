@@ -40,6 +40,10 @@ const onSubmitHandler = (
   const price = form.getFieldValue("price");
   const imageUrl = form.getFieldValue("image");
 
+  props.form.setFieldsValue({
+    description,
+  });
+
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
       props.handleCreateSubmit({
@@ -178,7 +182,15 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
-      <CKEditor ref={ckEditor} data={description} />
+
+      <FormItem>
+        {getFieldDecorator("description", {
+          rules: [{ required: true, message: localeText._rule_require_description }]
+        })(
+          <CKEditor ref={ckEditor} data={description} />
+        )}
+      </FormItem>
+
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>
           Сохранить

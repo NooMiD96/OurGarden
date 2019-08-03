@@ -129,8 +129,9 @@ namespace Database.Repositories
             .Where(x => x.Alias.Contains(search))
             .ToListAsync();
 
-        public async Task<IEnumerable<Product>> GetAllProducts() =>
-            await _context.Product
+        public async Task<IEnumerable<Product>> GetAllProducts() => await _context
+            .Product
+            .Include(x => x.Photos)
             .ToListAsync();
 
         public async Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync()

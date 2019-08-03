@@ -46,7 +46,6 @@ namespace Web.Services.Controllers.AdminApi
                     var newCategoryId = newCategory.CategoryId;
                     newCategory = null;
                     
-
                     // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
                     await _context.Entry(oldCategory).Collection(x => x.Subcategories).LoadAsync();
 

@@ -8,12 +8,14 @@ namespace Model.DTO
 {
     public class CategoryDTO
     {
+        [Required]
         public string CategoryId { get; set; }
 
         [Required]
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        [Required]
         public string Url { get; set; }
     }
 }
