@@ -31,6 +31,7 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/PlusOutline")).default;
     case "check-circle":
       return (await import("@antdSvgs/CheckCircleOutline")).default;
+
     default: {
       // eslint-disable-next-line
       const exhaustiveCheck: never = type;

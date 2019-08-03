@@ -1,10 +1,13 @@
 ﻿using Database.Contexts;
+
 using Microsoft.EntityFrameworkCore;
+
 using Model.DB;
+using Model.DTO.ProductDTO;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database.Repositories
@@ -130,6 +133,25 @@ namespace Database.Repositories
             await _context.Product
             .ToListAsync();
 
+        public async Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync()
+        {
+            var categoryList = await _context
+                .Category
+                .Include(x => x.Subcategories)
+                .ToListAsync();
+
+            return categoryList.Select(cat => new CategoryDictionaryDTO()
+            {
+                CategoryId = cat.CategoryId,
+                Alias = cat.Alias,
+                Subcategories = cat.Subcategories.Select(sub => new SubcategoryDictionaryDTO()
+                {
+                    SubcategoryId = sub.SubcategoryId,
+                    Alias = sub.Alias
+                })
+            });
+        }
+        
         public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId) =>
             await _context.Product
             .Include(x => x.Photos)

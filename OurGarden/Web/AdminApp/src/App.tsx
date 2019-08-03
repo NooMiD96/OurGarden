@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import { Layout } from "@components/Layout";
 import { AsyncComponent } from "@core/HOC/AsyncComponent";
@@ -20,12 +20,16 @@ export const AppRoutes = (
         import(/* webpackChunkName: "Category" */ "@components/Category")
       )}
     />
-    <Route
-      exact
-      path="/товары"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Product" */ "@components/Product")
-      )}
-    />
+    <Switch>
+      <Redirect from="/продукты" to="/товары" />
+
+      <Route
+        exact
+        path="/товары"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "Product" */ "@components/Product")
+        )}
+      />
+    </Switch>
   </Layout>
 );

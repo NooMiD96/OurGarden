@@ -8,7 +8,7 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { IProduct, IProductDTO } from "./State";
+import { IProduct, IProductDTO, ICategoryDictionary } from "./State";
 
 // ----------------
 //#region ACTIONS
@@ -22,6 +22,18 @@ export const actionsList = {
   }),
   getProductListError: (errorMessage: string): t.IGetProductListError => ({
     type: t.GET_PRODUCT_LIST_ERROR,
+    errorMessage,
+  }),
+
+  getCategoryDictionaryRequest: (): t.IGetCategoryDictionaryRequest => ({
+    type: t.GET_CATEGORY_DICTIONARY_LIST_REQUEST,
+  }),
+  getCategoryDictionarySuccess: (payload: ICategoryDictionary[]): t.IGetCategoryDictionarySuccess => ({
+    type: t.GET_CATEGORY_DICTIONARY_LIST_SUCCESS,
+    payload
+  }),
+  getCategoryDictionaryError: (errorMessage: string): t.IGetCategoryDictionaryError => ({
+    type: t.GET_CATEGORY_DICTIONARY_LIST_ERROR,
     errorMessage,
   }),
 
@@ -91,6 +103,40 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getProductListRequest());
+  },
+  getCategoryDictionary: (): IAppThunkAction<t.TGetCategoryDictionary | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "GetCategoryDictionary";
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<ICategoryDictionary[]>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.getCategoryDictionarySuccess(value.data));
+
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getCategoryDictionaryError,
+        dispatch
+      ));
+
+    addTask(fetchTask);
+    dispatch(actionsList.getCategoryDictionaryRequest());
   },
   addOrUpdateProduct: (data: IProductDTO): IAppThunkAction<t.TAddOrUpdateProduct | t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "AddOrUpdate";

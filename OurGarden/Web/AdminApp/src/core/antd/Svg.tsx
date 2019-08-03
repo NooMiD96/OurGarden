@@ -1,11 +1,14 @@
 import * as React from "react";
 import { IconDefinition } from "@antdSvgs/../types";
+import { IMouseClickEvent, IKeyDownEvent } from "../IEvents";
+
 // TODO: recursive function
 interface ISvgProps {
   className?: string;
   style?: object;
   svgProps?: IconDefinition;
   type: string;
+  onClick?: (e: IMouseClickEvent | IKeyDownEvent) => void;
 }
 
 const getSvgClass = (type: string, className?: string) => {
@@ -29,11 +32,20 @@ const Svg = (props: ISvgProps) => {
   delete iProp.svgProps;
   delete iProp.className;
   delete iProp.style;
+  delete iProp.onClick;
 
   const iClassName = getSvgClass(props.type, props.className);
 
   return (
-    <i className={iClassName} style={props.style} {...iProp}>
+    <i
+      role="button"
+      onKeyDown={props.onClick}
+      onClick={props.onClick}
+      tabIndex={0}
+      className={iClassName}
+      style={props.style}
+      {...iProp}
+    >
       <svg fill="currentColor" height="1em" width="1em" {...icon.attrs}>
         {icon.children
           && icon.children.map((val, index) => (

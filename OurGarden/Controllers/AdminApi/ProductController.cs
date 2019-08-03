@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Model.DB;
-using Model.DTO;
+using Model.DTO.ProductDTO;
 
 using System;
 using System.Collections.Generic;
@@ -35,9 +35,15 @@ namespace Web.Controllers.AdminApi
             return Success(products);
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCategoryDictionary()
+        {
+            var result = await _repository.GetCategoryDictionaryAsync();
+            return Success(result);
+        }
+
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(
-            [FromForm]ProductDTO productDTO)
+        public async Task<IActionResult> Add([FromForm]ProductDTO productDTO)
         {
             if (!ModelState.IsValid
                 || String.IsNullOrEmpty(productDTO.NewSubcategoryId)
@@ -76,8 +82,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> Update(
-            [FromForm]ProductDTO productDTO)
+        public async Task<IActionResult> Update([FromForm]ProductDTO productDTO)
         {
             try
             {
@@ -130,10 +135,9 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(
-            [FromQuery]string categoryId,
-            [FromQuery]string subcategoryId,
-            [FromQuery]string productId)
+        public async Task<IActionResult> Delete([FromQuery]string categoryId,
+                                                [FromQuery]string subcategoryId,
+                                                [FromQuery]string productId)
         {
             await _repository.DeleteProduct(productId, subcategoryId, categoryId);
             return Success(true);

@@ -20,12 +20,27 @@ class Product extends React.PureComponent<TState, TComponentState> {
   columns = [
     {
       headerName: "Категория",
+      field: "categoryId",
+      type: ["idField"]
+    },
+    {
+      headerName: "Подкатегория",
+      field: "subcategoryId",
+      type: ["idField"]
+    },
+    {
+      headerName: "Продукт",
       field: "alias"
+    },
+    {
+      headerName: "Цена",
+      field: "price"
     }
   ];
 
   componentDidMount() {
     this.props.getProductList();
+    this.props.getCategoryDictionary();
   }
 
   onDoubleClickHandler = (data: IProduct) => {

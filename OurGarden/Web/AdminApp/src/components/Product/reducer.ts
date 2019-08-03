@@ -8,6 +8,7 @@ import KnownAction, * as t from "./actionsType";
 export const reducer: Reducer<IProductState> = (state: IProductState = unloadedState, action: KnownAction) => {
   switch (action.type) {
     case t.GET_PRODUCT_LIST_REQUEST:
+    case t.GET_CATEGORY_DICTIONARY_LIST_REQUEST:
     case t.ADD_OR_UPDATE_PRODUCT_REQUEST:
     case t.DELETE_PRODUCT_REQUEST:
       return {
@@ -22,6 +23,13 @@ export const reducer: Reducer<IProductState> = (state: IProductState = unloadedS
         pending: false,
       } as IProductState;
 
+    case t.GET_CATEGORY_DICTIONARY_LIST_SUCCESS:
+      return {
+        ...state,
+        categoryList: action.payload,
+        pending: false,
+      } as IProductState;
+
     case t.ADD_OR_UPDATE_PRODUCT_SUCCESS:
     case t.DELETE_PRODUCT_SUCCESS:
       return {
@@ -30,6 +38,7 @@ export const reducer: Reducer<IProductState> = (state: IProductState = unloadedS
       } as IProductState;
 
     case t.GET_PRODUCT_LIST_ERROR:
+    case t.GET_CATEGORY_DICTIONARY_LIST_ERROR:
     case t.ADD_OR_UPDATE_PRODUCT_ERROR:
     case t.DELETE_PRODUCT_ERROR:
       return {

@@ -12,6 +12,11 @@ export interface IProduct {
   photos: IPhoto[];
 }
 
+export interface ICategoryDictionary {
+  categoryId: string;
+  subcategories: { subcategoryId: string }[];
+}
+
 export interface IProductDTO {
   productId: string;
   subcategoryId: string;
@@ -24,12 +29,14 @@ export interface IProductDTO {
 
 export interface IProductState {
   listItem: IProduct[];
+  categoryList: ICategoryDictionary[];
   pending: boolean;
   errorInner: string;
 }
 
 export const unloadedState: IProductState = {
   listItem: [],
+  categoryList: [],
   pending: false,
   errorInner: "",
 };

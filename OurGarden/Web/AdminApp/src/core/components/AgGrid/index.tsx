@@ -36,6 +36,7 @@ export class AgGrid<T> extends React.PureComponent<
           field: "action",
           type: ["actionColumn"],
           width: 80,
+          checkboxSelection: true,
           suppressSizeToFit: true,
           pinned: "right"
         }
@@ -66,6 +67,9 @@ export class AgGrid<T> extends React.PureComponent<
           columnTypes={columnTypesDef}
           defaultColDef={defaultColDef}
           onRowDoubleClicked={params => onDoubleClickHandler(params.data)}
+          context={{
+            parentComponent: this
+          }}
         />
       </div>
     );
