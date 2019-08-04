@@ -32,6 +32,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Web\AdminApp\src\components\Subcategory\actions.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\actionsType.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\Component\EditModal\EditModalContent.tsx" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\Component\EditModal\index.tsx" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\Component\index.tsx" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\Component\Text.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\index.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\reducer.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\State.ts" />
+    <None Remove="Web\AdminApp\src\components\Subcategory\TState.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />

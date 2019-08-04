@@ -22,6 +22,13 @@ export const AppRoutes = (
     />
     <Route
       exact
+      path="/подкатегории"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
+      )}
+    />
+    <Route
+      exact
       path="/товары"
       component={AsyncComponent(() =>
         import(/* webpackChunkName: "Product" */ "@components/Product")

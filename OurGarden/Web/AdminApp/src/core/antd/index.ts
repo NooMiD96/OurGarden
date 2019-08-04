@@ -22,6 +22,7 @@ import Transfer from "./Transfer";
 import Typography from "./Typography";
 import Checkbox from "./Checkbox";
 import CheckboxGroup from "./CheckboxGroup";
+import Dropdown from "./Dropdown";
 
 export {
   Alert,
@@ -48,4 +49,5 @@ export {
   Tag,
   Transfer,
   Typography,
+  Dropdown,
 };
