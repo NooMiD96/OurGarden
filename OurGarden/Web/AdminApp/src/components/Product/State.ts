@@ -8,28 +8,43 @@ export interface IProduct {
   categoryId: string;
   alias: string;
   price: number;
-  descriprion: string;
+  description: string;
   photos: IPhoto[];
 }
 
-export interface IProductDTO {
-  productId: string;
-  subcategoryId: string;
+export interface ICategoryDictionary {
   categoryId: string;
   alias: string;
+  subcategories: {
+    subcategoryId: string;
+    alias: string;
+  }[];
+}
+
+export interface IProductDTO {
+  categoryId: string;
+  subcategoryId: string;
+  productId: string;
+
+  newCategoryId: string;
+  newSubcategoryId: string;
+
+  alias: string;
   price: number;
-  descriprion: string;
+  description: string;
   url: string;
 }
 
 export interface IProductState {
   listItem: IProduct[];
+  categoryList: ICategoryDictionary[];
   pending: boolean;
   errorInner: string;
 }
 
 export const unloadedState: IProductState = {
   listItem: [],
+  categoryList: [],
   pending: false,
   errorInner: "",
 };

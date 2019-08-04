@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Model.DB;
-using Model.DTO;
+using Model.DTO.ProductDTO;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Services.Controllers.AdminApi;
 
 namespace Web.Controllers.AdminApi
 {
@@ -23,9 +24,12 @@ namespace Web.Controllers.AdminApi
     public class ProductController : BaseController
     {
         public readonly IOurGardenRepository _repository;
+        public readonly ProductControllerService _service;
+
         public ProductController(IOurGardenRepository repository)
         {
             _repository = repository;
+            _service = new ProductControllerService(_repository);
         }
 
         [HttpGet("[action]")]
@@ -35,89 +39,67 @@ namespace Web.Controllers.AdminApi
             return Success(products);
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Add(
-            [FromForm]ProductDTO productDTO)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCategoryDictionary()
         {
-            if (!ModelState.IsValid
-                || String.IsNullOrEmpty(productDTO.NewSubcategoryId)
-                || String.IsNullOrEmpty(productDTO.NewCategoryId) || !productDTO.AddPhotos.Any()
-            )
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
-
-            try
-            {
-                var photos = new List<Photo>();
-                foreach (var photo in productDTO.AddPhotos)
-                {
-                    var fileHelper = new FileHelper(_repository);
-                    var file = await fileHelper.AddFileToRepository(photo);
-                    photos.Add(file);
-                }
-
-                var product = new Product()
-                {
-                    Alias = productDTO.Alias,
-                    ProductId = StringHelper.Transform(productDTO.Alias),
-                    SubcategoryId = productDTO.NewSubcategoryId,
-                    CategoryId = productDTO.NewCategoryId,
-                    Photos = photos
-                };
-                await _repository.AddProduct(product);
-
-                return Success(product);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+            var result = await _repository.GetCategoryDictionaryAsync();
+            return Success(result);
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(
-            [FromForm]ProductDTO productDTO)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddOrUpdate([FromBody]ProductDTO productDTO)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Что-то пошло не так, повторите попытку");
-                }
                 var oldProduct = await _repository.GetProduct(productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
-                var files = oldProduct.Photos;
 
-
-                foreach (var file in files.Where(x => productDTO.RemovePhotos.Any(y => x.PhotoId == y)))
-                {
-                    files.Remove(file);
-                }
-                foreach (var photo in productDTO.AddPhotos)
-                {
-                    var fileHelper = new FileHelper(_repository);
-                    var file = await fileHelper.AddFileToRepository(photo);
-                    files.Add(file);
-                }
-
-                if (productDTO.Alias != oldProduct.Alias
+                if (
+                    productDTO.Alias != oldProduct?.Alias
+                    || productDTO.CategoryId != productDTO.NewCategoryId
                     || productDTO.SubcategoryId != productDTO.NewSubcategoryId
-                    || productDTO.CategoryId != productDTO.NewCategoryId)
+                )
                 {
+                    var (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
+
+                    if (!isSuccess)
+                    {
+                        return BadRequest(error);
+                    }
+                }
+                else if (
+                    String.IsNullOrEmpty(productDTO.CategoryId)
+                    && String.IsNullOrEmpty(productDTO.SubcategoryId)
+                    && String.IsNullOrEmpty(productDTO.ProductId)
+                )
+                {
+                    var photos = new List<Photo>();
+                    var fileHelper = new FileHelper(_repository);
+                    var file = await fileHelper.AddFileToRepository(productDTO.Url);
+                    photos.Add(file);
+
                     var product = new Product()
                     {
-                        Alias = productDTO.Alias,
-                        ProductId = StringHelper.Transform(productDTO.Alias),
-                        SubcategoryId = productDTO.NewSubcategoryId,
                         CategoryId = productDTO.NewCategoryId,
-                        Photos = files
+                        SubcategoryId = productDTO.NewSubcategoryId,
+                        ProductId = StringHelper.Transform(productDTO.Alias),
+                        Alias = productDTO.Alias,
+                        Price = productDTO.Price,
+                        Descriprion = productDTO.Description,
+                        Photos = photos
                     };
                     await _repository.AddProduct(product);
-                    await _repository.DeleteSubcategory(oldProduct.SubcategoryId, oldProduct.CategoryId);
                 }
-                else if (productDTO.AddPhotos.Any() || productDTO.RemovePhotos.Any())
+                else
                 {
-                    oldProduct.Photos = files;
+                    var photos = new List<Photo>();
+                    var fileHelper = new FileHelper(_repository);
+                    var file = await fileHelper.AddFileToRepository(productDTO.Url);
+                    photos.Add(file);
+
+                    oldProduct.Price = productDTO.Price;
+                    oldProduct.Descriprion = productDTO.Description;
+                    oldProduct.Photos = photos;
+
                     await _repository.UpdateProduct(oldProduct);
                 }
 
@@ -130,10 +112,9 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(
-            [FromQuery]string categoryId,
-            [FromQuery]string subcategoryId,
-            [FromQuery]string productId)
+        public async Task<IActionResult> Delete([FromQuery]string categoryId,
+                                                [FromQuery]string subcategoryId,
+                                                [FromQuery]string productId)
         {
             await _repository.DeleteProduct(productId, subcategoryId, categoryId);
             return Success(true);

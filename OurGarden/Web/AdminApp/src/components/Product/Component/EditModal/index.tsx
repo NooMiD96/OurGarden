@@ -1,24 +1,26 @@
 import * as React from "react";
 
 import Modal from "@core/antd/Modal";
-import { IProduct } from "../../State";
+import { IProduct, ICategoryDictionary, IProductDTO } from "../../State";
 
 import EditModalContent from "./EditModalContent";
 
 interface IEditModalProps {
-  isShow: boolean;
   item: IProduct | null;
-  handleCreateSubmit: Function;
-  handleClose: Function;
+  categoryList: ICategoryDictionary[];
+  isShow: boolean;
+  handleCreateSubmit: (data: IProductDTO) => void;
+  handleClose: () => void;
 }
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
     const {
-      isShow,
       item,
-      handleCreateSubmit: handleCreateSubmit,
-      handleClose: handleClose
+      categoryList,
+      isShow,
+      handleCreateSubmit,
+      handleClose
     } = this.props;
 
     return (
@@ -31,8 +33,9 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         width="80%"
       >
         <EditModalContent
-          loading={false}
           item={item}
+          categoryList={categoryList}
+          loading={false}
           handleCreateSubmit={handleCreateSubmit}
           handleClose={handleClose}
         />

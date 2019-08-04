@@ -1,7 +1,7 @@
 ﻿using Model.DB;
+using Model.DTO.ProductDTO;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Database.Repositories
@@ -25,6 +25,7 @@ namespace Database.Repositories
         
         Task<IEnumerable<Product>> GetSearchProducts(string search);
         Task<IEnumerable<Product>> GetAllProducts();
+        Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync();
         Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId);
         Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
         Task AddProduct(Product product);

@@ -20,12 +20,27 @@ class Product extends React.PureComponent<TState, TComponentState> {
   columns = [
     {
       headerName: "Категория",
+      field: "categoryId",
+      type: ["idField"]
+    },
+    {
+      headerName: "Подкатегория",
+      field: "subcategoryId",
+      type: ["idField"]
+    },
+    {
+      headerName: "Продукт",
       field: "alias"
+    },
+    {
+      headerName: "Цена",
+      field: "price"
     }
   ];
 
   componentDidMount() {
     this.props.getProductList();
+    this.props.getCategoryDictionary();
   }
 
   onDoubleClickHandler = (data: IProduct) => {
@@ -74,7 +89,13 @@ class Product extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    const {
+      errorInner,
+      cleanErrorInner,
+      listItem,
+      categoryList,
+      pending
+    } = this.props;
     const { showModal, editItem } = this.state;
 
     return (
@@ -104,8 +125,9 @@ class Product extends React.PureComponent<TState, TComponentState> {
           onDoubleClickHandler={this.onDoubleClickHandler}
         />
         <EditModal
-          isShow={showModal}
           item={editItem}
+          categoryList={categoryList}
+          isShow={showModal}
           handleCreateSubmit={this.handleCreateSubmit}
           handleClose={this.handleClose}
         />

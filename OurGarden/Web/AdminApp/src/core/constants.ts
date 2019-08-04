@@ -9,9 +9,10 @@ export type TIcons =
   | "edit"
   | "plus"
   | "check-circle"
+  | "up"
   | "down"
   | "right"
-  ;
+    ;
 
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
@@ -33,10 +34,13 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/PlusOutline")).default;
     case "check-circle":
       return (await import("@antdSvgs/CheckCircleOutline")).default;
+    case "up":
+      return (await import("@antdSvgs/UpOutline")).default;
     case "down":
       return (await import("@antdSvgs/DownOutline")).default;
     case "right":
       return (await import("@antdSvgs/RightOutline")).default;
+
     default: {
       // eslint-disable-next-line
       const exhaustiveCheck: never = type;
