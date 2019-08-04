@@ -17,6 +17,6 @@ namespace Model.DTO
         [MaxLength(64)]
         public string Alias { get; set; }
 
-        public IFormFile Photo { get; set; }
+        public string Url{ get; set; }
     }
 }

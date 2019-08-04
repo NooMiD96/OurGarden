@@ -9,6 +9,7 @@ namespace Database.Repositories
     public interface IOurGardenRepository
     {
         Task<IEnumerable<Category>> GetCategories();
+        Task<IEnumerable<Category>> GetSimpleCategories();
         Task<Category> GetCategory(string categoryId);
         Task AddCategory(Category category);
         Task UpdateCategory(Category category);

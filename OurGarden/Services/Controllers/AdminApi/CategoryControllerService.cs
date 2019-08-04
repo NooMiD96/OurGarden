@@ -95,7 +95,7 @@ namespace Web.Services.Controllers.AdminApi
 
                                 Alias = product.Alias,
                                 Price = product.Price,
-                                Descriprion = product.Descriprion,
+                                Description = product.Description,
 
                                 Photos = product.Photos.Select(photo =>
                                 {

@@ -21,6 +21,8 @@ namespace Model.DTO
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        public string Description { get; set; }
+
         public IEnumerable<Guid> RemovePhotos { get; set; }
         public IEnumerable<IFormFile> AddPhotos { get; set; }
     }

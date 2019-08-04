@@ -11,6 +11,7 @@ using Model.DTO;
 
 using System;
 using System.Threading.Tasks;
+using Web.Services.Controllers.AdminApi;
 
 namespace Web.Controllers.AdminApi
 {
@@ -21,16 +22,25 @@ namespace Web.Controllers.AdminApi
     public class SubcategoryController : BaseController
     {
         public readonly IOurGardenRepository _repository;
+
+        public readonly SubcategoryControllerService _service;
         public SubcategoryController(IOurGardenRepository repository)
         {
             _repository = repository;
+            _service = new SubcategoryControllerService(_repository);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAll()
         {
             var subcategories = await _repository.GetAllSubcategories();
-            return Success(subcategories);
+            var categories = await _repository.GetSimpleCategories();
+            var result = new 
+            {
+                Categories = categories,
+                Subcategories = subcategories
+            };
+            return Success(result);
         }
 
         [HttpGet("[action]")]
@@ -47,58 +57,21 @@ namespace Web.Controllers.AdminApi
         }        
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(
-            [FromForm]SubcategoryDTO subcategoryDTO)
+        public async Task<IActionResult> AddOrUpdate(
+            [FromBody]SubcategoryDTO subcategoryDTO)
         {
-            if (!ModelState.IsValid || subcategoryDTO.Photo?.Length == 0 
-                || string.IsNullOrEmpty(subcategoryDTO.NewCategoryId))
+            if (subcategoryDTO.Url?.Length == 0)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest("Загрузите фотографию!");
             }
 
             try
             {
-                var fileHelper = new FileHelper(_repository);
-                var file = await fileHelper.AddFileToRepository(subcategoryDTO.Photo);
-
-                var subcategory = new Subcategory()
-                {
-                    Alias = subcategoryDTO.Alias,
-                    SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
-                    CategoryId = subcategoryDTO.NewCategoryId,
-                    Photo = file
-                };
-                await _repository.AddSubcategory(subcategory);
-
-                return Success(subcategory);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }            
-        }
-
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(
-            [FromForm]SubcategoryDTO subcategoryDTO)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Что-то пошло не так, повторите попытку");
-                }
-                var oldSubcategory = await _repository.GetSubcategory( subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
-                var file = oldSubcategory.Photo;
-
-                if (subcategoryDTO.Photo?.Length != 0)
+                if (String.IsNullOrEmpty(subcategoryDTO.SubcategoryId))
                 {
                     var fileHelper = new FileHelper(_repository);
-                    file = await fileHelper.AddFileToRepository(subcategoryDTO.Photo);
-                }
+                    var file = await fileHelper.AddFileToRepository(subcategoryDTO.Url);
 
-                if (subcategoryDTO.Alias != oldSubcategory.Alias || subcategoryDTO.CategoryId != subcategoryDTO.NewCategoryId)
-                {
                     var subcategory = new Subcategory()
                     {
                         Alias = subcategoryDTO.Alias,
@@ -107,20 +80,42 @@ namespace Web.Controllers.AdminApi
                         Photo = file
                     };
                     await _repository.AddSubcategory(subcategory);
-                    await _repository.DeleteSubcategory(oldSubcategory.SubcategoryId, oldSubcategory.CategoryId);
-                }
-                else if (subcategoryDTO.Photo?.Length != 0)
-                {
-                    oldSubcategory.Photo = file;
-                    await _repository.UpdateSubcategory(oldSubcategory);
-                }
 
-                return Success(true);
+                    return Success(subcategory);
+                }
+                else
+                {
+                    var oldSubcategory = await _repository.GetSubcategory(subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
+                    var file = oldSubcategory.Photo;                   
+
+                    if (subcategoryDTO.Alias == oldSubcategory.Alias && subcategoryDTO.CategoryId == subcategoryDTO.NewCategoryId)
+                    {
+                        if (subcategoryDTO.Url != file?.Url)
+                        {
+                            var fileHelper = new FileHelper(_repository);
+                            file = await fileHelper.AddFileToRepository(subcategoryDTO.Url);
+                        }
+                        oldSubcategory.Photo = file;
+                        await _repository.UpdateSubcategory(oldSubcategory);                        
+                    }
+                    else 
+                    {
+                        var (isSuccess, error) = await _service.UpdateSubcategory(subcategoryDTO, oldSubcategory);
+
+                        if (!isSuccess)
+                        {
+                            return BadRequest(error);
+                        }
+                    }
+
+
+                    return Success(true);
+                }                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+            }            
         }
 
         [HttpDelete("[action]")]

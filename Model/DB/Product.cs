@@ -25,7 +25,7 @@ namespace Model.DB
         [Required]
         public double Price { get; set; }
 
-        public string Descriprion { get; set; }
+        public string Description { get; set; }
 
         //Parent
         public Subcategory Subcategory { get; set; }

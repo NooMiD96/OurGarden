@@ -327,7 +327,7 @@ namespace Web.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<string>("Descriprion");
+                    b.Property<string>("Description");
 
                     b.Property<double>("Price");
 

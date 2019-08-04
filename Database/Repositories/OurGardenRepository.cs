@@ -23,6 +23,15 @@ namespace Database.Repositories
             .Include(x => x.Photo)
             .ToListAsync();
 
+        public async Task<IEnumerable<Category>> GetSimpleCategories() =>
+            await _context.Category.Select(x => new Category()
+            {
+                Alias = x.Alias,
+                CategoryId=x.CategoryId,                
+            })
+            .ToListAsync();
+
+
         public async Task<Category> GetCategory(string categoryId) =>
             await _context.Category
             .Include(x => x.Photo)
@@ -58,7 +67,8 @@ namespace Database.Repositories
 
         #region Subcategory      
         public async Task<IEnumerable<Subcategory>> GetAllSubcategories() =>
-            await _context.Subcategory
+            await _context.Subcategory.AsNoTracking()
+            .Include(x => x.Photo)
             .ToListAsync();
 
         public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId) =>
@@ -173,7 +183,7 @@ namespace Database.Repositories
 
                 Alias = product.Alias,
                 Price = product.Price,
-                Descriprion = product.Descriprion,
+                Description = product.Description,
 
                 //Subcategory = x.Subcategory,
                 Photos = product.Photos.Select(photo => {
