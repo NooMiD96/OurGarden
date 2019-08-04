@@ -41,7 +41,7 @@ namespace Web.Services.Controllers.AdminApi
                         ProductId = StringHelper.Transform(productDTO.Alias),
                         Alias = productDTO.Alias,
                         Price = productDTO.Price,
-                        Descriprion = productDTO.Description,
+                        Description = productDTO.Description,
                         Photos = photos
                     };
                     await _repository.AddProduct(product);
