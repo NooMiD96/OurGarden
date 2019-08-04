@@ -15,17 +15,24 @@ export const AppRoutes = (
     />
     <Route
       exact
+      path="/заказы"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Subcategory" */ "@components/Order")
+      )}
+    />
+    <Route
+      exact
       path="/категории"
       component={AsyncComponent(() =>
         import(/* webpackChunkName: "Category" */ "@components/Category")
       )}
     />
     <Route
-        exact
-        path="/подкатегории"
-        component={AsyncComponent(() =>
-            import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
-        )}
+      exact
+      path="/подкатегории"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
+      )}
     />
     <Switch>
       <Redirect from="/продукты" to="/товары" />

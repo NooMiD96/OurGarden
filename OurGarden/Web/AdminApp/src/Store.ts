@@ -12,6 +12,9 @@ import { reducer as SubcategoryReducer } from "@src/components/Subcategory/reduc
 import { IProductState } from "@src/components/Product/State";
 import { reducer as ProductReducer } from "@src/components/Product/reducer";
 
+import { IOrderState } from "./components/Order/State";
+import { reducer as OrderReducer } from "@src/components/Order/reducer";
+
 
 export interface IApplicationState {
   router: RouterState;
@@ -20,6 +23,7 @@ export interface IApplicationState {
   category: ICategoryState;
   subcategory: ISubcategoryState;
   product: IProductState;
+  order: IOrderState;
 }
 
 export const reducers = {
@@ -27,6 +31,7 @@ export const reducers = {
   category: CategoryReducer,
   subcategory: SubcategoryReducer,
   product: ProductReducer,
+  order: OrderReducer
 };
 
 export interface IAppThunkAction<TAction> {

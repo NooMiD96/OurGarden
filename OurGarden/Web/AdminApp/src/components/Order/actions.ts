@@ -8,44 +8,44 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { ISubcategory, ISubcategoryDTO, IResponseData } from "./State";
+import { IOrder, IOrderDTO } from "./State";
 
 // ----------------
 //#region ACTIONS
 export const actionsList = {
-  getSubcategoryListRequest: (): t.IGetSubcategoryListRequest => ({
-    type: t.GET_SUBCATEGORY_LIST_REQUEST,
+  getOrderListRequest: (): t.IGetOrderListRequest => ({
+    type: t.GET_ORDER_LIST_REQUEST,
   }),
-  getSubcategoryListSuccess: (payload: IResponseData): t.IGetSubcategoryListSuccess => ({
-    type: t.GET_SUBCATEGORY_LIST_SUCCESS,
+  getOrderListSuccess: (payload: IOrder[]): t.IGetOrderListSuccess => ({
+    type: t.GET_ORDER_LIST_SUCCESS,
     payload
   }),
-  getSubcategoryListError: (errorMessage: string): t.IGetSubcategoryListError => ({
-    type: t.GET_SUBCATEGORY_LIST_ERROR,
+  getOrderListError: (errorMessage: string): t.IGetOrderListError => ({
+    type: t.GET_ORDER_LIST_ERROR,
     errorMessage,
   }),
 
-  addOrUpdateSubcategoryRequest: (): t.IAddOrUpdateSubcategoryRequest => ({
-    type: t.ADD_OR_UPDATE_SUBCATEGORY_REQUEST,
+  addOrUpdateOrderRequest: (): t.IAddOrUpdateOrderRequest => ({
+    type: t.ADD_OR_UPDATE_ORDER_REQUEST,
   }),
-  addOrUpdateSubcategorySuccess: (payload: boolean): t.IAddOrUpdateSubcategorySuccess => ({
-    type: t.ADD_OR_UPDATE_SUBCATEGORY_SUCCESS,
+  addOrUpdateOrderSuccess: (payload: boolean): t.IAddOrUpdateOrderSuccess => ({
+    type: t.ADD_OR_UPDATE_ORDER_SUCCESS,
     payload
   }),
-  addOrUpdateSubcategoryError: (errorMessage: string): t.IAddOrUpdateSubcategoryError => ({
-    type: t.ADD_OR_UPDATE_SUBCATEGORY_ERROR,
+  addOrUpdateOrderError: (errorMessage: string): t.IAddOrUpdateOrderError => ({
+    type: t.ADD_OR_UPDATE_ORDER_ERROR,
     errorMessage,
   }),
 
-  deleteSubcategoryRequest: (): t.IDeleteSubcategoryRequest => ({
-    type: t.DELETE_SUBCATEGORY_REQUEST,
+  deleteOrderRequest: (): t.IDeleteOrderRequest => ({
+    type: t.DELETE_ORDER_REQUEST,
   }),
-  deleteSubcategorySuccess: (payload: boolean): t.IDeleteSubcategorySuccess => ({
-    type: t.DELETE_SUBCATEGORY_SUCCESS,
+  deleteOrderSuccess: (payload: boolean): t.IDeleteOrderSuccess => ({
+    type: t.DELETE_ORDER_SUCCESS,
     payload
   }),
-  deleteSubcategoryError: (errorMessage: string): t.IDeleteSubcategoryError => ({
-    type: t.DELETE_SUBCATEGORY_ERROR,
+  deleteOrderError: (errorMessage: string): t.IDeleteOrderError => ({
+    type: t.DELETE_ORDER_ERROR,
     errorMessage,
   }),
 
@@ -56,9 +56,9 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Subcategory";
+const controllerName = "Order";
 export const actionCreators = {
-  getSubcategoryList: (): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getOrderList: (): IAppThunkAction<t.TGetOrderList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "GetAll";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -73,27 +73,28 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<IResponseData>) => {
+      .then((value: IResponse<IOrder[]>) => {
+        debugger;
         if (value && value.error) {
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.getSubcategoryListSuccess(value.data));
+        dispatch(actionsList.getOrderListSuccess(value.data));
 
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
         apiUrl,
         err,
-        actionsList.getSubcategoryListError,
+        actionsList.getOrderListError,
         dispatch
       ));
 
     addTask(fetchTask);
-    dispatch(actionsList.getSubcategoryListRequest());
+    dispatch(actionsList.getOrderListRequest());
   },
-  AddOrUpdateSubcategory: (data: ISubcategoryDTO): IAppThunkAction<t.TAddOrUpdateSubcategory | t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "AddOrUpdate";
+  UpdateOrder: (data: IOrderDTO): IAppThunkAction<t.TAddOrUpdateOrder | t.TGetOrderList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "Update";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
@@ -108,13 +109,13 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<ISubcategory[]>) => {
+      .then((value: IResponse<IOrder[]>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.addOrUpdateSubcategorySuccess(true));
-        actionCreators.getSubcategoryList()(dispatch, getState);
+        dispatch(actionsList.addOrUpdateOrderSuccess(true));
+        actionCreators.getOrderList()(dispatch, getState);
 
         return Promise.resolve();
       }).catch((err: Error) => {
@@ -122,21 +123,21 @@ export const actionCreators = {
           controllerName,
           apiUrl,
           err,
-          actionsList.addOrUpdateSubcategoryError,
+          actionsList.addOrUpdateOrderError,
           dispatch
         );
       });
 
     addTask(fetchTask);
-    dispatch(actionsList.addOrUpdateSubcategoryRequest());
+    dispatch(actionsList.addOrUpdateOrderRequest());
   },
-  RemoveSubcategory: (categoryId: string,subcategoryId: string): IAppThunkAction<t.IDeleteSubcategory | t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  RemoveOrder: (orderId: number): IAppThunkAction<t.IDeleteOrder | t.TGetOrderList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?orderId=${orderId}`, {
       credentials: "same-origin",
       method: "DELETE",
       headers: {
@@ -150,8 +151,8 @@ export const actionCreators = {
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.deleteSubcategorySuccess(true));
-        actionCreators.getSubcategoryList()(dispatch, getState);
+        dispatch(actionsList.deleteOrderSuccess(true));
+        actionCreators.getOrderList()(dispatch, getState);
 
         return Promise.resolve();
       }).catch((err: Error) => {
@@ -159,13 +160,13 @@ export const actionCreators = {
           controllerName,
           apiUrl,
           err,
-          actionsList.addOrUpdateSubcategoryError,
+          actionsList.addOrUpdateOrderError,
           dispatch
         );
       });
 
     addTask(fetchTask);
-    dispatch(actionsList.deleteSubcategoryRequest());
+    dispatch(actionsList.deleteOrderRequest());
   },
 
   cleanErrorInner: actionsList.cleanErrorInner,

@@ -27,8 +27,9 @@ namespace Web.Controllers.AdminApi
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAll()
         {
-            var news = await _repository.GetOrders();
-            return Success(news);
+
+            var orders = await _repository.GetOrders();
+            return Success(orders);
         }
 
         [HttpGet("[action]")]

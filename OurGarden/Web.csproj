@@ -32,6 +32,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Web\AdminApp\src\components\Order\actions.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\actionsType.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\Component\EditModal\EditModalContent.tsx" />
+    <None Remove="Web\AdminApp\src\components\Order\Component\EditModal\index.tsx" />
+    <None Remove="Web\AdminApp\src\components\Order\Component\index.tsx" />
+    <None Remove="Web\AdminApp\src\components\Order\Component\Text.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\index.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\reducer.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\State.ts" />
+    <None Remove="Web\AdminApp\src\components\Order\TState.ts" />
     <None Remove="Web\AdminApp\src\components\Subcategory\actions.ts" />
     <None Remove="Web\AdminApp\src\components\Subcategory\actionsType.ts" />
     <None Remove="Web\AdminApp\src\components\Subcategory\Component\EditModal\EditModalContent.tsx" />

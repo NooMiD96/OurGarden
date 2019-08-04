@@ -37,8 +37,5 @@ namespace Model.DB
         public int StatusId { get; set; }
 
         public OrderStatus Status { get; set; }
-
-        [NotMapped]
-        public IEnumerable<OrderStatus> AllStatuses { get; set; }
     }
 }

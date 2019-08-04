@@ -388,7 +388,6 @@ namespace Database.Repositories
             .Include(x => x.OrderPositions)
             .Include(x => x.Status)
             .FirstOrDefaultAsync(x => x.OrderId == orderId);
-            order.AllStatuses = await _context.Status.ToListAsync();
             return order;
         }
 
