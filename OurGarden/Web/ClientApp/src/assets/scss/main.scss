@@ -132,3 +132,17 @@ a {
     background: $darkGreenColor;
   }
 }
+
+.ourgarden-design {
+  flex: 1 1 auto;
+  background: #fff;
+  border: 1px solid #cecece;
+  padding: 2rem;
+  overflow: auto;
+
+  div.ant-typography {
+    font-size: 16px;
+    font-weight: 100;
+    color: #000;
+  }
+}
