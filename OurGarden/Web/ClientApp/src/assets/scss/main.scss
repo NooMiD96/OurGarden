@@ -85,6 +85,18 @@ a {
     background-position-x: 2rem;
     background-position-y: top;
     background-size: unset;
+
+    @media (max-width: 1200px) {
+      background-position-x: 8rem;
+    }
+
+    @media (max-width: 768px) {
+      background-size: 20%;
+    }
+
+    @media (max-width: 580px) {
+      background-size: 25%;
+    }
   }
 }
 
@@ -111,4 +123,12 @@ a {
 
 .ant-pagination + .ant-row-flex {
   margin-top: 15px;
+}
+
+.ant-layout-sider-zero-width-trigger {
+  background: $greenColor;
+
+  &:hover {
+    background: $darkGreenColor;
+  }
 }

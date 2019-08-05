@@ -42,5 +42,14 @@
         display: none !important;
       }
     }
+
+    .ant-tabs-tab-arrow-show {
+      .ant-tabs-tab-prev-icon-target,
+      .ant-tabs-tab-next-icon-target {
+        font-size: 16px;
+        background-color: #cecece61;
+        color: #50ae2f;
+      }
+    }
   }
 }

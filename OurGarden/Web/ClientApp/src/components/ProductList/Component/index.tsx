@@ -22,9 +22,9 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     // lg	≥992px
     lg: { span: 12 },
     // xl	≥1200px
-    xl: { span: 8 }
+    xl: { span: 12 },
     // xxl	≥1600px
-    // xxl: { span: 8 }
+    xxl: { span: 8 }
   };
 
   state: TComponentState = {

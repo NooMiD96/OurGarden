@@ -19,14 +19,15 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
   render() {
     const {
       location,
-      categoryList,
-      errorInner,
-      cleanErrorInner,
-      pending
+      categoryList
     } = this.props;
 
     return (
-      <AntdSider width={250}>
+      <AntdSider
+        breakpoint="md"
+        collapsedWidth="0"
+        width={250}
+      >
         <div className="sider-catalog-header">
           <Title>Каталог</Title>
         </div>
