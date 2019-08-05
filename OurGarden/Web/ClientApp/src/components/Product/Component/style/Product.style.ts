@@ -19,6 +19,7 @@ export default styled.div`
       font-family: 'BerlingskeSerif';
       font-weight: bolder;
       font-size: 30px;
+      padding-right: 30px;
     }
 
     .product-cost {

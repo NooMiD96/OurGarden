@@ -12,7 +12,7 @@ const coordinates = [[54.169205, 37.573214]];
 export const CompanyMap = () => (
   <div className="company-map">
     <YMaps>
-      <Map defaultState={mapData} width="100%" height="100%">
+      <Map defaultState={mapData} width="100%" height="100%" className="y-map">
         {coordinates.map(coordinate => (
           <Placemark
             key={`${coordinate[0]}-${coordinate[1]}`}

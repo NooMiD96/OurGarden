@@ -12,31 +12,6 @@ import { getProductPhotoSrc } from "@src/core/helpers/product";
 import { TState, TComponentState } from "../TState";
 import { IMouseClickEvent } from "@src/core/IEvents";
 
-const contentMoq = `<span>
-Blanditiis et dolores tempora aut. At amet quia cupiditate natus
-pariatur eum. Omnis eum quia vel doloribus eveniet. Quia officiis
-nesciunt quasi tenetur. Ipsa aut ab et quae eum. Reiciendis qui at
-sit. Quia atque temporibus modi et aut aliquam recusandae. Ducimus
-dignissimos nulla laudantium magnam ut repellendus cumque iusto.
-Qui vero ut ipsam voluptas molestiae error iusto eius. Fugit
-maxime numquam libero tenetur voluptatem velit. Consequatur vitae
-ipsa ut assumenda sunt incidunt. Dolor nam ab. Et hic sed
-recusandae veniam voluptas deleniti non. Modi neque ad quo est
-eligendi non labore rerum. Reprehenderit voluptas in et corporis
-enim necessitatibus quibusdam veniam minus.temporibus-qui-estSint
-occaecati culpa excepturi magnam fugit explicabo. Enim aliquam
-omnis in fugiat laudantium velit vel. Esse explicabo sit quidem
-praesentium. At ut laboriosam rerum dolores in iure. Nobis nulla
-nostrum velit dolore quaerat. Tempore voluptates perferendis aut
-distinctio modi voluptatibus. Nihil libero sunt itaque quos
-impedit porro. Dolor maxime tempora est. Temporibus consequatur
-fugiat dignissimos atque itaque placeat. Totam porro sint. Qui est
-et aut quia nemo adipisci. Esse inventore enim autem. Ex inventore
-quasi quis quia nihil autem ea. Impedit perspiciatis aliquid autem
-consectetur illum quibusdam officia officia soluta. Perferendis
-labore iste sit.
-</span>`;
-
 export class Product extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     itemCount: "1"
@@ -117,7 +92,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
 
             <div
               className="product-description-wysiwyg"
-              dangerouslySetInnerHTML={{ __html: contentMoq }}
+              dangerouslySetInnerHTML={{ __html: product.description }}
             />
 
             <AddToCardButton

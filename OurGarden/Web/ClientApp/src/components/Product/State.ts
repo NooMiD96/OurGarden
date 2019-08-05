@@ -8,7 +8,7 @@ export interface IProduct {
   categoryId: string;
   alias: string;
   price: number;
-  descriprion: string;
+  description: string;
   photos: IPhoto[];
 }
 

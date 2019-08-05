@@ -2,7 +2,7 @@ import React from "react";
 import { IImageUploaderProps, IImageUploaderState } from "./IImageUploader";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
-import { Icon } from "@src/core/antd";
+import Icon from "@src/core/antd/Icon";
 import message from "@src/core/antd/message";
 import Uploader from "./style/Uploader.style";
 
