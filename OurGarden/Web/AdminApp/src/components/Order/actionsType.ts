@@ -1,4 +1,4 @@
-import { IOrder } from "./State";
+import { IOrder, IOrderStatus } from "./State";
 
 // -----------------
 //#region ACTIONS TYPE
@@ -19,7 +19,7 @@ export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 // -----------------
 //#region ACTIONS INTERFACE
 export interface IGetOrderListRequest { type: typeof GET_ORDER_LIST_REQUEST }
-export interface IGetOrderListSuccess { type: typeof GET_ORDER_LIST_SUCCESS; payload: IOrder[] }
+export interface IGetOrderListSuccess { type: typeof GET_ORDER_LIST_SUCCESS; payload: {orders: IOrder[]; statusList: IOrderStatus[]} }
 export interface IGetOrderListError { type: typeof GET_ORDER_LIST_ERROR; errorMessage: string }
 export type TGetOrderList = IGetOrderListRequest | IGetOrderListSuccess | IGetOrderListError;
 

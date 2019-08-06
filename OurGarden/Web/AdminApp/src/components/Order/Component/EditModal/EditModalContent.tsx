@@ -1,23 +1,48 @@
-import React, { createRef } from "react";
+import React from "react";
+import moment from "moment";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
-import Icon from "@core/antd/Icon";
-import Input from "@core/antd/Input";
+import Select from "@core/antd/Select";
+import Input, { TextArea } from "@core/antd/Input";
 import Button from "@core/antd/Button";
+import AgGrid from "@core/components/AgGrid";
 
-import { IOrder, IOrderDTO, IOrderPosition } from "../../State";
+import { IOrder, IOrderDTO, IOrderStatus } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import AgGrid from "@src/core/components/AgGrid";
+import { ColDef } from "ag-grid-community";
 
 interface IProps extends FormComponentProps {
   item: IOrder;
+  statusList: IOrderStatus[];
   loading: boolean;
   handleCreateSubmit: (data: IOrderDTO) => void;
   handleClose: Function;
 }
 
+const columns: ColDef[] = [
+  {
+    headerName: "Категория",
+    field: "categoryId",
+    type: ["idField"]
+  },
+  {
+    headerName: "Подкатегория",
+    field: "subcategoryId",
+    type: ["idField"]
+  },
+  {
+    headerName: "Продукт",
+    field: "productId",
+    type: ["idField"]
+  },
+  {
+    headerName: "Кол-во",
+    field: "number"
+  }
+];
+
 export const EditModalContent = (props: IProps) => {
-  const { form } = props;
+  const { form, statusList } = props;
   const { getFieldDecorator } = form;
   const {
     date,
@@ -28,38 +53,9 @@ export const EditModalContent = (props: IProps) => {
     orderPositions,
     phone,
     status,
-    totalprice
+    totalPrice
   } = props.item;
 
-  const gridRef = createRef<AgGrid<IOrderPosition>>();
-  const columns = [
-    {
-      headerName: "ФИО",
-      field: "fio"
-    },
-    {
-      headerName: "Телефон",
-      field: "phone"
-    },
-    {
-      headerName: "E-mail",
-      field: "email"
-    },
-    {
-      headerName: "Дата",
-      field: "date"
-    },
-    {
-      headerName: "Стоимость",
-      field: "totalprice"
-    },
-    {
-      headerName: "Статус",
-      field: "status"
-    }
-  ];
-
-  const doubleClickHandler = () => null;
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
@@ -81,51 +77,53 @@ export const EditModalContent = (props: IProps) => {
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
-      <FormItem>
+      <FormItem label="ФИО">
         {getFieldDecorator("fio", {
           initialValue: fio
         })(<Input disabled />)}
       </FormItem>
-      <FormItem>
-        {getFieldDecorator("email", {
-          initialValue: email
-        })(<Input disabled />)}
-      </FormItem>
-      <FormItem>
+      <FormItem label="Номер">
         {getFieldDecorator("phone", {
           initialValue: phone
         })(<Input disabled />)}
       </FormItem>
-      <FormItem>
+      <FormItem label="Почта">
+        {getFieldDecorator("email", {
+          initialValue: email
+        })(<Input disabled />)}
+      </FormItem>
+      <FormItem label="Дата заказа">
         {getFieldDecorator("date", {
-          initialValue: date
+          initialValue: moment(date).format("DD.MM.YYYY HH:mm:ss")
         })(<Input disabled />)}
       </FormItem>
-      <FormItem>
-        {getFieldDecorator("totalprice", {
-          initialValue: totalprice
+      <FormItem label="Сумма заказа">
+        {getFieldDecorator("totalPrice", {
+          initialValue: totalPrice
         })(<Input disabled />)}
       </FormItem>
-      <FormItem>
+      <FormItem label="Статус заказа">
         {getFieldDecorator("statusId", {
-          initialValue: status.statusId && null
+          initialValue: status.statusId
         })(
-          <Input prefix={<Icon type="edit" className="input-prefix-color" />} />
+          <Select placeholder="Статус">
+            {statusList.map(x => (
+              <Select.Option key={x.statusId} value={x.statusId}>
+                {x.name}
+              </Select.Option>
+            ))}
+          </Select>
         )}
       </FormItem>
-      <FormItem>
+      <FormItem label="Примечание">
         {getFieldDecorator("description", {
           initialValue: description
-        })(
-          <Input prefix={<Icon type="edit" className="input-prefix-color" />} />
-        )}
+        })(<TextArea />)}
       </FormItem>
-      <AgGrid
-        ref={gridRef}
-        columns={columns}
-        rowData={orderPositions}
-        onDoubleClickHandler={doubleClickHandler}
-      />
+
+      <div className="grid-wrapper">
+        <AgGrid columns={columns} rowData={orderPositions} readOnly />
+      </div>
 
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>

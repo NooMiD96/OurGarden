@@ -1,14 +1,17 @@
 import React, { createRef } from "react";
 
-import { TState, TComponentState } from "../TState";
-import { IOrder, IOrderDTO } from "../State";
-
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
-import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { EditModal } from "./EditModal";
+
+import { ColDef } from "ag-grid-community";
+
+import { TState, TComponentState } from "../TState";
+import { IOrder, IOrderDTO } from "../State";
 
 export class Order extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -17,7 +20,7 @@ export class Order extends React.PureComponent<TState, TComponentState> {
   };
   gridRef: React.RefObject<AgGrid<IOrder>> = createRef();
 
-  columns = [
+  columns: ColDef[] = [
     {
       headerName: "ФИО",
       field: "fio"
@@ -32,15 +35,18 @@ export class Order extends React.PureComponent<TState, TComponentState> {
     },
     {
       headerName: "Дата",
-      field: "date"
+      field: "date",
+      type: ["date"]
     },
     {
       headerName: "Стоимость",
-      field: "totalprice"
+      field: "totalPrice",
+      type: ["number"]
     },
     {
       headerName: "Статус",
-      field: "status"
+      field: "status",
+      type: ["orderStatus"]
     }
   ];
 
@@ -94,9 +100,14 @@ export class Order extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    const {
+      errorInner,
+      cleanErrorInner,
+      listItem,
+      statusList,
+      pending
+    } = this.props;
     const { showModal, editItem } = this.state;
-    debugger;
 
     return (
       <Spin spinning={pending}>
@@ -124,6 +135,7 @@ export class Order extends React.PureComponent<TState, TComponentState> {
         <EditModal
           isShow={showModal}
           item={editItem as IOrder}
+          statusList={statusList}
           handleCreateSubmit={this.handleCreateSubmit}
           handleClose={this.handleClose}
         />

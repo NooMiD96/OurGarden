@@ -55,6 +55,7 @@ namespace Database.Repositories
         Task DeleteVideo(int videoId);
 
         Task<IEnumerable<Order>> GetOrders();
+        Task<IEnumerable<OrderStatus>> GetStatusList();
         Task<Order> GetOrder(int orderId);
         Task AddOrder(Order order);
         Task UpdateOrder(Order order);

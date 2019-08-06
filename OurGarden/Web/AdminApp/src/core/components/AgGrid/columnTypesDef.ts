@@ -1,5 +1,10 @@
+import moment from "moment";
 import { ColDef } from "ag-grid-community";
+
 import ActionRenderer from "./cellRenderers/ActionRenderer";
+
+import { dateComparator } from "@src/core/helpers/AgGrid";
+import { IOrderStatus } from "@src/components/Order/State";
 
 const columnTypesDef: { [key: string]: ColDef } = {
   selectColumn: {
@@ -26,6 +31,26 @@ const columnTypesDef: { [key: string]: ColDef } = {
     suppressMovable: true,
     suppressNavigable: true,
     suppressToolPanel: true,
+  },
+  number: {
+    filter: "agNumberColumnFilter"
+  },
+  date: {
+    filter: "agDateColumnFilter",
+    valueGetter: (params) => {
+      const value = params.data[params.colDef.field!] as string;
+      return moment(value).format("DD.MM.YYYY HH:mm:ss");
+    },
+    filterParams: {
+      browserDatePicker: true,
+    },
+    comparator: dateComparator
+  },
+  orderStatus: {
+    valueGetter: (params) => {
+      const value = params.data[params.colDef.field!] as IOrderStatus;
+      return value.name;
+    },
   },
   idField: {
     valueGetter: params => {

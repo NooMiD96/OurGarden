@@ -8,7 +8,7 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { IOrder, IOrderDTO } from "./State";
+import { IOrder, IOrderDTO, IOrderStatus } from "./State";
 
 // ----------------
 //#region ACTIONS
@@ -16,7 +16,7 @@ export const actionsList = {
   getOrderListRequest: (): t.IGetOrderListRequest => ({
     type: t.GET_ORDER_LIST_REQUEST,
   }),
-  getOrderListSuccess: (payload: IOrder[]): t.IGetOrderListSuccess => ({
+  getOrderListSuccess: (payload: { orders: IOrder[]; statusList: IOrderStatus[] }): t.IGetOrderListSuccess => ({
     type: t.GET_ORDER_LIST_SUCCESS,
     payload
   }),
@@ -73,8 +73,7 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<IOrder[]>) => {
-        debugger;
+      .then((value: IResponse<{ orders: IOrder[]; statusList: IOrderStatus[] }>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }

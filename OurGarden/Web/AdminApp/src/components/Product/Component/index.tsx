@@ -9,6 +9,7 @@ import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+import { ColDef } from "ag-grid-community";
 
 class Product extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -17,7 +18,7 @@ class Product extends React.PureComponent<TState, TComponentState> {
   };
   gridRef: React.RefObject<AgGrid<IProduct>> = createRef();
 
-  columns = [
+  columns: ColDef[] = [
     {
       headerName: "Категория",
       field: "categoryId",

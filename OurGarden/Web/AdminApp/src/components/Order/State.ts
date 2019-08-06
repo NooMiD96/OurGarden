@@ -4,13 +4,13 @@ import { IProduct } from "../Product/State";
 //#region STATE
 export interface IOrder {
   orderId: number;
-  status: IOrderStatus;
-  phone: string;
-  email: string;
   fio: string;
+  email: string;
+  phone: string;
   date: string;
+  totalPrice: number;
   description: string;
-  totalprice: number;
+  status: IOrderStatus;
   orderPositions: IOrderPosition[];
 }
 
@@ -33,12 +33,14 @@ export interface IOrderStatus {
 
 export interface IOrderState {
   listItem: IOrder[];
+  statusList: IOrderStatus[];
   pending: boolean;
   errorInner: string;
 }
 
 export const unloadedState: IOrderState = {
   listItem: [],
+  statusList: [],
   pending: false,
   errorInner: "",
 };

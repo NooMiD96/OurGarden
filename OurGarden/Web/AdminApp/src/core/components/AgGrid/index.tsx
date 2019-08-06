@@ -19,29 +19,30 @@ export class AgGrid<T> extends React.PureComponent<
   };
 
   componentDidMount() {
-    this.setState({
-      columns: [
-        {
-          headerName: "Выбор",
-          field: "select",
-          type: ["selectColumn"],
-          width: 65,
-          checkboxSelection: true,
-          suppressSizeToFit: true,
-          pinned: "left"
-        },
-        ...this.props.columns,
-        {
-          headerName: "Действие",
-          field: "action",
-          type: ["actionColumn"],
-          width: 80,
-          checkboxSelection: false,
-          suppressSizeToFit: true,
-          pinned: "right"
-        }
-      ]
-    });
+    const columns = [...this.props.columns];
+
+    if (!this.props.readOnly) {
+      columns.unshift({
+        headerName: "Выбор",
+        field: "select",
+        type: ["selectColumn"],
+        width: 65,
+        checkboxSelection: true,
+        suppressSizeToFit: true,
+        pinned: "left"
+      });
+      columns.push({
+        headerName: "Действие",
+        field: "action",
+        type: ["actionColumn"],
+        width: 80,
+        checkboxSelection: false,
+        suppressSizeToFit: true,
+        pinned: "right"
+      });
+    }
+
+    this.setState({ columns });
   }
 
   onGridReady = (params: GridReadyEvent) => {
@@ -66,7 +67,9 @@ export class AgGrid<T> extends React.PureComponent<
           onGridReady={this.onGridReady}
           columnTypes={columnTypesDef}
           defaultColDef={defaultColDef}
-          onRowDoubleClicked={params => onDoubleClickHandler(params.data)}
+          onRowDoubleClicked={params =>
+            onDoubleClickHandler && onDoubleClickHandler(params.data)
+          }
           context={{
             parentComponent: this
           }}

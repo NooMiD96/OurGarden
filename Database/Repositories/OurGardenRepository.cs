@@ -419,6 +419,8 @@ namespace Database.Repositories
 
         public async Task<OrderStatus> GetStatus(int statusId) =>
             await _context.Status.FirstOrDefaultAsync(x => x.StatusId == statusId);
+        public async Task<IEnumerable<OrderStatus>> GetStatusList() =>
+            await _context.Status.ToListAsync();
 
         #endregion
     }

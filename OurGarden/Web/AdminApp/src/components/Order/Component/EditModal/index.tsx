@@ -1,13 +1,15 @@
 import * as React from "react";
 
 import Modal from "@core/antd/Modal";
-import { IOrderDTO, IOrder } from "../../State";
 
 import EditModalContent from "./EditModalContent";
+
+import { IOrderDTO, IOrder, IOrderStatus } from "../../State";
 
 interface IEditModalProps {
   isShow: boolean;
   item: IOrder;
+  statusList: IOrderStatus[];
   handleCreateSubmit: (data: IOrderDTO) => void;
   handleClose: Function;
 }
@@ -17,8 +19,9 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
     const {
       isShow,
       item,
-      handleCreateSubmit: handleCreateSubmit,
-      handleClose: handleClose
+      statusList,
+      handleCreateSubmit,
+      handleClose
     } = this.props;
 
     return (
@@ -28,10 +31,12 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         closable={false}
         destroyOnClose
         footer={null}
+        width="75%"
       >
         <EditModalContent
           loading={false}
           item={item}
+          statusList={statusList}
           handleCreateSubmit={handleCreateSubmit}
           handleClose={handleClose}
         />

@@ -5,9 +5,10 @@ using Database.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Model.DB;
+using Model.DTO;
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
@@ -27,9 +28,14 @@ namespace Web.Controllers.AdminApi
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAll()
         {
-
             var orders = await _repository.GetOrders();
-            return Success(orders);
+            var statusList = await _repository.GetStatusList();
+
+            return Success(new
+            {
+                orders = orders.OrderBy(x => x.Date),
+                statusList
+            });
         }
 
         [HttpGet("[action]")]
@@ -44,27 +50,24 @@ namespace Web.Controllers.AdminApi
             return Success(order);
         }        
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(
-            [FromQuery]int orderId,
-            [FromQuery]int statusId,
-            [FromQuery]string description)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Update([FromBody]OrderUpdateDTO orderDTO)
         {
             try
             {
-                var order = await _repository.GetOrder(orderId);
+                var order = await _repository.GetOrder(orderDTO.OrderId);
                 if (order == null)
                 {
-                    return NotFound();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
 
-                var status = await _repository.GetStatus(statusId);
+                var status = await _repository.GetStatus(orderDTO.StatusId);
                 if (status == null)
                 {
-                    return NotFound();
+                    return BadRequest("Что-то пошло не так, повторите попытку");
                 }
                 order.Status = status;
-                order.Description = description;
+                order.Description = orderDTO.Description;
 
                 await _repository.UpdateOrder(order);
 
@@ -80,7 +83,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> Delete(
             [FromQuery]int orderId)
         {
-            await _repository.DeleteNews(orderId);
+            await _repository.DeleteOrder(orderId);
             return Success(true);
         }
     }

@@ -18,7 +18,8 @@ export const reducer: Reducer<IOrderState> = (state: IOrderState = unloadedState
     case t.GET_ORDER_LIST_SUCCESS:
       return {
         ...state,
-        listItem: action.payload,
+        listItem: action.payload.orders,
+        statusList: action.payload.statusList,
         pending: false,
       } as IOrderState;
 
