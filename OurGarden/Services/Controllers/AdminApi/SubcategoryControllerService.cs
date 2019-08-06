@@ -45,10 +45,6 @@ namespace Web.Services.Controllers.AdminApi
                         Photo = file
                     };
                     await _repository.AddSubcategory(newSubcategory);
-                    var newSubcategoryId = new {
-                        SubcategoryId = newSubcategory.SubcategoryId,
-                        CategoryId = newSubcategory.CategoryId
-                    };             
 
                     // Загружаем список продуктов
                     await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
@@ -59,8 +55,8 @@ namespace Web.Services.Controllers.AdminApi
 
                         return new Product()
                         {
-                            CategoryId = newSubcategoryId.CategoryId,
-                            SubcategoryId = newSubcategoryId.SubcategoryId,
+                            CategoryId = newSubcategory.CategoryId,
+                            SubcategoryId = newSubcategory.SubcategoryId,
                             ProductId = product.ProductId,
 
                             Alias = product.Alias,
@@ -107,10 +103,8 @@ namespace Web.Services.Controllers.AdminApi
                         _context.Update(order);
                     });
 
-                    // Уберем старые продукты 
-                    _context.RemoveRange(oldSubcategory.Products);
-
                     // Теперь старая подкатегория не нужна
+                    _context.Remove(oldSubcategory.Photo);
                     _context.Remove(oldSubcategory);
 
                     // Сохраняем изменения
@@ -119,7 +113,7 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     transaction.Rollback();
 

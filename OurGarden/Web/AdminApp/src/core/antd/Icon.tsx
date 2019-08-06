@@ -29,6 +29,10 @@ class CustomIcon extends React.PureComponent<
     try {
       const svgProps = await getIconAsync(type);
 
+      if (type === "loading" && typeof svgProps.icon !== "function") {
+        svgProps.icon.attrs.className = "anticon-spin";
+      }
+
       this.setState({ svgProps: svgProps });
     } catch (err) {
       if (process.env.NODE_ENV === "development") {

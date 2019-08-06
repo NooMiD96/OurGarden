@@ -141,6 +141,7 @@ namespace Web.Services.Controllers.AdminApi
                         });
 
                         // Теперь старая подкатегория не нужно
+                        _context.Remove(oldSubcategory.Photo);
                         _context.Remove(oldSubcategory);
 
                         // Сохраняем изменения
@@ -148,6 +149,7 @@ namespace Web.Services.Controllers.AdminApi
                     }
 
                     // Если всё прошло удачно, удаляем старую категорию
+                    _context.Remove(oldCategory.Photo);
                     await _repository.DeleteCategory(oldCategory.CategoryId);
 
                     transaction.Commit();

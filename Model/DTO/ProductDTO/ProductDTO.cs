@@ -4,13 +4,10 @@ namespace Model.DTO.ProductDTO
 {
     public class ProductDTO
     {
-        [Required]
         public string CategoryId { get; set; }
 
-        [Required]
         public string SubcategoryId { get; set; }
 
-        [Required]
         public string ProductId { get; set; }
 
 

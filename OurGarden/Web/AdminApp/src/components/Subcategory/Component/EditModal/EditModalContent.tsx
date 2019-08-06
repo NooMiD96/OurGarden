@@ -22,14 +22,9 @@ interface IProps extends FormComponentProps {
 }
 
 export const EditModalContent = (props: IProps) => {
-  const { form } = props;
-  const { Option } = Select;
+  const { form, item } = props;
   const { getFieldDecorator } = form;
-
-  const subcategoryId = props.item ? props.item.subcategoryId : null;
-  const categoryId = props.item ? props.item.categoryId : null;
-  const alias = props.item ? props.item.alias : null;
-  const photo = props.item ? props.item.photo : null;
+  const { subcategoryId, categoryId, alias, photo } = item || {} as ISubcategory;
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -51,9 +46,9 @@ export const EditModalContent = (props: IProps) => {
   };
 
   const options = props.dropdownData.map(item => (
-    <Option key={item.categoryId} value={item.categoryId}>
+    <Select.Option key={item.categoryId} value={item.categoryId}>
       {item.alias}
-    </Option>
+    </Select.Option>
   ));
 
   const onClose = () => {
@@ -76,18 +71,6 @@ export const EditModalContent = (props: IProps) => {
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("alias", {
-          initialValue: alias,
-          rules: [{ required: true, message: localeText._rule_require_alias }]
-        })(
-          <Input
-            prefix={<Icon type="edit" className="input-prefix-color" />}
-            placeholder={localeText._label_alias}
-            onPressEnter={onSubmit}
-          />
-        )}
-      </FormItem>
-      <FormItem>
         {getFieldDecorator("newCategoryId", {
           initialValue: categoryId,
           rules: [
@@ -107,6 +90,18 @@ export const EditModalContent = (props: IProps) => {
           >
             {options}
           </Select>
+        )}
+      </FormItem>
+      <FormItem>
+        {getFieldDecorator("alias", {
+          initialValue: alias,
+          rules: [{ required: true, message: localeText._rule_require_alias }]
+        })(
+          <Input
+            prefix={<Icon type="edit" className="input-prefix-color" />}
+            placeholder={localeText._label_alias}
+            onPressEnter={onSubmit}
+          />
         )}
       </FormItem>
       <FormItem>

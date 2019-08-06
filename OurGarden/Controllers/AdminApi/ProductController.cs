@@ -52,24 +52,10 @@ namespace Web.Controllers.AdminApi
             try
             {
                 var oldProduct = await _repository.GetProduct(productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
-
                 if (
-                    productDTO.Alias != oldProduct?.Alias
-                    || productDTO.CategoryId != productDTO.NewCategoryId
-                    || productDTO.SubcategoryId != productDTO.NewSubcategoryId
-                )
-                {
-                    var (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
-
-                    if (!isSuccess)
-                    {
-                        return BadRequest(error);
-                    }
-                }
-                else if (
                     String.IsNullOrEmpty(productDTO.CategoryId)
-                    && String.IsNullOrEmpty(productDTO.SubcategoryId)
-                    && String.IsNullOrEmpty(productDTO.ProductId)
+                    || String.IsNullOrEmpty(productDTO.SubcategoryId)
+                    || String.IsNullOrEmpty(productDTO.ProductId)
                 )
                 {
                     var photos = new List<Photo>();
@@ -89,12 +75,30 @@ namespace Web.Controllers.AdminApi
                     };
                     await _repository.AddProduct(product);
                 }
+                else if (
+                    productDTO.Alias != oldProduct?.Alias
+                    || productDTO.CategoryId != productDTO.NewCategoryId
+                    || productDTO.SubcategoryId != productDTO.NewSubcategoryId
+                )
+                {
+                    var (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
+
+                    if (!isSuccess)
+                    {
+                        return BadRequest(error);
+                    }
+                }
                 else
                 {
                     var photos = new List<Photo>();
                     var fileHelper = new FileHelper(_repository);
                     var file = await fileHelper.AddFileToRepository(productDTO.Url);
                     photos.Add(file);
+
+                    foreach (var photo in oldProduct.Photos)
+                    {
+                        _repository.DeleteFile(photo.PhotoId);
+                    }
 
                     oldProduct.Price = productDTO.Price;
                     oldProduct.Description = productDTO.Description;

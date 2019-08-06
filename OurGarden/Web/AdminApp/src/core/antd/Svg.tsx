@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IconDefinition } from "@antdSvgs/../types";
+import { IconDefinition, AbstractNode } from "@antdSvgs/../types";
 import { IMouseClickEvent, IKeyDownEvent } from "../IEvents";
 
 // TODO: recursive function
@@ -41,7 +41,7 @@ const Svg = (props: ISvgProps) => {
       role="button"
       onKeyDown={props.onClick}
       onClick={props.onClick}
-      tabIndex={0}
+      tabIndex={-1}
       className={iClassName}
       style={props.style}
       {...iProp}
@@ -56,6 +56,6 @@ const Svg = (props: ISvgProps) => {
   );
 };
 
-export { IconDefinition };
+export { IconDefinition, AbstractNode };
 
 export default Svg;

@@ -102,7 +102,7 @@ export const EditModalContent = (props: IProps) => {
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => onSubmitHandler(props, ckEditor, e);
 
-  const photo = photos[0];
+  const photo = photos && photos[0];
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -115,7 +115,7 @@ export const EditModalContent = (props: IProps) => {
             placeholder={localeText._label_category}
             onChange={() => {
               form.setFieldsValue({
-                newSubcategoryId: null
+                newSubcategoryId: undefined
               })
             }}
           >

@@ -1,34 +1,12 @@
 import React from "react";
-import { IImageUploaderProps, IImageUploaderState } from "./IImageUploader";
-import Upload, { UploadChangeParam } from "antd/lib/upload";
-import { UploadFile } from "antd/lib/upload/interface";
+
+import Upload, { UploadChangeParam, UploadFile } from "@core/antd/Upload";
 import Icon from "@src/core/antd/Icon";
 import message from "@src/core/antd/message";
-import Uploader from "./style/Uploader.style";
 
-function getBase64(
-  callback: (payload: string | ArrayBuffer) => void,
-  img?: File
-) {
-  const reader = new FileReader();
-  reader.addEventListener(
-    "load",
-    () => reader.result && callback(reader.result)
-  );
-  if (img != null) reader.readAsDataURL(img);
-}
+import UploadWrapper from "./style/Uploader.style";
 
-function beforeUpload(file: UploadFile) {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("Вы можете загружать файлы только с расширением JPG/PNG !");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Фотография должна быть мешьше 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-}
+import { IImageUploaderProps, IImageUploaderState } from "./IImageUploader";
 
 export class ImageUploader extends React.PureComponent<
   IImageUploaderProps,
@@ -37,6 +15,30 @@ export class ImageUploader extends React.PureComponent<
   state: IImageUploaderState = {
     loading: false,
     imageUrl: this.props.oldImageUrl as string
+  };
+
+  getBase64 = (
+    callback: (payload: string | ArrayBuffer) => void,
+    img?: File
+  ) => {
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      () => reader.result && callback(reader.result)
+    );
+    if (img != null) reader.readAsDataURL(img);
+  };
+
+  beforeUpload = (file: UploadFile) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("Вы можете загружать файлы только с расширением JPG/PNG !");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Фотография должна быть мешьше 2MB!");
+    }
+    return isJpgOrPng && isLt2M;
   };
 
   handleChange = (info: UploadChangeParam<UploadFile>) => {
@@ -48,7 +50,7 @@ export class ImageUploader extends React.PureComponent<
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(
+      this.getBase64(
         imageUrl =>
           this.setState(
             {
@@ -63,31 +65,30 @@ export class ImageUploader extends React.PureComponent<
   };
 
   render() {
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? "loading" : "plus"} />
-        <div className="ant-upload-text">Загрузить изображение</div>
-      </div>
-    );
-    const { imageUrl } = this.state;
+    const { loading, imageUrl } = this.state;
 
     return (
-      <Uploader className="image-block">
+      <UploadWrapper className="image-block">
         <Upload
           name="img"
           listType="picture-card"
           className="image-uploader"
           showUploadList={false}
-          beforeUpload={beforeUpload}
+          beforeUpload={this.beforeUpload}
           onChange={this.handleChange}
+          accept="image/png, image/jpeg"
+          disabled={loading}
         >
           {imageUrl ? (
             <img src={imageUrl as string} alt="img" style={{ width: "100%" }} />
           ) : (
-            uploadButton
+            <div>
+              <Icon type={loading ? "loading" : "plus"} />
+              <div className="ant-upload-text">Загрузить изображение</div>
+            </div>
           )}
         </Upload>
-      </Uploader>
+      </UploadWrapper>
     );
   }
 }

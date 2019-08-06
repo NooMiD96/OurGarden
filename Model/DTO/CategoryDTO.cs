@@ -8,7 +8,6 @@ namespace Model.DTO
 {
     public class CategoryDTO
     {
-        [Required]
         public string CategoryId { get; set; }
 
         [Required]

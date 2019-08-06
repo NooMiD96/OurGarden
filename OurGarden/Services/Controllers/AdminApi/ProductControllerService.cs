@@ -63,6 +63,11 @@ namespace Web.Services.Controllers.AdminApi
                         _context.Update(order);
                     });
 
+                    foreach (var photo in oldProduct.Photos)
+                    {
+                        _context.Remove(photo);
+                    }
+
                     // Теперь старая подкатегория не нужно
                     _context.Remove(oldProduct);
 
