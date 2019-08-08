@@ -1,4 +1,5 @@
-﻿using Core.Helpers;
+﻿using Core;
+using Core.Helpers;
 
 using Database.Contexts;
 using Database.Repositories;
@@ -9,6 +10,7 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,32 +22,45 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
+        private readonly FileHelper _fileHelper;
+
         public CategoryControllerService(IOurGardenRepository repository)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
+            _fileHelper = new FileHelper(_repository);
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
                 try
                 {
                     // Создаём новую категорию
-                    var fileHelper = new FileHelper(_repository);
-                    var file = await fileHelper.AddFileToRepository(categoryDTO.Url);
+                    var file = default(Photo);
+                    if (categoryDTO.File == null)
+                    {
+                        file = _fileHelper.ClonePhoto(oldCategory.Photo.Url);
+                        _context.Remove(oldCategory.Photo);
+                    }
+                    else
+                    {
+                        file = await _fileHelper.AddFileToRepository(categoryDTO.File);
+                        await _fileHelper.RemoveFileFromRepository(oldCategory.Photo, false);
+                    }
 
                     var newCategory = new Category()
                     {
                         CategoryId = StringHelper.Transform(categoryDTO.Alias),
+
                         Alias = categoryDTO.Alias,
+
                         Photo = file
                     };
                     await _repository.AddCategory(newCategory);
                     var newCategoryId = newCategory.CategoryId;
                     newCategory = null;
-                    
+
                     // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
                     await _context.Entry(oldCategory).Collection(x => x.Subcategories).LoadAsync();
 
@@ -67,13 +82,8 @@ namespace Web.Services.Controllers.AdminApi
                             SubcategoryId = oldSubcategory.SubcategoryId,
 
                             Alias = oldSubcategory.Alias,
-                            Photo = new Photo()
-                            {
-                                PhotoId = guid,
-                                Name = guid.ToString(),
-                                Date = DateTime.Now,
-                                Url = oldSubcategory.Photo.Url
-                            }
+                            Photo = _fileHelper.ClonePhoto(oldSubcategory.Photo.Url),
+                            Products = new List<Product>()
                         };
 
                         // Удаляем фотографию для старой
@@ -81,14 +91,13 @@ namespace Web.Services.Controllers.AdminApi
 
                         // Загружаем список продуктов
                         await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
-                        newSubcategory.Products = oldSubcategory.Products.Select(product =>
+                        foreach (var product in oldSubcategory.Products)
                         {
-                            // Загружаем список фотографий для данного продукта
-                            _context.Entry(product).Collection(x => x.Photos).LoadAsync().GetAwaiter().GetResult();
+                            await _context.Entry(product).Collection(x => x.Photos).LoadAsync();
 
-                            return new Product()
+                            var newProduct = new Product()
                             {
-                                CategoryId = newCategoryId,
+                                CategoryId = newSubcategory.CategoryId,
                                 SubcategoryId = newSubcategory.SubcategoryId,
                                 ProductId = product.ProductId,
 
@@ -98,21 +107,14 @@ namespace Web.Services.Controllers.AdminApi
 
                                 Photos = product.Photos.Select(photo =>
                                 {
-                                    var id = Guid.NewGuid();
-
                                     _context.Remove(photo);
 
-                                    return new Photo()
-                                    {
-                                        Date = DateTime.Now,
-                                        Name = id.ToString(),
-                                        PhotoId = id,
-                                        Url = photo.Url
-                                    };
+                                    return _fileHelper.ClonePhoto(photo.Url);
                                 }).ToList()
                             };
-                        })
-                            .ToList();
+
+                            newSubcategory.Products.Add(newProduct);
+                        }
 
                         // Добовляем новую подкатегорию
                         _context.Add(newSubcategory);
@@ -149,7 +151,6 @@ namespace Web.Services.Controllers.AdminApi
                     }
 
                     // Если всё прошло удачно, удаляем старую категорию
-                    _context.Remove(oldCategory.Photo);
                     await _repository.DeleteCategory(oldCategory.CategoryId);
 
                     transaction.Commit();
@@ -161,7 +162,6 @@ namespace Web.Services.Controllers.AdminApi
 
                     return (false, "Ошибка при обнавлении категории. Возможно подкатегория или товар с такой категорией уже существуют");
                 }
-            }
         }
     }
 }

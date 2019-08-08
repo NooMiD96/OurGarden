@@ -9,7 +9,6 @@ using Model.DB;
 using Model.DTO;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,39 +20,52 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
+        private readonly FileHelper _fileHelper;
+
         public SubcategoryControllerService(IOurGardenRepository repository)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
+            _fileHelper = new FileHelper(_repository);
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
                 try
                 {
                     // Создаём новую подкатегорию
-                    var fileHelper = new FileHelper(_repository);
-                    var file = await fileHelper.AddFileToRepository(subcategoryDTO.Url);
+                    var file = default(Photo);
+                    if (subcategoryDTO.File == null)
+                    {
+                        file = _fileHelper.ClonePhoto(oldSubcategory.Photo.Url);
+                        _context.Remove(oldSubcategory.Photo);
+                    }
+                    else
+                    {
+                        file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
+                        await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, false);
+                    }
 
                     var newSubcategory = new Subcategory()
                     {
-                        SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
                         CategoryId = subcategoryDTO.NewCategoryId,
+                        SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
+
                         Alias = subcategoryDTO.Alias,
+
                         Photo = file
                     };
                     await _repository.AddSubcategory(newSubcategory);
 
                     // Загружаем список продуктов
                     await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
-                    newSubcategory.Products = oldSubcategory.Products.Select(product =>
-                    {
-                        // Загружаем список фотографий для данного продукта
-                        _context.Entry(product).Collection(x => x.Photos).LoadAsync().GetAwaiter().GetResult();
 
-                        return new Product()
+                    foreach (var product in oldSubcategory.Products)
+                    {
+                        await _context.Entry(product).Collection(x => x.Photos).LoadAsync();
+
+                        var newProduct = new Product()
                         {
                             CategoryId = newSubcategory.CategoryId,
                             SubcategoryId = newSubcategory.SubcategoryId,
@@ -78,7 +90,9 @@ namespace Web.Services.Controllers.AdminApi
                                 };
                             }).ToList()
                         };
-                    }).ToList();
+
+                        newSubcategory.Products.Add(newProduct);
+                    }
 
                     // Теперь мы можем изменить заказы, т.к. новая подкатегория и продукты добавлены
                     var orderList = _context.OrderPosition
@@ -104,7 +118,6 @@ namespace Web.Services.Controllers.AdminApi
                     });
 
                     // Теперь старая подкатегория не нужна
-                    _context.Remove(oldSubcategory.Photo);
                     _context.Remove(oldSubcategory);
 
                     // Сохраняем изменения
@@ -119,7 +132,6 @@ namespace Web.Services.Controllers.AdminApi
 
                     return (false, "Ошибка при обнавлении подкатегории.");
                 }
-            }
         }
     }
 }

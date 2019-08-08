@@ -9,7 +9,7 @@ import CKEditor from "@core/components/CKEditor";
 import InputNumber from "@core/antd/InputNumber";
 import localeText from "../Text";
 
-import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
+import { FileUploader } from "@src/core/components/Uploader/File";
 
 import { ICategoryDictionary, IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -38,7 +38,7 @@ const onSubmitHandler = (
 
   const alias = form.getFieldValue("alias");
   const price = form.getFieldValue("price");
-  const imageUrl = form.getFieldValue("image");
+  const image = form.getFieldValue("image");
 
   props.form.setFieldsValue({
     description,
@@ -54,10 +54,10 @@ const onSubmitHandler = (
         newCategoryId,
         newSubcategoryId,
 
-        alias: alias,
+        alias,
         price,
         description,
-        url: imageUrl
+        file: image,
       });
     }
   });
@@ -89,9 +89,9 @@ export const EditModalContent = (props: IProps) => {
   const { categoryId, alias, price, description, photos} = item || {} as IProduct;
   let { subcategoryId } = item || {} as IProduct;
 
-  const onUploadImage = (imageUrl: string | ArrayBuffer) => {
+  const onUploadImage = (image?: File) => {
     form.setFieldsValue({
-      image: imageUrl
+      image
     });
   };
 
@@ -176,7 +176,7 @@ export const EditModalContent = (props: IProps) => {
           initialValue: photo ? photo.url : null,
           rules: [{ required: true, message: localeText._rule_require_photo }]
         })(
-          <ImageUploader
+          <FileUploader
             onUpload={onUploadImage}
             oldImageUrl={photo ? photo.url : null}
           />

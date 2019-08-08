@@ -14,15 +14,16 @@ namespace Database.Repositories
         Task AddCategory(Category category);
         Task UpdateCategory(Category category);
         Task DeleteCategory(string categoryId);
-        
+        Task DeleteCategory(Category category);
+
         Task<IEnumerable<Subcategory>> GetAllSubcategories();
         Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId);
         Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId);
         Task AddSubcategory(Subcategory subcategory);
         Task UpdateSubcategory(Subcategory subcategory);
-        Task UpdateSubcategories(IEnumerable<Subcategory> subcategories, string newCategory);
         Task DeleteSubcategory(string subcategoryId, string categoryId);
-        
+        Task DeleteSubcategory(Subcategory subcategory);
+
         Task<IEnumerable<Product>> GetSearchProducts(string search);
         Task<IEnumerable<Product>> GetAllProducts();
         Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync();
@@ -30,9 +31,9 @@ namespace Database.Repositories
         Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
         Task AddProduct(Product product);
         Task UpdateProduct(Product product);
-        Task UpdateProducts(IEnumerable<Product> products, string newCategory, string newSubcategoryId);
-        Task DeleteProduct(string productId, string subcategoryId, string categoryId);
-        
+        ValueTask<bool> DeleteProduct(string productId, string subcategoryId, string categoryId);
+        ValueTask<bool> DeleteProduct(Product product);
+
         Task<IEnumerable<News>> GetNews();
         Task<News> GetNews(int newsId);
         Task AddNews(News news);
@@ -46,7 +47,7 @@ namespace Database.Repositories
         Task DeleteGallery(int galleryId);
 
         Task AddFile(Photo photo);
-        Task DeleteFile(Guid photoId);
+        ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true);
         
         Task<IEnumerable<Video>> GetVideo();
         Task<Video> GetVideo(int videoId);

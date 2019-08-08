@@ -1,15 +1,15 @@
 import React, { createRef } from "react";
 
-import { TState, TComponentState } from "../TState";
-import { IProduct, IProductDTO } from "../State";
-
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
 import { ColDef } from "ag-grid-community";
+import { TState, TComponentState } from "../TState";
+import { IProduct, IProductDTO } from "../State";
 
 class Product extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -62,7 +62,9 @@ class Product extends React.PureComponent<TState, TComponentState> {
       type: "confirm",
       onOk: () => {
         let data = this.gridRef.current!.state.gridApi.getSelectedRows() as IProduct[];
-        this.props.removeProduct(data[0].categoryId);
+        const { categoryId, subcategoryId, productId } = data[0];
+
+        this.props.removeProduct(categoryId, subcategoryId, productId);
       }
     });
   };

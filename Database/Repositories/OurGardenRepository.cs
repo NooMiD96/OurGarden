@@ -30,7 +30,7 @@ namespace Database.Repositories
             await _context.Category.Select(x => new Category()
             {
                 Alias = x.Alias,
-                CategoryId=x.CategoryId,                
+                CategoryId = x.CategoryId,
             })
             .ToListAsync();
 
@@ -62,6 +62,12 @@ namespace Database.Repositories
             var category = await _context.Category.FirstOrDefaultAsync(x => x.CategoryId == categoryId);
             if (category == null)
                 return;
+            _context.Category.Remove(category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteCategory(Category category)
+        {
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
         }
@@ -102,30 +108,18 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateSubcategories(IEnumerable<Subcategory> subcategories,
-                                              string newCategoryId)
-        {
-            var newSubcategory = subcategories.Select(x => new Subcategory()
-            {
-                CategoryId = newCategoryId,
-                SubcategoryId = x.SubcategoryId,
-                Alias = x.Alias,
-                //Category = null,
-
-                Photo = x.Photo,
-                //Products = x.Products,
-            });
-            _context.Subcategory.RemoveRange(subcategories);
-            _context.Subcategory.AddRange(newSubcategory);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task DeleteSubcategory(string subcategoryId, string categoryId)
         {
             var subcategory = await _context.Subcategory
                 .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
             if (subcategory == null)
                 return;
+            _context.Subcategory.Remove(subcategory);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteSubcategory(Subcategory subcategory)
+        {
             _context.Subcategory.Remove(subcategory);
             await _context.SaveChangesAsync();
         }
@@ -162,15 +156,16 @@ namespace Database.Repositories
                 })
             });
         }
-        
-        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId) =>
-            await _context.Product
+
+        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId) => await _context
+            .Product
             .Include(x => x.Photos)
             .Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId)
             .ToListAsync();
 
-        public async Task<Product> GetProduct(string productId, string subcategoryId, string categoryId) =>
-            await _context.Product.Include(x => x.Photos)
+        public async Task<Product> GetProduct(string productId, string subcategoryId, string categoryId) => await _context
+            .Product
+            .Include(x => x.Photos)
             .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
 
         public async Task AddProduct(Product product)
@@ -194,47 +189,27 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateProducts(IEnumerable<Product> products,
-                                         string newCategoryId,
-                                         string newSubcategoryId)
+        public async ValueTask<bool> DeleteProduct(string productId, string subcategoryId, string categoryId)
         {
-            var newProducts = products.Select(product => new Product()
-            {
-                CategoryId = newCategoryId,
-                SubcategoryId = newSubcategoryId,
-                ProductId = product.ProductId,
-
-                Alias = product.Alias,
-                Price = product.Price,
-                Description = product.Description,
-
-                //Subcategory = x.Subcategory,
-                Photos = product.Photos.Select(photo => {
-                    var id = Guid.NewGuid();
-
-                    _context.Remove(photo);
-
-                    return new Photo()
-                    {
-                        Date = DateTime.Now,
-                        Name = id.ToString(),
-                        PhotoId = id,
-                        Url = photo.Url
-                    };
-                }).ToList(),
-            }).ToList();
-            _context.Product.AddRange(newProducts);
-            _context.Product.RemoveRange(products);
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteProduct(string productId, string subcategoryId, string categoryId)
-        {
-            var product = await _context.Product
+            var product = await _context
+                .Product
                 .FirstOrDefaultAsync(x => x.ProductId == productId && x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+
             if (product == null)
-                return;
+                return false;
+
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async ValueTask<bool> DeleteProduct(Product product)
+        {
+            _context.Product.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
         #endregion
 
@@ -324,15 +299,18 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteFile(Guid photoId)
+        public async ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true)
         {
             var photo = await _context.Photo.FirstOrDefaultAsync(x => x.PhotoId == photoId);
             if (photo == null)
-            {
-                return;
-            }
+                return false;
+
             _context.Photo.Remove(photo);
-            await _context.SaveChangesAsync();
+
+            if (updateDB)
+                await _context.SaveChangesAsync();
+
+            return true;
         }
         #endregion
 

@@ -11,7 +11,7 @@ export interface ICategory {
 export interface ICategoryDTO {
   categoryId: string | null;
   alias: string;
-  url: string;
+  file: File;
 }
 
 export interface ICategoryState {

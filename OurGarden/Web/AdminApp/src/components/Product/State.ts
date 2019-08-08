@@ -22,9 +22,9 @@ export interface ICategoryDictionary {
 }
 
 export interface IProductDTO {
-  categoryId: string;
-  subcategoryId: string;
-  productId: string;
+  categoryId: string | null;
+  subcategoryId: string | null;
+  productId: string | null;
 
   newCategoryId: string;
   newSubcategoryId: string;
@@ -32,7 +32,7 @@ export interface IProductDTO {
   alias: string;
   price: number;
   description: string;
-  url: string;
+  file: File;
 }
 
 export interface IProductState {

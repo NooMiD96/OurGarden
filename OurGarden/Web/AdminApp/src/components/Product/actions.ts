@@ -9,6 +9,7 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
 import { IProduct, IProductDTO, ICategoryDictionary } from "./State";
+import { generateFormBody } from "@src/core/helpers/request";
 
 // ----------------
 //#region ACTIONS
@@ -80,7 +81,6 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -114,7 +114,6 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -144,12 +143,13 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
+    const formData = generateFormBody(data);
+
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -176,18 +176,16 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateProductRequest());
   },
-  removeProduct: (data: string): IAppThunkAction<t.IDeleteProduct | t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  removeProduct: (categoryId: string, subcategoryId: string, productId: string): IAppThunkAction<t.IDeleteProduct | t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}&productId=${productId}`, {
       credentials: "same-origin",
       method: "DELETE",
-      body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })

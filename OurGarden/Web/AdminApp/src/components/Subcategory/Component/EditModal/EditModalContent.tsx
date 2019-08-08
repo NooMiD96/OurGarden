@@ -7,7 +7,7 @@ import Button from "@core/antd/Button";
 import Select from "@core/antd/Select";
 import localeText from "../Text";
 
-import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
+import { FileUploader } from "@src/core/components/Uploader/File";
 
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -28,18 +28,23 @@ export const EditModalContent = (props: IProps) => {
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
-    const alias = form.getFieldValue("alias");
-    const imageUrl = form.getFieldValue("image");
+
     const newCategoryId = form.getFieldValue("newCategoryId");
+
+    const alias = form.getFieldValue("alias");
+    
+    const image = form.getFieldValue("image");
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
         props.handleCreateSubmit({
-          subcategoryId: subcategoryId,
-          categoryId: categoryId,
-          newCategoryId: newCategoryId,
-          alias: alias,
-          url: photo == imageUrl ? null : imageUrl
+          categoryId,
+          subcategoryId,
+          
+          newCategoryId,
+          
+          alias,
+          file: image,
         });
       }
     });
@@ -62,12 +67,6 @@ export const EditModalContent = (props: IProps) => {
     });
   };
 
-  const onSelectChange = (value: string) => {
-    form.setFieldsValue({
-      categoryId: value
-    });
-  };
-
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
@@ -81,7 +80,6 @@ export const EditModalContent = (props: IProps) => {
             showSearch
             placeholder="Выберете категорию"
             optionFilterProp="children"
-            onChange={onSelectChange}
             filterOption={(input, option) =>
               option.props.children
                 .toLowerCase()
@@ -109,7 +107,7 @@ export const EditModalContent = (props: IProps) => {
           initialValue: photo ? photo.url : null,
           rules: [{ required: true, message: localeText._rule_require_photo }]
         })(
-          <ImageUploader
+          <FileUploader
             onUpload={onUploadImage}
             oldImageUrl={photo ? photo.url : null}
           />

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Model.DTO
 {
@@ -12,11 +10,13 @@ namespace Model.DTO
 
         public string CategoryId { get; set; }
 
+        [Required]
         public string NewCategoryId { get; set; }
 
+        [Required]
         [MaxLength(64)]
         public string Alias { get; set; }
 
-        public string Url{ get; set; }
+        public IFormFile File { get; set; }
     }
 }

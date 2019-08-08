@@ -9,6 +9,7 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
 import { ISubcategory, ISubcategoryDTO, IResponseData } from "./State";
+import { generateFormBody } from "@src/core/helpers/request";
 
 // ----------------
 //#region ACTIONS
@@ -98,12 +99,13 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
+    const formData = generateFormBody(data);
+
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -130,7 +132,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateSubcategoryRequest());
   },
-  RemoveSubcategory: (categoryId: string,subcategoryId: string): IAppThunkAction<t.IDeleteSubcategory | t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  RemoveSubcategory: (categoryId: string, subcategoryId: string): IAppThunkAction<t.IDeleteSubcategory | t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 

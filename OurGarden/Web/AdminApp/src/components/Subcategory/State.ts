@@ -16,11 +16,13 @@ export interface ISubcategory {
 }
 
 export interface ISubcategoryDTO {
-  subcategoryId: string | null;
   categoryId: string | null;
-  newCategoryId: string | null;
+  subcategoryId: string | null;
+
+  newCategoryId: string;
+
   alias: string;
-  url: string;
+  file: File;
 }
 
 export interface ISubcategoryState {

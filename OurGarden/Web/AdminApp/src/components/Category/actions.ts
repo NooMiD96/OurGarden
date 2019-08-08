@@ -9,6 +9,7 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
 import { ICategory, ICategoryDTO } from "./State";
+import { generateFormBody } from "@src/core/helpers/request";
 
 // ----------------
 //#region ACTIONS
@@ -99,12 +100,13 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
+    const formData = generateFormBody(data);
+
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })

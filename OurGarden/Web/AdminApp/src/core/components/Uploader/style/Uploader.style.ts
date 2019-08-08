@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default styled.div`
-  .ant-upload {
+  .ant-upload.ant-upload-select-picture-card {
     width: 100%;
 
     p {

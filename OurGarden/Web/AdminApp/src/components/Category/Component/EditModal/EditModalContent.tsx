@@ -6,7 +6,7 @@ import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
 import localeText from "../Text";
 
-import { ImageUploader } from "@src/core/components/AntFileUploader/Index";
+import { FileUploader } from "@src/core/components/Uploader/File";
 
 import { ICategory } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -30,14 +30,14 @@ export const EditModalContent = (props: IProps) => {
     e && e.preventDefault();
 
     const alias = form.getFieldValue("alias");
-    const imageUrl = form.getFieldValue("image");
+    const image = form.getFieldValue("image");
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
         props.handleCreateSubmit({
           categoryId: categoryId,
           alias: alias,
-          url: photo == imageUrl ? null : imageUrl
+          file: image,
         });
       }
     });
@@ -73,7 +73,7 @@ export const EditModalContent = (props: IProps) => {
           initialValue: photo ? photo.url : null,
           rules: [{ required: true, message: localeText._rule_require_photo }]
         })(
-          <ImageUploader
+          <FileUploader
             onUpload={onUploadImage}
             oldImageUrl={photo ? photo.url : null}
           />

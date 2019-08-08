@@ -38,10 +38,6 @@ export class Component extends React.PureComponent<IProps, IState> {
               loader: any
             ) => new Adapter(loader);
           }}
-          onChange={(event: any, editor: any) => {
-            const data = this.state.editor.getData();
-            console.log({ event, editor, data });
-          }}
           config={this.config}
         />
       </div>
