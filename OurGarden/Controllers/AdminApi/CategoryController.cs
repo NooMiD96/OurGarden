@@ -99,8 +99,8 @@ namespace Web.Controllers.AdminApi
         }
 
 
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete([FromBody]string categoryId)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Delete([FromQuery]string categoryId)
         {
             var oldCategory = await _repository.GetCategory(categoryId);
 

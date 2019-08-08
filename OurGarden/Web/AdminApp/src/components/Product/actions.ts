@@ -81,6 +81,7 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
+        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -114,6 +115,7 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
+        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -184,8 +186,9 @@ export const actionCreators = {
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}&productId=${productId}`, {
       credentials: "same-origin",
-      method: "DELETE",
+      method: "POST",
       headers: {
+        "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })

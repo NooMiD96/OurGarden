@@ -133,16 +133,15 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateCategoryRequest());
   },
-  RemoveCategory: (data: string): IAppThunkAction<t.IDeleteCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  removeCategory: (categoryId: string): IAppThunkAction<t.IDeleteCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}`, {
       credentials: "same-origin",
-      method: "DELETE",
-      body: JSON.stringify(data),
+      method: "POST",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,

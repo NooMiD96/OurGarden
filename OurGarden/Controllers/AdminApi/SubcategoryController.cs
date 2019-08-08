@@ -118,7 +118,7 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete([FromQuery]string categoryId,
                                                 [FromQuery]string subcategoryId)
         {

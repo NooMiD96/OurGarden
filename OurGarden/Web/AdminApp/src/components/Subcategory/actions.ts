@@ -140,7 +140,7 @@ export const actionCreators = {
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}`, {
       credentials: "same-origin",
-      method: "DELETE",
+      method: "POST",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,

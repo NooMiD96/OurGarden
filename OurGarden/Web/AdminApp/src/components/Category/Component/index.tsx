@@ -46,7 +46,7 @@ export class Category extends React.PureComponent<TState, TComponentState> {
       type: "confirm",
       onOk: () => {
         let data = this.gridRef.current!.state.gridApi.getSelectedRows() as ICategory[];
-        this.props.RemoveCategory(data[0].categoryId);
+        this.props.removeCategory(data[0].categoryId);
       }
     });
   };
