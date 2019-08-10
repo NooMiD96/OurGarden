@@ -3,7 +3,7 @@ import { push } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
-import { actionCreators } from "@components/NewsList/actions";
+import { actionCreators } from "./actions";
 import {
   TOwnProps,
   TMapStateToProps,
@@ -12,7 +12,7 @@ import {
 import Component from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-  ...state.newsList,
+  ...state.news,
   ...ownProp,
 }) as TMapStateToProps;
 

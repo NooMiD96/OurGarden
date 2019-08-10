@@ -1,7 +1,9 @@
 import { RouterState } from "connected-react-router";
 
-import { IHomeState } from "@components/Home/State";
-import { reducer as HomeReducer } from "@components/Home/reducer";
+import { INewsListState } from "@components/NewsList/State";
+import { reducer as NewsListReducer } from "@components/NewsList/reducer";
+import { INewsState } from "@components/News/State";
+import { reducer as NewsReducer } from "@components/News/reducer";
 
 import { ISiderState } from "@components/Main/Sider/State";
 import { reducer as SiderReducer } from "@components/Main/Sider/reducer";
@@ -19,7 +21,8 @@ import { reducer as UserCardReducer } from "@components/UserCard/reducer";
 export interface IApplicationState {
   router: RouterState;
 
-  home: IHomeState;
+  newsList: INewsListState;
+  news: INewsState;
   sider: ISiderState;
 
   catalog: ICatalogState;
@@ -30,7 +33,8 @@ export interface IApplicationState {
 }
 
 export const reducers = {
-  home: HomeReducer,
+  newsList: NewsListReducer,
+  news: NewsReducer,
   sider: SiderReducer,
 
   catalog: CatalogReducer,

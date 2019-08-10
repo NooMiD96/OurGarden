@@ -1,12 +1,8 @@
 import styled from "styled-components";
-import { darkGreenColor, greyColor, borderColor } from "@src/core/constants";
+import { darkGreenColor, greyColor } from "@src/core/constants";
 
 export default styled.div`
-  flex: 1 1 auto;
-  background: #fff;
-  border: 1px solid ${borderColor};
   padding: 2rem;
-  overflow: auto;
 
   .product-photo {
     max-width: 40%;

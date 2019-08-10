@@ -25,18 +25,17 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllNews()
         {
-            var news = await _repository.GetNews();
+            var news = await _repository.GetNews(includeDescriptions: false);
             return Success(news);
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetNews(
-            [FromQuery]int newsId)
+        public async Task<IActionResult> GetNews([FromQuery]int newsId)
         {
             var news = await _repository.GetNews(newsId);
 
             if (news == null)
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest("Не удалось найти данную акцию!");
 
             return Success(news);
         }

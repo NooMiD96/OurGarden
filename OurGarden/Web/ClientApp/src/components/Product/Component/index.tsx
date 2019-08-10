@@ -68,7 +68,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const productPhoto = product && getProductPhotoSrc(product);
 
     return (
-      <ProductWrapper>
+      <ProductWrapper className="content white-background">
         {pending || !product ? (
           <Loading />
         ) : (

@@ -34,7 +34,7 @@ namespace Database.Repositories
         ValueTask<bool> DeleteProduct(string productId, string subcategoryId, string categoryId);
         ValueTask<bool> DeleteProduct(Product product);
 
-        Task<IEnumerable<News>> GetNews();
+        Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);
         Task<News> GetNews(int newsId);
         Task AddNews(News news);
         Task UpdateNews(News news);

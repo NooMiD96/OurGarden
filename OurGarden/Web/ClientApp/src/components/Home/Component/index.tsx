@@ -30,20 +30,12 @@ export class Home extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { newsList, errorInner, cleanErrorInner, pending } = this.props;
+    const { newsList, push, pending } = this.props;
+
+    const displayList = newsList.slice(0, 3);
 
     return (
       <HomeWrapper>
-        {errorInner && (
-          <Alert
-            message="Ошибка"
-            description={errorInner}
-            type="error"
-            closable
-            style={{ marginBottom: 10 }}
-            onClose={cleanErrorInner}
-          />
-        )}
         {pending ? (
           <Loading />
         ) : (
@@ -53,14 +45,22 @@ export class Home extends React.PureComponent<TState, TComponentState> {
               effect="fade"
               ref={ref => (this.caruselRef = ref)}
             >
-              {newsList.map(x => (
-                <div className="slick-slide-content" key={x.newsId}>
-                  <div
+              {displayList.map(x => (
+                <div
+                  key={x.newsId}
+                  className="slick-slide-content"
+                  onClick={() => {
+                    push(`/Акции/${x.newsId}`);
+                  }}
+                  onKeyDown={() => {
+                    push(`/Акции/${x.newsId}`);
+                  }}
+                  role="link"
+                >
+                  <img
                     className="slick-slide-content-image"
-                    style={{
-                      background: `center / contain no-repeat url(${x.photo
-                        && x.photo.url})`
-                    }}
+                    alt={x.title}
+                    src={x.photo && x.photo.url}
                   />
                 </div>
               ))}
@@ -89,3 +89,5 @@ export class Home extends React.PureComponent<TState, TComponentState> {
     );
   }
 }
+
+export default Home;

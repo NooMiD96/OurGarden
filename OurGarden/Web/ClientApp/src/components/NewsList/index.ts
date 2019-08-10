@@ -3,7 +3,7 @@ import { push } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
-import { actionCreators } from "@components/NewsList/actions";
+import { actionCreators } from "./actions";
 import {
   TOwnProps,
   TMapStateToProps,

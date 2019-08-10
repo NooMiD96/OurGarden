@@ -52,7 +52,11 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
         />
       );
 
-    return <UserCardWrapper>{renderComponent}</UserCardWrapper>;
+    return (
+      <UserCardWrapper className="content white-background">
+        {renderComponent}
+      </UserCardWrapper>
+    );
   }
 }
 

@@ -11,14 +11,14 @@ export interface INew {
   photo: IPhoto;
 }
 
-export interface IHomeState {
-  newsList: INew[];
+export interface INewsState {
+  selectedNew: INew | null;
   pending: boolean;
   errorInner: string;
 }
 
-export const unloadedState: IHomeState = {
-  newsList: [],
+export const unloadedState: INewsState = {
+  selectedNew: null,
   pending: false,
   errorInner: "",
 };

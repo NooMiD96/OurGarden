@@ -214,10 +214,26 @@ namespace Database.Repositories
         #endregion
 
         #region News
-        public async Task<IEnumerable<News>> GetNews() =>
-            await _context.News
-            .Include(x => x.Photo)
-            .ToListAsync();
+        public async Task<IEnumerable<News>> GetNews(bool includeDescriptions = true)
+        {
+            var query = _context.News.Include(x => x.Photo).AsQueryable();
+
+            if (!includeDescriptions)
+            {
+                query = query.Select(x => new News()
+                {
+                    NewsId = x.NewsId,
+                    Title = x.Title,
+                    Date = x.Date,
+                    Description = null,
+                    Photo = x.Photo,
+                });
+            }
+
+            var result = await query.ToListAsync();
+
+            return result;
+        }
 
         public async Task<News> GetNews(int newsId) =>
             await _context.News

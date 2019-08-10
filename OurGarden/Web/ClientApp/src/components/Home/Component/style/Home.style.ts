@@ -22,14 +22,13 @@ export default styled.div`
           .slick-slide {
             & > div {
               height: 100%;
+              display: flex;
+              align-items: center;
 
-              .slick-slide-content {
-                display: flex !important;
-                height: 100%;
-
-                .slick-slide-content-image {
-                  flex: 1 1 auto;
-                }
+              .slick-slide-content-image {
+                max-width: 100%;
+                max-height: 100%;
+                background: center / contain no-repeat;
               }
             }
           }

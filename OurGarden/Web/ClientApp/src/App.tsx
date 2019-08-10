@@ -48,12 +48,21 @@ export const AppRoutes = (
       )}
     />
 
-    <Route
-      path="/Акции"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "News" */ "@components/News")
-      )}
-    />
+    <Switch>
+      <Route
+        path="/Акции/:newsId"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "News" */ "@components/News")
+        )}
+      />
+
+      <Route
+        path="/Акции"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "NewsList" */ "@components/NewsList")
+        )}
+      />
+    </Switch>
 
     <Route
       path="/Доставка-и-оплата"

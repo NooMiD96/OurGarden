@@ -1,9 +1,13 @@
-import { INewsListState } from "@components/NewsList/State";
-import { actionCreators } from "@components/NewsList/actions";
+import { INewsListState } from "./State";
+import { actionCreators } from "./actions";
 import { Push } from "connected-react-router";
 
+// -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = {
+  page: number;
+  pageSize: number;
+};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = INewsListState;
