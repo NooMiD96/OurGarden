@@ -64,7 +64,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     }));
 
     return (
-      <ProductListWrapper>
+      <ProductListWrapper className="content">
         {pending ? (
           <Loading />
         ) : (

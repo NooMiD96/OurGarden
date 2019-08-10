@@ -72,8 +72,6 @@ export default styled.div`
       top: calc(50% - 12px);
 
       &::after {
-        height: 24px;
-        width: 20px;
         content: ' ';
         position: absolute;
       }
@@ -102,7 +100,7 @@ export default styled.div`
       right: 0;
 
       > .carousel-slide {
-        right: calc(50% + 8px);
+        right: calc(50% + 6px);
 
         &::after {
           border-top: 12px solid transparent;
@@ -115,6 +113,33 @@ export default styled.div`
 
       &:hover > .carousel-slide::after {
         border-left-color: #fff;
+      }
+    }
+
+    @media (max-width: 580px) {
+      height: 38px;
+      width: 38px;
+
+      top: calc(50% - 19px);
+
+      > .carousel-slide {
+        top: calc(50% - 10px);
+      }
+
+      &.carousel-slide-prev > .carousel-slide {
+        left: calc(50% - 10px);
+
+        ::after {
+          border-top: 10px solid transparent;
+          border-right: 16px solid ${arrowBorderColor};
+          border-bottom: 10px solid transparent;
+        }
+      }
+
+      &.carousel-slide-next > .carousel-slide::after {
+        border-top: 10px solid transparent;
+        border-left: 16px solid ${arrowBorderColor};
+        border-bottom: 10px solid transparent;
       }
     }
   }

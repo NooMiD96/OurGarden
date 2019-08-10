@@ -5,7 +5,7 @@ import Typography from "@core/antd/Typography";
 const { Paragraph, Title } = Typography;
 
 export const Design = () => (
-  <Typography className="ourgarden-design">
+  <Typography className="content ourgarden-design">
     <Title>Ландшафтный дизайн</Title>
     <Paragraph>
       &quot;Наш Сад&quot; поможет Вам создать неповторимый, красивый сад, в

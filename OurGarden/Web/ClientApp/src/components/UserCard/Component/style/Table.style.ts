@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { greyColor } from "@src/core/constants";
 
 export default styled.div`
+  overflow-x: auto;
+
   .ant-table {
     color: #000;
 
@@ -32,6 +34,15 @@ export default styled.div`
       .remove-icon path{
         stroke: ${greyColor};
       }
+    }
+  }
+
+  .ant-table-wrapper .ant-spin-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    .ant-pagination.ant-table-pagination {
+      align-self: flex-end;
     }
   }
 `;

@@ -89,7 +89,7 @@ export class Catalog extends React.PureComponent<TState, TComponentState> {
         }));
 
     return (
-      <Wrapper>
+      <Wrapper className="content">
         {pending ? (
           <Loading />
         ) : (

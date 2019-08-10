@@ -6,7 +6,7 @@ import CompanyContacts from "./CompanyContacts";
 import ContactsWrapper from "./style/Contacts.style";
 
 export const Contacts = () => (
-  <ContactsWrapper>
+  <ContactsWrapper className="content">
     <CompanyContacts />
     <CompanyMap />
   </ContactsWrapper>

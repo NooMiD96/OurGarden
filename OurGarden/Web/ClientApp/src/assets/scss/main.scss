@@ -46,6 +46,7 @@ a {
 
           .breadcrumb {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             height: 60px;
             font-size: 18px;

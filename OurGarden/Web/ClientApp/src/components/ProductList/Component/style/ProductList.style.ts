@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { darkGreenColor, greenColor } from "@src/core/constants";
 
 export default styled.div`
-  flex: 1 1 auto;
+  flex-shrink: 1;
   padding: 0 8px;
-  overflow: auto;
 
   .ant-col.card-wrapper {
     margin-bottom: 28px;

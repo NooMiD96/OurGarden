@@ -35,7 +35,7 @@ export class Home extends React.PureComponent<TState, TComponentState> {
     const displayList = newsList.slice(0, 3);
 
     return (
-      <HomeWrapper>
+      <HomeWrapper className="content">
         {pending ? (
           <Loading />
         ) : (
