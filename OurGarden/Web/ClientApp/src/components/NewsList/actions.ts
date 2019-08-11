@@ -7,7 +7,7 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { INew } from "./State";
+import { INew } from "@components/News/State";
 
 // ----------------
 //#region ACTIONS

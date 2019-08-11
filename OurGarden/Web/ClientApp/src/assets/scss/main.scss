@@ -148,12 +148,11 @@ a {
   }
 }
 
+.white-background {
+  background: #fff;
+  border: 1px solid $borderColor;
+}
 .main-content-wrapper .content {
   flex: 0 1 auto;
   overflow: auto;
-
-  &.white-background {
-    background: #fff;
-    border: 1px solid $borderColor;
-  }
 }

@@ -15,7 +15,7 @@ import { Title } from "@src/core/antd/Typography";
 export class NewsList extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     page: 1,
-    pageSize: 6
+    pageSize: 4
   };
 
   componentDidMount() {
@@ -35,15 +35,13 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
     const { newsList, pending, push } = this.props;
     const { page, pageSize } = this.state;
 
-    const dataList = newsList
-      .map(x => ({
-        ...x,
-        link: `/Акции/${x.newsId}`
-      }))
-      .slice((page - 1) * pageSize, page * pageSize);
+    const dataList = newsList.map(x => ({
+      ...x,
+      link: `/Акции/${x.newsId}`
+    }));
 
     return (
-      <NewsListWrapper className="content white-background">
+      <NewsListWrapper className="content">
         {pending ? (
           <Loading />
         ) : (
@@ -58,7 +56,7 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
               total={dataList.length}
               onChange={this.onChange}
             />
-            <Row type="flex">
+            <Row type="flex" className="white-background">
               {dataList.slice((page - 1) * pageSize, page * pageSize).map(x => (
                 <Col key={x.link} className="card-wrapper">
                   <Card

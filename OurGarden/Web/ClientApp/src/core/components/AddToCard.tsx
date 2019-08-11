@@ -19,15 +19,21 @@ const AddToCard = (props: IAddToCard) => {
 
   return (
     <AddToCardWrapper className="card-description">
-      <span className="card-cost">
-        {product.price.toLocaleString()}
-        р.
-      </span>
-      <AddToCardButton
-        itemCount={itemCount}
-        setItemCount={setItemCount}
-        addToCard={addToCard}
-      />
+      {product.price ? (
+        <React.Fragment>
+          <span className="card-cost">
+            {product.price.toLocaleString()}
+            р.
+          </span>
+          <AddToCardButton
+            itemCount={itemCount}
+            setItemCount={setItemCount}
+            addToCard={addToCard}
+          />
+        </React.Fragment>
+      ) : (
+        "Уточните цену у продавцов"
+      )}
     </AddToCardWrapper>
   );
 };

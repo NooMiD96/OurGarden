@@ -84,8 +84,9 @@ export class Product extends React.PureComponent<TState, TComponentState> {
             <div className="product-info">
               <Title>{product.alias}</Title>
               <span className="product-cost">
-                {product.price.toLocaleString()}
-                р.
+                {product.price
+                  ? `${product.price.toLocaleString()}р.`
+                  : "Уточните цену у продавцов"}
               </span>
               <span className="product-description">Описание</span>
             </div>
@@ -95,11 +96,13 @@ export class Product extends React.PureComponent<TState, TComponentState> {
               dangerouslySetInnerHTML={{ __html: product.description }}
             />
 
-            <AddToCardButton
-              itemCount={itemCount}
-              setItemCount={this.setItemCount}
-              addToCard={this.addToCard}
-            />
+            {product.price ? (
+              <AddToCardButton
+                itemCount={itemCount}
+                setItemCount={this.setItemCount}
+                addToCard={this.addToCard}
+              />
+            ) : null}
           </Row>
         )}
       </ProductWrapper>

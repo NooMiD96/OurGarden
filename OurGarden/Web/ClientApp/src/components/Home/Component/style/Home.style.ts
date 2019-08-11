@@ -25,10 +25,14 @@ export default styled.div`
               display: flex;
               align-items: center;
 
-              .slick-slide-content-image {
-                max-width: 100%;
-                max-height: 100%;
-                background: center / contain no-repeat;
+              .slick-slide-content {
+                cursor: pointer;
+
+                .slick-slide-content-image {
+                  max-width: 100%;
+                  max-height: 100%;
+                  background: center / contain no-repeat;
+                }
               }
             }
           }

@@ -48,12 +48,14 @@ export class News extends React.PureComponent<TState, TComponentState> {
               className="news-photo"
             />
 
-            <Title>{selectedNew.title}</Title>
+            <div className="news-info-content">
+              <Title>{selectedNew.title}</Title>
 
-            <div
-              className="news-description-wysiwyg"
-              dangerouslySetInnerHTML={{ __html: selectedNew.description }}
-            />
+              <div
+                className="news-description-wysiwyg"
+                dangerouslySetInnerHTML={{ __html: selectedNew.description }}
+              />
+            </div>
           </Row>
         )}
       </NewsWrapper>
