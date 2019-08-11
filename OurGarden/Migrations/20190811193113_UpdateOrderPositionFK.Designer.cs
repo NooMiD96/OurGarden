@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20190811193113_UpdateOrderPositionFK")]
+    partial class UpdateOrderPositionFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,7 +231,8 @@ namespace Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId");
+                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId")
+                        .IsUnique();
 
                     b.ToTable("OrderPosition");
                 });

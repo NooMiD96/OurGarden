@@ -58,16 +58,6 @@ namespace Database.Contexts
                     x.CategoryId,
                 });
 
-            //modelBuilder.Entity<Subcategory>()
-            //    .HasOne(x => x.Photo)
-            //    .WithMany()
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<Comment>()
-            //    .HasOne(x => x.User)
-            //    .WithMany()
-            //    .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<OrderStatus>().HasData(
                 new OrderStatus() { StatusId = 1, Name = "Новый заказ"},
                 new OrderStatus() { StatusId = 2, Name = "Заказ подтверждён"},
@@ -76,10 +66,10 @@ namespace Database.Contexts
                 new OrderStatus() { StatusId = 5, Name = "Заказ закрыт"},
                 new OrderStatus() { StatusId = -1, Name = "Заказ отменён"});
 
-            //modelBuilder.Entity<ChildrenInformation>()
-            //    .HasOne(x => x.HealthGroup)
-            //    .WithMany()
-            //    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<OrderPosition>()
+                .HasOne(x => x.Product)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

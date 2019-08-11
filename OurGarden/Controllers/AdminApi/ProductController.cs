@@ -11,6 +11,7 @@ using Model.DTO.ProductDTO;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Services.Controllers.AdminApi;
@@ -38,7 +39,13 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> GetAll()
         {
             var products = await _repository.GetAllProducts();
-            return Success(products);
+
+            return Success(
+                products
+                    .OrderBy(x => x.CategoryId)
+                    .ThenBy(x => x.SubcategoryId)
+                    .ThenBy(x => x.ProductId)
+            );
         }
 
         [HttpGet("[action]")]

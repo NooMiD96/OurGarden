@@ -5,6 +5,7 @@ using Database.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Model.DB;
 using Model.DTO.Order;
 
 using System;
@@ -33,7 +34,13 @@ namespace Web.Controllers.AdminApi
 
             return Success(new
             {
-                orders = orders.OrderBy(x => x.Date),
+                orders = orders.OrderByDescending(x => x.Date).Select(x =>
+                {
+                    foreach (var orderPos in x.OrderPositions)
+                        orderPos.Order = null;
+
+                    return x;
+                }),
                 statusList
             });
         }
@@ -79,9 +86,8 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("[action]")]
-        public async Task<IActionResult> Delete(
-            [FromQuery]int orderId)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Delete([FromQuery]int orderId)
         {
             await _repository.DeleteOrder(orderId);
             return Success(true);

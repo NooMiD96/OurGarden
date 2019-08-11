@@ -26,7 +26,8 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetAllNews()
         {
             var news = await _repository.GetNews(includeDescriptions: false);
-            return Success(news);
+
+            return Success(news.OrderByDescending(x => x.Date));
         }
 
         [HttpGet("[action]")]
@@ -45,19 +46,18 @@ namespace Web.Controllers.Api
         {
             var result = await _repository.GetCategories();
 
-            return Success(result);
+            return Success(result.OrderBy(x => x.CategoryId));
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetSubcategories([FromQuery] string categoryId)
         {
             if (String.IsNullOrEmpty(categoryId))
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+                return BadRequest("Что-то пошло не так, необходимо выбрать категорию");
 
             var result = await _repository.GetSubcategories(categoryId);
-            return Success(result);
+
+            return Success(result.OrderBy(x => x.SubcategoryId));
         }
 
         [HttpGet("[action]")]
@@ -65,25 +65,23 @@ namespace Web.Controllers.Api
         {
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest("Что-то пошло не так, необходимо выбрать категорию с подкатегорией");
             }
 
             var result = await _repository.GetProducts(categoryId, subcategoryId);
-            return Success(result);
+
+            return Success(result.OrderBy(x => x.ProductId));
         }
 
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetProduct(
-            [FromQuery]string categoryId,
-            [FromQuery]string subcategoryId,
-            [FromQuery]string productId)
+        public async Task<IActionResult> GetProduct([FromQuery]string categoryId,
+                                                    [FromQuery]string subcategoryId,
+                                                    [FromQuery]string productId)
         {
 
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId) || String.IsNullOrEmpty(productId))
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+                return BadRequest("Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар");
 
             var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
 
@@ -97,11 +95,11 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> SearchProduct([FromQuery] string search)
         {
             if (String.IsNullOrEmpty(search))
-            {
                 return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+
             var result = await _repository.GetSearchProducts(search);
-            return Success(result);
+
+            return Success(result.OrderBy(x => x.ProductId));
         }
 
         [HttpGet("[action]")]
@@ -137,19 +135,28 @@ namespace Web.Controllers.Api
                     Date = DateTime.Now,
                     StatusId = 1,
                     TotalPrice = orderForm.OrderPositions.Select(x => x.Number * x.Product.Price).Sum(),
-                    OrderPositions = orderForm.OrderPositions.Select(x =>
+                };
+
+                await _repository.AddOrder(order);
+
+                order.OrderPositions = orderForm.OrderPositions.Select(x =>
                         new OrderPosition()
                         {
+                            OrderPositionId = 0,
+
                             Number = x.Number,
+
+                            OrderId = order.OrderId,
+
                             CategoryId = x.Product.CategoryId,
                             SubcategoryId = x.Product.SubcategoryId,
                             ProductId = x.Product.ProductId
                         })
-                        .ToList()
-                };
+                        .ToList();
 
-                await _repository.AddOrder(order);
-                return Success(order);
+                await _repository.UpdateOrder(order);
+
+                return Success(true);
             }
             catch (Exception)
             {
@@ -165,8 +172,7 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetVideo(
-            [FromQuery]int videoId)
+        public async Task<IActionResult> GetVideo([FromQuery]int videoId)
         {
             var video = await _repository.GetVideo(videoId);
 

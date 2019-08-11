@@ -10,6 +10,7 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Services.Controllers.AdminApi;
@@ -41,7 +42,7 @@ namespace Web.Controllers.AdminApi
             var result = new
             {
                 Categories = categories,
-                Subcategories = subcategories
+                Subcategories = subcategories.OrderBy(x => x.CategoryId).ThenBy(x => x.SubcategoryId)
             };
             return Success(result);
         }

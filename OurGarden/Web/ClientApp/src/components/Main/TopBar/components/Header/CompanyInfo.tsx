@@ -16,7 +16,7 @@ const CompanyInfo = () => (
       <i className="anticon">
         <Phone />
       </i>
-      <span className="info">8 800 520 55 66</span>
+      <span className="info">8 950 922 39 19</span>
     </div>
   </React.Fragment>
 );

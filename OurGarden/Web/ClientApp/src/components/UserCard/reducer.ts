@@ -34,7 +34,8 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
       return {
         ...state,
         pending: false,
-        productList: []
+        productList: [],
+        totalCount: 0
       } as IUserCardState;
 
     case t.SEND_ORDER_ERROR:

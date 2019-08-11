@@ -138,7 +138,7 @@ export const actionCreators = {
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?orderId=${orderId}`, {
       credentials: "same-origin",
-      method: "DELETE",
+      method: "POST",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
