@@ -265,6 +265,16 @@ namespace Database.Repositories
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
         }
+
+        public async ValueTask<bool> DeleteNews(News news)
+        {
+            _context.News.Remove(news);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        
         #endregion
 
         #region Gallery

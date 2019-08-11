@@ -39,6 +39,7 @@ namespace Database.Repositories
         Task AddNews(News news);
         Task UpdateNews(News news);
         Task DeleteNews(int newsId);
+        ValueTask<bool> DeleteNews(News news);
 
         Task<IEnumerable<Gallery>> GetGalleries();
         Task<Gallery> GetGallery(int galleryId);

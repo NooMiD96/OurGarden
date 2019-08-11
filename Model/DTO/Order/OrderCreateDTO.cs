@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Model.DTO
+namespace Model.DTO.Order
 {
     public class OrderCreateDTO
     {

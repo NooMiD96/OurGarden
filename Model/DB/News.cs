@@ -27,8 +27,5 @@ namespace Model.DB
         public string Description { get; set; }
 
         public Photo Photo { get; set; }
-
-        [NotMapped]
-        public IFormFile File{get;set;}
     }
 }

@@ -5,7 +5,7 @@ using Database.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Model.DTO;
+using Model.DTO.Order;
 
 using System;
 using System.Linq;
@@ -58,13 +58,13 @@ namespace Web.Controllers.AdminApi
                 var order = await _repository.GetOrder(orderDTO.OrderId);
                 if (order == null)
                 {
-                    return BadRequest("Что-то пошло не так, повторите попытку");
+                    return BadRequest("Не удалось найти заказ, повторите попытку.");
                 }
 
                 var status = await _repository.GetStatus(orderDTO.StatusId);
                 if (status == null)
                 {
-                    return BadRequest("Что-то пошло не так, повторите попытку");
+                    return BadRequest("Не удалось найти данный статус заказа, повторите попытку.");
                 }
                 order.Status = status;
                 order.Description = orderDTO.Description;

@@ -3,6 +3,9 @@ import { RouterState } from "connected-react-router";
 import { IAccountState } from "@src/components/Account/State";
 import { reducer as AccountReducer } from "@src/components/Account/reducer";
 
+import { INewsState } from "@src/components/News/State";
+import { reducer as NewsReducer } from "@src/components/News/reducer";
+
 import { ICategoryState } from "@src/components/Category/State";
 import { reducer as CategoryReducer } from "@src/components/Category/reducer";
 
@@ -20,6 +23,7 @@ export interface IApplicationState {
   router: RouterState;
 
   account: IAccountState;
+  news: INewsState;
   category: ICategoryState;
   subcategory: ISubcategoryState;
   product: IProductState;
@@ -28,6 +32,7 @@ export interface IApplicationState {
 
 export const reducers = {
   account: AccountReducer,
+  news: NewsReducer,
   category: CategoryReducer,
   subcategory: SubcategoryReducer,
   product: ProductReducer,

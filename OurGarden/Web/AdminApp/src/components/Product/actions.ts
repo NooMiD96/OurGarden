@@ -156,7 +156,7 @@ export const actionCreators = {
       },
     })
       .then(responseCatcher)
-      .then((value: IResponse<IProduct[]>) => {
+      .then((value: IResponse<boolean>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
