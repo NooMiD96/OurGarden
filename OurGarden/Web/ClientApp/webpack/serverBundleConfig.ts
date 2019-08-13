@@ -3,7 +3,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import merge from "webpack-merge";
 import path from "path";
-import { Configuration } from "webpack";
+import { Configuration, optimize } from "webpack";
 
 import AppSettings from "../../../appsettings.json";
 
@@ -12,7 +12,11 @@ const serverPlugins = () => [
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     filename: "[name].css",
+    ignoreOrder: true
   }),
+  new optimize.LimitChunkCountPlugin({
+    maxChunks: 1
+  })
 ];
 
 // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -34,11 +38,6 @@ const getServerBundleConfig = (
     // Import only main from package
     resolve: {
       mainFields: ["main"]
-    },
-    optimization: {
-      splitChunks: {
-        chunks: "async",
-      }
     },
     target: "node",
     plugins: serverPlugins(),

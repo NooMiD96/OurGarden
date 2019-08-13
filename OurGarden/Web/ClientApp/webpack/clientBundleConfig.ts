@@ -7,8 +7,11 @@ import ManifestPlugin from "webpack-manifest-plugin";
 import merge from "webpack-merge";
 import path from "path";
 import { Configuration, Plugin } from "webpack";
+import { ReactLoadablePlugin } from "react-loadable/webpack";
 
 import AppSettings from "../../../appsettings.json";
+
+const pathToPublic = `${path.join(__dirname, "../../../", "./wwwroot/client/client")}`;
 
 const clientPlugins = (
   isShowInBrowser: boolean,
@@ -32,6 +35,10 @@ const clientPlugins = (
   new ManifestPlugin({
     fileName: "manifest-assets.json",
     filter: fileDescriptor => fileDescriptor.name !== "service-worker.js"
+  }),
+
+  new ReactLoadablePlugin({
+    filename: `${pathToPublic}/react-loadable.json`,
   }),
 ]);
 
