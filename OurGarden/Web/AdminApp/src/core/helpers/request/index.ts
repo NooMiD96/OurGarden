@@ -1,4 +1,4 @@
-const generateFormBody = <T extends { file: File }>(data: T) => {
+const generateFormBody = <T extends { file: File | null }>(data: T) => {
   const formData = new FormData();
 
   let key: keyof typeof data;
@@ -13,8 +13,10 @@ const generateFormBody = <T extends { file: File }>(data: T) => {
     }
   }
 
-  formData.delete("File");
-  formData.set("file", data.file);
+  if (data.file) {
+    formData.delete("File");
+    formData.set("file", data.file);
+  }
 
   return formData;
 };

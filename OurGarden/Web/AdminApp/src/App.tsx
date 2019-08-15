@@ -15,6 +15,13 @@ export const AppRoutes = (
     />
     <Route
       exact
+      path="/новости-и-акции"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Order" */ "@components/News")
+      )}
+    />
+    <Route
+      exact
       path="/заказы"
       component={AsyncComponent(() =>
         import(/* webpackChunkName: "Order" */ "@components/Order")

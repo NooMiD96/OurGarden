@@ -15,8 +15,7 @@ export interface INewsDTO {
   newsId: number;
   title: string;
   description: string;
-
-  file: File;
+  file: File | string;
 }
 
 export interface INewsState {

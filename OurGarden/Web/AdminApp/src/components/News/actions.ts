@@ -58,14 +58,15 @@ export const actionsList = {
 // ----------------
 //#region ACTIONS CREATORS
 const controllerName = "News";
+const defultControllerName = "Home";
 export const actionCreators = {
   getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "GetAll";
+    const apiUrl = "GetAllNews";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${defultControllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {

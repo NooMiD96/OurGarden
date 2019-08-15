@@ -31,9 +31,9 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetNews([FromQuery]int newsId)
+        public async Task<IActionResult> GetNews([FromQuery]string alias)
         {
-            var news = await _repository.GetNews(newsId);
+            var news = await _repository.GetNews(alias);
 
             if (news == null)
                 return BadRequest("Не удалось найти данную акцию!");

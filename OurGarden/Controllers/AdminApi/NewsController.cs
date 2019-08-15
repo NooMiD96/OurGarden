@@ -41,16 +41,22 @@ namespace Web.Controllers.AdminApi
                 if (newsDTO.NewsId <= 0)
                 {
                     var file = await _fileHelper.AddFileToRepository(newsDTO.File);
+                    var alias = StringHelper.Transform(newsDTO.Title);
+                    var isExist = await _repository.CheckNewsAlias(alias);
+                    if (isExist)
+                    {
+                        return BadRequest("Новость c данным алиасом существует. Измените заголовок, для изменения алиаса.");
+                    }
 
                     var news = new News()
                     {
                         Title = newsDTO.Title,
-                        Alias = StringHelper.Transform(newsDTO.Title),
+                        Alias = alias,
                         Date = DateTime.Now,
                         Description = newsDTO.Description,
-
                         Photo = file
                     };
+                    await _repository.AddNews(news);
                 }
                 else
                 {
@@ -85,7 +91,7 @@ namespace Web.Controllers.AdminApi
 
                 return Success(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }

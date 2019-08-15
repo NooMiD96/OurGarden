@@ -41,7 +41,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\admin\" />
     <Folder Include="wwwroot\client\" />
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\rr\" />
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">

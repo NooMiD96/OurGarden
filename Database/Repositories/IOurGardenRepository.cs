@@ -36,6 +36,8 @@ namespace Database.Repositories
 
         Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);
         Task<News> GetNews(int newsId);
+        Task<News> GetNews(string alias);
+        Task<bool> CheckNewsAlias(string alias);
         Task AddNews(News news);
         Task UpdateNews(News news);
         Task DeleteNews(int newsId);

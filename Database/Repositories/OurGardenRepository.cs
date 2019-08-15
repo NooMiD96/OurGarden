@@ -240,6 +240,14 @@ namespace Database.Repositories
             .Include(x => x.Photo)
             .FirstOrDefaultAsync(x => x.NewsId == newsId);
 
+        public async Task<News> GetNews(string alias) =>
+           await _context.News
+           .Include(x => x.Photo)
+           .FirstOrDefaultAsync(x => x.Alias == alias);
+
+        public async Task<bool> CheckNewsAlias(string alias) =>
+            await _context.News.AnyAsync(x => x.Alias == alias);
+
         public async Task AddNews(News news)
         {
             var chek = await _context.News.FirstOrDefaultAsync(x => x.NewsId == news.NewsId);

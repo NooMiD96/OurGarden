@@ -26,11 +26,11 @@ const onSubmitHandler = (
 ) => {
   e && e.preventDefault();
 
-  const { form } = props;
+  const { form, item } = props;
 
+  const newsId = item ? item.newsId : 0;
   const description: string = ckEditor.current!.state.editor.getData();
-
-  const alias = form.getFieldValue("alias");
+  const title = form.getFieldValue("title");
   const image = form.getFieldValue("image");
 
   props.form.setFieldsValue({
@@ -39,9 +39,11 @@ const onSubmitHandler = (
 
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
+      debugger;
       props.handleCreateSubmit({
-        title: alias, // TODO:
-        description,
+        newsId: newsId,
+        title: title,
+        description: description,
         file: image
       });
     }
@@ -59,7 +61,7 @@ export const EditModalContent = (props: IProps) => {
 
   const { form, item } = props;
   const { getFieldDecorator } = form;
-  const { alias, description, photo } = item || ({} as INews);
+  const { title, description, photo } = item || ({} as INews);
 
   const onUploadImage = (image?: File) => {
     form.setFieldsValue({
@@ -73,13 +75,13 @@ export const EditModalContent = (props: IProps) => {
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("alias", {
-          initialValue: alias,
-          rules: [{ required: true, message: localeText._rule_require_alias }]
+        {getFieldDecorator("title", {
+          initialValue: title,
+          rules: [{ required: true, message: localeText._rule_require_title }]
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
-            placeholder={localeText._label_alias}
+            placeholder={localeText._label_title}
             onPressEnter={onSubmit}
           />
         )}
