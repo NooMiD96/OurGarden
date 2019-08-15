@@ -31,6 +31,14 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllNewsWithDescriptions()
+        {
+            var news = await _repository.GetNews(includeDescriptions: true);
+
+            return Success(news.OrderByDescending(x => x.Date));
+        }
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetNews([FromQuery]string alias)
         {
             var news = await _repository.GetNews(alias);

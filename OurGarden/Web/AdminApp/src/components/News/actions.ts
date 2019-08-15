@@ -61,7 +61,7 @@ const controllerName = "News";
 const defultControllerName = "Home";
 export const actionCreators = {
   getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
-    const apiUrl = "GetAllNews";
+    const apiUrl = "GetAllNewsWithDescriptions";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
