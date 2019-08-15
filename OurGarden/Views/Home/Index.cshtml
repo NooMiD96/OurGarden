@@ -1,6 +1,9 @@
 ﻿<div id="react-app"
      asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
->Loading...</div>
+>
+    <div id="react-content"></div>
+    <div></div>
+</div>
 
 @section scripts {
     @foreach (var scriptSrc in StartUpVendors.JsVendors)

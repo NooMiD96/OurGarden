@@ -14,42 +14,20 @@
     "noEmit": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "es2015",
-      "es7",
-      "webworker"
-    ],
-    "types": [
-      "webpack-env"
-    ],
+    "lib": ["dom", "es2015", "es7", "webworker"],
+    "types": ["webpack-env"],
     "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@antdSvgs/*": [
-        "node_modules/@ant-design/icons/lib/outline/*"
-      ]
+      "@src/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@components/*": ["src/components/*"],
+      "@antdSvgs/*": ["node_modules/@ant-design/icons/lib/outline/*"]
     },
     "sourceMap": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": false
   },
-  "exclude": [
-    "node_modules",
-    "public"
-  ],
-  "include": [
-    "./src/**/*",
-    "./webpack/**/*",
-    "./webpack.config.ts"
-  ],
+  "exclude": ["node_modules", "public"],
+  "include": ["./src/**/*", "./webpack/**/*", "./webpack.config.ts"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }

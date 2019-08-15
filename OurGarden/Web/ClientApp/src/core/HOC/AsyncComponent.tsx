@@ -1,37 +1,24 @@
 import * as React from "react";
 
+import Loadable from "react-loadable";
+
 import LoadingIcon from "@src/core/components/Loading";
 
-export function AsyncComponent(ComponentLoader: any) {
-  interface IState {
-    Component: any;
-  }
-  class AsyncComponent extends React.Component<any, IState> {
-    state: IState = {
-      Component: null,
-    };
-
-    async componentDidMount() {
-      const Component = await ComponentLoader();
-      this.setState({
-        Component: Component.default,
-      });
+export function AsyncComponent(
+  ComponentLoader: any,
+  modules: any,
+  webpack: any
+) {
+  const asyncComponentLoadable = Loadable({
+    loader: ComponentLoader,
+    loading: LoadingIcon,
+    modules: modules,
+    webpack: () => webpack,
+    render(loaded: any, props) {
+      let Component = loaded.default;
+      return <Component {...props} />;
     }
+  });
 
-    render() {
-      const { Component } = this.state;
-
-      return (
-        <>
-          {
-            Component
-              ? <Component {...this.props} />
-              : <LoadingIcon />
-          }
-        </>
-      );
-    }
-  }
-
-  return AsyncComponent;
+  return asyncComponentLoadable;
 }

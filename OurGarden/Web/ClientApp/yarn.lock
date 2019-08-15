@@ -299,10 +299,22 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/mini-css-extract-plugin@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@types/mini-css-extract-plugin/-/mini-css-extract-plugin-0.2.1.tgz#f833abd67e8d6e40efb08a0455be252db063d475"
-  integrity sha512-KJOp7SZusMEGpiE5VprIUBcXtr3okLeVsJOykLGpcnrc7ivoWg9+5vGAANSIPrwn06HqXMruCYqzEZl3/uvwwg==
+"@types/lodash.debounce@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.6.tgz#c5a2326cd3efc46566c47e4c0aa248dc0ee57d60"
+  integrity sha512-4WTmnnhCfDvvuLMaF3KV4Qfki93KebocUF45msxhYyjMttZDQYzHkO639ohhk8+oco2cluAFL3t5+Jn4mleylQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.136"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.136.tgz#413e85089046b865d960c9ff1d400e04c31ab60f"
+  integrity sha512-0GJhzBdvsW2RUccNHOBkabI8HZVdOXmXbXhuKlDEd5Vv12P7oAVGfomGp3Ne21o5D/qu1WmthlNKFaoZJJeErA==
+
+"@types/mini-css-extract-plugin@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@types/mini-css-extract-plugin/-/mini-css-extract-plugin-0.8.0.tgz#6a5d3459d40cb51f14059e9aa410c9e970656103"
+  integrity sha512-L7OKmXudo048RMw/NeLjJMNRAbyXG76b3uGZ49OKe03imYEplx0JzcM0goVNc7X1IeESf2Bk9RP+tS1U3OSmVg==
   dependencies:
     "@types/webpack" "*"
 
@@ -347,6 +359,14 @@
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
+
+"@types/react-loadable@5.3.4":
+  version "5.3.4"
+  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.3.4.tgz#1d689fb233f816916c0df2d0a346c49f071b1cb3"
+  integrity sha512-EP6/JjcCMetGBw3pG5ugfnSy+jB90mGzzSUC57qJrN1rV/q0wK44DiJPPgccRWDgg6HQRQ+TakaGjtoUAMsDuQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/webpack" "*"
 
 "@types/react-native@*":
   version "0.60.0"
@@ -6206,7 +6226,7 @@ rc-table@~6.6.0:
     shallowequal "^1.0.2"
     warning "^3.0.0"
 
-rc-tabs@^9.6.4, rc-tabs@~9.6.4:
+rc-tabs@~9.6.4:
   version "9.6.4"
   resolved "https://registry.yarnpkg.com/rc-tabs/-/rc-tabs-9.6.4.tgz#8910f79f0dbfbcb794a3ff879642311fc7c3eff0"
   integrity sha512-l4PoDSShNJ6pWGuR1UcUgvee48b3Qu1jgMEaD1hH3Rc+mqysoO7hA9AQ1YywkIy34afGTTejAWDSIFZ0lmg08g==
@@ -6388,6 +6408,13 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-loadable@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.5.0.tgz#582251679d3da86c32aae2c8e689c59f1196d8c4"
+  integrity sha512-C8Aui0ZpMd4KokxRdVAm2bQtI03k2RMRNzOB+IipV3yxFTSVICv7WoUr5L9ALB5BmKO1iHgZtWM8EvYG83otdg==
+  dependencies:
+    prop-types "^15.5.0"
 
 react-redux@^7.1.0:
   version "7.1.0"

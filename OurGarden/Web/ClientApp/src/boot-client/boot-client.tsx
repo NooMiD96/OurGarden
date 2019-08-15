@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
+import Loadable from "react-loadable";
 
 import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
@@ -29,16 +30,16 @@ function renderApp() {
   ReactDOM.hydrate(
     <AppContainer>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          {routes}
-        </ConnectedRouter>
+        <ConnectedRouter history={history}>{routes}</ConnectedRouter>
       </Provider>
     </AppContainer>,
-    document.getElementById("react-app")
+    document.getElementById("react-content")
   );
 }
 
-renderApp();
+Loadable.preloadReady().then(() => {
+  renderApp();
+});
 
 // Allow Hot Module Replacement
 if (module.hot) {
