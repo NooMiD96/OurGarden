@@ -2,20 +2,21 @@ import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
 //#region STATE
-export interface ICategory {
+export interface ISubcategory {
+  subcategoryId: string;
   categoryId: string;
   alias: string;
   photo: IPhoto;
 }
 
-export interface ISiderState {
-  categoryList: ICategory[];
+export interface ISubcategoryState {
+  subcategoryList: ISubcategory[];
   pending: boolean;
   errorInner: string;
 }
 
-export const unloadedState: ISiderState = {
-  categoryList: [],
+export const unloadedState: ISubcategoryState = {
+  subcategoryList: [],
   pending: false,
   errorInner: "",
 };

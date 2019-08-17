@@ -1,4 +1,3 @@
-import { RouteComponentProps } from "react-router-dom";
 import { RouterState } from "connected-react-router";
 
 import { IUserCardState } from "./State";
@@ -16,12 +15,7 @@ export type TComponentState = {
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IUserCardState
-  & RouterState
-  & RouteComponentProps<{
-    categoty: string;
-    subcategory: string;
-    product: string;
-  }>;
+  & RouterState;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
   & TOwnProps;

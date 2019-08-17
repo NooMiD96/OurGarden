@@ -41,7 +41,10 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}`, {
+    const encodedCategoryId = encodeURIComponent(categoryId);
+    const encodedSubcategoryId = encodeURIComponent(subcategoryId);
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}&subcategoryId=${encodedSubcategoryId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {

@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import AntdSider from "@core/antd/LayoutSider";
-import CategoryList from "./CategoryList";
 import { Title } from "@src/core/antd/Typography";
+import CategoryList from "./CategoryList";
 
 import { TState, TComponentState } from "../TState";
 
@@ -10,24 +10,16 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    // SSR
     if (!props.categoryList.length) {
       this.props.getCategoryList();
     }
   }
 
   render() {
-    const {
-      location,
-      categoryList
-    } = this.props;
+    const { location, categoryList } = this.props;
 
     return (
-      <AntdSider
-        breakpoint="md"
-        collapsedWidth="0"
-        width={250}
-      >
+      <AntdSider breakpoint="md" collapsedWidth="0" width={250}>
         <div className="sider-catalog-header">
           <Title>Каталог</Title>
         </div>

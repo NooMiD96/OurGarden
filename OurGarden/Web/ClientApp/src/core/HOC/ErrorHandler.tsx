@@ -8,15 +8,15 @@ interface IState {
 class ErrorHandler extends React.Component<any, IState> {
   state: IState = {
     error: false,
-    info: null,
-  }
+    info: null
+  };
 
   componentDidCatch(error: any, info: any) {
     // Something happened to one of my children.
     // Add error to state
     this.setState({
       error: error,
-      info: info,
+      info: info
     });
   }
 
@@ -26,7 +26,7 @@ class ErrorHandler extends React.Component<any, IState> {
       return (
         <div>
           <h5>{this.state.error.message}</h5>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
+          <details style={{ whiteSpace: "pre-wrap" }}>
             {this.state.info.componentStack}
           </details>
         </div>

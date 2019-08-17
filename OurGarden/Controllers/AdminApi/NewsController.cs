@@ -91,7 +91,7 @@ namespace Web.Controllers.AdminApi
 
                 return Success(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }

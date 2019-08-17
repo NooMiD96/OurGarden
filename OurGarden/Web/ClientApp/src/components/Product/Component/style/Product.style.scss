@@ -1,7 +1,4 @@
-import styled from "styled-components";
-import { darkGreenColor, greyColor } from "@src/core/constants";
-
-export default styled.div`
+.product-wrapper {
   padding: 2rem;
 
   .product-photo {
@@ -12,7 +9,7 @@ export default styled.div`
 
   .product-info {
     .ant-typography {
-      font-family: 'BerlingskeSerif';
+      font-family: "BerlingskeSerif";
       font-weight: bolder;
       font-size: 30px;
       padding-right: 30px;
@@ -21,15 +18,15 @@ export default styled.div`
     .product-cost {
       font-size: 21px;
       position: absolute;
-      top: 0;
+      top: -32px;
       right: 0;
-      color: ${darkGreenColor};
+      color: $darkGreenColor;
     }
 
     .product-description {
       font-size: 16px;
       font-weight: 500;
-      color: ${greyColor};
+      color: $greyColor;
     }
   }
 
@@ -44,4 +41,4 @@ export default styled.div`
   .card-add-button {
     float: right;
   }
-`;
+}

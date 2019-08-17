@@ -1,6 +1,4 @@
-import styled from "styled-components";
-
-export default styled.div`
+.card-confirmation-form {
   .ant-form {
     padding: 1rem 12px;
 
@@ -8,4 +6,4 @@ export default styled.div`
       margin-top: 1rem;
     }
   }
-`;
+}

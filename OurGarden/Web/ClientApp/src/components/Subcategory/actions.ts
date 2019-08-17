@@ -24,9 +24,6 @@ export const actionsList = {
     errorMessage,
   }),
 
-  cleanSubcategoryList: (): t.ICleanSubcategoryList => ({
-    type: t.CLEAN_SUBCATEGORY_LIST,
-  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -36,12 +33,14 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Home";
 export const actionCreators = {
-  getSubcategoryList: (category: string): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+  getSubcategoryList: (categoryId: string): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetSubcategories";
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${category}`, {
+    const encodedCategoryId = encodeURIComponent(categoryId)
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -68,7 +67,6 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getSubcategoryListRequest());
   },
-  cleanSubcategoryList: actionsList.cleanSubcategoryList,
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

@@ -7,7 +7,7 @@ const Loading = () => {
     <div className="loading-wrapper">
       <LoadingIcon />
     </div>
-  )
-}
+  );
+};
 
 export default Loading;

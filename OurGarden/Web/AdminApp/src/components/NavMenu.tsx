@@ -48,7 +48,7 @@ export const NavMenu = (props: RouterState) => {
           Наш сад
         </span>
       </div>
-      <Menu theme="dark" mode="inline" selectedKeys={[selectedKeys]}>
+      <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
         {navList.map(x => (
           <Menu.Item key={x.key}>
             <GenerateLink {...x} />

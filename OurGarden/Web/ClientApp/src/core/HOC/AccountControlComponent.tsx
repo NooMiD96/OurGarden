@@ -8,7 +8,10 @@ import { isUserHavePermissions } from "@core/helpers/route/isUserHavePermissions
 
 type TComponentProps = { userType: UserTypeEnums } & RouterState;
 
-class AccountControlComponent extends React.Component<TComponentProps, {isRenderChildren: boolean}> {
+class AccountControlComponent extends React.Component<
+  TComponentProps,
+  { isRenderChildren: boolean }
+> {
   constructor(props: TComponentProps) {
     super(props);
 
@@ -18,10 +21,10 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
         props.userType,
         props.location.pathname
       );
-    } catch {}  // eslint-disable-line no-empty
+    } catch {} // eslint-disable-line no-empty
 
     this.state = {
-      isRenderChildren: isHavePermissions,
+      isRenderChildren: isHavePermissions
     };
   }
 
@@ -61,7 +64,7 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
         (this.props as any).dispatch(replace("/"));
       } else if (!this.state.isRenderChildren) {
         this.setState({
-          isRenderChildren: true,
+          isRenderChildren: true
         });
       }
       return isHavePermissions;
@@ -74,17 +77,13 @@ class AccountControlComponent extends React.Component<TComponentProps, {isRender
    */
 
   render() {
-    return (
-      this.state.isRenderChildren
-        ? this.props.children
-        : <div />
-    );
+    return this.state.isRenderChildren ? this.props.children : <div />;
   }
 }
 
 export default connect(
   (state: IApplicationState): TComponentProps => ({
     userType: state.account.userType,
-    ...state.router,
+    ...state.router
   })
 )(AccountControlComponent);

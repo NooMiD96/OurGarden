@@ -1,19 +1,19 @@
 import React from "react";
 
-import Wrapper from "./style/TotalPrice.style";
+import "./style/TotalPrice.style.scss";
 
 interface ITotalPrice {
   totalPrice: number;
 }
 
 const TotalPrice = (props: ITotalPrice) => (
-  <Wrapper className="price-wrapper">
+  <div className="total-price-wrapper price-wrapper">
     <span>Сумма: </span>
     <span className="price">
       {props.totalPrice}
       {" рублей"}
     </span>
-  </Wrapper>
+  </div>
 );
 
 export default TotalPrice;

@@ -1,7 +1,4 @@
-import styled from "styled-components";
-import { darkGreenColor } from "@src/core/constants";
-
-export default styled.div`
+.add-to-card-wrapper {
   &.card-description {
     display: flex;
     justify-content: space-between;
@@ -17,7 +14,7 @@ export default styled.div`
         width: 45px;
         padding: 4px 10px;
         border-radius: 0;
-        border-color: ${darkGreenColor};
+        border-color: $darkGreenColor;
         font-weight: 100;
 
         &:focus {
@@ -32,7 +29,7 @@ export default styled.div`
 
         .ant-btn {
           border-radius: 0;
-          border-color: ${darkGreenColor};
+          border-color: $darkGreenColor;
 
           font-weight: 500;
 
@@ -43,4 +40,4 @@ export default styled.div`
       }
     }
   }
-`;
+}

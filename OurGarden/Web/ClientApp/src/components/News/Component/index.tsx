@@ -4,32 +4,31 @@ import Loading from "@src/core/components/Loading";
 import Row from "@src/core/antd/Row";
 import { Title } from "@src/core/antd/Typography";
 
-import NewsWrapper from "./style/News.style";
-
 import { TState, TComponentState } from "../TState";
 
-export class News extends React.PureComponent<TState, TComponentState> {
-  componentDidMount() {
-    const {
-      getNews,
-      match: {
-        params: { newsId }
-      }
-    } = this.props;
+import "./style/News.style.scss";
 
-    getNews(newsId);
+export class News extends React.PureComponent<TState, TComponentState> {
+  constructor(props: TState) {
+    super(props);
+
+    const {
+      match: { params }
+    } = props;
+
+    if (!props.selectedNew || props.selectedNew.alias !== params.newsId) {
+      props.getNews(params.newsId);
+    }
   }
 
   componentDidUpdate(prevProps: TState) {
     const {
       getNews,
-      match: {
-        params: { newsId }
-      }
+      match: { params }
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
-      getNews(newsId);
+      getNews(params.newsId);
     }
   }
 
@@ -37,7 +36,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
     const { selectedNew, pending } = this.props;
 
     return (
-      <NewsWrapper className="content white-background">
+      <div className="news-wrapper content white-background">
         {pending || !selectedNew ? (
           <Loading />
         ) : (
@@ -58,7 +57,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
             </div>
           </Row>
         )}
-      </NewsWrapper>
+      </div>
     );
   }
 }

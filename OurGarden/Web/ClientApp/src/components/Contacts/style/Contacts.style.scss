@@ -1,8 +1,4 @@
-import styled from "styled-components";
-
-import "@src/assets/scss/companyBackground.scss";
-
-export default styled.div`
+.contacts-wrapper {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -20,7 +16,7 @@ export default styled.div`
     }
 
     h1 {
-      font-family: 'BerlingskeSerif';
+      font-family: "BerlingskeSerif";
       font-weight: bolder;
       font-size: 30px;
       padding-left: calc(1rem + 24px);
@@ -44,7 +40,6 @@ export default styled.div`
         margin-top: 1rem;
       }
     }
-
   }
   .company-map {
     flex: 1 1 auto;
@@ -53,4 +48,4 @@ export default styled.div`
       min-height: 250px;
     }
   }
-`;
+}

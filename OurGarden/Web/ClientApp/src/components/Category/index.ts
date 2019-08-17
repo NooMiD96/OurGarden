@@ -12,15 +12,14 @@ import {
 import Component from "./Component";
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-  categoryList: state.sider.categoryList,
-  ...state.catalog,
+  ...state.category,
   ...state.router,
   ...ownProp,
 }) as TMapStateToProps;
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
-  push
+  push,
 };
 
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(

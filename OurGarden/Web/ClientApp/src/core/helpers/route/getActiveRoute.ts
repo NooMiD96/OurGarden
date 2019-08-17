@@ -1,5 +1,5 @@
 import { Location } from "history";
-import { ICategory } from "@src/components/Main/Sider/State";
+import { ICategory } from "@src/components/Category/State";
 
 const getActiveRoute = (
   tabList: { key: string; title: string; link: string }[],

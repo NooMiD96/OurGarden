@@ -1,9 +1,7 @@
-import styled from "styled-components";
-import { darkGreenColor, arrowBorderColor } from "@src/core/constants";
-
-export default styled.div`
+.home-wrapper {
   flex: 0 1 50%;
   position: relative;
+  min-height: 350px;
 
   .ant-carousel {
     height: 100%;
@@ -16,7 +14,7 @@ export default styled.div`
       .slick-list {
         height: 100%;
 
-        .slick-track{
+        .slick-track {
           height: 100%;
 
           .slick-slide {
@@ -24,9 +22,11 @@ export default styled.div`
               height: 100%;
               display: flex;
               align-items: center;
+              justify-content: center;
 
               .slick-slide-content {
                 cursor: pointer;
+                width: auto !important;
 
                 .slick-slide-content-image {
                   max-width: 100%;
@@ -55,9 +55,7 @@ export default styled.div`
           }
         }
       }
-
     }
-
   }
 
   .carousel-slide-changer {
@@ -69,14 +67,14 @@ export default styled.div`
     top: calc(50% - 28px);
     cursor: pointer;
 
-    background-color: ${darkGreenColor};
+    background-color: $darkGreenColor;
 
     > .carousel-slide {
       position: absolute;
       top: calc(50% - 12px);
 
       &::after {
-        content: ' ';
+        content: " ";
         position: absolute;
       }
     }
@@ -89,7 +87,7 @@ export default styled.div`
 
         &::after {
           border-top: 12px solid transparent;
-          border-right: 20px solid ${arrowBorderColor};
+          border-right: 20px solid $arrowBorderColor;
           border-bottom: 12px solid transparent;
           border-left: 0;
           transition: border-right-color 0.3s;
@@ -108,7 +106,7 @@ export default styled.div`
 
         &::after {
           border-top: 12px solid transparent;
-          border-left: 20px solid ${arrowBorderColor};
+          border-left: 20px solid $arrowBorderColor;
           border-bottom: 12px solid transparent;
           border-right: 0;
           transition: border-left-color 0.3s;
@@ -135,16 +133,16 @@ export default styled.div`
 
         ::after {
           border-top: 10px solid transparent;
-          border-right: 16px solid ${arrowBorderColor};
+          border-right: 16px solid $arrowBorderColor;
           border-bottom: 10px solid transparent;
         }
       }
 
       &.carousel-slide-next > .carousel-slide::after {
         border-top: 10px solid transparent;
-        border-left: 16px solid ${arrowBorderColor};
+        border-left: 16px solid $arrowBorderColor;
         border-bottom: 10px solid transparent;
       }
     }
   }
-`;
+}

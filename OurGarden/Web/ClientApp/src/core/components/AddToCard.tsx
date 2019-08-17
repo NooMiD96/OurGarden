@@ -1,11 +1,11 @@
 import React from "react";
 
 import { IProduct } from "@src/components/Product/State";
-
-import AddToCardWrapper from "./style/AddToCard.style";
 import AddToCardButton from "./AddToCardButton";
 
 import { IMouseClickEvent } from "../IEvents";
+
+import "./style/AddToCard.style.scss";
 
 export interface IAddToCard {
   product: IProduct & { link: string };
@@ -18,7 +18,7 @@ const AddToCard = (props: IAddToCard) => {
   const { product, itemCount, setItemCount, addToCard } = props;
 
   return (
-    <AddToCardWrapper className="card-description">
+    <div className="add-to-card-wrapper card-description">
       {product.price ? (
         <React.Fragment>
           <span className="card-cost">
@@ -34,7 +34,7 @@ const AddToCard = (props: IAddToCard) => {
       ) : (
         "Уточните цену у продавцов"
       )}
-    </AddToCardWrapper>
+    </div>
   );
 };
 

@@ -1,0 +1,32 @@
+.news-list-wrapper {
+  min-height: 350px;
+
+  .ant-card-meta-title {
+    .ant-typography {
+      font-family: "BerlingskeSerif";
+      font-size: 30px;
+      margin: 0px;
+    }
+  }
+
+  .ant-col.card-wrapper {
+    flex: 1 1 100%;
+    margin-bottom: 1em;
+
+    .ant-card-cover {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+
+      > img {
+        width: auto;
+        max-height: 250px;
+        background: center / contain no-repeat;
+      }
+    }
+
+    &:last-child {
+      margin: 0px;
+    }
+  }
+}

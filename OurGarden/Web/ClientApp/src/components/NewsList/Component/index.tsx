@@ -2,26 +2,27 @@ import * as React from "react";
 
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
-import Card from "@core/antd/Card";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import Loading from "@src/core/components/Loading";
-
-import NewsListWrapper from "./style/NewsList.style";
+import { NewsCard } from "@src/core/components/NewsCard";
 
 import { TState, TComponentState } from "../TState";
-import { Title } from "@src/core/antd/Typography";
+
+import "./style/NewsList.style.scss";
 
 export class NewsList extends React.PureComponent<TState, TComponentState> {
-  state: TComponentState = {
-    page: 1,
-    pageSize: 4
-  };
+  constructor(props: TState) {
+    super(props);
 
-  componentDidMount() {
-    if (!this.props.newsList.length) {
-      this.props.getNewsList();
+    if (!props.newsList.length) {
+      props.getNewsList();
     }
+
+    this.state = {
+      page: 1,
+      pageSize: 4
+    };
   }
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {
@@ -37,11 +38,11 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
 
     const dataList = newsList.map(x => ({
       ...x,
-      link: `/Акции/${x.newsId}`
+      link: `/Акции/${x.alias}`
     }));
 
     return (
-      <NewsListWrapper className="content">
+      <div className="content news-list-wrapper">
         {pending ? (
           <Loading />
         ) : (
@@ -57,25 +58,17 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
               onChange={this.onChange}
             />
             <Row type="flex" className="white-background">
-              {dataList.slice((page - 1) * pageSize, page * pageSize).map(x => (
-                <Col key={x.link} className="card-wrapper">
-                  <Card
-                    loading={pending}
-                    hoverable
-                    style={{ width: "100%" }}
-                    cover={<img alt={x.title} src={x.photo && x.photo.url} />}
-                    onClick={() => {
-                      push(x.link);
-                    }}
-                  >
-                    <Card.Meta title={<Title level={2}>{x.title}</Title>} />
-                  </Card>
-                </Col>
-              ))}
+              {dataList
+                .slice((page - 1) * pageSize, page * pageSize)
+                .map(item => (
+                  <Col key={item.link} className="card-wrapper">
+                    <NewsCard item={item} push={push} pending={pending} />
+                  </Col>
+                ))}
             </Row>
           </React.Fragment>
         )}
-      </NewsListWrapper>
+      </div>
     );
   }
 }

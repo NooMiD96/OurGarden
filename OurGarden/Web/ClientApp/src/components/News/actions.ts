@@ -38,7 +38,9 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?newsId=${newsId}`, {
+    const encodedNewsId = encodeURIComponent(newsId);
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?alias=${encodedNewsId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {

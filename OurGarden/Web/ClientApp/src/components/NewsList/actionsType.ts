@@ -1,4 +1,5 @@
-import { INew } from "./State";
+import { INew } from "@components/News/State";
+
 // -----------------
 //#region ACTIONS TYPE
 export const GET_NEWS_LIST_REQUEST = "GET_NEWS_LIST_REQUEST";

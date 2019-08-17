@@ -5,11 +5,11 @@ import { reducer as NewsListReducer } from "@components/NewsList/reducer";
 import { INewsState } from "@components/News/State";
 import { reducer as NewsReducer } from "@components/News/reducer";
 
-import { ISiderState } from "@components/Main/Sider/State";
-import { reducer as SiderReducer } from "@components/Main/Sider/reducer";
+import { ICategoryState } from "@components/Category/State";
+import { reducer as CategoryReducer } from "@components/Category/reducer";
 
-import { ICatalogState } from "@components/Catalog/State";
-import { reducer as CatalogReducer } from "@components/Catalog/reducer";
+import { ISubcategoryState } from "@components/Subcategory/State";
+import { reducer as SubcategoryReducer } from "@components/Subcategory/reducer";
 import { IProductListState } from "@components/ProductList/State";
 import { reducer as ProductListReducer } from "@components/ProductList/reducer";
 import { IProductState } from "@components/Product/State";
@@ -23,9 +23,9 @@ export interface IApplicationState {
 
   newsList: INewsListState;
   news: INewsState;
-  sider: ISiderState;
 
-  catalog: ICatalogState;
+  category: ICategoryState;
+  subcategory: ISubcategoryState;
   productList: IProductListState;
   product: IProductState;
 
@@ -35,9 +35,9 @@ export interface IApplicationState {
 export const reducers = {
   newsList: NewsListReducer,
   news: NewsReducer,
-  sider: SiderReducer,
 
-  catalog: CatalogReducer,
+  category: CategoryReducer,
+  subcategory: SubcategoryReducer,
   productList: ProductListReducer,
   product: ProductReducer,
 

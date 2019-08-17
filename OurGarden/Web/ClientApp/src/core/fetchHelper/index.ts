@@ -29,6 +29,6 @@ export const errorCatcher = (
     error.stack
       ? `\r\n${error.stack}`
       : ` ${error.message}`
-  }`);
+    }`);
   dispatch(action(error.message));
 };

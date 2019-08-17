@@ -3,9 +3,9 @@ import React from "react";
 import Button from "@src/core/antd/Button";
 import NumberInput from "@src/core/components/NumberInput";
 
-import AddToCardButtonWrapper from "./style/AddToCardButton.style";
-
 import { IMouseClickEvent } from "../IEvents";
+
+import "./style/AddToCardButton.style.scss";
 
 export interface IAddToCardButton {
   itemCount: string;
@@ -17,7 +17,7 @@ const AddToCardButton = (props: IAddToCardButton) => {
   const { itemCount, setItemCount, addToCard } = props;
 
   return (
-    <AddToCardButtonWrapper className="card-add-button">
+    <div className="add-to-card-button-wrapper card-add-button">
       <NumberInput
         value={itemCount}
         onValueChange={setItemCount}
@@ -25,9 +25,9 @@ const AddToCardButton = (props: IAddToCardButton) => {
           <Button block onClick={addToCard}>
             В корзину
           </Button>
-        )}
+)}
       />
-    </AddToCardButtonWrapper>
+    </div>
   );
 };
 

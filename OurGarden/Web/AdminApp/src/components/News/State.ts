@@ -5,7 +5,7 @@ import { IPhoto } from "@src/core/IPhoto";
 export interface INews {
   newsId: number;
   title: string;
-  date: Date;
+  date: string;
   alias: string;
   description: string;
   photo: IPhoto;
@@ -15,7 +15,7 @@ export interface INewsDTO {
   newsId: number;
   title: string;
   description: string;
-  file: File | string;
+  file: File;
 }
 
 export interface INewsState {

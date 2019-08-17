@@ -5,10 +5,10 @@ import Button from "@src/core/antd/Button";
 import TotalPrice from "@src/core/components/TotalPrice";
 import CardConfirmationFormFields from "./CardConfirmationFormFields";
 
-import Wrapper from "../style/Form.style";
-import ButtonWrapper from "../style/ButtonWrapper.style";
-
 import { ICardConfirmationForm } from "./ICardConfirmation";
+
+import "../style/Form.style.scss";
+import "../style/ButtonWrapper.style.scss";
 
 const CardConfirmationForm = (props: ICardConfirmationForm) => {
   const { form, totalPrice, cancel, submit } = props;
@@ -28,11 +28,11 @@ const CardConfirmationForm = (props: ICardConfirmationForm) => {
   };
 
   return (
-    <Wrapper>
+    <div className="card-confirmation-form">
       <Form layout="vertical" onSubmit={onSubmit}>
         <CardConfirmationFormFields form={form} onSubmit={onSubmit} />
         <TotalPrice totalPrice={totalPrice} />
-        <ButtonWrapper className="order-confirmation-footer">
+        <div className="button-wrapper order-confirmation-footer">
           <Button onClick={cancel}>Отмена</Button>
           <Button
             type="primary"
@@ -41,9 +41,9 @@ const CardConfirmationForm = (props: ICardConfirmationForm) => {
           >
             Заказать
           </Button>
-        </ButtonWrapper>
+        </div>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

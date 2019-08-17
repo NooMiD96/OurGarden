@@ -1,7 +1,4 @@
-import styled from "styled-components";
-import { greyColor } from "@src/core/constants";
-
-export default styled.div`
+.card-info-table {
   overflow-x: auto;
 
   .ant-table {
@@ -12,9 +9,9 @@ export default styled.div`
         text-align: center;
       }
     }
-  
+
     .ant-table-tbody > tr > td {
-      font-family: 'Gilroy';
+      font-family: "Gilroy";
       text-align: center;
 
       .table-product-wrapper {
@@ -31,8 +28,8 @@ export default styled.div`
         }
       }
 
-      .remove-icon path{
-        stroke: ${greyColor};
+      .remove-icon path {
+        stroke: $greyColor;
       }
     }
   }
@@ -45,4 +42,4 @@ export default styled.div`
       align-self: flex-end;
     }
   }
-`;
+}

@@ -3,18 +3,14 @@ import React from "react";
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
 
-import UserCardWrapper from "./style/UserCard.style";
-
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
+
+import "./style/UserCard.style.scss";
 
 export class UserCard extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     displayType: DisplayTypeEnum.CardInfo
   };
-
-  componentDidMount() {}
-
-  componentDidUpdate() {}
 
   onChangeOrderStep = (newType: DisplayTypeEnum) => {
     this.setState({
@@ -53,9 +49,9 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       );
 
     return (
-      <UserCardWrapper className="content white-background">
+      <div className="user-card-wrapper content white-background">
         {renderComponent}
-      </UserCardWrapper>
+      </div>
     );
   }
 }

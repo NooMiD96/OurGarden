@@ -5,13 +5,13 @@ import { Title } from "@src/core/antd/Typography";
 import NumberInput from "@src/core/components/NumberInput";
 import Remove from "@src/core/icons/Remove";
 
-import Wrapper from "../style/Table.style";
-
 import { getProductPhotoSrc } from "@src/core/helpers/product";
 
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
 import { IDisplayInfo, ICardInfoTable } from "./ICardInfo";
+
+import "../style/Table.style.scss";
 
 export const cardProductToDisplay = (x: IUserCardProduct): IDisplayInfo => ({
   product: x.product,
@@ -105,13 +105,13 @@ const CardInfoTable = (props: ICardInfoTable) => {
   );
 
   return (
-    <Wrapper>
+    <div className="card-info-table">
       <Table
         dataSource={props.dataSource}
         columns={columns}
         rowKey={rowKey}
       />
-    </Wrapper>
+    </div>
   );
 };
 

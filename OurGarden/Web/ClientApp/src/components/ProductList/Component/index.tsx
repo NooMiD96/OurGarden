@@ -7,7 +7,7 @@ import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import ProductCard from "./ProductCard";
 
-import ProductListWrapper from "./style/ProductList.style";
+import "./style/ProductList.style.scss";
 
 import { TState, TComponentState } from "../TState";
 
@@ -27,24 +27,36 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     xxl: { span: 8 }
   };
 
-  state: TComponentState = {
-    page: 1,
-    pageSize: 6
-  };
+  constructor(props: TState) {
+    super(props);
 
-  componentDidMount() {
     const {
       match: { params },
-      getProductList
+      productList
     } = this.props;
 
-    if (params.categoty && params.subcategory) {
-      getProductList(params.categoty, params.subcategory);
+    if (
+      !productList.length
+      || params.categoryId !== productList[0].categoryId
+      || params.subcategoryId !== productList[0].subcategoryId
+    ) {
+      props.getProductList(params.categoryId, params.subcategoryId);
     }
+
+    this.state = {
+      page: 1,
+      pageSize: 6
+    };
   }
 
-  componentWillUnmount() {
-    this.props.cleanProductList();
+  componentDidUpdate(prevProps: TState) {
+    const {
+      match: { params }
+    } = this.props;
+
+    if (prevProps.match.params !== params) {
+      this.props.getProductList(params.categoryId, params.subcategoryId);
+    }
   }
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {
@@ -64,7 +76,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     }));
 
     return (
-      <ProductListWrapper className="content">
+      <div className="product-list-wrapper content">
         {pending ? (
           <Loading />
         ) : (
@@ -88,7 +100,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
             </Row>
           </React.Fragment>
         )}
-      </ProductListWrapper>
+      </div>
     );
   }
 }

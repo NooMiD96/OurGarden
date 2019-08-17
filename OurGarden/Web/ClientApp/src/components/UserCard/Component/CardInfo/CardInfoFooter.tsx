@@ -3,10 +3,10 @@ import React from "react";
 import Button from "@src/core/antd/Button";
 import TotalPrice from "@src/core/components/TotalPrice";
 
-import ButtonWrapper from "../style/ButtonWrapper.style";
-
 import { ICardInfoFooter } from "./ICardInfo";
 import { DisplayTypeEnum } from "../../TState";
+
+import "../style/ButtonWrapper.style.scss";
 
 const CardInfoFooter = (props: ICardInfoFooter) => {
   return (
@@ -16,7 +16,7 @@ const CardInfoFooter = (props: ICardInfoFooter) => {
           <div style={{ paddingLeft: "1rem" }}>
             <TotalPrice totalPrice={props.totalPrice} />
           </div>
-          <ButtonWrapper className="buttons-wrapper-with-padding">
+          <div className="button-wrapper buttons-wrapper-with-padding">
             <Button className="clean-button" onClick={props.сleanProductCard}>
               Очистить корзину
             </Button>
@@ -29,7 +29,7 @@ const CardInfoFooter = (props: ICardInfoFooter) => {
             >
               Оформить заказ
             </Button>
-          </ButtonWrapper>
+          </div>
         </React.Fragment>
       )}
     </React.Fragment>

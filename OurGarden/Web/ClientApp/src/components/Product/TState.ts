@@ -15,9 +15,9 @@ export type TComponentState = {
 export type TStateToProps = IProductState
   & RouterState
   & RouteComponentProps<{
-    categoty: string;
-    subcategory: string;
-    product: string;
+    categoryId: string;
+    subcategoryId: string;
+    productId: string;
   }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps

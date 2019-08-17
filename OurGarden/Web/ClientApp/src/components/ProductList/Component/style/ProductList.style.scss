@@ -1,7 +1,4 @@
-import styled from "styled-components";
-import { darkGreenColor, greenColor } from "@src/core/constants";
-
-export default styled.div`
+.product-list-wrapper {
   flex-shrink: 1;
   padding: 0 8px;
 
@@ -17,20 +14,20 @@ export default styled.div`
 
     &:hover {
       .ant-card-meta-title {
-        color: ${darkGreenColor};
+        color: $darkGreenColor;
         text-decoration: underline;
       }
 
       .card-description .ant-input-group-addon .ant-btn {
-        background-color: ${darkGreenColor};
+        background-color: $darkGreenColor;
         color: #fff;
 
         &:focus,
         &:active {
-          background-color: ${greenColor};
+          background-color: $greenColor;
           color: #fff;
         }
       }
     }
   }
-`;
+}

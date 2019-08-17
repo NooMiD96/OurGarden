@@ -102,7 +102,7 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
       } as IUserCardState;
     }
 
-    case t.CLEAN_PRODUCT_CARD: 
+    case t.CLEAN_PRODUCT_CARD:
       return {
         ...state,
         productList: [],

@@ -20,14 +20,13 @@ class News extends React.PureComponent<TState, TComponentState> {
 
   columns: ColDef[] = [
     {
-      headerName: "Дата",
-      field: "date",
-      type: ["idField"]
+      headerName: "Заголовок",
+      field: "title"
     },
     {
-      headerName: "Заголовок",
-      field: "title",
-      type: ["idField"]
+      headerName: "Дата",
+      field: "date",
+      type: ["date"],
     }
   ];
 

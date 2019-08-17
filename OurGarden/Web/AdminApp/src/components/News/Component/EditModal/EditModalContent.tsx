@@ -39,7 +39,6 @@ const onSubmitHandler = (
 
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
-      debugger;
       props.handleCreateSubmit({
         newsId: newsId,
         title: title,

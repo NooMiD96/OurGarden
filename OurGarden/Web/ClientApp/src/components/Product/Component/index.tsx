@@ -5,39 +5,47 @@ import Row from "@src/core/antd/Row";
 import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
 
-import ProductWrapper from "./style/Product.style";
-
 import { getProductPhotoSrc } from "@src/core/helpers/product";
 
 import { TState, TComponentState } from "../TState";
 import { IMouseClickEvent } from "@src/core/IEvents";
 
+import "./style/Product.style.scss";
+
 export class Product extends React.PureComponent<TState, TComponentState> {
-  state: TComponentState = {
-    itemCount: "1"
-  };
+  constructor(props: TState) {
+    super(props);
 
-  componentDidMount() {
     const {
-      getProduct,
+      product,
       match: {
-        params: { categoty, subcategory, product }
+        params: { categoryId, subcategoryId, productId }
       }
-    } = this.props;
+    } = props;
 
-    getProduct(categoty, subcategory, product);
+    if (!product
+      || categoryId !== product.categoryId
+      || subcategoryId !== product.subcategoryId
+      || productId !== product.productId
+    ) {
+      props.getProduct(categoryId, subcategoryId, productId);
+    }
+
+    this.state = {
+      itemCount: "1"
+    };
   }
 
   componentDidUpdate(prevProps: TState) {
     const {
       getProduct,
       match: {
-        params: { categoty, subcategory, product }
+        params: { categoryId, subcategoryId, productId }
       }
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
-      getProduct(categoty, subcategory, product);
+      getProduct(categoryId, subcategoryId, productId);
     }
   }
 
@@ -68,7 +76,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const productPhoto = product && getProductPhotoSrc(product);
 
     return (
-      <ProductWrapper className="content white-background">
+      <div className="product-wrapper content white-background">
         {pending || !product ? (
           <Loading />
         ) : (
@@ -105,7 +113,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
             ) : null}
           </Row>
         )}
-      </ProductWrapper>
+      </div>
     );
   }
 }

@@ -6,8 +6,6 @@ export const GET_SUBCATEGORY_LIST_REQUEST = "GET_SUBCATEGORY_LIST_REQUEST";
 export const GET_SUBCATEGORY_LIST_SUCCESS = "GET_SUBCATEGORY_LIST_SUCCESS";
 export const GET_SUBCATEGORY_LIST_ERROR = "GET_SUBCATEGORY_LIST_ERROR";
 
-export const CLEAN_SUBCATEGORY_LIST = "GET_SUBCATEGORY_LIST";
-
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 //#endregion
 // -----------------
@@ -17,12 +15,9 @@ export interface IGetSubcategoryListSuccess { type: typeof GET_SUBCATEGORY_LIST_
 export interface IGetSubcategoryListError { type: typeof GET_SUBCATEGORY_LIST_ERROR; errorMessage: string }
 export type TGetSubcategoryList = IGetSubcategoryListRequest | IGetSubcategoryListSuccess | IGetSubcategoryListError;
 
-export interface ICleanSubcategoryList { type: typeof CLEAN_SUBCATEGORY_LIST }
-
 export interface ICleanErrorInnerAction { type: typeof CLEAN_ERROR_INNER }
 
 type KnownAction = TGetSubcategoryList
-  | ICleanSubcategoryList
   | ICleanErrorInnerAction;
 
 export default KnownAction;

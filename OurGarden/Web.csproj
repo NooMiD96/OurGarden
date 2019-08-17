@@ -45,6 +45,8 @@
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
+    <Message Importance="high" Text="Run Debug config. Exec DebugClean Before Build" />
+
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
@@ -63,6 +65,8 @@
   </Target>
 
   <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+    <Message Importance="high" Text="Run Release config. Exec ProdEnsureNodeEnv Before Build" />
+    
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
@@ -83,6 +87,8 @@
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <Message Importance="high" Text="Run Publish. Exec PublishRunWebpack After ComputeFilesToPublish" />
+
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <!--<Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
     <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />-->

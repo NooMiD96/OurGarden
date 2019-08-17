@@ -21,7 +21,7 @@ export const AppRoutes = (
 
     <Switch>
       <Route
-        path="/каталог/:categoty/:subcategory/:product"
+        path="/каталог/:categoryId/:subcategoryId/:productId"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Product" */ "@components/Product"),
           ["@components/Product"],
@@ -30,7 +30,7 @@ export const AppRoutes = (
       />
 
       <Route
-        path="/каталог/:categoty/:subcategory"
+        path="/каталог/:categoryId/:subcategoryId"
         component={AsyncComponent(
           () =>
             import(
@@ -41,11 +41,24 @@ export const AppRoutes = (
         )}
       />
       <Route
-        path="/каталог/:categoty?"
+        path="/каталог/:categoryId"
         component={AsyncComponent(
-          () => import(/* webpackChunkName: "Catalog" */ "@components/Catalog"),
-          ["@components/Catalog"],
-          [require.resolveWeak("@components/Catalog")]
+          () =>
+            import(
+              /* webpackChunkName: "Subcategory" */ "@components/Subcategory"
+            ),
+          ["@components/Subcategory"],
+          [require.resolveWeak("@components/Subcategory")]
+        )}
+      />
+
+      <Route
+        path="/каталог"
+        component={AsyncComponent(
+          () =>
+            import(/* webpackChunkName: "Category" */ "@components/Category"),
+          ["@components/Category"],
+          [require.resolveWeak("@components/Category")]
         )}
       />
     </Switch>

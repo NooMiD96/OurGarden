@@ -1,26 +1,19 @@
 import { RouteComponentProps } from "react-router-dom";
 import { RouterState, Push } from "connected-react-router";
 
-import { ICatalogState } from "./State";
+import { ISubcategoryState } from "./State";
 import { actionCreators } from "./actions";
-import { ICategory } from "../Main/Sider/State";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {
-  page: number;
-  pageSize: number;
-};
+export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = ICatalogState
+export type TStateToProps = ISubcategoryState
   & RouterState
   & RouteComponentProps<{
-    categoty: string;
-  }>
-  & {
-    categoryList: ICategory[];
-  };
+    categoryId: string;
+  }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
   & TOwnProps;

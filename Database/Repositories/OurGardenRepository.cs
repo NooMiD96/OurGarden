@@ -224,6 +224,7 @@ namespace Database.Repositories
                 {
                     NewsId = x.NewsId,
                     Title = x.Title,
+                    Alias = x.Alias,
                     Date = x.Date,
                     Description = null,
                     Photo = x.Photo,

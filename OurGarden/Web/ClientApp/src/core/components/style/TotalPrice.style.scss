@@ -1,0 +1,9 @@
+.total-price-wrapper {
+  &.price-wrapper {
+    font-size: 16px;
+
+    .price {
+      color: $darkGreenColor;
+    }
+  }
+}

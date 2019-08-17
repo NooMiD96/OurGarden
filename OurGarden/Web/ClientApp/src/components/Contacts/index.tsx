@@ -3,13 +3,14 @@ import React from "react";
 import CompanyMap from "./CompanyMap";
 import CompanyContacts from "./CompanyContacts";
 
-import ContactsWrapper from "./style/Contacts.style";
+import "./style/Contacts.style.scss";
+import "@src/assets/scss/companyBackground.scss";
 
 export const Contacts = () => (
-  <ContactsWrapper className="content">
+  <div className="contacts-wrapper content">
     <CompanyContacts />
     <CompanyMap />
-  </ContactsWrapper>
+  </div>
 );
 
 export default Contacts;
