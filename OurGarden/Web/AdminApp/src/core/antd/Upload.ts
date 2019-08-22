@@ -6,6 +6,7 @@ import "./Progress";
 import "./Tooltip";
 
 export {
+  Upload,
   UploadFile,
   UploadChangeParam,
 };

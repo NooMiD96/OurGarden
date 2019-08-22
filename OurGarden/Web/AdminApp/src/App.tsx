@@ -41,6 +41,13 @@ export const AppRoutes = (
         import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
       )}
     />
+    <Route
+      exact
+      path="/фотогалерея"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Gallery" */ "@components/Gallery")
+      )}
+    />
     <Switch>
       <Redirect from="/продукты" to="/товары" />
 

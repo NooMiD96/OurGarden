@@ -1,4 +1,5 @@
-const generateFormBody = <T extends { file: File | null }>(data: T) => {
+
+const generateFormBody = <T extends { file: File | null, addFiles: File[] | null }>(data: T) => {
   const formData = new FormData();
 
   let key: keyof typeof data;
@@ -14,8 +15,17 @@ const generateFormBody = <T extends { file: File | null }>(data: T) => {
   }
 
   if (data.file) {
+    debugger;
     formData.delete("File");
     formData.set("file", data.file);
+  }
+
+  if (data.addFiles) {
+    debugger;
+    formData.delete("AddFiles");
+    data.addFiles.forEach((file) => {
+      formData.append("AddFiles", file, file.name);
+    });
   }
 
   return formData;

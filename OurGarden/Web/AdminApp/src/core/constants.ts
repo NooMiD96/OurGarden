@@ -12,7 +12,8 @@ export type TIcons =
   | "up"
   | "down"
   | "right"
-    ;
+  | "upload"
+  ;
 
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
@@ -40,6 +41,8 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/DownOutline")).default;
     case "right":
       return (await import("@antdSvgs/RightOutline")).default;
+    case "upload":
+      return (await import("@antdSvgs/UploadOutline")).default;
 
     default: {
       // eslint-disable-next-line

@@ -18,11 +18,15 @@ import { reducer as ProductReducer } from "@src/components/Product/reducer";
 import { IOrderState } from "./components/Order/State";
 import { reducer as OrderReducer } from "@src/components/Order/reducer";
 
+import { IGalleryState } from "./components/Gallery/State";
+import { reducer as GalleryReducer } from "@src/components/Gallery/reducer";
+
 
 export interface IApplicationState {
   router: RouterState;
 
   account: IAccountState;
+  gallery: IGalleryState;
   news: INewsState;
   category: ICategoryState;
   subcategory: ISubcategoryState;
@@ -32,6 +36,7 @@ export interface IApplicationState {
 
 export const reducers = {
   account: AccountReducer,
+  gallery: GalleryReducer,
   news: NewsReducer,
   category: CategoryReducer,
   subcategory: SubcategoryReducer,

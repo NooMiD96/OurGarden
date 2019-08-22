@@ -25,10 +25,5 @@ namespace Model.DB
         public string Description { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
-
-        [NotMapped]
-        public IEnumerable<Guid> RemovePhotos { get; set; }
-        [NotMapped]
-        public IEnumerable<IFormFile> AddPhotos { get; set; }
     }
 }
