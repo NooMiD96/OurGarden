@@ -2,9 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Model.DB;
-using Model.DTO;
-using Model.DTO.Order;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -127,49 +124,6 @@ namespace Web.Controllers.Api
                 return BadRequest("Что-то пошло не так, повторите попытку");
 
             return Success(gallery);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderForm)
-        {
-            try
-            {
-                var order = new Order()
-                {
-                    OrderId = 0,
-                    FIO = orderForm.FIO,
-                    Phone = orderForm.Phone,
-                    Email = orderForm.Email,
-                    Date = DateTime.Now,
-                    StatusId = 1,
-                    TotalPrice = orderForm.OrderPositions.Select(x => x.Number * x.Product.Price).Sum(),
-                };
-
-                await _repository.AddOrder(order);
-
-                order.OrderPositions = orderForm.OrderPositions.Select(x =>
-                        new OrderPosition()
-                        {
-                            OrderPositionId = 0,
-
-                            Number = x.Number,
-
-                            OrderId = order.OrderId,
-
-                            CategoryId = x.Product.CategoryId,
-                            SubcategoryId = x.Product.SubcategoryId,
-                            ProductId = x.Product.ProductId
-                        })
-                        .ToList();
-
-                await _repository.UpdateOrder(order);
-
-                return Success(true);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
         }
 
         [HttpGet("[action]")]

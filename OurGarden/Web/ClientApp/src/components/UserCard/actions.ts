@@ -47,7 +47,7 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Home";
+const controllerName = "Order";
 export const actionCreators = {
   sendOrder: (userInfo: IOrderUserInformation): IAppThunkAction<t.TSendOrder | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "AddOrder";

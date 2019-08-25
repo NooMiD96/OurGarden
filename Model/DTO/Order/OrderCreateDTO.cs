@@ -14,6 +14,7 @@ namespace Model.DTO.Order
         [MaxLength(16)]
         public string Phone { get; set; }
 
+        [Required]
         [EmailAddress]
         [MaxLength(64)]
         public string Email { get; set; }

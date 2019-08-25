@@ -8,8 +8,13 @@ namespace Core.Helpers
 {
     public static class StringHelper
     {
-        public static string Transform(string text, int maxLength = 255)
+        public static string TransformToId(this string text, int maxLength = 255)
         {
+            if (String.IsNullOrEmpty(text))
+            {
+                return "";
+            }
+
             text = RemoveTags(text.ToLower());
             return text.Substring(0, Math.Min(text.Length, maxLength));
         }
@@ -23,6 +28,16 @@ namespace Core.Helpers
             result = Regex.Replace(result.Trim(), " ", "-");
 
             return result;
+        }
+
+        public static string TransformFromId(this string text)
+        {
+            if (String.IsNullOrEmpty(text))
+            {
+                return "";
+            }
+
+            return $"{text.Substring(0, 1).ToUpper()}{text.Substring(1).Replace("-", " ")}";
         }
     }
 }

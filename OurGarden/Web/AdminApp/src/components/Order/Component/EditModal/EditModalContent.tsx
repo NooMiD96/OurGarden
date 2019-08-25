@@ -36,6 +36,10 @@ const columns: ColDef[] = [
     type: ["idField"]
   },
   {
+    headerName: "Цена за шт.",
+    field: "price"
+  },
+  {
     headerName: "Кол-во",
     field: "number"
   }

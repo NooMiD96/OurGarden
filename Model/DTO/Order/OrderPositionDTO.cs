@@ -10,6 +10,9 @@ namespace Model.DTO.Order
         public int Number { get; set; }
 
         [Required]
+        public double Price { get; set; }
+
+        [Required]
         public Product Product { get; set; }
     }
 }

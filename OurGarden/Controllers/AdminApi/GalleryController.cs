@@ -42,7 +42,7 @@ namespace Web.Controllers.AdminApi
                 {
                     var newGallery = new Gallery() {
                         Name = gallery.Name,
-                        Alias = StringHelper.Transform(gallery.Name),
+                        Alias = gallery.Name.TransformToId(),
                         Description = gallery.Description,
                         Photos = new List<Photo>()
                     };
@@ -84,56 +84,11 @@ namespace Web.Controllers.AdminApi
                 }
                 return Success(gallery);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }
         }
-
-        //[HttpPut("[action]")]
-        //public async Task<IActionResult> Update(
-        //    [FromForm]Gallery gallery)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest("Что-то пошло не так, повторите попытку");
-        //        }
-
-        //        var oldGallery = await _repository.GetGallery(gallery.GalleryId);
-        //        if (oldGallery == null)
-        //        {
-        //            return Conflict();
-        //        }
-        //        oldGallery.Name = gallery.Name;
-        //        oldGallery.Alias = StringHelper.Transform(gallery.Name);
-        //        oldGallery.Description = gallery.Description;
-
-        //        foreach (var photoId in gallery.RemovePhotos)
-        //        {
-        //            var photo = oldGallery.Photos.FirstOrDefault(x => x.PhotoId == photoId);
-        //            if (photo == null)
-        //                continue;
-        //            oldGallery.Photos.Remove(photo);
-        //        }
-
-        //        foreach (var file in gallery.AddPhotos)
-        //        {
-        //            var fileHelper = new FileHelper(_repository);
-        //            var photo = await fileHelper.AddFileToRepository(file);
-        //            oldGallery.Photos.Add(photo);
-        //        }
-
-        //        await _repository.UpdateGallery(gallery);
-
-        //        return Success(true);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest("Что-то пошло не так, повторите попытку");
-        //    }
-        //}
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> Delete(

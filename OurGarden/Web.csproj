@@ -35,13 +35,13 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\admin\" />
     <Folder Include="wwwroot\client\" />
-    <Folder Include="wwwroot\images\rr\" />
   </ItemGroup>
 
   <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">

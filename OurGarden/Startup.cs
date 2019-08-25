@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Model.EMail;
+
+using Services.EMail;
+
 using System.Collections.Generic;
 using System.IO;
 
@@ -47,6 +51,9 @@ namespace Web
             {
                 configuration.RootPath = Configuration.GetValue<string>("SpaPhysicalRootPath");
             });
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             StartUpVendors.Configuration = Configuration;
         }

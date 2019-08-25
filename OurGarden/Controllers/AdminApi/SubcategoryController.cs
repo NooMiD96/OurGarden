@@ -73,7 +73,7 @@ namespace Web.Controllers.AdminApi
                     var subcategory = new Subcategory()
                     {
                         CategoryId = subcategoryDTO.NewCategoryId,
-                        SubcategoryId = StringHelper.Transform(subcategoryDTO.Alias),
+                        SubcategoryId = subcategoryDTO.Alias.TransformToId(),
 
                         Alias = subcategoryDTO.Alias,
 

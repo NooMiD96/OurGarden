@@ -6,8 +6,18 @@
     <title>Наш сад</title>
     <base href="~/" />
 
-    <link rel="icon" href="~/favicon.ico">
-    <link rel="manifest" href="~/client/client/manifest-assets.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/site.webmanifest">
+    <link rel="mask-icon" href="~/safari-pinned-tab.svg" color="#5fd55b">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="~/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <environment include="Production">
+        <script src="//code.jivosite.com/widget.js" data-jv-id="key" async></script>
+    </environment>
 
     @foreach (var stylesheetSrc in StartUpVendors.CssVendors)
     {

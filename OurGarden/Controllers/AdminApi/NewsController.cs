@@ -41,7 +41,7 @@ namespace Web.Controllers.AdminApi
                 if (newsDTO.NewsId <= 0)
                 {
                     var file = await _fileHelper.AddFileToRepository(newsDTO.File);
-                    var alias = StringHelper.Transform(newsDTO.Title);
+                    var alias = newsDTO.Title.TransformToId();
                     var isExist = await _repository.CheckNewsAlias(alias);
                     if (isExist)
                     {

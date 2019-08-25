@@ -56,7 +56,7 @@ namespace Web.Services.Controllers.AdminApi
                     {
                         CategoryId = productDTO.NewCategoryId,
                         SubcategoryId = productDTO.NewSubcategoryId,
-                        ProductId = StringHelper.Transform(productDTO.Alias),
+                        ProductId = productDTO.Alias.TransformToId(),
                         Alias = productDTO.Alias,
                         Price = productDTO.Price,
                         Description = productDTO.Description,

@@ -47,7 +47,7 @@ namespace Web.Services.Controllers.AdminApi
                     var newNews = new News()
                     {
                         Title = newsDTO.Title,
-                        Alias = StringHelper.Transform(newsDTO.Title),
+                        Alias = newsDTO.Title.TransformToId(),
                         Date = DateTime.Now,
                         Description = newsDTO.Description,
 

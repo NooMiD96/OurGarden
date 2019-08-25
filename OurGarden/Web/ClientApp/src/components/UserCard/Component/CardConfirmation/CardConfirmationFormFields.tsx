@@ -101,7 +101,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       <Col {...colStyle}>
         <FormItem>
           {getFieldDecorator("email", {
-            rules: [{ type: "email" }]
+            rules: [{ required: true, message: "Введите ваш контактный электронный адрес", type: "email" }]
           })(
             <Input
               placeholder="Почта"

@@ -21,7 +21,8 @@ const CardConfirmationForm = (props: ICardConfirmationForm) => {
           FIO: `${values.secondName} ${values.firstName}${
             values.thirdName ? ` ${values.thirdName}` : ""
           }`,
-          phone: values.phone
+          phone: values.phone,
+          email: values.email
         });
       }
     });

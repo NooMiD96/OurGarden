@@ -55,7 +55,7 @@ namespace Web.Controllers.AdminApi
 
                     var category = new Category()
                     {
-                        CategoryId = StringHelper.Transform(categoryDTO.Alias),
+                        CategoryId = categoryDTO.Alias.TransformToId(),
 
                         Alias = categoryDTO.Alias,
 

@@ -3,6 +3,7 @@ import { IProduct } from "@components/Product/State";
 export interface IOrderUserInformation {
   phone: string;
   FIO: string;
+  email: string;
 }
 
 export interface IOrderPosition {
@@ -13,5 +14,6 @@ export interface IOrderPosition {
 export interface IOrderModel {
   phone: string;
   FIO: string;
+  email: string;
   orderPositions: IOrderPosition[];
 }

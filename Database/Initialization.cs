@@ -49,16 +49,13 @@ namespace Database
 
             services
                 .AddAuthentication(IdentityConstants.ApplicationScheme)
-                .AddIdentityCookies();
-                //(options =>
-                //{
-                //    options.Cookie.HttpOnly = true;
-                //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                //    options.SlidingExpiration = true;
-                //    options.ReturnUrlParameter = "";
-                //    options.LoginPath = "";
-                //    options.AccessDeniedPath = "";
-                //});
+                .AddIdentityCookies(options =>
+                {
+                    options.ApplicationCookie.Configure(appConfig =>
+                    {
+                        appConfig.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    });
+                });
             services.AddTransient<IOurGardenRepository, OurGardenRepository>();
         }
 
