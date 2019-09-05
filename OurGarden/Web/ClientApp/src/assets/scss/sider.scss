@@ -17,7 +17,8 @@
 
         background-color: $darkGreenColor;
 
-        .ant-typography {
+        > .ant-typography {
+          font-size: 38px;
           margin: 0 !important;
           color: white;
         }
@@ -74,9 +75,15 @@
     }
 
     .ant-layout-sider {
-      z-index: 1;
+      z-index: 5;
       position: fixed;
       height: 100%;
+      top: 0;
+      max-height: unset;
+    }
+
+    .ant-layout-sider-zero-width-trigger {
+      top: 356px;
     }
 
     .main-content-wrapper .content {
