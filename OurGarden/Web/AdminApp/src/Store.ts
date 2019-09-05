@@ -21,6 +21,9 @@ import { reducer as OrderReducer } from "@src/components/Order/reducer";
 import { IGalleryState } from "./components/Gallery/State";
 import { reducer as GalleryReducer } from "@src/components/Gallery/reducer";
 
+import { IVideoState } from "./components/VideoGallery/State";
+import { reducer as VideoReducer } from "@src/components/VideoGallery/reducer";
+
 
 export interface IApplicationState {
   router: RouterState;
@@ -32,6 +35,7 @@ export interface IApplicationState {
   subcategory: ISubcategoryState;
   product: IProductState;
   order: IOrderState;
+  video: IVideoState;
 }
 
 export const reducers = {
@@ -41,7 +45,8 @@ export const reducers = {
   category: CategoryReducer,
   subcategory: SubcategoryReducer,
   product: ProductReducer,
-  order: OrderReducer
+  order: OrderReducer,
+  video: VideoReducer,
 };
 
 export interface IAppThunkAction<TAction> {

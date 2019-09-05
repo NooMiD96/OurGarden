@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Model.DB;
-
+using Model.DTO;
 using System;
 using System.Threading.Tasks;
 
@@ -25,51 +25,55 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(
-            [FromForm]Video video)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
-
-            try
-            {
-                await _repository.AddVideo(video);
-                return Success(video);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
-        }
-
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(
-            [FromForm]Video video)
+        public async Task<IActionResult> AddOrUpdate(
+            [FromForm]VideoDTO video)
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (video.VideoId <= 0)
                 {
-                    return BadRequest("Что-то пошло не так, повторите попытку");
+                    var newVideo = new Video()
+                    {
+                        Date = DateTime.Now,
+                        Description = video.Description,
+                        Title = video.Title,
+                        Url = video.Url,
+                    };
+                    await _repository.AddVideo(newVideo);
+                    return Success(newVideo);
+                }
+                else
+                {
+                    var oldVideo = await _repository.GetVideo(video.VideoId);
+                    if ( !video.Description.Equals(oldVideo.Description) 
+                        || !video.Title.Equals(oldVideo.Title) 
+                        || !video.Url.Equals(oldVideo.Url))
+                    {
+                        oldVideo.Title = video.Title;
+                        oldVideo.Description = video.Description;
+                        oldVideo.Url = video.Url;
+
+                        await _repository.UpdateVideo(oldVideo);
+                        return Success(video);
+                    }
+                    return Success(video);
                 }
                
-                await _repository.UpdateVideo(video);
-
-                return Success(true);
             }
             catch (Exception)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }
-        }
+        }       
 
-        [HttpDelete("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete(
-            [FromQuery]int videoId)
+            [FromQuery]string videoId)
         {
-            await _repository.DeleteVideo(videoId);
+            int id = 0;
+            if (int.TryParse(videoId, out id))
+                await _repository.DeleteVideo(id);
+
             return Success(true);
         }
     }
