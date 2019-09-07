@@ -16,6 +16,11 @@ namespace Database.Repositories
         Task DeleteCategory(string categoryId);
         Task DeleteCategory(Category category);
 
+        Task<IEnumerable<Client>> GetClients();
+        Task AddClient(Client client);
+        Task UpdateClient(Client client);
+        Task DeleteClient(int clientId);
+
         Task<IEnumerable<Subcategory>> GetAllSubcategories();
         Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId);
         Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId);

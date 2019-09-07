@@ -21,6 +21,7 @@ namespace Database.Contexts
         public DbSet<Product> Product { get; set; }
         public DbSet<OrderStatus> Status { get; set; }
         public DbSet<Subcategory> Subcategory { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Video> Video { get; set; }
 
 

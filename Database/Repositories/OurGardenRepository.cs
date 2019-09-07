@@ -73,6 +73,35 @@ namespace Database.Repositories
         }
         #endregion
 
+        #region Client
+        public async Task<IEnumerable<Client>> GetClients()
+        {
+            return await _context.Clients.ToListAsync();
+        }
+
+        public async Task AddClient(Client client)
+        {
+            await _context.Clients.AddAsync(client);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateClient(Client client)
+        {
+            _context.Clients.Update(client);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteClient(int clientId)
+        {
+            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
+            if (client == null)
+                return;
+
+            _context.Clients.Remove(client);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
 
         #region Subcategory      
         public async Task<IEnumerable<Subcategory>> GetAllSubcategories() =>
@@ -124,7 +153,6 @@ namespace Database.Repositories
             await _context.SaveChangesAsync();
         }
         #endregion
-
 
         #region Product
         public async Task<IEnumerable<Product>> GetSearchProducts(string search) =>
