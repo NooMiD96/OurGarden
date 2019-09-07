@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^2.1.0",
     "antd": "^3.19.3",
+    "antd-img-crop": "^2.1.2",
     "connected-react-router": "^6.4.0",
     "domain-task": "^3.0.3",
     "history": "^4.9.0",

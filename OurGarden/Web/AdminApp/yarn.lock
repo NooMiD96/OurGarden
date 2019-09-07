@@ -724,6 +724,15 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
+antd-img-crop@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/antd-img-crop/-/antd-img-crop-2.1.2.tgz#950ecb202b634817595695b178b7731aee0807b2"
+  integrity sha512-crxL0l1ybzxNW9nSSf+d0KfSA7rJndVItN5bxTtQbOdqKULCAEvB1Fpl3VKgy050mSBxpYPURDx8q4p4U8yDRQ==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    canvas-toBlob "^1.0.0"
+    react-image-crop "8.2.2"
+
 antd@^3.19.3:
   version "3.19.4"
   resolved "https://registry.yarnpkg.com/antd/-/antd-3.19.4.tgz#43e6285459b359e1bf48a649b109b7083ab21f18"
@@ -6284,6 +6293,15 @@ react-hot-loader@^4.11.0:
     react-lifecycles-compat "^3.0.4"
     shallowequal "^1.0.2"
     source-map "^0.7.3"
+
+react-image-crop@8.2.2:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-8.2.2.tgz#ac732da4867fbabbd4243636851442015be10f7a"
+  integrity sha512-km6y0LTToCWNO+dQfAVgz2eFKa7FFVCLIjYrw7JehR9do7kz9Dz/2NAiWGAf3P0d+MhM4Z7jMBoZvHFzpbKNGA==
+  dependencies:
+    clsx "^1.0.4"
+    core-js "^3.2.1"
+    prop-types "^15.7.2"
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.8.6"
