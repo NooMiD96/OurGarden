@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
@@ -6,6 +6,7 @@ import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
 import CKEditor from "@core/components/CKEditor";
 import localeText from "../Text";
+import { getBase64 } from "@core/helpers/files/index";
 
 import Upload, { UploadFile, UploadChangeParam } from "@core/antd/Upload";
 import Modal from "@core/antd/Modal";
@@ -26,17 +27,6 @@ export type IState = {
   previewVisible: boolean;
   previewImage: string;
 };
-
-function getBase64(file: File | undefined) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    }
-  });
-}
 
 const onSubmitHandler = (
   state: IState,
@@ -108,9 +98,9 @@ export class EditModalContent extends React.Component<IProps, IState> {
     }
   };
 
-  handleCancel = () => this.setState({ previewVisible: false });
+  cancelHandler = () => this.setState({ previewVisible: false });
 
-  handlePreview = async (file: UploadFile) => {
+  previewHandler = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -177,7 +167,7 @@ export class EditModalContent extends React.Component<IProps, IState> {
               multiple
               onChange={this.successHandler}
               onRemove={this.removeHandler}
-              onPreview={this.handlePreview}
+              onPreview={this.previewHandler}
             >
               {uploadButton}
             </Upload>
@@ -187,7 +177,7 @@ export class EditModalContent extends React.Component<IProps, IState> {
           <Modal
             visible={previewVisible}
             footer={null}
-            onCancel={this.handleCancel}
+            onCancel={this.cancelHandler}
           >
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
