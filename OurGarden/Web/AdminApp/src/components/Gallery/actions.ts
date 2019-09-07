@@ -101,7 +101,7 @@ export const actionCreators = {
     dispatch(actionCreators.cleanErrorInner());
 
     const formData = generateFormBody(data);
-    debugger;
+
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",

@@ -3,10 +3,16 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    flex-flow: row wrap;
 
     .card-cost {
       font-size: 18px;
       font-weight: 100;
+      flex: 20 0 auto;
+    }
+
+    .add-to-card-button-wrapper {
+      flex: 1 0 auto;
     }
 
     .ant-input-wrapper.ant-input-group {

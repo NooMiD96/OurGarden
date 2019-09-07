@@ -15,13 +15,11 @@ const generateFormBody = <T extends { file: File | null, addFiles: File[] | null
   }
 
   if (data.file) {
-    debugger;
     formData.delete("File");
     formData.set("file", data.file);
   }
 
   if (data.addFiles) {
-    debugger;
     formData.delete("AddFiles");
     data.addFiles.forEach((file) => {
       formData.append("AddFiles", file, file.name);
