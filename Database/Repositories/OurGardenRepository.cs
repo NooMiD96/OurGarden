@@ -93,7 +93,7 @@ namespace Database.Repositories
 
         public async Task DeleteClient(int clientId)
         {
-            var client = await _context.Clients.FirstOrDefaultAsync(x => x.Id == clientId);
+            var client = await _context.Clients.FirstOrDefaultAsync(x => x.ClientId == clientId);
             if (client == null)
                 return;
 

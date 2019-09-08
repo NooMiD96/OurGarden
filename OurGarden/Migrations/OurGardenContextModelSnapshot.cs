@@ -125,7 +125,7 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Client", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClientId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -140,7 +140,7 @@ namespace Web.Migrations
                         .IsRequired()
                         .HasMaxLength(16);
 
-                    b.HasKey("Id");
+                    b.HasKey("ClientId");
 
                     b.ToTable("Clients");
                 });

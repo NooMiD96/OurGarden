@@ -7,7 +7,7 @@ namespace Model.DB
 {
     public class Client
     {
-        public int Id { get; set; }
+        public int ClientId { get; set; }
 
         [Required]
         [Phone]
