@@ -253,7 +253,7 @@ namespace Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId")
+                    b.HasIndex("OrderId", "ProductId", "SubcategoryId", "CategoryId")
                         .IsUnique();
 
                     b.ToTable("OrderPosition");
