@@ -14,6 +14,8 @@ export function AsyncComponent(
     loading: LoadingIcon,
     modules,
     webpack,
+    delay: 0,
+    timeout: 10000,
     render(loaded: any, props) {
       let Component = loaded.default;
       return <Component {...props} />;
