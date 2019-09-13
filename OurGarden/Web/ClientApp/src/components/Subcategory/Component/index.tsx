@@ -2,6 +2,10 @@ import React from "react";
 
 import Loading from "@core/components/Loading";
 import CatalogCardList from "@src/core/components/CatalogCardList";
+import HeaderHelmet from "@src/core/components/Helmet";
+
+import { displayNameFromId } from "@src/core/utils";
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 
@@ -50,12 +54,29 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   render() {
     const { subcategoryList, push, pending } = this.props;
 
+    const seoSection = getSEOMetaData("subcategory");
+
     return (
       <React.Fragment>
         {pending ? (
-          <Loading />
+          <>
+            <Loading />
+          </>
         ) : (
-          <CatalogCardList dataList={subcategoryList} push={push} />
+          <>
+            <HeaderHelmet
+              title={
+                seoSection.title
+                && subcategoryList[0]
+                && seoSection.title.replace(
+                  "{{value}}",
+                  displayNameFromId(subcategoryList[0].categoryId)
+                )
+              }
+              metaDescription={seoSection.meta}
+            />
+            <CatalogCardList dataList={subcategoryList} push={push} />
+          </>
         )}
       </React.Fragment>
     );

@@ -14,7 +14,7 @@ export const AppRoutes = (
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Home" */ "@components/Home"),
           ["@components/Home"],
-          [require.resolveWeak("@components/Home")]
+          () => [require.resolveWeak("@components/Home")]
         )}
       />
     </Switch>
@@ -25,7 +25,7 @@ export const AppRoutes = (
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Product" */ "@components/Product"),
           ["@components/Product"],
-          [require.resolveWeak("@components/Product")]
+          () => [require.resolveWeak("@components/Product")]
         )}
       />
 
@@ -37,7 +37,7 @@ export const AppRoutes = (
               /* webpackChunkName: "ProductList" */ "@components/ProductList"
             ),
           ["@components/ProductList"],
-          [require.resolveWeak("@components/ProductList")]
+          () => [require.resolveWeak("@components/ProductList")]
         )}
       />
       <Route
@@ -48,7 +48,7 @@ export const AppRoutes = (
               /* webpackChunkName: "Subcategory" */ "@components/Subcategory"
             ),
           ["@components/Subcategory"],
-          [require.resolveWeak("@components/Subcategory")]
+          () => [require.resolveWeak("@components/Subcategory")]
         )}
       />
 
@@ -58,7 +58,7 @@ export const AppRoutes = (
           () =>
             import(/* webpackChunkName: "Category" */ "@components/Category"),
           ["@components/Category"],
-          [require.resolveWeak("@components/Category")]
+          () => [require.resolveWeak("@components/Category")]
         )}
       />
     </Switch>
@@ -68,7 +68,7 @@ export const AppRoutes = (
       component={AsyncComponent(
         () => import(/* webpackChunkName: "UserCard" */ "@components/UserCard"),
         ["@components/UserCard"],
-        [require.resolveWeak("@components/UserCard")]
+        () => [require.resolveWeak("@components/UserCard")]
       )}
     />
 
@@ -78,7 +78,7 @@ export const AppRoutes = (
         component={AsyncComponent(
           () => import(/* webpackChunkName: "News" */ "@components/News"),
           ["@components/News"],
-          [require.resolveWeak("@components/News")]
+          () => [require.resolveWeak("@components/News")]
         )}
       />
 
@@ -88,7 +88,7 @@ export const AppRoutes = (
           () =>
             import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
           ["@components/NewsList"],
-          [require.resolveWeak("@components/NewsList")]
+          () => [require.resolveWeak("@components/NewsList")]
         )}
       />
     </Switch>
@@ -98,7 +98,7 @@ export const AppRoutes = (
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Payment" */ "@components/Payment"),
         ["@components/Payment"],
-        [require.resolveWeak("@components/Payment")]
+        () => [require.resolveWeak("@components/Payment")]
       )}
     />
 
@@ -107,7 +107,7 @@ export const AppRoutes = (
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Design" */ "@components/Design"),
         ["@components/Design"],
-        [require.resolveWeak("@components/Design")]
+        () => [require.resolveWeak("@components/Design")]
       )}
     />
 
@@ -119,7 +119,7 @@ export const AppRoutes = (
             /* webpackChunkName: "Videogalery" */ "@components/Videogalery"
           ),
         ["@components/Videogalery"],
-        [require.resolveWeak("@components/Videogalery")]
+        () => [require.resolveWeak("@components/Videogalery")]
       )}
     />
 
@@ -128,7 +128,7 @@ export const AppRoutes = (
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
         ["@components/Contacts"],
-        [require.resolveWeak("@components/Contacts")]
+        () => [require.resolveWeak("@components/Contacts")]
       )}
     />
   </Layout>

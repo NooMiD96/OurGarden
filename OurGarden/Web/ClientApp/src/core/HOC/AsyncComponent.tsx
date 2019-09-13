@@ -5,15 +5,15 @@ import Loadable from "react-loadable";
 import LoadingIcon from "@src/core/components/Loading";
 
 export function AsyncComponent(
-  ComponentLoader: any,
-  modules: any,
-  webpack: any
+  loader: () => Promise<object>,
+  modules: [string],
+  webpack: () => [any]
 ) {
   const asyncComponentLoadable = Loadable({
-    loader: ComponentLoader,
+    loader,
     loading: LoadingIcon,
-    modules: modules,
-    webpack: () => webpack,
+    modules,
+    webpack,
     render(loaded: any, props) {
       let Component = loaded.default;
       return <Component {...props} />;

@@ -73,18 +73,22 @@ export default createServerRenderer(
       // We also send the redux store state, so the client can continue execution where the server left off
       params.domainTasks.then(() => {
         resolve({
-          html: `<div class="styles">${styles
-            .map(
-              style =>
-                `<link href="${(style as any).publicPath}" rel="stylesheet"/>`
-            )
-            .join("\n")}</div><div id="react-content">${renderToString(
-            app
-          )}</div><div class="scriptes">${scripts
-            .map(
-              bundle => `<script src="${(bundle as any).publicPath}"></script>`
-            )
-            .join("\n")}</div>
+          html: `<div class="styles">${
+              styles
+                .map(
+                  style =>
+                    `<link href="${(style as any).publicPath}" rel="stylesheet"/>`
+                )
+                .join("\n")
+            }</div><div class="scriptes">${
+              scripts
+                .map(
+                  bundle => `<script src="${(bundle as any).publicPath}"></script>`
+                )
+                .join("\n")
+            }</div><div id="react-content">${
+              renderToString(app)
+            }</div>
           `,
           globals: {
             initialReduxState: store.getState()

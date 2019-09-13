@@ -4,8 +4,10 @@ import Loading from "@src/core/components/Loading";
 import Row from "@src/core/antd/Row";
 import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
+import HeaderHelmet from "@src/core/components/Helmet";
 
 import { getProductPhotoSrc } from "@src/core/helpers/product";
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 import { IMouseClickEvent } from "@src/core/IEvents";
@@ -74,13 +76,23 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { itemCount } = this.state;
 
     const productPhoto = product && getProductPhotoSrc(product);
+    const seoSection = getSEOMetaData("product");
 
     return (
       <div className="product-wrapper content white-background">
         {pending || !product ? (
-          <Loading />
+          <>
+            <Loading />
+          </>
         ) : (
           <Row>
+            <HeaderHelmet
+              title={
+                seoSection.title
+                && seoSection.title.replace("{{value}}", product.alias)
+              }
+              metaDescription={seoSection.meta}
+            />
             {productPhoto && (
               <img
                 src={productPhoto}
@@ -94,7 +106,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
               <span className="product-cost">
                 {product.price
                   ? `${product.price.toLocaleString()}р.`
-                  : "Уточните цену у продавцов"}
+                  : "Под заказ"}
               </span>
               <span className="product-description">Описание</span>
             </div>

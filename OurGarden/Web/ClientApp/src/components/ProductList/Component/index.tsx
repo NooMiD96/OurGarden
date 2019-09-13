@@ -5,7 +5,12 @@ import Col from "@core/antd/Col";
 import Loading from "@core/components/Loading";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
+import HeaderHelmet from "@src/core/components/Helmet";
+
 import ProductCard from "./ProductCard";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
+import { displayNameFromId } from "@src/core/utils";
 
 import "./style/ProductList.style.scss";
 
@@ -75,12 +80,27 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
       link: `/Каталог/${x.categoryId}/${x.subcategoryId}/${x.productId}`
     }));
 
+    const seoSection = getSEOMetaData("productList");
+
     return (
       <div className="product-list-wrapper content">
         {pending ? (
-          <Loading />
+          <>
+            <Loading />
+          </>
         ) : (
           <React.Fragment>
+            <HeaderHelmet
+              title={
+                seoSection.title
+                && productList[0]
+                && seoSection.title.replace(
+                  "{{value}}",
+                  displayNameFromId(productList[0].subcategoryId)
+                )
+              }
+              metaDescription={seoSection.meta}
+            />
             <Pagination
               current={page}
               itemRender={PaginationItemRenderer}

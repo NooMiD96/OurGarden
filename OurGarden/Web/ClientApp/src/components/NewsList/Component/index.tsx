@@ -5,7 +5,10 @@ import Col from "@core/antd/Col";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import Loading from "@src/core/components/Loading";
+import HeaderHelmet from "@src/core/components/Helmet";
 import { NewsCard } from "@src/core/components/NewsCard";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 
@@ -43,6 +46,9 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="content news-list-wrapper">
+        <HeaderHelmet
+          {...getSEOMetaData("newsList")}
+        />
         {pending ? (
           <Loading />
         ) : (

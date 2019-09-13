@@ -20,7 +20,7 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class OrderController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         public OrderController(IOurGardenRepository repository)
         {
             _repository = repository;

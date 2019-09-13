@@ -3,7 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Наш сад</title>
+    <title>
+        @(
+            String.IsNullOrEmpty(ViewData["title"] as String)
+                ? "Наш Сад"
+                : $"{ViewData["title"]} | Наш Сад"
+        )
+    </title>
+    <meta name="description" content="@(ViewData["metaDescription"] ?? "")" />
     <base href="~/" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">

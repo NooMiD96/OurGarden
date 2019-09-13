@@ -1,11 +1,18 @@
 import React from "react";
 
+import HeaderHelmet from "@src/core/components/Helmet";
 import Typography from "@core/antd/Typography";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 const { Paragraph, Title } = Typography;
 
 export const Design = () => (
   <Typography className="content ourgarden-design">
+    <HeaderHelmet
+      {...getSEOMetaData("design")}
+    />
+
     <Title>Ландшафтный дизайн</Title>
     <Paragraph>
       &quot;Наш Сад&quot; поможет Вам создать неповторимый, красивый сад, в
