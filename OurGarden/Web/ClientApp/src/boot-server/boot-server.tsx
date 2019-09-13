@@ -72,19 +72,20 @@ export default createServerRenderer(
       // Once any async tasks are done, we can perform the final render
       // We also send the redux store state, so the client can continue execution where the server left off
       params.domainTasks.then(() => {
-        resolve({
-          html: `<div class="styles">${
+        Loadable.preloadAll().then(() => {
+          resolve({
+            html: `<div class="styles">${
               styles
-                .map(
+              .map(
                   style =>
                     `<link href="${(style as any).publicPath}" rel="stylesheet"/>`
                 )
                 .join("\n")
-            }</div><div class="scriptes">${
+              }</div><div class="scriptes">${
               scripts
                 .map(
                   bundle => `<script src="${(bundle as any).publicPath}"></script>`
-                )
+                  )
                 .join("\n")
             }</div><div id="react-content">${
               renderToString(app)
@@ -95,5 +96,6 @@ export default createServerRenderer(
           }
         });
       }, reject); // Also propagate any errors back into the host application
-    })
+    });
+  })
 );
