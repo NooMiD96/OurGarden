@@ -62,7 +62,7 @@ namespace Web.Controllers.AdminApi
         {
             try
             {
-                var order = await _repository.GetOrder(orderDTO.OrderId);
+                var order = await _repository.GetOrder(orderDTO?.OrderId ?? -1);
                 if (order == null)
                 {
                     return BadRequest("Не удалось найти заказ, повторите попытку.");

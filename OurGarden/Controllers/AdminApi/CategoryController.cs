@@ -22,9 +22,9 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class CategoryController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
-        public readonly CategoryControllerService _service;
-        public readonly FileHelper _fileHelper;
+        private readonly IOurGardenRepository _repository;
+        private readonly CategoryControllerService _service;
+        private readonly FileHelper _fileHelper;
 
         public CategoryController(IOurGardenRepository repository)
         {
@@ -49,7 +49,7 @@ namespace Web.Controllers.AdminApi
         {
             try
             {
-                if (String.IsNullOrEmpty(categoryDTO.CategoryId))
+                if (String.IsNullOrEmpty(categoryDTO?.CategoryId))
                 {
                     var file = await _fileHelper.AddFileToRepository(categoryDTO.File);
 

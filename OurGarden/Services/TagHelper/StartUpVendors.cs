@@ -9,8 +9,8 @@ namespace Web
     {
         public static IConfiguration Configuration { set; get; }
 
-        private static string[] _cssVendors = { };
-        private static string[] _jsVendors = { };
+        private static string[] _cssVendors = Array.Empty<string>();
+        private static string[] _jsVendors = Array.Empty<string>();
         private static string _clientPhysicalPath = null;
         private static string _clientFileName = null;
         private static string _serverPhysicalPath = null;
