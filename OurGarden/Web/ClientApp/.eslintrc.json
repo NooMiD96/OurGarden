@@ -67,6 +67,8 @@
         "exports": "only-multiline"
       }
     ],
-    "max-len": "off"
+    "max-len": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/state-in-constructor": "off"
   }
 }

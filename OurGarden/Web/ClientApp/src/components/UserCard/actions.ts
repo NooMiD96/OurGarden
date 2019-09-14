@@ -11,7 +11,7 @@ import { IUserCardProduct } from "./State";
 import { IProduct } from "@components/Product/State";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   sendOrderRequest: (): t.ISendOrderRequest => ({
     type: t.SEND_ORDER_REQUEST,
@@ -40,13 +40,17 @@ export const actionsList = {
     type: t.CLEAN_PRODUCT_CARD,
   }),
 
+  loadCardFromLocalstate: (): t.ILoadCardFromLocalstate => ({
+    type: t.LOAD_CARD_FROM_LOCALSTATE,
+  }),
+
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const controllerName = "Order";
 export const actionCreators = {
   sendOrder: (userInfo: IOrderUserInformation): IAppThunkAction<t.TSendOrder | t.ICleanErrorInnerAction> => (dispatch, getState) => {
@@ -57,12 +61,10 @@ export const actionCreators = {
 
     const bodyModel: IOrderModel = {
       ...userInfo,
-      orderPositions: productList.map((x: IUserCardProduct): IOrderPosition => {
-        return {
-          number: x.count,
-          product: x.product
-        }
-      }),
+      orderPositions: productList.map((x: IUserCardProduct): IOrderPosition => ({
+        number: x.count,
+        product: x.product
+      })),
     };
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -99,6 +101,8 @@ export const actionCreators = {
   changeCountOfProduct: actionsList.changeCountOfProduct,
   сleanProductCard: actionsList.сleanProductCard,
 
+  loadCardFromLocalstate: actionsList.loadCardFromLocalstate,
+
   cleanErrorInner: actionsList.cleanErrorInner,
 };
-//#endregion
+// #endregion

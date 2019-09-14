@@ -32,10 +32,7 @@ export const AppRoutes = (
       <Route
         path="/каталог/:categoryId/:subcategoryId"
         component={AsyncComponent(
-          () =>
-            import(
-              /* webpackChunkName: "ProductList" */ "@components/ProductList"
-            ),
+          () => import(/* webpackChunkName: "ProductList" */ "@components/ProductList"),
           ["@components/ProductList"],
           () => [require.resolveWeak("@components/ProductList")]
         )}
@@ -43,10 +40,7 @@ export const AppRoutes = (
       <Route
         path="/каталог/:categoryId"
         component={AsyncComponent(
-          () =>
-            import(
-              /* webpackChunkName: "Subcategory" */ "@components/Subcategory"
-            ),
+          () => import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory"),
           ["@components/Subcategory"],
           () => [require.resolveWeak("@components/Subcategory")]
         )}
@@ -55,8 +49,7 @@ export const AppRoutes = (
       <Route
         path="/каталог"
         component={AsyncComponent(
-          () =>
-            import(/* webpackChunkName: "Category" */ "@components/Category"),
+          () => import(/* webpackChunkName: "Category" */ "@components/Category"),
           ["@components/Category"],
           () => [require.resolveWeak("@components/Category")]
         )}
@@ -85,8 +78,7 @@ export const AppRoutes = (
       <Route
         path="/Акции"
         component={AsyncComponent(
-          () =>
-            import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
+          () => import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
           ["@components/NewsList"],
           () => [require.resolveWeak("@components/NewsList")]
         )}
@@ -114,10 +106,7 @@ export const AppRoutes = (
     <Route
       path="/Видеогалерея"
       component={AsyncComponent(
-        () =>
-          import(
-            /* webpackChunkName: "Videogalery" */ "@components/Videogalery"
-          ),
+        () => import(/* webpackChunkName: "Videogalery" */ "@components/Videogalery"),
         ["@components/Videogalery"],
         () => [require.resolveWeak("@components/Videogalery")]
       )}

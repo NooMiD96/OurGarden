@@ -3,7 +3,12 @@ import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 import { createMemoryHistory } from "history";
-import { createServerRenderer, RenderResult, BootFunc, BootFuncParams } from "aspnet-prerendering";
+import {
+  createServerRenderer,
+  RenderResult,
+  BootFunc,
+  BootFuncParams
+} from "aspnet-prerendering";
 
 import Loadable from "react-loadable";
 import { getBundles } from "react-loadable/webpack";
@@ -52,7 +57,7 @@ const preloader: BootFunc = (params: BootFuncParams) =>
           context={context}
           location={params.location.path}
         >
-          <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+          <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
             {AppRoutes}
           </Loadable.Capture>
         </StaticRouter>
@@ -64,11 +69,11 @@ const preloader: BootFunc = (params: BootFuncParams) =>
     const stats: any = await readJson(fileStatPath);
     const bundles = getBundles(stats, modules);
 
-    const styles = bundles.filter(bundle => bundle.file.endsWith(".css"));
-    const scripts = bundles.filter(bundle => bundle.file.endsWith(".js"));
+    const styles = bundles.filter((bundle) => bundle.file.endsWith(".css"));
+    const scripts = bundles.filter((bundle) => bundle.file.endsWith(".js"));
 
     await Loadable.preloadAll();
-    
+
     // This kick off any async tasks started by React components
     renderToString(app);
 
@@ -79,19 +84,18 @@ const preloader: BootFunc = (params: BootFuncParams) =>
         html: `<div class="styles">${
           styles
             .map(
-                style =>
-                `<link href="${(style as any).publicPath}" rel="stylesheet"/>`
-              )
-              .join("\n")
-            }</div><div class="scriptes">${
-            scripts
-              .map(
-                bundle => `<script src="${(bundle as any).publicPath}"></script>`
-              )
-              .join("\n")
-          }</div><div id="react-content">${
-            renderToString(app)
-          }</div>
+              (style) => `<link href="${(style as any).publicPath}" rel="stylesheet"/>`
+            )
+            .join("\n")
+        }</div><div class="scriptes">${
+          scripts
+            .map(
+              (bundle) => `<script src="${(bundle as any).publicPath}"></script>`
+            )
+            .join("\n")
+        }</div><div id="react-content">${
+          renderToString(app)
+        }</div>
         `,
         globals: {
           initialReduxState: store.getState()
@@ -100,8 +104,4 @@ const preloader: BootFunc = (params: BootFuncParams) =>
     }, reject); // Also propagate any errors back into the host application
   });
 
-export default createServerRenderer(
-  params => {
-    return preloader(params);
-  }
-);
+export default createServerRenderer(preloader);

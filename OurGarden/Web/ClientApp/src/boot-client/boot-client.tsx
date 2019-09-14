@@ -44,7 +44,7 @@ Loadable.preloadReady().then(() => {
 // Allow Hot Module Replacement
 if (module.hot) {
   module.hot.accept("@src/App", () => {
-    // tslint:disable-next-line:no-require-imports
+    // eslint-disable-next-line global-require
     routes = require<typeof App>("@src/App").AppRoutes;
     renderApp();
   });

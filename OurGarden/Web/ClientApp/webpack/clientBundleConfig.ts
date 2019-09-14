@@ -34,7 +34,7 @@ const clientPlugins = (
   // https://github.com/danethurber/webpack-manifest-plugin
   new ManifestPlugin({
     fileName: "manifest-assets.json",
-    filter: fileDescriptor => fileDescriptor.name !== "service-worker.js"
+    filter: (fileDescriptor) => fileDescriptor.name !== "service-worker.js"
   }),
 
   new ReactLoadablePlugin({

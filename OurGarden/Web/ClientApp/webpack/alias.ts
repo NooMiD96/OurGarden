@@ -6,9 +6,10 @@ const getAlias = (): { [key: string]: string } => ({
   "@components": path.resolve("./src/components"),
   "@antdSvgs": path.resolve("./node_modules/@ant-design/icons/lib/outline"),
   "@projectFolder": path.resolve("../../../"),
-  "styles": path.resolve("./src/assets/scss"),
-  "indexof": "component-indexof/index",
+  styles: path.resolve("./src/assets/scss"),
+  indexof: "component-indexof/index",
   "~/component-indexof.js": "component-indexof",
+  "react-dom": "@hot-loader/react-dom"
 });
 
 export default getAlias;
