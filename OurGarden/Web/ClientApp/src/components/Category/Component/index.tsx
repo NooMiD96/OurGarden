@@ -9,9 +9,7 @@ import { TState } from "../TState";
 
 export const Category = (props: TState) => (
   <>
-    <HeaderHelmet
-      {...getSEOMetaData("category")}
-    />
+    <HeaderHelmet {...getSEOMetaData("category")} />
     <CatalogCardList dataList={props.categoryList} push={props.push} />
   </>
 );

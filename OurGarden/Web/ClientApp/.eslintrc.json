@@ -54,8 +54,19 @@
     "quotes": ["error", "double"],
     "import/order": "off",
     "react/jsx-fragments": "off",
-    "jsx-a11y/interactive-supports-focus": "off",
     "react/no-danger": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "linebreak-style": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "functions": "never",
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline"
+      }
+    ],
+    "max-len": "off"
   }
 }
