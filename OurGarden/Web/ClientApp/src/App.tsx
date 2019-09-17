@@ -7,7 +7,7 @@ import { AsyncComponent } from "@core/HOC/AsyncComponent";
 export const AppRoutes = (
   <Layout>
     <Switch>
-      <Redirect from="/главная" to="/" />
+      <Redirect from="/Home" to="/" />
       <Route
         exact
         path="/"
@@ -21,7 +21,7 @@ export const AppRoutes = (
 
     <Switch>
       <Route
-        path="/каталог/:categoryId/:subcategoryId/:productId"
+        path="/Catalog/:categoryId/:subcategoryId/:productId"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Product" */ "@components/Product"),
           ["@components/Product"],
@@ -30,7 +30,7 @@ export const AppRoutes = (
       />
 
       <Route
-        path="/каталог/:categoryId/:subcategoryId"
+        path="/Catalog/:categoryId/:subcategoryId"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "ProductList" */ "@components/ProductList"),
           ["@components/ProductList"],
@@ -38,7 +38,7 @@ export const AppRoutes = (
         )}
       />
       <Route
-        path="/каталог/:categoryId"
+        path="/Catalog/:categoryId"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory"),
           ["@components/Subcategory"],
@@ -47,7 +47,7 @@ export const AppRoutes = (
       />
 
       <Route
-        path="/каталог"
+        path="/Catalog"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Category" */ "@components/Category"),
           ["@components/Category"],
@@ -57,7 +57,7 @@ export const AppRoutes = (
     </Switch>
 
     <Route
-      path="/Корзина"
+      path="/Card"
       component={AsyncComponent(
         () => import(/* webpackChunkName: "UserCard" */ "@components/UserCard"),
         ["@components/UserCard"],
@@ -67,7 +67,7 @@ export const AppRoutes = (
 
     <Switch>
       <Route
-        path="/Акции/:newsId"
+        path="/News/:newsId"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "News" */ "@components/News"),
           ["@components/News"],
@@ -76,7 +76,7 @@ export const AppRoutes = (
       />
 
       <Route
-        path="/Акции"
+        path="/News"
         component={AsyncComponent(
           () => import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
           ["@components/NewsList"],
@@ -86,7 +86,7 @@ export const AppRoutes = (
     </Switch>
 
     <Route
-      path="/Доставка-и-оплата"
+      path="/Payment"
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Payment" */ "@components/Payment"),
         ["@components/Payment"],
@@ -95,7 +95,7 @@ export const AppRoutes = (
     />
 
     <Route
-      path="/Ландшафтный-дизайн"
+      path="/Design"
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Design" */ "@components/Design"),
         ["@components/Design"],
@@ -104,7 +104,7 @@ export const AppRoutes = (
     />
 
     <Route
-      path="/Видеогалерея"
+      path="/Videogalery"
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Videogalery" */ "@components/Videogalery"),
         ["@components/Videogalery"],
@@ -113,7 +113,7 @@ export const AppRoutes = (
     />
 
     <Route
-      path="/Контакты"
+      path="/About"
       component={AsyncComponent(
         () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
         ["@components/Contacts"],

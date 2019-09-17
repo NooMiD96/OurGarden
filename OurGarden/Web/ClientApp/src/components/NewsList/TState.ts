@@ -1,6 +1,9 @@
+import { Push } from "connected-react-router";
+
 import { INewsListState } from "./State";
 import { actionCreators } from "./actions";
-import { Push } from "connected-react-router";
+
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 // -----------------------------
 // STATE OF COMPONENT
@@ -16,7 +19,10 @@ export type TMapStateToProps = TStateToProps
   & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
-export type TDispatchToProps = typeof actionCreators & { push: Push };
+export type TDispatchToProps = typeof actionCreators & {
+  push: Push;
+  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
+};
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS

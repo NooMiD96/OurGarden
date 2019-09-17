@@ -7,11 +7,27 @@ import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState } from "../TState";
 
-export const Category = (props: TState) => (
-  <>
-    <HeaderHelmet {...getSEOMetaData("category")} />
-    <CatalogCardList dataList={props.categoryList} push={props.push} />
-  </>
-);
+export class Category extends React.PureComponent<TState, {}> {
+  constructor(props: TState) {
+    super(props);
+
+    props.setBreadcrumb([{
+      displayName: "Каталог",
+      url: "Catalog",
+      order: 1,
+    }]);
+  }
+
+  render() {
+    const {categoryList, push} = this.props;
+
+    return (
+      <>
+        <HeaderHelmet {...getSEOMetaData("category")} />
+        <CatalogCardList dataList={categoryList} push={push} />
+      </>
+    );
+  }
+}
 
 export default Category;

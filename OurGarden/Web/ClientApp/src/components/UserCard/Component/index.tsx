@@ -16,6 +16,10 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
     displayType: DisplayTypeEnum.CardInfo
   };
 
+  componentDidMount() {
+    this.props.setBreadcrumb([]);
+  }
+
   onChangeOrderStep = (newType: DisplayTypeEnum) => {
     this.setState({
       displayType: newType

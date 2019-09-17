@@ -18,6 +18,8 @@ export class Home extends React.PureComponent<TState, TComponentState> {
     if (!props.newsList.length) {
       props.getNewsList();
     }
+
+    props.setBreadcrumb([]);
   }
 
   render() {

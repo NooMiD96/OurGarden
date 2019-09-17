@@ -26,6 +26,12 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
       page: 1,
       pageSize: 4
     };
+
+    props.setBreadcrumb([{
+      displayName: "Акции",
+      url: "News",
+      order: 1,
+    }]);
   }
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {

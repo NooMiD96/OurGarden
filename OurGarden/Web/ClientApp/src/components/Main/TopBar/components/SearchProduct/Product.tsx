@@ -19,7 +19,7 @@ const style = {
 };
 
 const Product = (props: IProduct) => {
-  const link = `/Каталог/${props.categoryId}/${props.subcategoryId}/${
+  const link = `/Catalog/${props.categoryId}/${props.subcategoryId}/${
     props.productId
   }`;
 

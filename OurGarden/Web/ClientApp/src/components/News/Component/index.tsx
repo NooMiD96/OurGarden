@@ -22,6 +22,10 @@ export class News extends React.PureComponent<TState, TComponentState> {
     if (!props.selectedNew || props.selectedNew.alias !== params.newsId) {
       props.getNews(params.newsId);
     }
+
+    props.getBreadcrumb({
+      newsId: params.newsId
+    });
   }
 
   componentDidUpdate(prevProps: TState) {

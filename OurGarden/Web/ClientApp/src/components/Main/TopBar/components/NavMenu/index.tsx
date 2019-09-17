@@ -9,32 +9,24 @@ import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
 import { IApplicationState } from "@src/Store";
 
-const NavMenu = (props: RouterState) => {
-  const tabList = [
-    { key: "Главная", title: "Главная", link: "Главная" },
-    { key: "Каталог", title: "Каталог", link: "Каталог" },
-    { key: "Акции", title: "Акции", link: "Акции" },
-    {
-      key: "Доставка и оплата",
-      title: "Доставка и оплата",
-      link: "Доставка и оплата"
-    },
-    {
-      key: "Ландшафтный дизайн",
-      title: "Ландшафтный дизайн",
-      link: "Ландшафтный дизайн"
-    },
-    { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" },
-    { key: "Контакты", title: "Контакты", link: "Контакты" }
-  ];
+const tabList = [
+  { title: "Главная", link: "Home" },
+  { title: "Каталог", link: "Catalog" },
+  { title: "Акции", link: "News" },
+  { title: "Доставка и оплата", link: "Payment"},
+  { title: "Ландшафтный дизайн", link: "Design"},
+  { title: "Видеогалерея", link: "Videogalery" },
+  { title: "Контакты", link: "About" }
+];
 
+const NavMenu = (props: RouterState) => {
   const activeKey = getActiveRoute(tabList, props.location);
 
   return (
     <React.Fragment>
       <Tabs className="navigation" activeKey={activeKey}>
         {tabList.map(x => (
-          <Tabs.TabPane key={x.key} tab={<GenerateLink {...x} />} />
+          <Tabs.TabPane key={x.link} tab={<GenerateLink {...x} />} />
         ))}
       </Tabs>
     </React.Fragment>

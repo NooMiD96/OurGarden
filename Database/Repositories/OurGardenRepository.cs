@@ -1,7 +1,10 @@
-﻿using Database.Contexts;
+﻿using Core.Helpers;
+
+using Database.Contexts;
 
 using Microsoft.EntityFrameworkCore;
 
+using Model.Breadcrumb;
 using Model.DB;
 using Model.DTO.ProductDTO;
 
@@ -120,6 +123,27 @@ namespace Database.Repositories
             .Include(x => x.Photo)
             .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
 
+        public async Task<List<Breadcrumb>> GetSubcategoryBreadcrumb(string categoryId)
+        {
+            categoryId = categoryId.TransformToId();
+
+            var category = await _context.Category
+                .Select(x => new
+                {
+                    x.CategoryId,
+                    x.Alias
+                })
+                .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
+
+            var breadcrumb = new Breadcrumb()
+            {
+                DisplayName = category.Alias,
+                Url = $"/Catalog/{category.CategoryId}",
+            };
+
+            return new List<Breadcrumb>() { breadcrumb };
+        }
+
         public async Task AddSubcategory(Subcategory subcategory)
         {
             var chek = await _context.Subcategory.FirstOrDefaultAsync(x => x.SubcategoryId == subcategory.SubcategoryId && x.CategoryId == subcategory.CategoryId);
@@ -195,6 +219,84 @@ namespace Database.Repositories
             .Product
             .Include(x => x.Photos)
             .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
+
+        public async Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId)
+        {
+            categoryId = categoryId.TransformToId();
+            subcategoryId = subcategoryId.TransformToId();
+
+            var result = new List<Breadcrumb>();
+
+            var subcategory = await _context.Subcategory
+                .Include(x => x.Category)
+                .Select(x => new
+                {
+                    CategoryAlias = x.Category.Alias,
+                    x.Category.CategoryId,
+                    x.SubcategoryId,
+                    x.Alias
+                })
+                .FirstOrDefaultAsync(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId);
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = subcategory.CategoryAlias,
+                Url = $"/Catalog/{subcategory.CategoryId}"
+            });
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = subcategory.Alias,
+                Url = $"/Catalog/{subcategory.CategoryId}/{subcategory.SubcategoryId}"
+            });
+
+            return result;
+        }
+
+        public async Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId, string productId)
+        {
+            categoryId = categoryId.TransformToId();
+            subcategoryId = subcategoryId.TransformToId();
+            productId = productId.TransformToId();
+
+            var result = new List<Breadcrumb>();
+
+            var product = await _context.Product
+                .Include(x => x.Subcategory)
+                .ThenInclude(x => x.Category)
+                .Select(x => new
+                {
+                    CategoryAlias = x.Subcategory.Category.Alias,
+                    x.Subcategory.Category.CategoryId,
+                    SubcategoryAlias = x.Subcategory.Alias,
+                    x.Subcategory.SubcategoryId,
+                    x.ProductId,
+                    x.Alias
+                })
+                .FirstOrDefaultAsync(x => x.CategoryId == categoryId
+                                          && x.SubcategoryId == subcategoryId
+                                          && x.ProductId == productId);
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = product.CategoryAlias,
+                Url = $"/Catalog/{product.CategoryId}"
+            });
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = product.SubcategoryAlias,
+                Url = $"/Catalog/{product.CategoryId}/{product.SubcategoryId}"
+            });
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = product.Alias,
+                Url = $"/Catalog/{product.CategoryId}/{product.SubcategoryId}/{product.ProductId}"
+            });
+
+            return result;
+        }
 
         public async Task AddProduct(Product product)
         {
@@ -274,6 +376,29 @@ namespace Database.Repositories
            .Include(x => x.Photo)
            .FirstOrDefaultAsync(x => x.Alias == alias);
 
+        public async Task<List<Breadcrumb>> GetNewsBreadcrumb(string alias)
+        {
+            alias = alias.TransformToId();
+
+            var result = new List<Breadcrumb>();
+
+            var news = await _context.News
+                .Select(x => new
+                {
+                    x.Alias,
+                    x.Title,
+                })
+                .FirstOrDefaultAsync(x => x.Alias == alias);
+
+            result.Add(new Breadcrumb()
+            {
+                DisplayName = news.Title,
+                Url = $"/News/{news.Alias}",
+            });
+
+            return result;
+        }
+
         public async Task<bool> CheckNewsAlias(string alias) =>
             await _context.News.AnyAsync(x => x.Alias == alias);
 
@@ -311,7 +436,7 @@ namespace Database.Repositories
 
             return true;
         }
-        
+
         #endregion
 
         #region Gallery

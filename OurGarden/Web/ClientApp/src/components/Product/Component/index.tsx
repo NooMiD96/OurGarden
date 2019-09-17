@@ -33,6 +33,12 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       props.getProduct(categoryId, subcategoryId, productId);
     }
 
+    props.getBreadcrumb({
+      categoryId,
+      subcategoryId,
+      productId
+    });
+
     this.state = {
       itemCount: "1"
     };

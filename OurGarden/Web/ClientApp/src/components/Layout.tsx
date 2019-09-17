@@ -9,7 +9,7 @@ import Col from "@core/antd/Col";
 import ErrorHandler from "@core/HOC/ErrorHandler";
 import TopBar from "@components/Main/TopBar";
 import Sider from "@components/Main/Sider";
-import Breadcrumb from "@components/Main/Breadcrumb";
+import Breadcrumb from "@components/Breadcrumb";
 
 const { Header, Content } = AntdLayout;
 

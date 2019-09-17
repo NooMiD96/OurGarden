@@ -48,6 +48,11 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
       props.getProductList(params.categoryId, params.subcategoryId);
     }
 
+    props.getBreadcrumb({
+      categoryId: params.categoryId,
+      subcategoryId: params.subcategoryId
+    });
+
     this.state = {
       page: 1,
       pageSize: 6
@@ -77,7 +82,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
 
     const dataList = productList.map(x => ({
       ...x,
-      link: `/Каталог/${x.categoryId}/${x.subcategoryId}/${x.productId}`
+      link: `/Catalog/${x.categoryId}/${x.subcategoryId}/${x.productId}`
     }));
 
     const seoSection = getSEOMetaData("productList");

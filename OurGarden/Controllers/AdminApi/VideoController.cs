@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Model.DB;
 using Model.DTO;
+
 using System;
 using System.Threading.Tasks;
 
@@ -72,8 +73,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> Delete(
             [FromQuery]string videoId)
         {
-            int id = 0;
-            if (int.TryParse(videoId, out id))
+            if (Int32.TryParse(videoId, out var id))
                 await _repository.DeleteVideo(id);
 
             return Success(true);

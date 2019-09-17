@@ -39,6 +39,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     ) {
       props.getSubcategoryList(params.categoryId);
     }
+
+    props.getBreadcrumb({ categoryId: params.categoryId });
   }
 
   componentDidUpdate(prevProps: TState) {

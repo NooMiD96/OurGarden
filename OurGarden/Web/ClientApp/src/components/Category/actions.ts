@@ -31,7 +31,7 @@ export const actionsList = {
 // #endregion
 // ----------------
 // #region ACTIONS CREATORS
-const controllerName = "Home";
+const controllerName = "Category";
 export const actionCreators = {
   getCategoryList: (): IAppThunkAction<t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetCategories";

@@ -21,7 +21,7 @@ const CategoryList = ({
     <Menu selectedKeys={[activeKey]} mode="inline">
       {categoryList.map(x => (
         <Menu.Item key={x.categoryId}>
-          <GenerateLink link={`Каталог/${x.categoryId}`} title={x.alias} />
+          <GenerateLink link={`Catalog/${x.categoryId}`} title={x.alias} />
         </Menu.Item>
       ))}
     </Menu>

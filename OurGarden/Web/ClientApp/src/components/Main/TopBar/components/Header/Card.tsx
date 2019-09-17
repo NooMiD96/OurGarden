@@ -28,7 +28,7 @@ const Card = (props: ICard) => {
         style={{ backgroundColor: darkGreenColor, color: "#fff" }}
         count={props.totalCount}
       >
-        <Archive onClick={() => props.push("/Корзина")} />
+        <Archive onClick={() => props.push("/Card")} />
       </Badge>
     </React.Fragment>
   );

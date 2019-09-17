@@ -11,6 +11,8 @@ import {
 } from "./TState";
 import Component from "./Component";
 
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
+
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
   ...state.category,
   ...state.router,
@@ -19,6 +21,7 @@ const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStat
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
+  setBreadcrumb: breadcrumbActions.setBreadcrumb,
   push,
 };
 

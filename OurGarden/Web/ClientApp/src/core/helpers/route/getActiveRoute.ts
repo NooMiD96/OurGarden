@@ -2,7 +2,7 @@ import { Location } from "history";
 import { ICategory } from "@src/components/Category/State";
 
 const getActiveRoute = (
-  tabList: { key: string; title: string; link: string }[],
+  tabList: { title: string; link: string }[],
   location: Location<any>
 ) => {
   if (!tabList || !tabList.length) {
@@ -18,7 +18,7 @@ const getActiveRoute = (
       for (let i = 0; i < tabList.length; i++) {
         const tab = tabList[i];
         if (tab.link.replace(/\s/g, "-").toLowerCase() === mainRoute) {
-          defaultActiveKey = tab.key;
+          defaultActiveKey = tab.link;
           break;
         }
       }
@@ -45,8 +45,8 @@ const getActiveCategory = (
 
   if (
     routeSplit.length
-    // Если мы находимся в разделе "Каталог"
-    && routeSplit.some(x => x.toLowerCase() === "каталог")
+    // Если мы находимся в разделе "Catalog"
+    && routeSplit.some(x => x.toLowerCase() === "Catalog")
     // Если выбрана категория
     && routeSplit[1]
   ) {

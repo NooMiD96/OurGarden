@@ -1,5 +1,7 @@
-﻿using Model.DB;
+﻿using Model.Breadcrumb;
+using Model.DB;
 using Model.DTO.ProductDTO;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +26,7 @@ namespace Database.Repositories
         Task<IEnumerable<Subcategory>> GetAllSubcategories();
         Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId);
         Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId);
+        Task<List<Breadcrumb>> GetSubcategoryBreadcrumb(string categoryId);
         Task AddSubcategory(Subcategory subcategory);
         Task UpdateSubcategory(Subcategory subcategory);
         Task DeleteSubcategory(string subcategoryId, string categoryId);
@@ -34,6 +37,8 @@ namespace Database.Repositories
         Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync();
         Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId);
         Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
+        Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId);
+        Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId, string productId);
         Task AddProduct(Product product);
         Task UpdateProduct(Product product);
         ValueTask<bool> DeleteProduct(string productId, string subcategoryId, string categoryId);
@@ -42,6 +47,7 @@ namespace Database.Repositories
         Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);
         Task<News> GetNews(int newsId);
         Task<News> GetNews(string alias);
+        Task<List<Breadcrumb>> GetNewsBreadcrumb(string alias);
         Task<bool> CheckNewsAlias(string alias);
         Task AddNews(News news);
         Task UpdateNews(News news);
