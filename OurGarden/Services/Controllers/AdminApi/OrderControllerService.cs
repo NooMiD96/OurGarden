@@ -42,7 +42,15 @@ namespace Web.Services.Controllers.AdminApi
                         TotalPrice = 0
                     };
 
+                    var client = new Client()
+                    {
+                         Email = orderDTO.Email,
+                         FIO = orderDTO.FIO,
+                         Phone = orderDTO.Phone
+                    };
+
                     await _repository.AddOrder(order);
+                    await _repository.AddClient(client);
 
                     order.OrderPositions = orderDTO.OrderPositions.Select(x =>
                             new OrderPosition()

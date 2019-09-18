@@ -79,10 +79,18 @@ namespace Database.Repositories
             return await _context.Clients.ToListAsync();
         }
 
+        public async Task<Client> GetClient(int clientId)
+        {
+            return await _context.Clients.FirstOrDefaultAsync(x => x.ClientId == clientId);
+        }
+
         public async Task AddClient(Client client)
         {
-            await _context.Clients.AddAsync(client);
-            await _context.SaveChangesAsync();
+            if (!_context.Clients.Any(x => x.Email == client.Email))
+            {
+                await _context.Clients.AddAsync(client);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task UpdateClient(Client client)
