@@ -125,9 +125,7 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Client", b =>
                 {
-                    b.Property<int>("ClientId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ClientId");
 
                     b.Property<string>("Email")
                         .HasMaxLength(64);
@@ -253,8 +251,7 @@ namespace Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId")
-                        .IsUnique();
+                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId");
 
                     b.ToTable("OrderPosition");
                 });
@@ -565,8 +562,8 @@ namespace Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Model.DB.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("Model.DB.OrderPosition", "ProductId", "SubcategoryId", "CategoryId")
+                        .WithMany()
+                        .HasForeignKey("ProductId", "SubcategoryId", "CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

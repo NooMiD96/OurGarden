@@ -8,6 +8,7 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import { IProduct } from "@components/Product/State";
 
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 // ----------------
 //#region ACTIONS
 export const actionsList = {
@@ -34,7 +35,7 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Home";
+const controllerName = "Product";
 export const actionCreators = {
   getProductList: (categoryId: string, subcategoryId: string): IAppThunkAction<t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetProducts";
@@ -70,6 +71,12 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getProductListRequest());
+  },
+  getBreadcrumb: (params: any): IAppThunkAction<any> => (dispatch, getState) => {
+    breadcrumbActions.getBreadcrumb({
+      controllerName,
+      params
+    })(dispatch, getState);
   },
   cleanProductList: actionsList.cleanProductList,
   cleanErrorInner: actionsList.cleanErrorInner,

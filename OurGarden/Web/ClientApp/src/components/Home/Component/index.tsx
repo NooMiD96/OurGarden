@@ -1,7 +1,11 @@
 import * as React from "react";
 
 import Loading from "@src/core/components/Loading";
+import HeaderHelmet from "@src/core/components/Helmet";
+
 import NewsCarousel from "./NewsCarousel";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 
@@ -14,6 +18,11 @@ export class Home extends React.PureComponent<TState, TComponentState> {
     if (!props.newsList.length) {
       props.getNewsList();
     }
+
+    props.setBreadcrumb({
+      breadcrumb: [],
+      key: ""
+    });
   }
 
   render() {
@@ -23,6 +32,9 @@ export class Home extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="home-wrapper content">
+        <HeaderHelmet
+          {...getSEOMetaData("home")}
+        />
         {pending ? (
           <Loading />
         ) : (

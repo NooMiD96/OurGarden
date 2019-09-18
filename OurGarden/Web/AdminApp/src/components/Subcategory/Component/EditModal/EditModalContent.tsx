@@ -5,6 +5,7 @@ import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
 import Select from "@core/antd/Select";
+import Checkbox from "@core/antd/Checkbox";
 import localeText from "../Text";
 
 import { FileUploader } from "@src/core/components/Uploader/File";
@@ -24,7 +25,7 @@ interface IProps extends FormComponentProps {
 export const EditModalContent = (props: IProps) => {
   const { form, item } = props;
   const { getFieldDecorator } = form;
-  const { subcategoryId, categoryId, alias, photo } = item || {} as ISubcategory;
+  const { subcategoryId, categoryId, alias, photo, isVisible } = item || { isVisible: true } as ISubcategory;
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -32,7 +33,8 @@ export const EditModalContent = (props: IProps) => {
     const newCategoryId = form.getFieldValue("newCategoryId");
 
     const alias = form.getFieldValue("alias");
-    
+    const isVisible = form.getFieldValue("isVisible");
+
     const image = form.getFieldValue("image");
 
     props.form.validateFields((err: any, _values: any) => {
@@ -40,10 +42,11 @@ export const EditModalContent = (props: IProps) => {
         props.handleCreateSubmit({
           categoryId,
           subcategoryId,
-          
+
           newCategoryId,
-          
+
           alias,
+          isVisible,
           file: image,
         });
       }
@@ -80,7 +83,7 @@ export const EditModalContent = (props: IProps) => {
             showSearch
             placeholder="Выберете категорию"
             optionFilterProp="children"
-            filterOption={(input, option) =>
+            filterOption={(input, option) => 
               option.props.children
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
@@ -100,6 +103,14 @@ export const EditModalContent = (props: IProps) => {
             placeholder={localeText._label_alias}
             onPressEnter={onSubmit}
           />
+        )}
+      </FormItem>
+      <FormItem>
+        {getFieldDecorator("isVisible", {
+          initialValue: isVisible,
+          valuePropName: "checked",
+        })(
+          <Checkbox>Категория видна пользователю</Checkbox>
         )}
       </FormItem>
       <FormItem>

@@ -20,7 +20,7 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class OrderController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         public OrderController(IOurGardenRepository repository)
         {
             _repository = repository;
@@ -62,7 +62,7 @@ namespace Web.Controllers.AdminApi
         {
             try
             {
-                var order = await _repository.GetOrder(orderDTO.OrderId);
+                var order = await _repository.GetOrder(orderDTO?.OrderId ?? -1);
                 if (order == null)
                 {
                     return BadRequest("Не удалось найти заказ, повторите попытку.");

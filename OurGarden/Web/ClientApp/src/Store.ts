@@ -18,6 +18,9 @@ import { reducer as ProductReducer } from "@components/Product/reducer";
 import { IUserCardState } from "@components/UserCard/State";
 import { reducer as UserCardReducer } from "@components/UserCard/reducer";
 
+import { IBreadcrumbState } from "@components/Breadcrumb/State";
+import { reducer as BreadcrumbReducer } from "@components/Breadcrumb/reducer";
+
 export interface IApplicationState {
   router: RouterState;
 
@@ -30,6 +33,8 @@ export interface IApplicationState {
   product: IProductState;
 
   userCard: IUserCardState;
+
+  breadcrumb: IBreadcrumbState;
 }
 
 export const reducers = {
@@ -42,6 +47,8 @@ export const reducers = {
   product: ProductReducer,
 
   userCard: UserCardReducer,
+
+  breadcrumb: BreadcrumbReducer,
 };
 
 export interface IAppThunkAction<TAction> {

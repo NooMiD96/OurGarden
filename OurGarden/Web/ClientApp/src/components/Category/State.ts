@@ -1,7 +1,7 @@
 import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface ICategory {
   categoryId: string;
   alias: string;
@@ -19,4 +19,4 @@ export const unloadedState: ICategoryState = {
   pending: false,
   errorInner: "",
 };
-//#endregion
+// #endregion

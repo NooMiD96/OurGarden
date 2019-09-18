@@ -7,6 +7,7 @@ import Button from "@core/antd/Button";
 import Select from "@core/antd/Select";
 import CKEditor from "@core/components/CKEditor";
 import InputNumber from "@core/antd/InputNumber";
+import Checkbox from "@core/antd/Checkbox";
 import localeText from "../Text";
 
 import { FileUploader } from "@src/core/components/Uploader/File";
@@ -37,6 +38,7 @@ const onSubmitHandler = (
   const description: string = ckEditor.current!.state.editor.getData();
 
   const alias = form.getFieldValue("alias");
+  const isVisible = form.getFieldValue("isVisible");
   const price = form.getFieldValue("price");
   const image = form.getFieldValue("image");
 
@@ -55,6 +57,7 @@ const onSubmitHandler = (
         newSubcategoryId,
 
         alias,
+        isVisible,
         price,
         description,
         file: image,
@@ -86,7 +89,7 @@ export const EditModalContent = (props: IProps) => {
 
   const { form, item, categoryList } = props;
   const { getFieldDecorator } = form;
-  const { categoryId, alias, price, description, photos} = item || {} as IProduct;
+  const { categoryId, alias, price, description, photos, isVisible } = item || { isVisible: true } as IProduct;
   let { subcategoryId } = item || {} as IProduct;
 
   const onUploadImage = (image?: File) => {
@@ -155,6 +158,15 @@ export const EditModalContent = (props: IProps) => {
             placeholder={localeText._label_alias}
             onPressEnter={onSubmit}
           />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("isVisible", {
+          initialValue: isVisible,
+          valuePropName: "checked",
+        })(
+          <Checkbox>Категория видна пользователю</Checkbox>
         )}
       </FormItem>
 

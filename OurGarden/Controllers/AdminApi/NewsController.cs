@@ -22,9 +22,9 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class NewsController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
-        public readonly NewsControllerService _service;
-        public readonly FileHelper _fileHelper;
+        private readonly IOurGardenRepository _repository;
+        private readonly NewsControllerService _service;
+        private readonly FileHelper _fileHelper;
 
         public NewsController(IOurGardenRepository repository)
         {

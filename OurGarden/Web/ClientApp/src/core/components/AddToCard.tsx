@@ -32,7 +32,7 @@ const AddToCard = (props: IAddToCard) => {
           />
         </React.Fragment>
       ) : (
-        "Уточните цену у продавцов"
+        "Под заказ"
       )}
     </div>
   );

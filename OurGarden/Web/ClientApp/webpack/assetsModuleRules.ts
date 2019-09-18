@@ -14,10 +14,20 @@ const getAssetsModuleRules = (
     test: /\.js$/,
     enforce: "pre",
     use: StringReplacePlugin.replace({
-      replacements: [{
-        pattern: /import Icon from '\.\.\/icon';/ig,
-        replacement: () => "import Icon from '@core/antd/Icon';"
-      }]
+      replacements: [
+        {
+          pattern: /import Icon from '\.\.\/icon';/ig,
+          replacement: () => "import Icon from '@core/antd/Icon';"
+        },
+        {
+          pattern: /componentWillMount/ig,
+          replacement: () => "UNSAFE_componentWillMount"
+        },
+        {
+          pattern: /componentWillReceiveProps/ig,
+          replacement: () => "UNSAFE_componentWillReceiveProps"
+        }
+      ]
     })
   },
   {
@@ -28,7 +38,7 @@ const getAssetsModuleRules = (
       {
         loader: "sass-loader",
         options: {
-          data: "@import '@src/assets/scss/_variables.scss';"
+          prependData: "@import '@src/assets/scss/_variables.scss';"
         }
       }
     ]

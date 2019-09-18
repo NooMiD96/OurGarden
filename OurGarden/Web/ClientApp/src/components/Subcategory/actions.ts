@@ -9,6 +9,7 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import { ISubcategory } from "./State";
 
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 // ----------------
 //#region ACTIONS
 export const actionsList = {
@@ -31,7 +32,7 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Home";
+const controllerName = "Subcategory";
 export const actionCreators = {
   getSubcategoryList: (categoryId: string): IAppThunkAction<t.TGetSubcategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetSubcategories";
@@ -66,6 +67,12 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getSubcategoryListRequest());
+  },
+  getBreadcrumb: (params: any): IAppThunkAction<any> => (dispatch, getState) => {
+    breadcrumbActions.getBreadcrumb({
+      controllerName,
+      params
+    })(dispatch, getState);
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

@@ -3,6 +3,8 @@ import { RouterState } from "connected-react-router";
 import { IUserCardState } from "./State";
 import { actionCreators } from "./actions";
 
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
+
 export enum DisplayTypeEnum {
   CardInfo,
   CardConfirmation,
@@ -21,7 +23,9 @@ export type TMapStateToProps = TStateToProps
   & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
-export type TDispatchToProps = typeof actionCreators;
+export type TDispatchToProps = typeof actionCreators & {
+  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb,
+};
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS

@@ -37,12 +37,12 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
 
       displayList = (item as ISubcategory).subcategoryId
         ? (props.dataList as ISubcategory[]).map<IDisplayItem>(x => ({
-            link: `/Каталог/${x.categoryId}/${x.subcategoryId}`,
+            link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
             alias: x.alias,
             photoUrl: x.photo ? x.photo.url : ""
           }))
         : (props.dataList as ICategory[]).map<IDisplayItem>(x => ({
-            link: `/Каталог/${x.categoryId}`,
+            link: `/Catalog/${x.categoryId}`,
             alias: x.alias,
             photoUrl: x.photo ? x.photo.url : ""
           }));

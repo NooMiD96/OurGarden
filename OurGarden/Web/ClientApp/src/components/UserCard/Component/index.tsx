@@ -1,7 +1,11 @@
 import React from "react";
 
+import HeaderHelmet from "@src/core/components/Helmet";
+
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
 
@@ -11,6 +15,13 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     displayType: DisplayTypeEnum.CardInfo
   };
+
+  componentDidMount() {
+    this.props.setBreadcrumb({
+      breadcrumb: [],
+      key: "",
+    });
+  }
 
   onChangeOrderStep = (newType: DisplayTypeEnum) => {
     this.setState({
@@ -50,6 +61,9 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="user-card-wrapper content white-background">
+        <HeaderHelmet
+          {...getSEOMetaData("userCard")}
+        />
         {renderComponent}
       </div>
     );

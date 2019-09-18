@@ -21,7 +21,7 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class GalleryController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         public GalleryController(IOurGardenRepository repository)
         {
             _repository = repository;

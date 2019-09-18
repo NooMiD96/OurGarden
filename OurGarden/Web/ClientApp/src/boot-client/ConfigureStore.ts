@@ -1,4 +1,13 @@
-import { createStore, applyMiddleware, compose, combineReducers, StoreEnhancer, StoreEnhancerStoreCreator, ReducersMapObject, AnyAction } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  compose,
+  combineReducers,
+  StoreEnhancer,
+  StoreEnhancerStoreCreator,
+  ReducersMapObject,
+  AnyAction
+} from "redux";
 import thunk from "redux-thunk";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import { History } from "history";
@@ -8,16 +17,18 @@ import * as StoreModule from "@src/Store";
 const { reducers } = StoreModule;
 type ApplicationState = StoreModule.IApplicationState;
 
-
-const buildRootReducer = (historyForRouterReducer: History, appReducers: ReducersMapObject<ApplicationState, AnyAction>) =>
-  combineReducers<ApplicationState>({
-    router: connectRouter(historyForRouterReducer),
-    ...appReducers,
-  });
+const buildRootReducer = (
+  historyForRouterReducer: History,
+  appReducers: ReducersMapObject<ApplicationState, AnyAction>
+) => combineReducers<ApplicationState>({
+  router: connectRouter(historyForRouterReducer),
+  ...appReducers,
+});
 
 export default function configureStore(history: History, initialState: ApplicationState) {
   let devToolsExtension;
   if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+    // eslint-disable-next-line no-underscore-dangle
     devToolsExtension = window && (window as any).__REDUX_DEVTOOLS_EXTENSION__ as () => StoreEnhancer;
   }
 
@@ -33,7 +44,7 @@ export default function configureStore(history: History, initialState: Applicati
   // Enable Webpack hot module replacement for reducers
   if (module.hot) {
     module.hot.accept("@src/Store", () => {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
       const nextRootReducer = require<typeof StoreModule>("@src/Store");
       store.replaceReducer(buildRootReducer(history, nextRootReducer.reducers as any));
     });

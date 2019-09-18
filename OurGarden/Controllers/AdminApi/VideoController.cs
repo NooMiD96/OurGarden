@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Model.DB;
 using Model.DTO;
+
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class VideoController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         public VideoController(IOurGardenRepository repository)
         {
             _repository = repository;
@@ -30,7 +31,7 @@ namespace Web.Controllers.AdminApi
         {
             try
             {
-                if (video.VideoId <= 0)
+                if ((video?.VideoId ?? 0) <= 0)
                 {
                     var newVideo = new Video()
                     {
@@ -45,9 +46,11 @@ namespace Web.Controllers.AdminApi
                 else
                 {
                     var oldVideo = await _repository.GetVideo(video.VideoId);
-                    if ( !video.Description.Equals(oldVideo.Description) 
+                    if (
+                        !video.Description.Equals(oldVideo.Description)
                         || !video.Title.Equals(oldVideo.Title) 
-                        || !video.Url.Equals(oldVideo.Url))
+                        || !video.Url.Equals(oldVideo.Url)
+                    )
                     {
                         oldVideo.Title = video.Title;
                         oldVideo.Description = video.Description;
@@ -70,8 +73,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> Delete(
             [FromQuery]string videoId)
         {
-            int id = 0;
-            if (int.TryParse(videoId, out id))
+            if (Int32.TryParse(videoId, out var id))
                 await _repository.DeleteVideo(id);
 
             return Success(true);

@@ -31,7 +31,7 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Home";
+const controllerName = "News";
 export const actionCreators = {
   getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetAllNews";

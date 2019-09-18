@@ -36,7 +36,7 @@ const searchListIsEmpty = () => (
 );
 
 const fetchProducts = async (search: string) => {
-  return await fetch(`/api/Home/SearchProduct?search=${search}`, {
+  return await fetch(`/api/Product/SearchProduct?search=${search}`, {
     credentials: "same-origin",
     method: "GET"
   }).then(res => res.json());

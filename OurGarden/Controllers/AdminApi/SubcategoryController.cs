@@ -23,9 +23,9 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class SubcategoryController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
-        public readonly SubcategoryControllerService _service;
-        public readonly FileHelper _fileHelper;
+        private readonly IOurGardenRepository _repository;
+        private readonly SubcategoryControllerService _service;
+        private readonly FileHelper _fileHelper;
 
         public SubcategoryController(IOurGardenRepository repository)
         {
@@ -65,8 +65,8 @@ namespace Web.Controllers.AdminApi
             try
             {
                 if (
-                    String.IsNullOrEmpty(subcategoryDTO.CategoryId)
-                    || String.IsNullOrEmpty(subcategoryDTO.SubcategoryId))
+                    String.IsNullOrEmpty(subcategoryDTO?.CategoryId)
+                    || String.IsNullOrEmpty(subcategoryDTO?.SubcategoryId))
                 {
                     var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
 

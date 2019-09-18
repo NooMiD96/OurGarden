@@ -12,6 +12,7 @@ export interface ISubcategory {
   subcategoryId: string;
   categoryId: string;
   alias: string;
+  isVisible: boolean;
   photo: IPhoto;
 }
 
@@ -22,6 +23,7 @@ export interface ISubcategoryDTO {
   newCategoryId: string;
 
   alias: string;
+  isVisible: boolean;
   file: File;
 }
 

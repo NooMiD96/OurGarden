@@ -1,7 +1,7 @@
 import { IProduct } from "../Product/State";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface IUserCardProduct {
   count: number;
   product: IProduct;
@@ -20,4 +20,4 @@ export const unloadedState: IUserCardState = {
   pending: false,
   errorInner: "",
 };
-//#endregion
+// #endregion

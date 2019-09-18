@@ -58,7 +58,6 @@ export const actionsList = {
 // ----------------
 //#region ACTIONS CREATORS
 const controllerName = "Gallery";
-const defaultControllerName = "Home";
 export const actionCreators = {
   getGalleryList: (): IAppThunkAction<t.TGetGalleryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "GetGalleries";
@@ -66,7 +65,7 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${defaultControllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {

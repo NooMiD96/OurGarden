@@ -10,7 +10,7 @@ import * as t from "./actionsType";
 import { ICategory } from "./State";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getCategoryListRequest: (): t.IGetCategoryListRequest => ({
     type: t.GET_CATEGORY_LIST_REQUEST,
@@ -28,10 +28,10 @@ export const actionsList = {
     type: t.CLEAN_ERROR_INNER,
   }),
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
-const controllerName = "Home";
+// #region ACTIONS CREATORS
+const controllerName = "Category";
 export const actionCreators = {
   getCategoryList: (): IAppThunkAction<t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
     const apiUrl = "GetCategories";
@@ -67,4 +67,4 @@ export const actionCreators = {
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };
-//#endregion
+// #endregion

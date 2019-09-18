@@ -6,11 +6,13 @@ export interface ICategory {
   categoryId: string;
   alias: string;
   photo: IPhoto;
+  isVisible: boolean;
 }
 
 export interface ICategoryDTO {
   categoryId: string | null;
   alias: string;
+  isVisible: boolean;
   file: File;
 }
 

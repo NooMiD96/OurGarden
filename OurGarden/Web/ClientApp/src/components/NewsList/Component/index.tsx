@@ -5,7 +5,10 @@ import Col from "@core/antd/Col";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import Loading from "@src/core/components/Loading";
+import HeaderHelmet from "@src/core/components/Helmet";
 import { NewsCard } from "@src/core/components/NewsCard";
+
+import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 
@@ -23,12 +26,21 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
       page: 1,
       pageSize: 4
     };
+
+    props.setBreadcrumb({
+      breadcrumb: [{
+        displayName: "Акции",
+        url: "News",
+        order: 1,
+      }],
+      key: "News"
+    });
   }
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {
     this.setState({
-      page: page,
-      pageSize: pageSize
+      page,
+      pageSize
     });
   };
 
@@ -36,13 +48,16 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
     const { newsList, pending, push } = this.props;
     const { page, pageSize } = this.state;
 
-    const dataList = newsList.map(x => ({
-      ...x,
-      link: `/Акции/${x.alias}`
+    const dataList = newsList.map((news) => ({
+      ...news,
+      link: `/News/${news.alias}`
     }));
 
     return (
       <div className="content news-list-wrapper">
+        <HeaderHelmet
+          {...getSEOMetaData("newsList")}
+        />
         {pending ? (
           <Loading />
         ) : (
@@ -60,7 +75,7 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
             <Row type="flex" className="white-background">
               {dataList
                 .slice((page - 1) * pageSize, page * pageSize)
-                .map(item => (
+                .map((item) => (
                   <Col key={item.link} className="card-wrapper">
                     <NewsCard item={item} push={push} pending={pending} />
                   </Col>
