@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20190918110301_UpdateMigrationsFileChange")]
+    partial class UpdateMigrationsFileChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +253,8 @@ namespace Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId");
+                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId")
+                        .IsUnique();
 
                     b.ToTable("OrderPosition");
                 });
@@ -560,8 +563,8 @@ namespace Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Model.DB.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId", "SubcategoryId", "CategoryId")
+                        .WithOne()
+                        .HasForeignKey("Model.DB.OrderPosition", "ProductId", "SubcategoryId", "CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

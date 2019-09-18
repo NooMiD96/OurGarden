@@ -7,6 +7,7 @@ export interface IProduct {
   subcategoryId: string;
   categoryId: string;
   alias: string;
+  isVisible: boolean;
   price: number;
   description: string;
   photos: IPhoto[];
@@ -30,6 +31,7 @@ export interface IProductDTO {
   newSubcategoryId: string;
 
   alias: string;
+  isVisible: boolean;
   price: number;
   description: string;
   file: File;

@@ -14,6 +14,9 @@ namespace Model.DB
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        //[Required]
+        //public bool? IsVisible { get; set; }
+
         //Childrens
         public ICollection<Subcategory> Subcategories { get; set; }
         public Photo Photo { get; set; }

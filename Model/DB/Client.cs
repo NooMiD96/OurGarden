@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
     public class Client
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ClientId { get; set; }
 
         [Required]

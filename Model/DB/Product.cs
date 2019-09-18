@@ -24,6 +24,9 @@ namespace Model.DB
 
         public string Description { get; set; }
 
+        //[Required]
+        //public bool? IsVisible { get; set; }
+
         //Parent
         public Subcategory Subcategory { get; set; }
         //Childrens

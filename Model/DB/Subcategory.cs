@@ -20,6 +20,9 @@ namespace Model.DB
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        //[Required]
+        //public bool? IsVisible { get; set; }
+
         //Parent
         public Category Category { get; set; }
 

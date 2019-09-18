@@ -4,17 +4,18 @@ import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
+import Checkbox from "@core/antd/Checkbox";
 import localeText from "../Text";
 
 import { FileUploader } from "@src/core/components/Uploader/File";
 
-import { ICategory } from "../../State";
+import { ICategory, ICategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 
 interface IProps extends FormComponentProps {
   item: ICategory | null;
   loading: boolean;
-  handleCreateSubmit: Function;
+  handleCreateSubmit: (data: ICategoryDTO) => void;
   handleClose: Function;
 }
 
@@ -25,19 +26,22 @@ export const EditModalContent = (props: IProps) => {
   const categoryId = props.item ? props.item.categoryId : null;
   const alias = props.item ? props.item.alias : null;
   const photo = props.item ? props.item.photo : null;
+  const isVisible = props.item ? props.item.isVisible : true;
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
     const alias = form.getFieldValue("alias");
     const image = form.getFieldValue("image");
+    const isVisible = form.getFieldValue("isVisible");
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
         props.handleCreateSubmit({
-          categoryId: categoryId,
-          alias: alias,
+          categoryId,
+          alias,
           file: image,
+          isVisible,
         });
       }
     });
@@ -66,6 +70,14 @@ export const EditModalContent = (props: IProps) => {
             placeholder={localeText._label_alias}
             onPressEnter={onSubmit}
           />
+        )}
+      </FormItem>
+      <FormItem>
+        {getFieldDecorator("isVisible", {
+          initialValue: isVisible,
+          valuePropName: "checked",
+        })(
+          <Checkbox>Категория видна пользователю</Checkbox>
         )}
       </FormItem>
       <FormItem>
