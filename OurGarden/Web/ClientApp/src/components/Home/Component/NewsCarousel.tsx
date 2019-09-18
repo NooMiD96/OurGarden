@@ -38,10 +38,10 @@ export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
               key={x.newsId}
               className="slick-slide-content"
               onClick={() => {
-                push(`/Акции/${x.alias}`);
+                push(`/News/${x.alias}`);
               }}
               onKeyDown={() => {
-                push(`/Акции/${x.alias}`);
+                push(`/News/${x.alias}`);
               }}
               role="link"
             >

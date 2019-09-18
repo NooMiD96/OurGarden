@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import HeaderHelmet from "@src/core/components/Helmet";
@@ -13,18 +13,21 @@ import "./style/Contacts.style.scss";
 import "@src/assets/scss/companyBackground.scss";
 
 interface IContacts {
-  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb
-};
+  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
+}
 
 export class Contacts extends React.PureComponent<IContacts, {}> {
   constructor(props: IContacts) {
     super(props);
 
-    props.setBreadcrumb([{
-      displayName: "Контакты",
-      url: "",
-      order: 1,
-    }]);
+    props.setBreadcrumb({
+      breadcrumb: [{
+        displayName: "Контакты",
+        url: "Contacts",
+        order: 1,
+      }],
+      key: "Contacts"
+    });
   }
 
   render() {

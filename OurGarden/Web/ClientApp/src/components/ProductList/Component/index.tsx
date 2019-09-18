@@ -18,17 +18,17 @@ import { TState, TComponentState } from "../TState";
 
 export class ProductList extends React.PureComponent<TState, TComponentState> {
   cardStyle = {
-    // xs	<576px
+    // xs <576px
     xs: { span: 24 },
-    // sm	≥576px
+    // sm ≥576px
     sm: { span: 24 },
-    // md	≥768px
+    // md ≥768px
     // md: { span: 24 },
-    // lg	≥992px
+    // lg ≥992px
     lg: { span: 12 },
-    // xl	≥1200px
+    // xl ≥1200px
     xl: { span: 12 },
-    // xxl	≥1600px
+    // xxl ≥1600px
     xxl: { span: 8 }
   };
 
@@ -61,18 +61,24 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
 
   componentDidUpdate(prevProps: TState) {
     const {
-      match: { params }
+      match: { params },
+      getBreadcrumb
     } = this.props;
 
     if (prevProps.match.params !== params) {
       this.props.getProductList(params.categoryId, params.subcategoryId);
+
+      getBreadcrumb({
+        categoryId: params.categoryId,
+        subcategoryId: params.subcategoryId
+      });
     }
   }
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {
     this.setState({
-      page: page,
-      pageSize: pageSize
+      page,
+      pageSize
     });
   };
 
@@ -80,9 +86,9 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     const { productList, pending, push } = this.props;
     const { page, pageSize } = this.state;
 
-    const dataList = productList.map(x => ({
-      ...x,
-      link: `/Catalog/${x.categoryId}/${x.subcategoryId}/${x.productId}`
+    const dataList = productList.map((product) => ({
+      ...product,
+      link: `/Catalog/${product.categoryId}/${product.subcategoryId}/${product.productId}`
     }));
 
     const seoSection = getSEOMetaData("productList");
@@ -117,9 +123,9 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
               onChange={this.onChange}
             />
             <Row type="flex" gutter={16}>
-              {dataList.slice((page - 1) * pageSize, page * pageSize).map(x => (
-                <Col {...this.cardStyle} key={x.link} className="card-wrapper">
-                  <ProductCard pending={pending} product={x} push={push} />
+              {dataList.slice((page - 1) * pageSize, page * pageSize).map((item) => (
+                <Col {...this.cardStyle} key={item.link} className="card-wrapper">
+                  <ProductCard pending={pending} product={item} push={push} />
                 </Col>
               ))}
             </Row>

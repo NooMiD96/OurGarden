@@ -11,17 +11,17 @@ import { TState, TComponentState } from "../TState";
 
 export class Subcategory extends React.PureComponent<TState, TComponentState> {
   cardStyle = {
-    // xs	<576px
+    // xs <576px
     xs: { span: 24 },
-    // sm	≥576px
+    // sm ≥576px
     sm: { span: 24 },
-    // md	≥768px
+    // md ≥768px
     // md: { span: 24 },
-    // lg	≥992px
+    // lg ≥992px
     lg: { span: 12 },
-    // xl	≥1200px
+    // xl ≥1200px
     xl: { span: 8 }
-    // xxl	≥1600px
+    // xxl ≥1600px
     // xxl: { span: 8 }
   };
 
@@ -50,6 +50,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
 
     if (prevProps.match.params !== params) {
       this.props.getSubcategoryList(params.categoryId);
+
+      this.props.getBreadcrumb({ categoryId: params.categoryId });
     }
   }
 

@@ -17,7 +17,7 @@ export const actionsList = {
   getBreadcrumb: (): t.IGetBreadcrumb => ({
     type: t.GET_BREADCRUMB
   }),
-  setBreadcrumb: (payload: IBreadcrumb[]): t.ISetBreadcrumb => ({
+  setBreadcrumb: (payload: { breadcrumb: IBreadcrumb[], key: string }): t.ISetBreadcrumb => ({
     type: t.SET_BREADCRUMB,
     payload
   }),
@@ -26,10 +26,27 @@ export const actionsList = {
 // ----------------
 // #region ACTIONS CREATORS
 export const actionCreators = {
-  getBreadcrumb: (controllerName: string, params: any = {}): IAppThunkAction<t.IGetBreadcrumb | t.ISetBreadcrumb> => (dispatch, _getState) => {
-    dispatch(actionsList.getBreadcrumb());
-
+  getBreadcrumb: ({
+    controllerName,
+    key = '',
+    params = {}
+  }: {
+      controllerName: string,
+      key?: string,
+      params?: any,
+  }): IAppThunkAction<t.IGetBreadcrumb | t.ISetBreadcrumb> => (dispatch, getState) => {
     const paramString = qs.stringify(params);
+    const currentKey = getState().breadcrumb.key;
+    
+    if (!key) {
+      key = paramString;
+    }
+
+    if (currentKey === key) {
+      return;
+    }
+
+    dispatch(actionsList.getBreadcrumb());
 
     const fetchTask = fetch(`/api/${controllerName}/GetBreadcrumb?${paramString}`, {
       credentials: "same-origin",
@@ -44,7 +61,12 @@ export const actionCreators = {
           return errorCreater(value.error);
         }
 
-        dispatch(actionsList.setBreadcrumb(value.data));
+        dispatch(
+          actionsList.setBreadcrumb({
+            breadcrumb: value.data,
+            key
+          })
+        );
 
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(

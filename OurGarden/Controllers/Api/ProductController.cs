@@ -28,8 +28,8 @@ namespace Web.Controllers.Api
                                                        [FromQuery] string productId)
         {
             var breadcrumb = String.IsNullOrEmpty(productId)
-                ? await _repository.GetProductBreadcrumb(subcategoryId, categoryId)
-                : await _repository.GetProductBreadcrumb(productId, subcategoryId, categoryId);
+                ? await _repository.GetProductBreadcrumb(categoryId, subcategoryId)
+                : await _repository.GetProductBreadcrumb(categoryId, subcategoryId, productId);
             var order = 1;
 
             var breadcrumbList = new List<Breadcrumb>()

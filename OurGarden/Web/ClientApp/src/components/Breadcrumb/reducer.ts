@@ -11,12 +11,14 @@ export const reducer: Reducer<IBreadcrumbState> = (state: IBreadcrumbState = unl
       return {
         ...state,
         breadcrumb: [],
+        key: '',
       };
 
     case t.SET_BREADCRUMB:
       return {
         ...state,
-        breadcrumb: action.payload,
+        breadcrumb: action.payload.breadcrumb,
+        key: action.payload.key,
       } as IBreadcrumbState;
 
     default:

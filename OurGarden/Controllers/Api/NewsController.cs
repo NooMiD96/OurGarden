@@ -22,9 +22,9 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetBreadcrumb([FromQuery] string alias)
+        public async Task<IActionResult> GetBreadcrumb([FromQuery] string newsId)
         {
-            var breadcrumb = await _repository.GetNewsBreadcrumb(alias);
+            var breadcrumb = await _repository.GetNewsBreadcrumb(newsId);
             var order = 1;
 
             var breadcrumbList = new List<Breadcrumb>()

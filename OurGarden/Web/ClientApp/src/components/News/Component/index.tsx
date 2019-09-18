@@ -31,11 +31,16 @@ export class News extends React.PureComponent<TState, TComponentState> {
   componentDidUpdate(prevProps: TState) {
     const {
       getNews,
-      match: { params }
+      match: { params },
+      getBreadcrumb
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
       getNews(params.newsId);
+
+      getBreadcrumb({
+        newsId: params.newsId
+      });
     }
   }
 

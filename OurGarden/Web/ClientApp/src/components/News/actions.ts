@@ -71,7 +71,10 @@ export const actionCreators = {
     dispatch(actionsList.getNewsRequest());
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (dispatch, getState) => {
-    breadcrumbActions.getBreadcrumb(controllerName, params)(dispatch, getState);
+    breadcrumbActions.getBreadcrumb({
+      controllerName,
+      params
+    })(dispatch, getState);
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

@@ -8,17 +8,20 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 
 interface IVideogalery {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
-};
+}
 
 export class Videogalery extends React.PureComponent<IVideogalery, {}> {
   constructor(props: IVideogalery) {
     super(props);
 
-    props.setBreadcrumb([{
-      displayName: "Видеогалерея",
-      url: "Videogalery",
-      order: 1,
-    }]);
+    props.setBreadcrumb({
+      breadcrumb: [{
+        displayName: "Видеогалерея",
+        url: "Videogalery",
+        order: 1,
+      }],
+      key: "Videogalery"
+    });
   }
 
   render() {

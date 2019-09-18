@@ -49,11 +49,18 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       getProduct,
       match: {
         params: { categoryId, subcategoryId, productId }
-      }
+      },
+      getBreadcrumb
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
       getProduct(categoryId, subcategoryId, productId);
+
+      getBreadcrumb({
+        categoryId,
+        subcategoryId,
+        productId
+      });
     }
   }
 
@@ -72,7 +79,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     });
 
     this.props.addProductToCard({
-      count: Number.parseInt(this.state.itemCount),
+      count: Number.parseInt(this.state.itemCount, 10),
       product: this.props.product!
     });
   };

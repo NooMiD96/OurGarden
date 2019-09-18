@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import HeaderHelmet from "@src/core/components/Helmet";
@@ -11,17 +11,20 @@ const { Paragraph, Title } = Typography;
 
 interface IDesign {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
-};
+}
 
 export class Design extends React.PureComponent<IDesign, {}> {
   constructor(props: IDesign) {
     super(props);
 
-    props.setBreadcrumb([{
-      displayName: "Ландшафтный дизайн",
-      url: "",
-      order: 1,
-    }]);
+    props.setBreadcrumb({
+      breadcrumb: [{
+        displayName: "Ландшафтный дизайн",
+        url: "Design",
+        order: 1,
+      }],
+      key: "Design"
+    });
   }
 
   render() {

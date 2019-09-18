@@ -127,6 +127,8 @@ namespace Database.Repositories
         {
             categoryId = categoryId.TransformToId();
 
+            var result = new List<Breadcrumb>();
+
             var category = await _context.Category
                 .Select(x => new
                 {
@@ -135,13 +137,16 @@ namespace Database.Repositories
                 })
                 .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
 
-            var breadcrumb = new Breadcrumb()
+            if (category is null)
+                return result;
+
+            result.Add(new Breadcrumb()
             {
                 DisplayName = category.Alias,
-                Url = $"/Catalog/{category.CategoryId}",
-            };
+                Url = $"Catalog/{category.CategoryId}",
+            });
 
-            return new List<Breadcrumb>() { breadcrumb };
+            return result;
         }
 
         public async Task AddSubcategory(Subcategory subcategory)
@@ -238,16 +243,19 @@ namespace Database.Repositories
                 })
                 .FirstOrDefaultAsync(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId);
 
+            if (subcategory is null)
+                return result;
+
             result.Add(new Breadcrumb()
             {
                 DisplayName = subcategory.CategoryAlias,
-                Url = $"/Catalog/{subcategory.CategoryId}"
+                Url = $"Catalog/{subcategory.CategoryId}"
             });
 
             result.Add(new Breadcrumb()
             {
                 DisplayName = subcategory.Alias,
-                Url = $"/Catalog/{subcategory.CategoryId}/{subcategory.SubcategoryId}"
+                Url = $"Catalog/{subcategory.CategoryId}/{subcategory.SubcategoryId}"
             });
 
             return result;
@@ -277,22 +285,25 @@ namespace Database.Repositories
                                           && x.SubcategoryId == subcategoryId
                                           && x.ProductId == productId);
 
+            if (product is null)
+                return result;
+
             result.Add(new Breadcrumb()
             {
                 DisplayName = product.CategoryAlias,
-                Url = $"/Catalog/{product.CategoryId}"
+                Url = $"Catalog/{product.CategoryId}"
             });
 
             result.Add(new Breadcrumb()
             {
                 DisplayName = product.SubcategoryAlias,
-                Url = $"/Catalog/{product.CategoryId}/{product.SubcategoryId}"
+                Url = $"Catalog/{product.CategoryId}/{product.SubcategoryId}"
             });
 
             result.Add(new Breadcrumb()
             {
                 DisplayName = product.Alias,
-                Url = $"/Catalog/{product.CategoryId}/{product.SubcategoryId}/{product.ProductId}"
+                Url = $"Catalog/{product.CategoryId}/{product.SubcategoryId}/{product.ProductId}"
             });
 
             return result;
@@ -390,10 +401,13 @@ namespace Database.Repositories
                 })
                 .FirstOrDefaultAsync(x => x.Alias == alias);
 
+            if (news is null)
+                return result;
+
             result.Add(new Breadcrumb()
             {
                 DisplayName = news.Title,
-                Url = $"/News/{news.Alias}",
+                Url = $"News/{news.Alias}",
             });
 
             return result;

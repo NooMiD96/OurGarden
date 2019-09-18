@@ -8,17 +8,20 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 
 interface IPayment {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
-};
+}
 
 export class Payment extends React.PureComponent<IPayment, {}> {
   constructor(props: IPayment) {
     super(props);
 
-    props.setBreadcrumb([{
-      displayName: "Доставка и оплата",
-      url: "",
-      order: 1,
-    }]);
+    props.setBreadcrumb({
+      breadcrumb: [{
+        displayName: "Доставка и оплата",
+        url: "Payment",
+        order: 1,
+      }],
+      key: "Payment"
+    });
   }
 
   render() {
@@ -31,7 +34,7 @@ export class Payment extends React.PureComponent<IPayment, {}> {
           Данный раздел находится в разработке, приходите позднее!
         </div>
       </>
-    )
+    );
   }
 }
 

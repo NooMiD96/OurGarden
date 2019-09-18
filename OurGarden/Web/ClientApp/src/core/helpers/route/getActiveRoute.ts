@@ -46,7 +46,7 @@ const getActiveCategory = (
   if (
     routeSplit.length
     // Если мы находимся в разделе "Catalog"
-    && routeSplit.some(x => x.toLowerCase() === "Catalog")
+    && routeSplit.some(x => x.toLowerCase() === "catalog")
     // Если выбрана категория
     && routeSplit[1]
   ) {

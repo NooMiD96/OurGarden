@@ -39,7 +39,7 @@ namespace Web.Controllers.Api
             };
 
             breadcrumbList.AddRange(
-                breadcrumbList.Select(x =>
+                breadcrumb.Select(x =>
                 {
                     x.Order = order++;
                     return x;
