@@ -49,7 +49,8 @@ namespace Web.Controllers.AdminApi
                     foreach (var file in gallery.AddFiles)
                     {
                         var fileHelper = new FileHelper(_repository);
-                        var photo = await fileHelper.AddFileToRepository(file);
+                        var photo = await fileHelper.AddFileWithPreviewToRepository(file);
+                        //var photo = await fileHelper.AddFileToRepository(file);
                         newGallery.Photos.Add(photo);
                     }
                     await _repository.AddGallery(newGallery);
@@ -65,14 +66,24 @@ namespace Web.Controllers.AdminApi
                         foreach (var file in gallery.AddFiles)
                         {
                             var fileHelper = new FileHelper(_repository);
-                            var photo = await fileHelper.AddFileToRepository(file);
+                            var photo = await fileHelper.AddFileWithPreviewToRepository(file);
                             oldGallery.Photos.Add(photo);
                         }
                     }                   
-                    if (gallery.RemoveFiles.Any(x => !String.IsNullOrEmpty(x)))
+                    if (!String.IsNullOrEmpty(gallery.RemoveFiles))
                     {
+                        var parsedIds = new List<Guid>();
+                        try
+                        {
+                            parsedIds = gallery.RemoveFiles.Split(',').Select(x => new Guid(x)).ToList();
+                        }
+                        catch (Exception e)
+                        {
+                            return BadRequest();
+                        }
+
                         var removeFiles = oldGallery.Photos
-                            .Where(x => gallery.RemoveFiles.Any(y => y == x.Name))
+                            .Where(x => parsedIds.Any(y => y == x.PhotoId))
                             .ToList();
                         foreach (var file in removeFiles)
                         {
@@ -84,7 +95,7 @@ namespace Web.Controllers.AdminApi
                 }
                 return Success(gallery);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest("Что-то пошло не так, повторите попытку");
             }

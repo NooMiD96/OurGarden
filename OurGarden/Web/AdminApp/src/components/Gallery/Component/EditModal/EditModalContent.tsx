@@ -6,7 +6,6 @@ import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
 import CKEditor from "@core/components/CKEditor";
 import localeText from "../Text";
-import ImgCrop from "antd-img-crop";
 import { getBase64 } from "@core/helpers/files/index";
 
 import Upload, { UploadFile, UploadChangeParam } from "@core/antd/Upload";
@@ -163,17 +162,15 @@ export class EditModalContent extends React.Component<IProps, IState> {
           {getFieldDecorator("addFiles", {
             rules: [{ required: true, message: localeText._rule_require_photo }]
           })(
-            <ImgCrop>
-              <Upload
-                {...data}
-                multiple
-                onChange={this.successHandler}
-                onRemove={this.removeHandler}
-                onPreview={this.previewHandler}
-              >
-                {uploadButton}
-              </Upload>
-            </ImgCrop>
+            <Upload
+              {...data}
+              multiple
+              onChange={this.successHandler}
+              onRemove={this.removeHandler}
+              onPreview={this.previewHandler}
+            >
+              {uploadButton}
+            </Upload>
           )}
         </FormItem>
         <div className="ant-modal-footer">

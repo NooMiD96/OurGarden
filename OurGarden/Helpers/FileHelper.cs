@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Model.DB;
 
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -14,6 +16,8 @@ namespace Web.Controllers.AdminApi
     {
         readonly string STATIC_FOLDER = "wwwroot";
         readonly string FILE_FOLDER = "images";
+        readonly static int PREVIEW_WIDTH = 400;
+        readonly static int PREVIEW_HEIGHT = 350;
 
         public readonly IOurGardenRepository _repository;
         public FileHelper(IOurGardenRepository repository)
@@ -28,7 +32,7 @@ namespace Web.Controllers.AdminApi
             return split[split.Length - 1];
         }
 
-        private async Task<Photo> AddFile(string url, Guid? guid = null)
+        private async Task<Photo> AddFile(string url,  Guid? guid = null, string previewUrl = null)
         {
             var id = guid ?? Guid.NewGuid();
 
@@ -37,7 +41,8 @@ namespace Web.Controllers.AdminApi
                 PhotoId = id,
                 Name = id.ToString(),
                 Date = DateTime.Now,
-                Url = url
+                Url = url,
+                PreviewUrl = previewUrl
             };
 
             await _repository.AddFile(file);
@@ -55,6 +60,37 @@ namespace Web.Controllers.AdminApi
                 Date = DateTime.Now,
                 Url = url
             };
+        }
+
+        public async Task<Photo> AddFileWithPreviewToRepository(IFormFile photo)
+        {
+            var guid = Guid.NewGuid();
+            var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
+            var previewPath = $"{FILE_FOLDER}/{guid.ToString()}-preview.{GetFileExtension(photo.FileName)}";
+
+            var previewImage = Crop(photo);
+
+            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, path), FileMode.Create))
+            {
+                await photo.CopyToAsync(fileStream);
+            }
+            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, previewPath), FileMode.Create))
+            {
+               previewImage.Save(fileStream, ImageFormat.Jpeg);
+            }
+
+            return await AddFile(path, guid, previewPath);
+        }
+
+        private static Bitmap Crop(IFormFile photo)
+        {
+            Image image = Image.FromStream(photo.OpenReadStream(), true, true);
+            var newImage = new Bitmap(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            using (var g = Graphics.FromImage(newImage))
+            {
+                g.DrawImage(image, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            }
+            return newImage;
         }
 
         public async Task<Photo> AddFileToRepository(IFormFile photo)

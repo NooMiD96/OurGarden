@@ -19,6 +19,6 @@ namespace Model.DTO
 
         public IFormFileCollection AddFiles { get; set; }
 
-        public List<string> RemoveFiles { get; set; }
+        public string RemoveFiles { get; set; }
     }
 }
