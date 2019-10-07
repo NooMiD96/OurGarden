@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    [Migration("20190907213558_addUsers")]
-    partial class addUsers
+    [Migration("20191007150207_AddPreviewPhotoColumn_UpdateOrderPositionIndex_AddClientTable")]
+    partial class AddPreviewPhotoColumn_UpdateOrderPositionIndex_AddClientTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,9 +127,7 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Client", b =>
                 {
-                    b.Property<int>("ClientId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ClientId");
 
                     b.Property<string>("Email")
                         .HasMaxLength(64);
@@ -255,8 +253,7 @@ namespace Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId")
-                        .IsUnique();
+                    b.HasIndex("ProductId", "SubcategoryId", "CategoryId");
 
                     b.ToTable("OrderPosition");
                 });
@@ -320,6 +317,8 @@ namespace Web.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128);
+
+                    b.Property<string>("PreviewUrl");
 
                     b.Property<string>("ProductCategoryId");
 
@@ -565,8 +564,8 @@ namespace Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Model.DB.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("Model.DB.OrderPosition", "ProductId", "SubcategoryId", "CategoryId")
+                        .WithMany()
+                        .HasForeignKey("ProductId", "SubcategoryId", "CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
