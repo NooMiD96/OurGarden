@@ -12,6 +12,8 @@ namespace Model.DTO
         [MaxLength(64)]
         public string Alias { get; set; }
 
+        public bool? IsVisible { get; set; }
+
         public IFormFile File { get; set; }
     }
 }

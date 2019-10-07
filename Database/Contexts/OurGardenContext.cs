@@ -61,6 +61,18 @@ namespace Database.Contexts
                 new OrderStatus() { StatusId = 4, Name = "Заказ ожидает получателя" },
                 new OrderStatus() { StatusId = 5, Name = "Заказ закрыт"},
                 new OrderStatus() { StatusId = -1, Name = "Заказ отменён"});
+
+            modelBuilder.Entity<Category>()
+                .Property(x => x.IsVisible)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Subcategory>()
+                .Property(x => x.IsVisible)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Product>()
+                .Property(x => x.IsVisible)
+                .HasDefaultValue(true);
         }
     }
 }

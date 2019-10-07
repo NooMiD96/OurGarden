@@ -17,7 +17,7 @@ namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [ApiController]
     public class GalleryController : BaseController
     {
@@ -25,6 +25,13 @@ namespace Web.Controllers.AdminApi
         public GalleryController(IOurGardenRepository repository)
         {
             _repository = repository;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetGalleries()
+        {
+            var galleries = await _repository.GetGalleries();
+            return Success(galleries);
         }
 
         [HttpPost("[action]")]

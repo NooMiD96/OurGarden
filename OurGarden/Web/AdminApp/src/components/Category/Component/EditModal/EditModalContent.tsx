@@ -20,13 +20,11 @@ interface IProps extends FormComponentProps {
 }
 
 export const EditModalContent = (props: IProps) => {
-  const { form } = props;
+  const { form, item } = props;
   const { getFieldDecorator } = form;
 
-  const categoryId = props.item ? props.item.categoryId : null;
-  const alias = props.item ? props.item.alias : null;
-  const photo = props.item ? props.item.photo : null;
-  const isVisible = props.item ? props.item.isVisible : true;
+  const { categoryId, alias, photo, isVisible }
+    = item || ({ isVisible: true } as ICategory);
 
   const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -41,14 +39,14 @@ export const EditModalContent = (props: IProps) => {
           categoryId,
           alias,
           file: image,
-          isVisible,
+          isVisible
         });
       }
     });
   };
 
   const onClose = () => {
-    form.resetFields(["alias", "image"]);
+    form.resetFields();
     props.handleClose();
   };
 
@@ -72,14 +70,14 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
+
       <FormItem>
         {getFieldDecorator("isVisible", {
           initialValue: isVisible,
-          valuePropName: "checked",
-        })(
-          <Checkbox>Категория видна пользователю</Checkbox>
-        )}
+          valuePropName: "checked"
+        })(<Checkbox>Категория видна пользователю</Checkbox>)}
       </FormItem>
+
       <FormItem>
         {getFieldDecorator("image", {
           initialValue: photo ? photo.url : null,
@@ -91,6 +89,7 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
+
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>
           Сохранить

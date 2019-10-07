@@ -15,7 +15,7 @@ import { generateFormBody } from "@src/core/helpers/request";
 //#region ACTIONS
 export const actionsList = {
   getVideoListRequest: (): t.IGetVideoListRequest => ({
-    type: t.GET_VIDEO_LIST_REQUEST,
+    type: t.GET_VIDEO_LIST_REQUEST
   }),
   getVideoListSuccess: (payload: IVideo[]): t.IGetVideoListSuccess => ({
     type: t.GET_VIDEO_LIST_SUCCESS,
@@ -23,11 +23,11 @@ export const actionsList = {
   }),
   getVideoListError: (errorMessage: string): t.IGetVideoListError => ({
     type: t.GET_VIDEO_LIST_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   addOrUpdateVideoRequest: (): t.IAddOrUpdateVideoRequest => ({
-    type: t.ADD_OR_UPDATE_VIDEO_REQUEST,
+    type: t.ADD_OR_UPDATE_VIDEO_REQUEST
   }),
   addOrUpdateVideoSuccess: (payload: boolean): t.IAddOrUpdateVideoSuccess => ({
     type: t.ADD_OR_UPDATE_VIDEO_SUCCESS,
@@ -35,11 +35,11 @@ export const actionsList = {
   }),
   addOrUpdateVideoError: (errorMessage: string): t.IAddOrUpdateVideoError => ({
     type: t.ADD_OR_UPDATE_VIDEO_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   deleteVideoRequest: (): t.IDeleteVideoRequest => ({
-    type: t.DELETE_VIDEO_REQUEST,
+    type: t.DELETE_VIDEO_REQUEST
   }),
   deleteVideoSuccess: (payload: boolean): t.IDeleteVideoSuccess => ({
     type: t.DELETE_VIDEO_SUCCESS,
@@ -47,31 +47,34 @@ export const actionsList = {
   }),
   deleteVideoError: (errorMessage: string): t.IDeleteVideoError => ({
     type: t.DELETE_VIDEO_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER,
-  }),
+    type: t.CLEAN_ERROR_INNER
+  })
 };
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const apiPrefix = "apiAdmin";
 const controllerName = "Video";
 export const actionCreators = {
-  getVideoList: (): IAppThunkAction<t.TGetVideoList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getVideoList: (): IAppThunkAction<
+    t.TGetVideoList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "GetAllVideo";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<IVideo[]>) => {
@@ -82,18 +85,25 @@ export const actionCreators = {
         dispatch(actionsList.getVideoListSuccess(value.data));
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.getVideoListError,
-        dispatch
-      ));
+      })
+      .catch((err: Error) =>
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.getVideoListError,
+          dispatch
+        )
+      );
 
     addTask(fetchTask);
     dispatch(actionsList.getVideoListRequest());
   },
-  AddOrUpdateVideo: (data: IVideoDTO): IAppThunkAction<t.TAddOrUpdateVideo | t.TGetVideoList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  AddOrUpdateVideo: (
+    data: IVideoDTO
+  ): IAppThunkAction<
+    t.TAddOrUpdateVideo | t.TGetVideoList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "AddOrUpdate";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -101,13 +111,13 @@ export const actionCreators = {
 
     const formData = generateFormBody(data);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
       body: formData,
       headers: {
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<IVideo[]>) => {
@@ -119,7 +129,8 @@ export const actionCreators = {
         actionCreators.getVideoList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -132,19 +143,26 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateVideoRequest());
   },
-  removeVideo: (videoId: number): IAppThunkAction<t.IDeleteVideo | t.TGetVideoList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  removeVideo: (
+    videoId: number
+  ): IAppThunkAction<
+    t.IDeleteVideo | t.TGetVideoList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?videoId=${videoId.toString()}`, {
-      credentials: "same-origin",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
-    })
+    const fetchTask = fetch(
+      `/${apiPrefix}/${controllerName}/${apiUrl}?videoId=${videoId.toString()}`,
+      {
+        credentials: "same-origin",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...xptToHeader
+        }
+      }
+    )
       .then(responseCatcher)
       .then((value: IResponse<boolean>) => {
         if (value && value.error) {
@@ -155,7 +173,8 @@ export const actionCreators = {
         actionCreators.getVideoList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -169,6 +188,6 @@ export const actionCreators = {
     dispatch(actionsList.deleteVideoRequest());
   },
 
-  cleanErrorInner: actionsList.cleanErrorInner,
+  cleanErrorInner: actionsList.cleanErrorInner
 };
 //#endregion

@@ -55,7 +55,7 @@ namespace Web.Controllers.Api
             if (String.IsNullOrEmpty(categoryId))
                 return BadRequest("Что-то пошло не так, необходимо выбрать категорию");
 
-            var result = await _repository.GetSubcategories(categoryId);
+            var result = await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true);
 
             return Success(result.OrderBy(x => x.SubcategoryId));
         }

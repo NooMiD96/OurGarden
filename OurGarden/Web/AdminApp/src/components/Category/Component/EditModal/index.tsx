@@ -1,25 +1,21 @@
 import * as React from "react";
 
 import Modal from "@core/antd/Modal";
-import { ICategory } from "../../State";
 
 import EditModalContent from "./EditModalContent";
+
+import { ICategory, ICategoryDTO } from "../../State";
 
 interface IEditModalProps {
   isShow: boolean;
   item: ICategory | null;
-  handleCreateSubmit: Function;
+  handleCreateSubmit: (data: ICategoryDTO) => void;
   handleClose: Function;
 }
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
-    const {
-      isShow,
-      item,
-      handleCreateSubmit: handleCreateSubmit,
-      handleClose: handleClose
-    } = this.props;
+    const { isShow, item, handleCreateSubmit, handleClose } = this.props;
 
     return (
       <Modal

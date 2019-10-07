@@ -47,18 +47,6 @@ namespace Web.Controllers.AdminApi
             return Success(result);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> Get([FromQuery]string categoryId,
-                                             [FromQuery]string subcategoryId)
-        {
-            var subcategory = await _repository.GetSubcategory(subcategoryId, categoryId);
-
-            if (subcategory == null)
-                return BadRequest("Что-то пошло не так, повторите попытку");
-
-            return Success(subcategory);
-        }
-
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]SubcategoryDTO subcategoryDTO)
         {
@@ -68,22 +56,14 @@ namespace Web.Controllers.AdminApi
                     String.IsNullOrEmpty(subcategoryDTO?.CategoryId)
                     || String.IsNullOrEmpty(subcategoryDTO?.SubcategoryId))
                 {
-                    var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
+                    var (isSuccess, error) = await _service.CreateSubcategory(subcategoryDTO);
 
-                    var subcategory = new Subcategory()
-                    {
-                        CategoryId = subcategoryDTO.NewCategoryId,
-                        SubcategoryId = subcategoryDTO.Alias.TransformToId(),
-
-                        Alias = subcategoryDTO.Alias,
-
-                        Photo = file
-                    };
-
-                    await _repository.AddSubcategory(subcategory);
+                    if (!isSuccess)
+                        return BadRequest(error);
                 }
                 else
                 {
+                    //Update Old
                     var oldSubcategory = await _repository.GetSubcategory(subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
 
                     if (oldSubcategory is null)
@@ -99,13 +79,19 @@ namespace Web.Controllers.AdminApi
                         if (!isSuccess)
                             return BadRequest(error);
                     }
-                    else if (subcategoryDTO.File != null)
+                    else
                     {
-                        var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
+                        if (subcategoryDTO.File != null)
+                        {
+                            var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
 
-                        await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, updateDB: false);
+                            await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, updateDB: false);
 
-                        oldSubcategory.Photo = file;
+                            oldSubcategory.Photo = file;
+
+                        }
+
+                        oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
 
                         await _repository.UpdateSubcategory(oldSubcategory);
                     }

@@ -10,7 +10,7 @@ namespace Database.Repositories
 {
     public interface IOurGardenRepository
     {
-        Task<IEnumerable<Category>> GetCategories();
+        Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false);
         Task<IEnumerable<Category>> GetSimpleCategories();
         Task<Category> GetCategory(string categoryId);
         Task AddCategory(Category category);
@@ -25,7 +25,7 @@ namespace Database.Repositories
         Task DeleteClient(int clientId);
 
         Task<IEnumerable<Subcategory>> GetAllSubcategories();
-        Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId);
+        Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false);
         Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId);
         Task<List<Breadcrumb>> GetSubcategoryBreadcrumb(string categoryId);
         Task AddSubcategory(Subcategory subcategory);
@@ -36,7 +36,7 @@ namespace Database.Repositories
         Task<IEnumerable<Product>> GetSearchProducts(string search);
         Task<IEnumerable<Product>> GetAllProducts();
         Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync();
-        Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId);
+        Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false);
         Task<Product> GetProduct(string productId, string subcategoryId, string categoryId);
         Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId);
         Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId, string productId);

@@ -15,31 +15,37 @@ import { generateFormBody } from "@src/core/helpers/request";
 //#region ACTIONS
 export const actionsList = {
   getCategoryListRequest: (): t.IGetCategoryListRequest => ({
-    type: t.GET_CATEGORY_LIST_REQUEST,
+    type: t.GET_CATEGORY_LIST_REQUEST
   }),
-  getCategoryListSuccess: (payload: ICategory[]): t.IGetCategoryListSuccess => ({
+  getCategoryListSuccess: (
+    payload: ICategory[]
+  ): t.IGetCategoryListSuccess => ({
     type: t.GET_CATEGORY_LIST_SUCCESS,
     payload
   }),
   getCategoryListError: (errorMessage: string): t.IGetCategoryListError => ({
     type: t.GET_CATEGORY_LIST_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   addOrUpdateCategoryRequest: (): t.IAddOrUpdateCategoryRequest => ({
-    type: t.ADD_OR_UPDATE_CATEGORY_REQUEST,
+    type: t.ADD_OR_UPDATE_CATEGORY_REQUEST
   }),
-  addOrUpdateCategorySuccess: (payload: boolean): t.IAddOrUpdateCategorySuccess => ({
+  addOrUpdateCategorySuccess: (
+    payload: boolean
+  ): t.IAddOrUpdateCategorySuccess => ({
     type: t.ADD_OR_UPDATE_CATEGORY_SUCCESS,
     payload
   }),
-  addOrUpdateCategoryError: (errorMessage: string): t.IAddOrUpdateCategoryError => ({
+  addOrUpdateCategoryError: (
+    errorMessage: string
+  ): t.IAddOrUpdateCategoryError => ({
     type: t.ADD_OR_UPDATE_CATEGORY_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   deleteCategoryRequest: (): t.IDeleteCategoryRequest => ({
-    type: t.DELETE_CATEGORY_REQUEST,
+    type: t.DELETE_CATEGORY_REQUEST
   }),
   deleteCategorySuccess: (payload: boolean): t.IDeleteCategorySuccess => ({
     type: t.DELETE_CATEGORY_SUCCESS,
@@ -47,31 +53,33 @@ export const actionsList = {
   }),
   deleteCategoryError: (errorMessage: string): t.IDeleteCategoryError => ({
     type: t.DELETE_CATEGORY_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER,
-  }),
+    type: t.CLEAN_ERROR_INNER
+  })
 };
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
 const controllerName = "Category";
 export const actionCreators = {
-  getCategoryList: (): IAppThunkAction<t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getCategoryList: (): IAppThunkAction<
+    t.TGetCategoryList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "GetCategories";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/apiAdmin/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<ICategory[]>) => {
@@ -82,18 +90,25 @@ export const actionCreators = {
         dispatch(actionsList.getCategoryListSuccess(value.data));
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.getCategoryListError,
-        dispatch
-      ));
+      })
+      .catch((err: Error) =>
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.getCategoryListError,
+          dispatch
+        )
+      );
 
     addTask(fetchTask);
     dispatch(actionsList.getCategoryListRequest());
   },
-  AddOrUpdateCategory: (data: ICategoryDTO): IAppThunkAction<t.TAddOrUpdateCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  AddOrUpdateCategory: (
+    data: ICategoryDTO
+  ): IAppThunkAction<
+    t.TAddOrUpdateCategory | t.TGetCategoryList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "AddOrUpdate";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -101,13 +116,13 @@ export const actionCreators = {
 
     const formData = generateFormBody(data);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/apiAdmin/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
       body: formData,
       headers: {
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<ICategory[]>) => {
@@ -119,7 +134,8 @@ export const actionCreators = {
         actionCreators.getCategoryList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -132,20 +148,27 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateCategoryRequest());
   },
-  removeCategory: (categoryId: string): IAppThunkAction<t.IDeleteCategory | t.TGetCategoryList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  removeCategory: (
+    categoryId: string
+  ): IAppThunkAction<
+    t.IDeleteCategory | t.TGetCategoryList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}`, {
-      credentials: "same-origin",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
-    })
+    const fetchTask = fetch(
+      `/apiAdmin/${controllerName}/${apiUrl}?categoryId=${categoryId}`,
+      {
+        credentials: "same-origin",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...xptToHeader
+        }
+      }
+    )
       .then(responseCatcher)
       .then((value: IResponse<boolean>) => {
         if (value && value.error) {
@@ -156,7 +179,8 @@ export const actionCreators = {
         actionCreators.getCategoryList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -170,6 +194,6 @@ export const actionCreators = {
     dispatch(actionsList.deleteCategoryRequest());
   },
 
-  cleanErrorInner: actionsList.cleanErrorInner,
+  cleanErrorInner: actionsList.cleanErrorInner
 };
 //#endregion

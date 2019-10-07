@@ -20,7 +20,7 @@ namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [ApiController]
     public class ProductController : BaseController
     {
@@ -79,6 +79,7 @@ namespace Web.Controllers.AdminApi
                         Alias = productDTO.Alias,
                         Price = productDTO.Price,
                         Description = productDTO.Description,
+                        IsVisible = productDTO.IsVisible ?? true,
 
                         Photos = photos
                     };
@@ -117,6 +118,7 @@ namespace Web.Controllers.AdminApi
                             oldProduct.Photos = photos;
                         }
 
+                        oldProduct.IsVisible = oldProduct.IsVisible ?? true;
                         oldProduct.Price = productDTO.Price;
                         oldProduct.Description = productDTO.Description;
 

@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
@@ -11,6 +11,7 @@ import Checkbox from "@core/antd/Checkbox";
 import localeText from "../Text";
 
 import { FileUploader } from "@src/core/components/Uploader/File";
+import { filterOption } from "@core/utils/select";
 
 import { ICategoryDictionary, IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -43,7 +44,7 @@ const onSubmitHandler = (
   const image = form.getFieldValue("image");
 
   props.form.setFieldsValue({
-    description,
+    description
   });
 
   props.form.validateFields((err: any, _values: any) => {
@@ -60,7 +61,7 @@ const onSubmitHandler = (
         isVisible,
         price,
         description,
-        file: image,
+        file: image
       });
     }
   });
@@ -82,15 +83,16 @@ const getSubcategoryList = (
   }
 
   return category.subcategories || [];
-}
+};
 
 export const EditModalContent = (props: IProps) => {
   const ckEditor: React.RefObject<CKEditor> = useRef(null);
 
   const { form, item, categoryList } = props;
   const { getFieldDecorator } = form;
-  const { categoryId, alias, price, description, photos, isVisible } = item || { isVisible: true } as IProduct;
-  let { subcategoryId } = item || {} as IProduct;
+  const { categoryId, alias, price, description, photos, isVisible } =
+    item || ({ isVisible: true } as IProduct);
+  let { subcategoryId } = item || ({} as IProduct);
 
   const onUploadImage = (image?: File) => {
     form.setFieldsValue({
@@ -98,12 +100,17 @@ export const EditModalContent = (props: IProps) => {
     });
   };
 
-  const selectedCategoryId = form.isFieldTouched("newCategoryId") ? form.getFieldValue("newCategoryId") : categoryId;
-  subcategoryId = form.isFieldTouched("newCategoryId") ? form.getFieldValue("newSubcategoryId") : subcategoryId;
+  const selectedCategoryId = form.isFieldTouched("newCategoryId")
+    ? form.getFieldValue("newCategoryId")
+    : categoryId;
+  subcategoryId = form.isFieldTouched("newCategoryId")
+    ? form.getFieldValue("newSubcategoryId")
+    : subcategoryId;
 
   const subcategoryList = getSubcategoryList(selectedCategoryId, categoryList);
 
-  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => onSubmitHandler(props, ckEditor, e);
+  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
+    onSubmitHandler(props, ckEditor, e);
 
   const photo = photos && photos[0];
 
@@ -112,15 +119,22 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("newCategoryId", {
           initialValue: categoryId,
-          rules: [{ required: true, message: localeText._rule_require_select_category }]
+          rules: [
+            {
+              required: true,
+              message: localeText._rule_require_select_category
+            }
+          ]
         })(
           <Select
+            showSearch
             placeholder={localeText._label_category}
             onChange={() => {
               form.setFieldsValue({
                 newSubcategoryId: undefined
-              })
+              });
             }}
+            filterOption={filterOption}
           >
             {categoryList.map(x => (
               <Select.Option key={x.categoryId} value={x.categoryId}>
@@ -134,10 +148,17 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("newSubcategoryId", {
           initialValue: subcategoryId,
-          rules: [{ required: true, message: localeText._rule_require_select_subcategory }]
+          rules: [
+            {
+              required: true,
+              message: localeText._rule_require_select_subcategory
+            }
+          ]
         })(
           <Select
+            showSearch
             placeholder={localeText._label_subcategory}
+            filterOption={filterOption}
           >
             {subcategoryList.map(x => (
               <Select.Option key={x.subcategoryId} value={x.subcategoryId}>
@@ -164,10 +185,8 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("isVisible", {
           initialValue: isVisible,
-          valuePropName: "checked",
-        })(
-          <Checkbox>Категория видна пользователю</Checkbox>
-        )}
+          valuePropName: "checked"
+        })(<Checkbox>Категория видна пользователю</Checkbox>)}
       </FormItem>
 
       <FormItem>
@@ -197,17 +216,17 @@ export const EditModalContent = (props: IProps) => {
 
       <FormItem>
         {getFieldDecorator("description", {
-          rules: [{ required: true, message: localeText._rule_require_description }]
-        })(
-          <CKEditor ref={ckEditor} data={description} />
-        )}
+          rules: [
+            { required: true, message: localeText._rule_require_description }
+          ]
+        })(<CKEditor ref={ckEditor} data={description} />)}
       </FormItem>
 
       <div className="ant-modal-footer">
         <Button type="primary" onClick={onSubmit}>
           Сохранить
         </Button>
-        <Button type="danger" onClick={(e) => onClose(props, e)}>
+        <Button type="danger" onClick={e => onClose(props, e)}>
           Отмена
         </Button>
       </div>

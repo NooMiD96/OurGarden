@@ -25,6 +25,13 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllVideo()
+        {
+            var video = await _repository.GetVideo();
+            return Success(video);
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate(
             [FromForm]VideoDTO video)

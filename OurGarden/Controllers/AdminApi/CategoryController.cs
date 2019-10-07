@@ -10,6 +10,7 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Services.Controllers.AdminApi;
@@ -18,7 +19,7 @@ namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [ApiController]
     public class CategoryController : BaseController
     {
@@ -34,14 +35,11 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> Get([FromQuery]string categoryId)
+        public async Task<IActionResult> GetCategories()
         {
-            var category = await _repository.GetCategory(categoryId);
+            var result = await _repository.GetCategories(isGetOnlyVisible: false);
 
-            if (category == null)
-                return BadRequest("Что-то пошло не так, повторите попытку");
-
-            return Success(category);
+            return Success(result.OrderBy(x => x.CategoryId));
         }
 
         [HttpPost("[action]")]
@@ -58,6 +56,7 @@ namespace Web.Controllers.AdminApi
                         CategoryId = categoryDTO.Alias.TransformToId(),
 
                         Alias = categoryDTO.Alias,
+                        IsVisible = categoryDTO.IsVisible ?? true,
 
                         Photo = file
                     };
@@ -78,13 +77,19 @@ namespace Web.Controllers.AdminApi
                         if (!isSuccess)
                             return BadRequest(error);
                     }
-                    else if (categoryDTO.File != null)
+                    else
                     {
-                        var file = await _fileHelper.AddFileToRepository(categoryDTO.File);
+                        if (categoryDTO.File != null)
+                        {
+                            var file = await _fileHelper.AddFileToRepository(categoryDTO.File);
 
-                        await _fileHelper.RemoveFileFromRepository(oldCategory.Photo, updateDB: false);
+                            await _fileHelper.RemoveFileFromRepository(oldCategory.Photo, updateDB: false);
 
-                        oldCategory.Photo = file;
+                            oldCategory.Photo = file;
+
+                        }
+
+                        oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
 
                         await _repository.UpdateCategory(oldCategory);
                     }

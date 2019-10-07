@@ -10,6 +10,7 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Services.Controllers.AdminApi;
@@ -18,7 +19,7 @@ namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [ApiController]
     public class NewsController : BaseController
     {
@@ -31,6 +32,14 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
             _service = new NewsControllerService(_repository);
             _fileHelper = new FileHelper(_repository);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllNews()
+        {
+            var news = await _repository.GetNews(includeDescriptions: true);
+
+            return Success(news.OrderByDescending(x => x.Date));
         }
 
         [HttpPost("[action]")]

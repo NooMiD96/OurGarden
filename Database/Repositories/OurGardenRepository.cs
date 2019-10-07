@@ -24,10 +24,19 @@ namespace Database.Repositories
         }
 
         #region Category
-        public async Task<IEnumerable<Category>> GetCategories() =>
-            await _context.Category
-            .Include(x => x.Photo)
-            .ToListAsync();
+        public async Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false)
+        {
+            var query = _context.Category
+                .Include(x => x.Photo)
+                .AsQueryable();
+
+            if (isGetOnlyVisible)
+            {
+                query = query.Where(x => x.IsVisible == true);
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async Task<IEnumerable<Category>> GetSimpleCategories() =>
             await _context.Category.Select(x => new Category()
@@ -120,11 +129,20 @@ namespace Database.Repositories
             .Include(x => x.Photo)
             .ToListAsync();
 
-        public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId) =>
-            await _context.Subcategory
-            .Include(x => x.Photo)
-            .Where(x => x.CategoryId == categoryId)
-            .ToListAsync();
+        public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false)
+        {
+            var query = _context.Subcategory
+                .Include(x => x.Photo)
+                .Where(x => x.CategoryId == categoryId)
+                .AsQueryable();
+
+            if (isGetOnlyVisible)
+            {
+                query = query.Where(x => x.IsVisible == true);
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId) =>
             await _context.Subcategory
@@ -222,11 +240,21 @@ namespace Database.Repositories
             });
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId) => await _context
-            .Product
-            .Include(x => x.Photos)
-            .Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId)
-            .ToListAsync();
+        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false)
+        {
+            var query = _context
+                .Product
+                .Include(x => x.Photos)
+                .Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId)
+                .AsQueryable();
+
+            if (isGetOnlyVisible)
+            {
+                query = query.Where(x => x.IsVisible == true);
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async Task<Product> GetProduct(string productId, string subcategoryId, string categoryId) => await _context
             .Product

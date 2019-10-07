@@ -133,5 +133,32 @@ namespace Web.Services.Controllers.AdminApi
                     return (false, "Ошибка при обнавлении подкатегории.");
                 }
         }
+
+        public async ValueTask<(bool isSuccess, string error)> CreateSubcategory(SubcategoryDTO subcategoryDTO)
+        {
+            try
+            {
+                var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
+
+                var subcategory = new Subcategory()
+                {
+                    CategoryId = subcategoryDTO.NewCategoryId,
+                    SubcategoryId = subcategoryDTO.Alias.TransformToId(),
+
+                    Alias = subcategoryDTO.Alias,
+                    IsVisible = subcategoryDTO.IsVisible ?? true,
+
+                    Photo = file
+                };
+
+                await _repository.AddSubcategory(subcategory);
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Ошибка при создании подкатегории. {ex.Message}");
+            }
+        }
     }
 }

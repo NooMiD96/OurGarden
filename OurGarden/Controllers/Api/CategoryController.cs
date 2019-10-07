@@ -21,7 +21,7 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCategories()
         {
-            var result = await _repository.GetCategories();
+            var result = await _repository.GetCategories(isGetOnlyVisible: true);
 
             return Success(result.OrderBy(x => x.CategoryId));
         }

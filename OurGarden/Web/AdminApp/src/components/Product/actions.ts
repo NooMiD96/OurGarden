@@ -15,7 +15,7 @@ import { generateFormBody } from "@src/core/helpers/request";
 //#region ACTIONS
 export const actionsList = {
   getProductListRequest: (): t.IGetProductListRequest => ({
-    type: t.GET_PRODUCT_LIST_REQUEST,
+    type: t.GET_PRODUCT_LIST_REQUEST
   }),
   getProductListSuccess: (payload: IProduct[]): t.IGetProductListSuccess => ({
     type: t.GET_PRODUCT_LIST_SUCCESS,
@@ -23,35 +23,43 @@ export const actionsList = {
   }),
   getProductListError: (errorMessage: string): t.IGetProductListError => ({
     type: t.GET_PRODUCT_LIST_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   getCategoryDictionaryRequest: (): t.IGetCategoryDictionaryRequest => ({
-    type: t.GET_CATEGORY_DICTIONARY_LIST_REQUEST,
+    type: t.GET_CATEGORY_DICTIONARY_LIST_REQUEST
   }),
-  getCategoryDictionarySuccess: (payload: ICategoryDictionary[]): t.IGetCategoryDictionarySuccess => ({
+  getCategoryDictionarySuccess: (
+    payload: ICategoryDictionary[]
+  ): t.IGetCategoryDictionarySuccess => ({
     type: t.GET_CATEGORY_DICTIONARY_LIST_SUCCESS,
     payload
   }),
-  getCategoryDictionaryError: (errorMessage: string): t.IGetCategoryDictionaryError => ({
+  getCategoryDictionaryError: (
+    errorMessage: string
+  ): t.IGetCategoryDictionaryError => ({
     type: t.GET_CATEGORY_DICTIONARY_LIST_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   addOrUpdateProductRequest: (): t.IAddOrUpdateProductRequest => ({
-    type: t.ADD_OR_UPDATE_PRODUCT_REQUEST,
+    type: t.ADD_OR_UPDATE_PRODUCT_REQUEST
   }),
-  addOrUpdateProductSuccess: (payload: boolean): t.IAddOrUpdateProductSuccess => ({
+  addOrUpdateProductSuccess: (
+    payload: boolean
+  ): t.IAddOrUpdateProductSuccess => ({
     type: t.ADD_OR_UPDATE_PRODUCT_SUCCESS,
     payload
   }),
-  addOrUpdateProductError: (errorMessage: string): t.IAddOrUpdateProductError => ({
+  addOrUpdateProductError: (
+    errorMessage: string
+  ): t.IAddOrUpdateProductError => ({
     type: t.ADD_OR_UPDATE_PRODUCT_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   deleteProductRequest: (): t.IDeleteProductRequest => ({
-    type: t.DELETE_PRODUCT_REQUEST,
+    type: t.DELETE_PRODUCT_REQUEST
   }),
   deleteProductSuccess: (payload: boolean): t.IDeleteProductSuccess => ({
     type: t.DELETE_PRODUCT_SUCCESS,
@@ -59,31 +67,34 @@ export const actionsList = {
   }),
   deleteProductError: (errorMessage: string): t.IDeleteProductError => ({
     type: t.DELETE_PRODUCT_ERROR,
-    errorMessage,
+    errorMessage
   }),
 
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER,
-  }),
+    type: t.CLEAN_ERROR_INNER
+  })
 };
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const apiPrefix = "apiAdmin";
 const controllerName = "Product";
 export const actionCreators = {
-  getProductList: (): IAppThunkAction<t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getProductList: (): IAppThunkAction<
+    t.TGetProductList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "GetAll";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<IProduct[]>) => {
@@ -94,30 +105,35 @@ export const actionCreators = {
         dispatch(actionsList.getProductListSuccess(value.data));
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.getProductListError,
-        dispatch
-      ));
+      })
+      .catch((err: Error) =>
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.getProductListError,
+          dispatch
+        )
+      );
 
     addTask(fetchTask);
     dispatch(actionsList.getProductListRequest());
   },
-  getCategoryDictionary: (): IAppThunkAction<t.TGetCategoryDictionary | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getCategoryDictionary: (): IAppThunkAction<
+    t.TGetCategoryDictionary | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "GetCategoryDictionary";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<ICategoryDictionary[]>) => {
@@ -128,18 +144,25 @@ export const actionCreators = {
         dispatch(actionsList.getCategoryDictionarySuccess(value.data));
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.getCategoryDictionaryError,
-        dispatch
-      ));
+      })
+      .catch((err: Error) =>
+        errorCatcher(
+          controllerName,
+          apiUrl,
+          err,
+          actionsList.getCategoryDictionaryError,
+          dispatch
+        )
+      );
 
     addTask(fetchTask);
     dispatch(actionsList.getCategoryDictionaryRequest());
   },
-  addOrUpdateProduct: (data: IProductDTO): IAppThunkAction<t.TAddOrUpdateProduct | t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  addOrUpdateProduct: (
+    data: IProductDTO
+  ): IAppThunkAction<
+    t.TAddOrUpdateProduct | t.TGetProductList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "AddOrUpdate";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -147,13 +170,13 @@ export const actionCreators = {
 
     const formData = generateFormBody(data);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
       body: formData,
       headers: {
-        ...xptToHeader,
-      },
+        ...xptToHeader
+      }
     })
       .then(responseCatcher)
       .then((value: IResponse<boolean>) => {
@@ -165,7 +188,8 @@ export const actionCreators = {
         actionCreators.getProductList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -178,20 +202,29 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateProductRequest());
   },
-  removeProduct: (categoryId: string, subcategoryId: string, productId: string): IAppThunkAction<t.IDeleteProduct | t.TGetProductList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  removeProduct: (
+    categoryId: string,
+    subcategoryId: string,
+    productId: string
+  ): IAppThunkAction<
+    t.IDeleteProduct | t.TGetProductList | t.ICleanErrorInnerAction
+  > => (dispatch, getState) => {
     const apiUrl = "Delete";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}&productId=${productId}`, {
-      credentials: "same-origin",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        ...xptToHeader,
-      },
-    })
+    const fetchTask = fetch(
+      `/${apiPrefix}/${controllerName}/${apiUrl}?categoryId=${categoryId}&subcategoryId=${subcategoryId}&productId=${productId}`,
+      {
+        credentials: "same-origin",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...xptToHeader
+        }
+      }
+    )
       .then(responseCatcher)
       .then((value: IResponse<boolean>) => {
         if (value && value.error) {
@@ -202,7 +235,8 @@ export const actionCreators = {
         actionCreators.getProductList()(dispatch, getState);
 
         return Promise.resolve();
-      }).catch((err: Error) => {
+      })
+      .catch((err: Error) => {
         errorCatcher(
           controllerName,
           apiUrl,
@@ -216,6 +250,6 @@ export const actionCreators = {
     dispatch(actionsList.deleteProductRequest());
   },
 
-  cleanErrorInner: actionsList.cleanErrorInner,
+  cleanErrorInner: actionsList.cleanErrorInner
 };
 //#endregion

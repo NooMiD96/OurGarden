@@ -61,11 +61,10 @@ namespace Web.Controllers.Api
                 return BadRequest("Что-то пошло не так, необходимо выбрать категорию с подкатегорией");
             }
 
-            var result = await _repository.GetProducts(categoryId, subcategoryId);
+            var result = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
 
             return Success(result.OrderBy(x => x.ProductId));
         }
-
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProduct([FromQuery]string categoryId,

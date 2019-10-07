@@ -30,6 +30,8 @@ namespace Model.DTO.ProductDTO
         [Required]
         public string Description { get; set; }
 
+        public bool? IsVisible { get; set; }
+
         public IFormFile File { get; set; }
     }
 }
