@@ -29,15 +29,5 @@ namespace Core.Helpers
 
             return result;
         }
-
-        public static string TransformFromId(this string text)
-        {
-            if (String.IsNullOrEmpty(text))
-            {
-                return "";
-            }
-
-            return $"{text.Substring(0, 1).ToUpper()}{text.Substring(1).Replace("-", " ")}";
-        }
     }
 }

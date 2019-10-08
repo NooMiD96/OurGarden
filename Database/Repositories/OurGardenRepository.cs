@@ -405,9 +405,9 @@ namespace Database.Repositories
             )
             .FirstOrDefault();
 
-        public async Task<News> GetNews(string alias) =>
+        public async Task<News> GetNews(string alias, bool includeDescriptions = true) =>
             (
-                await GetNewsImpl(alias: alias)
+                await GetNewsImpl(alias: alias, includeDescriptions: includeDescriptions)
             )
             .FirstOrDefault();
 

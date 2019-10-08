@@ -1,11 +1,9 @@
-using System;
-
-using Core.Helpers;
 
 using MimeKit;
 
 using Model.DB;
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -454,9 +452,9 @@ namespace Services.EMail
                         $"{{tableMap[{tableDataTemplate}]}}",
                         order.OrderPositions
                             .Select(
-                                x => tableDataTemplate.Replace("{{ProductId}}", x.ProductId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{CategoryId}}", x.CategoryId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{SubcategoryId}}", x.SubcategoryId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
+                                x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                      .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                      .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
                                                       .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
                                                       .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
                             )
@@ -489,9 +487,9 @@ namespace Services.EMail
                         $"{{tableMap[{tableDataTemplate}]}}",
                         order.OrderPositions
                             .Select(
-                                x => tableDataTemplate.Replace("{{ProductId}}", x.ProductId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{CategoryId}}", x.CategoryId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{SubcategoryId}}", x.SubcategoryId.TransformFromId(), StringComparison.InvariantCultureIgnoreCase)
+                                x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                      .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                      .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
                                                       .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
                                                       .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
                             )

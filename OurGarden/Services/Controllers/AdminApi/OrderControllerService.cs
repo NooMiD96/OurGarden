@@ -44,9 +44,9 @@ namespace Web.Services.Controllers.AdminApi
 
                     var client = new Client()
                     {
-                         Email = orderDTO.Email,
-                         FIO = orderDTO.FIO,
-                         Phone = orderDTO.Phone
+                        Email = orderDTO.Email,
+                        FIO = orderDTO.FIO,
+                        Phone = orderDTO.Phone
                     };
 
                     await _repository.AddOrder(order);
@@ -85,10 +85,18 @@ namespace Web.Services.Controllers.AdminApi
 
                     await _repository.UpdateOrder(order);
 
-                    _ = Task.Factory.StartNew(() =>
+                    var task = new Task(async () =>
                     {
-                        _emailSender.SendOrderInformation(order);
+                        await _emailSender.SendOrderInformation(order);
                     });
+                    await _context.Entry(order)
+                        .Collection(x => x.OrderPositions)
+                        .Query()
+                        .Include(x => x.Product)
+                            .ThenInclude(x => x.Subcategory)
+                                .ThenInclude(x => x.Category)
+                        .LoadAsync();
+                    task.Start(TaskScheduler.Default);
 
                     return (true, null);
                 }

@@ -56,7 +56,7 @@ namespace Database.Repositories
         #region News
         Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);
         Task<News> GetNews(int newsId);
-        Task<News> GetNews(string alias);
+        Task<News> GetNews(string alias, bool includeDescriptions = true);
         Task<List<Breadcrumb>> GetNewsBreadcrumb(string alias);
         Task<bool> CheckNewsAlias(string alias);
         Task AddNews(News news);

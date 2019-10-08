@@ -1,25 +1,31 @@
 ﻿using Core.Helpers;
 
+using Database.Repositories;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
     public class HomeController: Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly IOurGardenRepository _repository;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(IConfiguration configuration,
+                              [FromServices] IOurGardenRepository repository)
         {
             _configuration = configuration;
+            _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var (title, metaDescription) = GetSEOInfo();
+            var (title, metaDescription) = await GetSEOInfo();
 
             ViewData["title"] = title;
             ViewData["metaDescription"] = metaDescription;
@@ -27,7 +33,7 @@ namespace Web.Controllers
             return View();
         }
 
-        public (string title, string metaDescription) GetSEOInfo()
+        public async ValueTask<(string title, string metaDescription)> GetSEOInfo()
         {
             if (!HttpContext.Request.Path.HasValue)
                 return default;
@@ -35,7 +41,7 @@ namespace Web.Controllers
             var seoInformation = _configuration.GetSection("SEOInformation");
              
             var url = HttpContext.Request.Path.Value.Substring(1).ToLower();
-            if (String.IsNullOrEmpty(url) || url == "главная")
+            if (String.IsNullOrEmpty(url) || url == "home")
             {
                 var home = seoInformation.GetSection("home");
 
@@ -50,7 +56,7 @@ namespace Web.Controllers
 
                 switch (urlSplit[0])
                 {
-                    case "каталог":
+                    case "catalog":
                     {
                         string sectionName;
                         string value;
@@ -60,15 +66,18 @@ namespace Web.Controllers
                             default:
                             case 2:
                                 sectionName = "subcategory";
-                                value = urlSplit[1];
+                                var category = await _repository.GetCategory(urlSplit[1]);
+                                value = category.Alias;
                                 break;
                             case 3:
-                                sectionName = "subcategory";
-                                value = urlSplit[2];
+                                sectionName = "productList";
+                                var subcategory = await _repository.GetSubcategory(urlSplit[1], urlSplit[2]);
+                                value = subcategory.Alias;
                                 break;
                             case 4:
-                                sectionName = "subcategory";
-                                value = urlSplit[3];
+                                sectionName = "product";
+                                var product = await _repository.GetProduct(urlSplit[1], urlSplit[2], urlSplit[3]);
+                                value = product.Alias;
                                 break;
                         }
 
@@ -79,22 +88,24 @@ namespace Web.Controllers
                                 .GetValue<string>("title")
                                 .Replace(
                                     "{{value}}",
-                                    value.TransformFromId(),
+                                    value,
                                     StringComparison.InvariantCultureIgnoreCase
                                 ),
                             section.GetValue<string>("meta")
                         );
                     }
-                    case "акции":
+                    case "news":
                     {
                         var section = seoInformation.GetSection("news");
+
+                        var news = await _repository.GetNews(alias: urlSplit[1], includeDescriptions: false);
 
                         return (
                             section
                                 .GetValue<string>("title")
                                 .Replace(
                                     "{{value}}",
-                                    urlSplit[1].TransformFromId(),
+                                    news.Alias,
                                     StringComparison.InvariantCultureIgnoreCase
                                 ),
                             section.GetValue<string>("meta")
@@ -113,25 +124,25 @@ namespace Web.Controllers
 
                 switch (url)
                 {
-                    case "каталог":
+                    case "catalog":
                         sectionName = "category";
                         break;
-                    case "акции":
+                    case "news":
                         sectionName = "newsList";
                         break;
-                    case "доставка-и-оплата":
+                    case "payment":
                         sectionName = "payment";
                         break;
-                    case "ландшафтный-дизайн":
+                    case "design":
                         sectionName = "design";
                         break;
-                    case "видеогалерея":
+                    case "videogalery":
                         sectionName = "videogalery";
                         break;
-                    case "контакты":
+                    case "about":
                         sectionName = "contacts";
                         break;
-                    case "корзина":
+                    case "card":
                         sectionName = "userCard";
                         break;
                         
