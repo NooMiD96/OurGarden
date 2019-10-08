@@ -45,8 +45,10 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]CategoryDTO categoryDTO)
         {
+            var error = "Что-то пошло не так, повторите попытку";
             try
             {
+                bool isSuccess;
                 if (String.IsNullOrEmpty(categoryDTO?.CategoryId))
                 {
                     var file = await _fileHelper.AddFileToRepository(categoryDTO.File);
@@ -61,7 +63,7 @@ namespace Web.Controllers.AdminApi
                         Photo = file
                     };
 
-                    await _repository.AddCategory(category);
+                    (isSuccess, error) = await _repository.AddCategory(category);
                 }
                 else
                 {
@@ -72,10 +74,7 @@ namespace Web.Controllers.AdminApi
 
                     if (categoryDTO.Alias != oldCategory.Alias)
                     {
-                        var (isSuccess, error) = await _service.UpdateCategory(categoryDTO, oldCategory);
-
-                        if (!isSuccess)
-                            return BadRequest(error);
+                        (isSuccess, error) = await _service.UpdateCategory(categoryDTO, oldCategory);
                     }
                     else
                     {
@@ -91,18 +90,21 @@ namespace Web.Controllers.AdminApi
 
                         oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
 
-                        await _repository.UpdateCategory(oldCategory);
+                        (isSuccess, error) = await _repository.UpdateCategory(oldCategory);
                     }
                 }
 
-                return Success(true);
+                if (!isSuccess)
+                    return BadRequest(error);
+
+                return Success(isSuccess);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                Console.Error.WriteLine($"err: {ex.Message}");
+                return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }
-
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete([FromQuery]string categoryId)

@@ -1,14 +1,15 @@
 import React, { createRef } from "react";
 
-import { TState, TComponentState } from "../TState";
-import { ICategory, ICategoryDTO } from "../State";
-
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { ColDef } from "ag-grid-community";
+import { TState, TComponentState } from "../TState";
+import { ICategory, ICategoryDTO } from "../State";
 
 export class Category extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -17,10 +18,15 @@ export class Category extends React.PureComponent<TState, TComponentState> {
   };
   gridRef: React.RefObject<AgGrid<ICategory>> = createRef();
 
-  columns = [
+  columns: ColDef[] = [
     {
       headerName: "Категория",
       field: "alias"
+    },
+    {
+      headerName: "Видна пользователю",
+      field: "isVisible",
+      type: ["bool"]
     }
   ];
 

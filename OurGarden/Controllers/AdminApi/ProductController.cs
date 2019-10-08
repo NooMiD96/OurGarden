@@ -36,9 +36,9 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetProducts()
         {
-            var products = await _repository.GetAllProducts();
+            var products = await _repository.GetProducts();
 
             return Success(
                 products
@@ -58,8 +58,10 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]ProductDTO productDTO)
         {
+            var error = "Что-то пошло не так, повторите попытку";
             try
             {
+                bool isSuccess;
                 if (
                     String.IsNullOrEmpty(productDTO?.CategoryId)
                     || String.IsNullOrEmpty(productDTO?.SubcategoryId)
@@ -84,11 +86,11 @@ namespace Web.Controllers.AdminApi
                         Photos = photos
                     };
 
-                    await _repository.AddProduct(product);
+                    (isSuccess, error) = await _repository.AddProduct(product);
                 }
                 else
                 {
-                    var oldProduct = await _repository.GetProduct(productDTO.ProductId, productDTO.SubcategoryId, productDTO.CategoryId);
+                    var oldProduct = await _repository.GetProduct(productDTO.CategoryId, productDTO.SubcategoryId, productDTO.ProductId);
 
                     if (oldProduct is null)
                         return BadRequest("Товар не найден.");
@@ -99,10 +101,7 @@ namespace Web.Controllers.AdminApi
                         || productDTO.SubcategoryId != productDTO.NewSubcategoryId
                     )
                     {
-                        var (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
-
-                        if (!isSuccess)
-                            return BadRequest(error);
+                        (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
                     }
                     else
                     {
@@ -122,15 +121,19 @@ namespace Web.Controllers.AdminApi
                         oldProduct.Price = productDTO.Price;
                         oldProduct.Description = productDTO.Description;
 
-                        await _repository.UpdateProduct(oldProduct);
+                        (isSuccess, error) = await _repository.UpdateProduct(oldProduct);
                     }
                 }
 
+                if (!isSuccess)
+                    return BadRequest(error);
+
                 return Success(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                Console.Error.WriteLine($"err: {ex.Message}");
+                return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }
 
@@ -139,7 +142,7 @@ namespace Web.Controllers.AdminApi
                                                 [FromQuery]string subcategoryId,
                                                 [FromQuery]string productId)
         {
-            var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
+            var product = await _repository.GetProduct(categoryId, subcategoryId, productId);
 
             foreach (var photo in product.Photos)
                 await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);

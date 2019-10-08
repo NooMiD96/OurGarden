@@ -19,7 +19,7 @@ namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [ApiController]
     public class SubcategoryController : BaseController
     {
@@ -35,9 +35,9 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetSubcategories()
         {
-            var subcategories = await _repository.GetAllSubcategories();
+            var subcategories = await _repository.GetSubcategories();
             var categories = await _repository.GetSimpleCategories();
             var result = new
             {
@@ -50,21 +50,20 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]SubcategoryDTO subcategoryDTO)
         {
+            var error = "Что-то пошло не так, повторите попытку";
             try
             {
+                bool isSuccess;
                 if (
                     String.IsNullOrEmpty(subcategoryDTO?.CategoryId)
                     || String.IsNullOrEmpty(subcategoryDTO?.SubcategoryId))
                 {
-                    var (isSuccess, error) = await _service.CreateSubcategory(subcategoryDTO);
-
-                    if (!isSuccess)
-                        return BadRequest(error);
+                    (isSuccess, error) = await _service.CreateSubcategory(subcategoryDTO);
                 }
                 else
                 {
                     //Update Old
-                    var oldSubcategory = await _repository.GetSubcategory(subcategoryDTO.SubcategoryId, subcategoryDTO.CategoryId);
+                    var oldSubcategory = await _repository.GetSubcategory(subcategoryDTO.CategoryId, subcategoryDTO.SubcategoryId);
 
                     if (oldSubcategory is null)
                         return BadRequest("Подкатегория не найдена.");
@@ -74,10 +73,7 @@ namespace Web.Controllers.AdminApi
                         || subcategoryDTO.CategoryId != subcategoryDTO.NewCategoryId
                     )
                     {
-                        var (isSuccess, error) = await _service.UpdateSubcategory(subcategoryDTO, oldSubcategory);
-
-                        if (!isSuccess)
-                            return BadRequest(error);
+                        (isSuccess, error) = await _service.UpdateSubcategory(subcategoryDTO, oldSubcategory);
                     }
                     else
                     {
@@ -88,20 +84,23 @@ namespace Web.Controllers.AdminApi
                             await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, updateDB: false);
 
                             oldSubcategory.Photo = file;
-
                         }
 
                         oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
 
-                        await _repository.UpdateSubcategory(oldSubcategory);
+                        (isSuccess, error) = await _repository.UpdateSubcategory(oldSubcategory);
                     }
                 }
 
-                return Success(true);
+                if (!isSuccess)
+                    return BadRequest(error);
+
+                return Success(isSuccess);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                Console.Error.WriteLine($"err: {ex.Message}");
+                return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }
 
@@ -109,7 +108,7 @@ namespace Web.Controllers.AdminApi
         public async Task<IActionResult> Delete([FromQuery]string categoryId,
                                                 [FromQuery]string subcategoryId)
         {
-            var oldSubcategory = await _repository.GetSubcategory(subcategoryId, categoryId);
+            var oldSubcategory = await _repository.GetSubcategory(categoryId, subcategoryId);
 
             await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, updateDB: false);
 

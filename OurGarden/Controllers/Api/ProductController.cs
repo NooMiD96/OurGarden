@@ -75,7 +75,7 @@ namespace Web.Controllers.Api
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId) || String.IsNullOrEmpty(productId))
                 return BadRequest("Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар");
 
-            var product = await _repository.GetProduct(productId, subcategoryId, categoryId);
+            var product = await _repository.GetProduct(categoryId, subcategoryId, productId);
 
             if (product == null)
                 return BadRequest("Что-то пошло не так, повторите попытку");

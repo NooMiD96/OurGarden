@@ -1,14 +1,15 @@
 import React, { createRef } from "react";
 
-import { TState, TComponentState } from "../TState";
-import { ISubcategory, ISubcategoryDTO } from "../State";
-
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import Button from "@src/core/antd/Button";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { ColDef } from "ag-grid-community";
+import { TState, TComponentState } from "../TState";
+import { ISubcategory, ISubcategoryDTO } from "../State";
 
 export class Subcategory extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -17,7 +18,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   };
   gridRef: React.RefObject<AgGrid<ISubcategory>> = createRef();
 
-  columns = [
+  columns: ColDef[] = [
     {
       headerName: "Категория",
       field: "categoryId",
@@ -26,6 +27,11 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     {
       headerName: "Подкатегория",
       field: "alias"
+    },
+    {
+      headerName: "Видна пользователю",
+      field: "isVisible",
+      type: ["bool"]
     }
   ];
 

@@ -63,6 +63,7 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const apiPrefix = "apiAdmin";
 const controllerName = "Category";
 export const actionCreators = {
   getCategoryList: (): IAppThunkAction<
@@ -73,7 +74,7 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/apiAdmin/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -104,6 +105,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getCategoryListRequest());
   },
+
   AddOrUpdateCategory: (
     data: ICategoryDTO
   ): IAppThunkAction<
@@ -116,7 +118,7 @@ export const actionCreators = {
 
     const formData = generateFormBody(data);
 
-    const fetchTask = fetch(`/apiAdmin/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
       body: formData,
@@ -148,6 +150,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateCategoryRequest());
   },
+
   removeCategory: (
     categoryId: string
   ): IAppThunkAction<
@@ -159,7 +162,7 @@ export const actionCreators = {
     dispatch(actionCreators.cleanErrorInner());
 
     const fetchTask = fetch(
-      `/apiAdmin/${controllerName}/${apiUrl}?categoryId=${categoryId}`,
+      `/${apiPrefix}/${controllerName}/${apiUrl}?categoryId=${categoryId}`,
       {
         credentials: "same-origin",
         method: "POST",

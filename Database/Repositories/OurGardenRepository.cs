@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Database.Repositories
 {
-    public class OurGardenRepository : IOurGardenRepository
+    public partial class OurGardenRepository : IOurGardenRepository
     {
         public readonly OurGardenContext _context;
         public OurGardenRepository(OurGardenContext context)
@@ -24,19 +24,16 @@ namespace Database.Repositories
         }
 
         #region Category
-        public async Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false)
-        {
-            var query = _context.Category
-                .Include(x => x.Photo)
-                .AsQueryable();
+        private const string __category_alredy_exist = "Не удалось {0} категорию с наименованием \"{1}\" поскольку такая категория уже существует.";
 
-            if (isGetOnlyVisible)
-            {
-                query = query.Where(x => x.IsVisible == true);
-            }
+        public async Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false) =>
+            await GetCategoryImpl(isGetOnlyVisible: isGetOnlyVisible);
 
-            return await query.ToListAsync();
-        }
+        public async Task<Category> GetCategory(string categoryId) =>
+            (
+                await GetCategoryImpl(categoryId: categoryId)
+            )
+            .FirstOrDefault();
 
         public async Task<IEnumerable<Category>> GetSimpleCategories() =>
             await _context.Category.Select(x => new Category()
@@ -46,27 +43,28 @@ namespace Database.Repositories
             })
             .ToListAsync();
 
-
-        public async Task<Category> GetCategory(string categoryId) =>
-            await _context.Category
-            .Include(x => x.Photo)
-            .FirstOrDefaultAsync(x => x.CategoryId == categoryId);
-
-        public async Task AddCategory(Category category)
+        public async ValueTask<(bool isSuccess, string error)> AddCategory(Category category)
         {
-            // var chek = await _context.Category.FirstOrDefaultAsync(x =>  x.CategoryId == category.CategoryId);
-            // if (chek != null)
-            // {
-            //     throw new Exception();
-            // }
-            await _context.Category.AddAsync(category);
-            await _context.SaveChangesAsync();
+            const string crudName = "добавить";
+
+            var result = await AddNewEntityImpl(category);
+            if (!result.isSuccess && result.error == __entity_alredy_exists)
+            {
+                result.error = String.Format(
+                    __category_alredy_exist,
+                    crudName,
+                    category.Alias
+                );
+            }
+
+            return result;
         }
 
-        public async Task UpdateCategory(Category category)
+        public async ValueTask<(bool isSuccess, string error)> UpdateCategory(Category category)
         {
-            _context.Category.Update(category);
-            await _context.SaveChangesAsync();
+            var result = await UpdateEntityImpl(category);
+
+            return result;
         }
 
         public async Task DeleteCategory(string categoryId)
@@ -123,31 +121,20 @@ namespace Database.Repositories
 
         #endregion
 
-        #region Subcategory      
-        public async Task<IEnumerable<Subcategory>> GetAllSubcategories() =>
-            await _context.Subcategory.AsNoTracking()
-            .Include(x => x.Photo)
-            .ToListAsync();
+        #region Subcategory
+        private const string __subcategory_alredy_exist = "Не удалось {0} подкатегорию с выбранной категорией \"{1}\" и наименованием \"{2}\" поскольку такая подкатегорию уже существует.";
 
-        public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false)
-        {
-            var query = _context.Subcategory
-                .Include(x => x.Photo)
-                .Where(x => x.CategoryId == categoryId)
-                .AsQueryable();
+        public async Task<IEnumerable<Subcategory>> GetSubcategories(bool isGetOnlyVisible = false) =>
+            await GetSubcategoriesImpl(isGetOnlyVisible: isGetOnlyVisible);
 
-            if (isGetOnlyVisible)
-            {
-                query = query.Where(x => x.IsVisible == true);
-            }
+        public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false) =>
+            await GetSubcategoriesImpl(categoryId: categoryId, isGetOnlyVisible: isGetOnlyVisible);
 
-            return await query.ToListAsync();
-        }
-
-        public async Task<Subcategory> GetSubcategory(string subcategoryId, string categoryId) =>
-            await _context.Subcategory
-            .Include(x => x.Photo)
-            .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
+        public async Task<Subcategory> GetSubcategory(string categoryId, string subcategoryId) =>
+            (
+                await GetSubcategoriesImpl(categoryId: categoryId, subcategoryId: subcategoryId)
+            )
+            .FirstOrDefault();
 
         public async Task<List<Breadcrumb>> GetSubcategoryBreadcrumb(string categoryId)
         {
@@ -175,24 +162,39 @@ namespace Database.Repositories
             return result;
         }
 
-        public async Task AddSubcategory(Subcategory subcategory)
+        public async ValueTask<(bool isSuccess, string error)> AddSubcategory(Subcategory subcategory)
         {
-            var chek = await _context.Subcategory.FirstOrDefaultAsync(x => x.SubcategoryId == subcategory.SubcategoryId && x.CategoryId == subcategory.CategoryId);
-            if (chek != null)
+            const string crudName = "добавить";
+
+            var result = await AddNewEntityImpl(subcategory);
+            if (!result.isSuccess && result.error == __entity_alredy_exists)
             {
-                throw new Exception();
+                if (subcategory.Category is null)
+                {
+                    await _context.Entry(subcategory)
+                        .Reference(x => x.Category)
+                        .LoadAsync();
+                }
+
+                result.error = String.Format(
+                    __subcategory_alredy_exist,
+                    crudName,
+                    subcategory.Category.Alias,
+                    subcategory.Alias
+                );
             }
-            await _context.Subcategory.AddAsync(subcategory);
-            await _context.SaveChangesAsync();
+
+            return result;
         }
 
-        public async Task UpdateSubcategory(Subcategory subcategory)
+        public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(Subcategory subcategory)
         {
-            _context.Subcategory.Update(subcategory);
-            await _context.SaveChangesAsync();
+            var result = await UpdateEntityImpl(subcategory);
+
+            return result;
         }
 
-        public async Task DeleteSubcategory(string subcategoryId, string categoryId)
+        public async Task DeleteSubcategory(string categoryId, string subcategoryId)
         {
             var subcategory = await _context.Subcategory
                 .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId);
@@ -207,19 +209,25 @@ namespace Database.Repositories
             _context.Subcategory.Remove(subcategory);
             await _context.SaveChangesAsync();
         }
+
         #endregion
 
         #region Product
-        public async Task<IEnumerable<Product>> GetSearchProducts(string search) =>
-           await _context.Product
-            .Include(x => x.Photos)
-            .Where(x => x.Alias.Contains(search))
-            .ToListAsync();
+        private const string __product_alredy_exist = "Не удалось {0} продукт с выбранной категорией \"{1}\", подкатегорией \"{2}\" и наименованием \"{3}\" поскольку такой продукт уже существует.";
 
-        public async Task<IEnumerable<Product>> GetAllProducts() => await _context
-            .Product
-            .Include(x => x.Photos)
-            .ToListAsync();
+        public async Task<IEnumerable<Product>> GetSearchProducts(string search, bool isGetOnlyVisible = true) =>
+            await GetProductsImpl(search: search, isGetOnlyVisible: isGetOnlyVisible);
+
+        public async Task<IEnumerable<Product>> GetProducts() => await GetProductsImpl();
+
+        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false) =>
+            await GetProductsImpl(categoryId: categoryId, subcategoryId: subcategoryId, isGetOnlyVisible: isGetOnlyVisible);
+
+        public async Task<Product> GetProduct(string categoryId, string subcategoryId, string productId) =>
+            (
+                await GetProductsImpl(productId: productId, categoryId: categoryId, subcategoryId: subcategoryId)
+            )
+            .FirstOrDefault();
 
         public async Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync()
         {
@@ -239,27 +247,6 @@ namespace Database.Repositories
                 })
             });
         }
-
-        public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false)
-        {
-            var query = _context
-                .Product
-                .Include(x => x.Photos)
-                .Where(x => x.CategoryId == categoryId && x.SubcategoryId == subcategoryId)
-                .AsQueryable();
-
-            if (isGetOnlyVisible)
-            {
-                query = query.Where(x => x.IsVisible == true);
-            }
-
-            return await query.ToListAsync();
-        }
-
-        public async Task<Product> GetProduct(string productId, string subcategoryId, string categoryId) => await _context
-            .Product
-            .Include(x => x.Photos)
-            .FirstOrDefaultAsync(x => x.SubcategoryId == subcategoryId && x.CategoryId == categoryId && x.ProductId == productId);
 
         public async Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId)
         {
@@ -345,28 +332,47 @@ namespace Database.Repositories
             return result;
         }
 
-        public async Task AddProduct(Product product)
+        public async ValueTask<(bool isSuccess, string error)> AddProduct(Product product)
         {
-            // var chek = await _context.Product.FirstOrDefaultAsync(
-            //     x => x.ProductId == product.ProductId
-            //          && x.SubcategoryId == product.SubcategoryId
-            //          && x.CategoryId == product.CategoryId
-            // );
-            // if (chek != null)
-            // {
-            //     throw new Exception();
-            // }
-            await _context.Product.AddAsync(product);
-            await _context.SaveChangesAsync();
+            const string crudName = "добавить";
+
+            var result = await AddNewEntityImpl(product);
+            if (!result.isSuccess && result.error == __entity_alredy_exists)
+            {
+                if (product.Subcategory is null)
+                {
+                    await _context.Entry(product)
+                        .Reference(x => x.Subcategory)
+                        .LoadAsync();
+                }
+
+                if (product.Subcategory.Category is null)
+                {
+                    await _context.Entry(product.Subcategory)
+                        .Reference(x => x.Category)
+                        .LoadAsync();
+                }
+
+                result.error = String.Format(
+                    __subcategory_alredy_exist,
+                    crudName,
+                    product.Subcategory.Category.Alias,
+                    product.Subcategory.Alias,
+                    product.Alias
+                );
+            }
+
+            return result;
         }
 
-        public async Task UpdateProduct(Product product)
+        public async ValueTask<(bool isSuccess, string error)> UpdateProduct(Product product)
         {
-            _context.Product.Update(product);
-            await _context.SaveChangesAsync();
+            var result = await UpdateEntityImpl(product);
+
+            return result;
         }
 
-        public async ValueTask<bool> DeleteProduct(string productId, string subcategoryId, string categoryId)
+        public async ValueTask<bool> DeleteProduct(string categoryId, string subcategoryId, string productId)
         {
             var product = await _context
                 .Product
@@ -388,40 +394,24 @@ namespace Database.Repositories
 
             return true;
         }
+
         #endregion
 
         #region News
-        public async Task<IEnumerable<News>> GetNews(bool includeDescriptions = true)
-        {
-            var query = _context.News.Include(x => x.Photo).AsQueryable();
-
-            if (!includeDescriptions)
-            {
-                query = query.Select(x => new News()
-                {
-                    NewsId = x.NewsId,
-                    Title = x.Title,
-                    Alias = x.Alias,
-                    Date = x.Date,
-                    Description = null,
-                    Photo = x.Photo,
-                });
-            }
-
-            var result = await query.ToListAsync();
-
-            return result;
-        }
+        public async Task<IEnumerable<News>> GetNews(bool includeDescriptions = true) =>
+            await GetNewsImpl(includeDescriptions: includeDescriptions);
 
         public async Task<News> GetNews(int newsId) =>
-            await _context.News
-            .Include(x => x.Photo)
-            .FirstOrDefaultAsync(x => x.NewsId == newsId);
+            (
+                await GetNewsImpl(newsId: newsId)
+            )
+            .FirstOrDefault();
 
         public async Task<News> GetNews(string alias) =>
-           await _context.News
-           .Include(x => x.Photo)
-           .FirstOrDefaultAsync(x => x.Alias == alias);
+            (
+                await GetNewsImpl(alias: alias)
+            )
+            .FirstOrDefault();
 
         public async Task<List<Breadcrumb>> GetNewsBreadcrumb(string alias)
         {

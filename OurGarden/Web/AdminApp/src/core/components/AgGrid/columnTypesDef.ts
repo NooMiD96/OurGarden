@@ -17,7 +17,7 @@ const columnTypesDef: { [key: string]: ColDef } = {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressToolPanel: true,
+    suppressToolPanel: true
   },
   actionColumn: {
     cellRendererFramework: ActionRenderer,
@@ -30,31 +30,41 @@ const columnTypesDef: { [key: string]: ColDef } = {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressToolPanel: true,
+    suppressToolPanel: true
   },
   number: {
     filter: "agNumberColumnFilter"
   },
   date: {
     filter: "agDateColumnFilter",
-    valueGetter: (params) => {
+    valueGetter: params => {
       const value = params.data[params.colDef.field!] as string;
       return moment(value).format("DD.MM.YYYY HH:mm:ss");
     },
     filterParams: {
-      browserDatePicker: true,
+      browserDatePicker: true
     },
     comparator: dateComparator
   },
+  bool: {
+    filter: false,
+    valueGetter: params => {
+      const value = params.data[params.colDef.field!] as boolean;
+      return value ? "Да" : "Нет";
+    }
+  },
   orderStatus: {
-    valueGetter: (params) => {
+    valueGetter: params => {
       const value = params.data[params.colDef.field!] as IOrderStatus;
       return value.name;
-    },
+    }
   },
   idField: {
     valueGetter: params => {
-      const { colDef: { field }, data } = params;
+      const {
+        colDef: { field },
+        data
+      } = params;
       const idValue = data[field!];
       const value = idValue.replace(/-/g, " ");
       return `${value[0].toUpperCase()}${value.slice(1).toLowerCase()}`;
@@ -65,10 +75,7 @@ const columnTypesDef: { [key: string]: ColDef } = {
 const defaultColDef: ColDef = {
   sortable: true,
   resizable: true,
-  filter: true,
-}
-
-export {
-  columnTypesDef,
-  defaultColDef
+  filter: true
 };
+
+export { columnTypesDef, defaultColDef };

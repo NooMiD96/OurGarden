@@ -32,6 +32,13 @@ namespace Web.Services.Controllers.AdminApi
         public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+                {
+                    transaction.Rollback();
+                    return result;
+                }
+
                 try
                 {
                     // Создаём новую подкатегорию
@@ -56,7 +63,11 @@ namespace Web.Services.Controllers.AdminApi
 
                         Photo = file
                     };
-                    await _repository.AddSubcategory(newSubcategory);
+                    var result = await _repository.AddSubcategory(newSubcategory);
+                    if (!result.isSuccess)
+                    {
+                        return cancelUpdate(result);
+                    }
 
                     // Загружаем список продуктов
                     await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
@@ -126,12 +137,15 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    transaction.Rollback();
-
-                    return (false, "Ошибка при обнавлении подкатегории.");
+                    Console.Error.WriteLine($"err: {ex.Message}");
+                    return cancelUpdate((
+                        false,
+                        $"Ошибка при обновлении подкатегории. Возможно товар с такой подкатегорией уже существует. Текст ошибки: {ex.Message}"
+                    ));
                 }
+            }
         }
 
         public async ValueTask<(bool isSuccess, string error)> CreateSubcategory(SubcategoryDTO subcategoryDTO)
@@ -151,9 +165,9 @@ namespace Web.Services.Controllers.AdminApi
                     Photo = file
                 };
 
-                await _repository.AddSubcategory(subcategory);
+                var result = await _repository.AddSubcategory(subcategory);
 
-                return (true, null);
+                return result;
             }
             catch (Exception ex)
             {

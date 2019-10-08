@@ -34,6 +34,13 @@ namespace Web.Services.Controllers.AdminApi
         public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+                {
+                    transaction.Rollback();
+                    return result;
+                }
+
                 try
                 {
                     // Создаём новую категорию
@@ -57,7 +64,12 @@ namespace Web.Services.Controllers.AdminApi
 
                         Photo = file
                     };
-                    await _repository.AddCategory(newCategory);
+                    var result = await _repository.AddCategory(newCategory);
+                    if (!result.isSuccess)
+                    {
+                        return cancelUpdate(result);
+                    }
+
                     var newCategoryId = newCategory.CategoryId;
                     newCategory = null;
 
@@ -156,12 +168,15 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    transaction.Rollback();
-
-                    return (false, "Ошибка при обнавлении категории. Возможно подкатегория или товар с такой категорией уже существуют");
+                    Console.Error.WriteLine($"err: {ex.Message}");
+                    return cancelUpdate((
+                        false,
+                        $"Ошибка при обновлении категории. Возможно подкатегория и товар с такой категорией уже существует. Текст ошибки: {ex.Message}"
+                    ));
                 }
+            }
         }
     }
 }

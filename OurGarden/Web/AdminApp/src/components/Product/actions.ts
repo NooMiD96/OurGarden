@@ -83,7 +83,7 @@ export const actionCreators = {
   getProductList: (): IAppThunkAction<
     t.TGetProductList | t.ICleanErrorInnerAction
   > => (dispatch, getState) => {
-    const apiUrl = "GetAll";
+    const apiUrl = "GetProducts";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());

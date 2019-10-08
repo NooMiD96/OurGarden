@@ -75,7 +75,7 @@ export const actionCreators = {
   getSubcategoryList: (): IAppThunkAction<
     t.TGetSubcategoryList | t.ICleanErrorInnerAction
   > => (dispatch, getState) => {
-    const apiUrl = "GetAll";
+    const apiUrl = "GetSubcategories";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
@@ -111,6 +111,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getSubcategoryListRequest());
   },
+
   AddOrUpdateSubcategory: (
     data: ISubcategoryDTO
   ): IAppThunkAction<
@@ -155,6 +156,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.addOrUpdateSubcategoryRequest());
   },
+
   RemoveSubcategory: (
     categoryId: string,
     subcategoryId: string

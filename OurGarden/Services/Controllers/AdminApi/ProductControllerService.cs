@@ -33,6 +33,13 @@ namespace Web.Services.Controllers.AdminApi
         public async ValueTask<(bool isSuccess, string error)> UpdateProduct(ProductDTO productDTO, Product oldProduct)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+                {
+                    transaction.Rollback();
+                    return result;
+                }
+
                 try
                 {
                     // Создаём новую категорию
@@ -62,7 +69,11 @@ namespace Web.Services.Controllers.AdminApi
                         Description = productDTO.Description,
                         Photos = photos
                     };
-                    await _repository.AddProduct(product);
+                    var result = await _repository.AddProduct(product);
+                    if (!result.isSuccess)
+                    {
+                        return cancelUpdate(result);
+                    }
 
                     // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
                     var orderList = _context.OrderPosition
@@ -89,12 +100,15 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    transaction.Rollback();
-
-                    return (false, "Ошибка при обнавлении товара. Возможно данный товара уже существуют в данной категории-подкатегории");
+                    Console.Error.WriteLine($"err: {ex.Message}");
+                    return cancelUpdate((
+                        false,
+                        $"Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует. Текст ошибки: {ex.Message}"
+                    ));
                 }
+            }
         }
     }
 }

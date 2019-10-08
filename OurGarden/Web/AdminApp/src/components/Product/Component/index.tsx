@@ -36,6 +36,11 @@ class Product extends React.PureComponent<TState, TComponentState> {
     {
       headerName: "Цена",
       field: "price"
+    },
+    {
+      headerName: "Видна пользователю",
+      field: "isVisible",
+      type: ["bool"]
     }
   ];
 
