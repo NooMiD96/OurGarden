@@ -1,5 +1,6 @@
 ﻿using Model.Breadcrumb;
 using Model.DB;
+using Model.DTO;
 using Model.DTO.ProductDTO;
 
 using System;
@@ -40,7 +41,6 @@ namespace Database.Repositories
         #endregion Subcategory
 
         #region Product
-        Task<IEnumerable<Product>> GetSearchProducts(string search, bool isGetOnlyVisible = true);
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false);
         Task<Product> GetProduct(string categoryId, string subcategoryId, string productId);
@@ -91,7 +91,13 @@ namespace Database.Repositories
         Task<OrderStatus> GetStatus(int statusId);
         #endregion Order
 
+        #region Files
         Task AddFile(Photo photo);
         ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true);
+        #endregion Files
+
+        #region Search
+        Task<IEnumerable<SearchDTO>> Search(string search, bool isGetOnlyVisible = true);
+        #endregion Search
     }
 }

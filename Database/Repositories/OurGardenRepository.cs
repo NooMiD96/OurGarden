@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Model.Breadcrumb;
 using Model.DB;
+using Model.DTO;
 using Model.DTO.ProductDTO;
 
 using System;
@@ -215,9 +216,6 @@ namespace Database.Repositories
         #region Product
         private const string __product_alredy_exist = "Не удалось {0} продукт с выбранной категорией \"{1}\", подкатегорией \"{2}\" и наименованием \"{3}\" поскольку такой продукт уже существует.";
 
-        public async Task<IEnumerable<Product>> GetSearchProducts(string search, bool isGetOnlyVisible = true) =>
-            await GetProductsImpl(search: search, isGetOnlyVisible: isGetOnlyVisible);
-
         public async Task<IEnumerable<Product>> GetProducts() => await GetProductsImpl();
 
         public async Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false) =>
@@ -354,7 +352,7 @@ namespace Database.Repositories
                 }
 
                 result.error = String.Format(
-                    __subcategory_alredy_exist,
+                    __product_alredy_exist,
                     crudName,
                     product.Subcategory.Category.Alias,
                     product.Subcategory.Alias,
@@ -629,5 +627,43 @@ namespace Database.Repositories
             await _context.Status.ToListAsync();
 
         #endregion
+
+
+        #region Search
+        public async Task<IEnumerable<SearchDTO>> Search(string search, bool isGetOnlyVisible = true)
+        {
+            var categories = await GetCategoryImpl(search: search, isGetOnlyVisible: isGetOnlyVisible);
+            var subcategories = await GetSubcategoriesImpl(search: search, isGetOnlyVisible: isGetOnlyVisible);
+            var products = await GetProductsImpl(search: search, isGetOnlyVisible: isGetOnlyVisible);
+
+            var result = new List<SearchDTO>();
+
+            result.AddRange(categories.Select(x => new SearchDTO()
+            {
+                CategoryId = x.CategoryId,
+                Photo = x.Photo,
+                Alias = x.Alias
+            }));
+
+            result.AddRange(subcategories.Select(x => new SearchDTO()
+            {
+                CategoryId = x.CategoryId,
+                SubcategoryId = x.SubcategoryId,
+                Photo = x.Photo,
+                Alias = x.Alias
+            }));
+
+            result.AddRange(products.Select(x => new SearchDTO()
+            {
+                CategoryId = x.CategoryId,
+                SubcategoryId = x.SubcategoryId,
+                ProductId = x.ProductId,
+                Photos = x.Photos,
+                Alias = x.Alias
+            }));
+
+            return result;
+        }
+        #endregion Search
     }
 }

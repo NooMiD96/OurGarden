@@ -36,10 +36,12 @@ const searchListIsEmpty = () => (
 );
 
 const fetchProducts = async (search: string) => {
-  return await fetch(`/api/Product/SearchProduct?search=${search}`, {
+  const result = await fetch(`/api/Search?search=${search}`, {
     credentials: "same-origin",
     method: "GET"
   }).then(res => res.json());
+
+  return result;
 };
 
 const SearchProduct = (props: { push: (val: string) => void }) => {
@@ -120,6 +122,6 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
 export default connect(
   null,
   {
-    push: push
+    push
   }
 )(SearchProduct);

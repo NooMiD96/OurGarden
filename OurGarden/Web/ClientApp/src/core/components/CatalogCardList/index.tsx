@@ -14,17 +14,17 @@ import "./style/CatalogCard.style.scss";
 
 export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
   cardStyle = {
-    // xs	<576px
+    // xs <576px
     xs: { span: 24 },
-    // sm	≥576px
+    // sm ≥576px
     sm: { span: 24 },
-    // md	≥768px
+    // md ≥768px
     // md: { span: 24 },
-    // lg	≥992px
+    // lg ≥992px
     lg: { span: 12 },
-    // xl	≥1200px
+    // xl ≥1200px
     xl: { span: 8 }
-    // xxl	≥1600px
+    // xxl ≥1600px
     // xxl: { span: 8 }
   };
 
@@ -36,16 +36,16 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
       const item = props.dataList[0];
 
       displayList = (item as ISubcategory).subcategoryId
-        ? (props.dataList as ISubcategory[]).map<IDisplayItem>(x => ({
-            link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
-            alias: x.alias,
-            photoUrl: x.photo ? x.photo.url : ""
-          }))
-        : (props.dataList as ICategory[]).map<IDisplayItem>(x => ({
-            link: `/Catalog/${x.categoryId}`,
-            alias: x.alias,
-            photoUrl: x.photo ? x.photo.url : ""
-          }));
+        ? (props.dataList as ISubcategory[]).map<IDisplayItem>((x) => ({
+          link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
+          alias: x.alias,
+          photoUrl: x.photo ? x.photo.url : ""
+        }))
+        : (props.dataList as ICategory[]).map<IDisplayItem>((x) => ({
+          link: `/Catalog/${x.categoryId}`,
+          alias: x.alias,
+          photoUrl: x.photo ? x.photo.url : ""
+        }));
     }
 
     this.state = {
@@ -57,8 +57,8 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
 
   onChange = (page: number, pageSize: number = this.state.pageSize) => {
     this.setState({
-      page: page,
-      pageSize: pageSize
+      page,
+      pageSize
     });
   };
 
@@ -78,7 +78,7 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           onChange={this.onChange}
         />
         <Row type="flex" gutter={16}>
-          {displayList.slice((page - 1) * pageSize, page * pageSize).map(x => (
+          {displayList.slice((page - 1) * pageSize, page * pageSize).map((x) => (
             <Col {...this.cardStyle} key={x.link} className="card-wrapper">
               <Card
                 hoverable

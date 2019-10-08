@@ -2,9 +2,10 @@ import React from "react";
 
 import AutoComplete from "@core/antd/AutoComplete";
 
-import { IProduct } from "@src/components/Product/State";
-
 import { getProductPhotoSrc } from "@src/core/helpers/product";
+
+import { ISearchItem } from "./ISearchProduct";
+import { IProduct } from "@src/components/Product/State";
 
 const { Option } = AutoComplete;
 
@@ -18,19 +19,28 @@ const style = {
   }
 };
 
-const Product = (props: IProduct) => {
-  const link = `/Catalog/${props.categoryId}/${props.subcategoryId}/${
-    props.productId
-  }`;
+const Product = (item: ISearchItem) => {
+  let link = `/Catalog/${item.categoryId}`;
+
+  if (item.subcategoryId) {
+    link += `/${item.subcategoryId}`;
+  }
+
+  if (item.productId) {
+    link += `/${item.productId}`;
+  }
+
+  let imgSrc = "";
+  if (item.photo) {
+    imgSrc = item.photo.url;
+  } else if (item.photos) {
+    imgSrc = getProductPhotoSrc(item as IProduct);
+  }
 
   return (
-    <Option title={props.alias} key={link}>
-      <img
-        src={getProductPhotoSrc(props)}
-        style={style.imgStyle}
-        alt={props.alias}
-      />
-      <span style={style.spanStyle}>{props.alias}</span>
+    <Option title={item.alias} key={link}>
+      <img src={imgSrc} style={style.imgStyle} alt={item.alias} />
+      <span style={style.spanStyle}>{item.alias}</span>
     </Option>
   );
 };

@@ -82,16 +82,5 @@ namespace Web.Controllers.Api
 
             return Success(product);
         }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> SearchProduct([FromQuery] string search)
-        {
-            if (String.IsNullOrEmpty(search))
-                return BadRequest("Что-то пошло не так, повторите попытку");
-
-            var result = await _repository.GetSearchProducts(search);
-
-            return Success(result.OrderBy(x => x.ProductId));
-        }
     }
 }

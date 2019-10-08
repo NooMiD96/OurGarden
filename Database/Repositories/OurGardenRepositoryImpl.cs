@@ -17,6 +17,7 @@ namespace Database.Repositories
         #region Category
 
         private async Task<IEnumerable<Category>> GetCategoryImpl(string categoryId = null,
+                                                                  string search = null,
                                                                   bool isGetOnlyVisible = false)
         {
             var query = _context.Category.Include(x => x.Photo).AsQueryable();
@@ -24,6 +25,11 @@ namespace Database.Repositories
             if (!String.IsNullOrEmpty(categoryId))
             {
                 query = query.Where(x => x.CategoryId == categoryId);
+            }
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                query = query.Where(x => x.Alias.Contains(search));
             }
 
             if (isGetOnlyVisible)
@@ -40,6 +46,7 @@ namespace Database.Repositories
 
         private async Task<IEnumerable<Subcategory>> GetSubcategoriesImpl(string categoryId = null,
                                                                           string subcategoryId = null,
+                                                                          string search = null,
                                                                           bool isGetOnlyVisible = false)
         {
             var query = _context.Subcategory
@@ -54,6 +61,11 @@ namespace Database.Repositories
             if (!String.IsNullOrEmpty(subcategoryId))
             {
                 query = query.Where(x => x.SubcategoryId == subcategoryId);
+            }
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                query = query.Where(x => x.Alias.Contains(search));
             }
 
             if (isGetOnlyVisible)
