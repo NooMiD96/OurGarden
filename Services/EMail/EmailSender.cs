@@ -1,10 +1,10 @@
 ﻿using MailKit.Net.Smtp;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using MimeKit;
-using MimeKit.Text;
 
 using Model.EMail;
 
@@ -17,11 +17,15 @@ namespace Services.EMail
     {
         private readonly EmailSettings _emailSettings;
         private readonly IHostingEnvironment _env;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public EmailSender(IOptions<EmailSettings> emailSettings, IHostingEnvironment env)
+        public EmailSender(IOptions<EmailSettings> emailSettings,
+                           IHostingEnvironment env,
+                           IServiceScopeFactory scopeFactory)
         {
             _emailSettings = emailSettings.Value;
             _env = env;
+            _scopeFactory = scopeFactory;
         }
 
         /// <summary>

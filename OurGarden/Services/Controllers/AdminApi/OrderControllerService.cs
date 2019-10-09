@@ -1,6 +1,8 @@
 ﻿using Database.Contexts;
 using Database.Repositories;
+
 using Microsoft.EntityFrameworkCore;
+
 using Model.DB;
 using Model.DTO.Order;
 
@@ -87,17 +89,11 @@ namespace Web.Services.Controllers.AdminApi
 
                     var task = new Task(async () =>
                     {
-                        await _emailSender.SendOrderInformation(order);
+                        await _emailSender.SendOrderInformation(order.OrderId);
                     });
-                    await _context.Entry(order)
-                        .Collection(x => x.OrderPositions)
-                        .Query()
-                        .Include(x => x.Product)
-                            .ThenInclude(x => x.Subcategory)
-                                .ThenInclude(x => x.Category)
-                        .LoadAsync();
                     task.Start(TaskScheduler.Default);
 
+                    transaction.Commit();
                     return (true, null);
                 }
                 catch (Exception)

@@ -1,3 +1,7 @@
+using Database.Contexts;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 using MimeKit;
 
@@ -511,13 +515,42 @@ namespace Services.EMail
                 CreateClientOrderBody(order)
             );
         }
-
-        public async Task SendOrderInformation(Order order)
+        async Task<Order> GetOrderItemsInformation(int orderId)
         {
-            var (email, subject, bodyInner, clientBodyInner) = CreateOrderEmailInformation(order ?? new Order());
+            // when we exit the using block,
+            // the IServiceScope will dispose itself 
+            // and dispose all of the services that it resolved.
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
 
-            await SendEmailAsync(_LocalMail, subject, bodyInner).ConfigureAwait(true);
-            await SendEmailAsync(email, subject, clientBodyInner).ConfigureAwait(true);
+                var order = await context.Order
+                    .Include(x => x.OrderPositions)
+                        .ThenInclude(x => x.Product)
+                            .ThenInclude(x => x.Subcategory)
+                                .ThenInclude(x => x.Category)
+                    .FirstAsync(x => x.OrderId == orderId);
+
+                return order;
+            }
+        }
+
+        public async Task SendOrderInformation(int orderId)
+        {
+            try
+            {
+                var order = await GetOrderItemsInformation(orderId);
+
+                var (email, subject, bodyInner, clientBodyInner) = CreateOrderEmailInformation(order);
+
+                await SendEmailAsync(_LocalMail, subject, bodyInner);
+                await SendEmailAsync(email, subject, clientBodyInner);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
+            }
         }
     }
 }
