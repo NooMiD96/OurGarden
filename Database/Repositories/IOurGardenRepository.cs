@@ -81,7 +81,7 @@ namespace Database.Repositories
         #endregion Video
 
         #region Order
-        Task<IEnumerable<Order>> GetOrders();
+        Task<IEnumerable<Order>> GetOrders(bool includeProductInfo = false);
         Task<IEnumerable<OrderStatus>> GetStatusList();
         Task<Order> GetOrder(int orderId);
         Task AddOrder(Order order);

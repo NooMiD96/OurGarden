@@ -29,17 +29,40 @@ namespace Web.Controllers.AdminApi
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAll()
         {
-            var orders = await _repository.GetOrders();
+            var orders = await _repository.GetOrders(includeProductInfo: true);
             var statusList = await _repository.GetStatusList();
 
             return Success(new
             {
-                orders = orders.OrderByDescending(x => x.Date).Select(x =>
+                orders = orders.OrderByDescending(x => x.Date).Select(o =>
                 {
-                    foreach (var orderPos in x.OrderPositions)
-                        orderPos.Order = null;
+                    var orderDTO = new OrderAdminDTO()
+                    {
+                        Date = o.Date,
+                        Description = o.Description,
+                        Email = o.Email,
+                        FIO = o.FIO,
+                        OrderId = o.OrderId,
+                        Phone = o.Phone,
+                        Status = o.Status,
+                        StatusId = o.StatusId,
+                        TotalPrice = o.TotalPrice,
+                        OrderPositions = o.OrderPositions.Select(op => new OrderPositionAdminDTO()
+                        {
+                            OrderPositionId = op.OrderPositionId,
+                            Number = op.Number,
+                            Price = op.Price,
+                            OrderId = o.OrderId,
+                            ProductAlias = op.Product.Alias,
+                            ProductId = op.Product.ProductId,
+                            SubcategoryAlias = op.Product.Subcategory.Alias,
+                            SubcategoryId = op.Product.Subcategory.SubcategoryId,
+                            CategoryAlias = op.Product.Subcategory.Category.Alias,
+                            CategoryId = op.Product.Subcategory.Category.CategoryId,
+                        })
+                    };
 
-                    return x;
+                    return orderDTO;
                 }),
                 statusList
             });

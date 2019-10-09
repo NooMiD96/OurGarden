@@ -22,8 +22,15 @@ export interface IOrderDTO {
 
 export interface IOrderPosition {
   orderPositionId: number;
-  product: IProduct;
   number: number;
+  price: number;
+  productId: string;
+  productAlias: string;
+  subcategoryId: string;
+  subcategoryAlias: string;
+  categoryId: string;
+  categoryAlias: string;
+  orderId: number;
 }
 
 export interface IOrderStatus {
@@ -42,6 +49,6 @@ export const unloadedState: IOrderState = {
   listItem: [],
   statusList: [],
   pending: false,
-  errorInner: "",
+  errorInner: ""
 };
 //#endregion

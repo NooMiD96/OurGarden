@@ -22,18 +22,15 @@ interface IProps extends FormComponentProps {
 const columns: ColDef[] = [
   {
     headerName: "Категория",
-    field: "categoryId",
-    type: ["idField"]
+    field: "categoryAlias"
   },
   {
     headerName: "Подкатегория",
-    field: "subcategoryId",
-    type: ["idField"]
+    field: "subcategoryAlias"
   },
   {
     headerName: "Продукт",
-    field: "productId",
-    type: ["idField"]
+    field: "productAlias"
   },
   {
     headerName: "Цена за шт.",

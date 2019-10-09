@@ -592,11 +592,24 @@ namespace Database.Repositories
 
         #region Order
 
-        public async Task<IEnumerable<Order>> GetOrders() =>
-           await _context.Order
-            .Include(x => x.OrderPositions)
-            .Include(x => x.Status)
-            .ToListAsync();
+        public async Task<IEnumerable<Order>> GetOrders(bool includeProductInfo = false)
+        {
+            var query = _context.Order
+                .Include(x => x.OrderPositions)
+                .Include(x => x.Status)
+                .AsQueryable();
+
+            if (includeProductInfo)
+            {
+                query = query
+                    .Include(x => x.OrderPositions)
+                        .ThenInclude(x => x.Product)
+                            .ThenInclude(x => x.Subcategory)
+                                .ThenInclude(x => x.Category);
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async Task<Order> GetOrder(int orderId)
         {
