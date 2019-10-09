@@ -1,4 +1,6 @@
-﻿using Database.Repositories;
+﻿using Core;
+
+using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,9 +57,19 @@ namespace Web.Controllers.Api
             if (String.IsNullOrEmpty(categoryId))
                 return BadRequest("Что-то пошло не так, необходимо выбрать категорию");
 
-            var result = await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true);
+            var category = (await _repository.GetCategory(categoryId)).DeepClone();
+            var subcategories = await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true);
 
-            return Success(result.OrderBy(x => x.SubcategoryId));
+            category.Subcategories = subcategories
+                .OrderBy(x => x.SubcategoryId)
+                .Select(x =>
+                {
+                    x.Category = null;
+                    return x;
+                })
+                .ToList();
+
+            return Success(category);
         }
     }
 }

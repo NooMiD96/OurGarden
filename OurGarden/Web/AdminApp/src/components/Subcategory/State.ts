@@ -1,11 +1,11 @@
 import { IPhoto } from "@src/core/IPhoto";
-import { ICategory } from "../Category/State";
+import { ICategoryDictionary } from "../Category/State";
 
 // -----------------
 //#region STATE
 export interface IResponseData {
   subcategories: ISubcategory[];
-  categories: ICategory[];
+  categories: ICategoryDictionary[];
 }
 
 export interface ISubcategory {
@@ -29,7 +29,7 @@ export interface ISubcategoryDTO {
 
 export interface ISubcategoryState {
   subcategoriesList: ISubcategory[];
-  categoriesList: ICategory[];
+  categoriesList: ICategoryDictionary[];
   pending: boolean;
   errorInner: string;
 }
@@ -38,6 +38,6 @@ export const unloadedState: ISubcategoryState = {
   subcategoriesList: [],
   categoriesList: [],
   pending: false,
-  errorInner: "",
+  errorInner: ""
 };
 //#endregion

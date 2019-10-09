@@ -103,6 +103,7 @@ namespace Web.Services.Controllers.AdminApi
                 catch (Exception ex)
                 {
                     Console.Error.WriteLine($"err: {ex.Message}");
+                    Console.Error.WriteLine(ex.StackTrace);
                     return cancelUpdate((
                         false,
                         $"Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует. Текст ошибки: {ex.Message}"

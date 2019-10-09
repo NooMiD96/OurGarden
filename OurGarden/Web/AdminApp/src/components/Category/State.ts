@@ -2,6 +2,15 @@ import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
 //#region STATE
+export interface ICategoryDictionary {
+  categoryId: string;
+  alias: string;
+  subcategories: {
+    subcategoryId: string;
+    alias: string;
+  }[];
+}
+
 export interface ICategory {
   categoryId: string;
   alias: string;
@@ -25,6 +34,6 @@ export interface ICategoryState {
 export const unloadedState: ICategoryState = {
   listItem: [],
   pending: false,
-  errorInner: "",
+  errorInner: ""
 };
 //#endregion

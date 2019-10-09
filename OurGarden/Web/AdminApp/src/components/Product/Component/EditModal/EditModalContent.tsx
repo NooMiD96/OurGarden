@@ -13,8 +13,9 @@ import localeText from "../Text";
 import { FileUploader } from "@src/core/components/Uploader/File";
 import { filterOption } from "@core/utils/select";
 
-import { ICategoryDictionary, IProduct, IProductDTO } from "../../State";
+import { IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
+import { ICategoryDictionary } from "@components/Category/State";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
@@ -90,8 +91,8 @@ export const EditModalContent = (props: IProps) => {
 
   const { form, item, categoryList } = props;
   const { getFieldDecorator } = form;
-  const { categoryId, alias, price, description, photos, isVisible } =
-    item || ({ isVisible: true } as IProduct);
+  const { categoryId, alias, price, description, photos, isVisible }
+    = item || ({ isVisible: true } as IProduct);
   let { subcategoryId } = item || ({} as IProduct);
 
   const onUploadImage = (image?: File) => {

@@ -1,7 +1,8 @@
 import * as React from "react";
 
 import Modal from "@core/antd/Modal";
-import { IProduct, ICategoryDictionary, IProductDTO } from "../../State";
+import { IProduct, IProductDTO } from "../../State";
+import { ICategoryDictionary } from "@components/Category/State";
 
 import EditModalContent from "./EditModalContent";
 

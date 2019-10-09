@@ -13,21 +13,13 @@ namespace Database.Repositories
     {
         #region Category
         Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false);
-        Task<IEnumerable<Category>> GetSimpleCategories();
+        Task<IEnumerable<CategoryDictionaryDTO>> GetSimpleCategories(bool includeSubcategory = false);
         Task<Category> GetCategory(string categoryId);
         ValueTask<(bool isSuccess, string error)> AddCategory(Category category);
         ValueTask<(bool isSuccess, string error)> UpdateCategory(Category category);
         Task DeleteCategory(string categoryId);
         Task DeleteCategory(Category category);
         #endregion Category
-
-        #region Client
-        Task<IEnumerable<Client>> GetClients();
-        Task<Client> GetClient(int clientId);
-        Task AddClient(Client client);
-        Task UpdateClient(Client client);
-        Task DeleteClient(int clientId);
-        #endregion Client
 
         #region Subcategory
         Task<IEnumerable<Subcategory>> GetSubcategories(bool isGetOnlyVisible = false);
@@ -44,7 +36,6 @@ namespace Database.Repositories
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Product>> GetProducts(string categoryId, string subcategoryId, bool isGetOnlyVisible = false);
         Task<Product> GetProduct(string categoryId, string subcategoryId, string productId);
-        Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync();
         Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId);
         Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId, string productId);
         ValueTask<(bool isSuccess, string error)> AddProduct(Product product);
@@ -52,6 +43,14 @@ namespace Database.Repositories
         ValueTask<bool> DeleteProduct(string categoryId, string subcategoryId, string productId);
         ValueTask<bool> DeleteProduct(Product product);
         #endregion Product
+
+        #region Client
+        Task<IEnumerable<Client>> GetClients();
+        Task<Client> GetClient(int clientId);
+        Task AddClient(Client client);
+        Task UpdateClient(Client client);
+        Task DeleteClient(int clientId);
+        #endregion Client
 
         #region News
         Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);

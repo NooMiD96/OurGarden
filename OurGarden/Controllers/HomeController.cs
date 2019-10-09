@@ -67,16 +67,34 @@ namespace Web.Controllers
                             case 2:
                                 sectionName = "subcategory";
                                 var category = await _repository.GetCategory(urlSplit[1]);
+
+                                if (category is null)
+                                {
+                                    return default;
+                                }
+
                                 value = category.Alias;
                                 break;
                             case 3:
                                 sectionName = "productList";
                                 var subcategory = await _repository.GetSubcategory(urlSplit[1], urlSplit[2]);
+
+                                if (subcategory is null)
+                                {
+                                    return default;
+                                }
+
                                 value = subcategory.Alias;
                                 break;
                             case 4:
                                 sectionName = "product";
                                 var product = await _repository.GetProduct(urlSplit[1], urlSplit[2], urlSplit[3]);
+
+                                if (product is null)
+                                {
+                                    return default;
+                                }
+
                                 value = product.Alias;
                                 break;
                         }
@@ -99,6 +117,11 @@ namespace Web.Controllers
                         var section = seoInformation.GetSection("news");
 
                         var news = await _repository.GetNews(alias: urlSplit[1], includeDescriptions: false);
+
+                        if (news is null)
+                        {
+                            return default;
+                        }
 
                         return (
                             section

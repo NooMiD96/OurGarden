@@ -1,13 +1,11 @@
 ﻿using Core.Constants;
 using Core.Helpers;
-
 using Database.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Model.DB;
-using Model.DTO;
+using Model.DTO.Subcategory;
 
 using System;
 using System.Linq;
@@ -69,7 +67,7 @@ namespace Web.Controllers.AdminApi
                         return BadRequest("Подкатегория не найдена.");
 
                     if (
-                        subcategoryDTO.Alias != oldSubcategory.Alias
+                        subcategoryDTO.Alias.TransformToId() != oldSubcategory.Alias.TransformToId()
                         || subcategoryDTO.CategoryId != subcategoryDTO.NewCategoryId
                     )
                     {
@@ -86,6 +84,7 @@ namespace Web.Controllers.AdminApi
                             oldSubcategory.Photo = file;
                         }
 
+                        oldSubcategory.Alias = subcategoryDTO.Alias;
                         oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
 
                         (isSuccess, error) = await _repository.UpdateSubcategory(oldSubcategory);
@@ -100,6 +99,7 @@ namespace Web.Controllers.AdminApi
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
                 return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }

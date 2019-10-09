@@ -8,8 +8,9 @@ import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 import * as t from "./actionsType";
-import { IProduct, IProductDTO, ICategoryDictionary } from "./State";
+import { IProduct, IProductDTO } from "./State";
 import { generateFormBody } from "@src/core/helpers/request";
+import { ICategoryDictionary } from "@components/Category/State";
 
 // ----------------
 //#region ACTIONS

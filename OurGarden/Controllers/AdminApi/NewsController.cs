@@ -74,7 +74,7 @@ namespace Web.Controllers.AdminApi
                     if (oldNews is null)
                         return BadRequest("Новость не найдена.");
 
-                    if (oldNews.Title != newsDTO.Title)
+                    if (oldNews.Title.TransformToId() != newsDTO.Title.TransformToId())
                     {
                         var (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
 
@@ -92,6 +92,7 @@ namespace Web.Controllers.AdminApi
                             oldNews.Photo = file;
                         }
 
+                        oldNews.Title = newsDTO.Title;
                         oldNews.Description = newsDTO.Description;
 
                         await _repository.UpdateNews(oldNews);
@@ -100,9 +101,11 @@ namespace Web.Controllers.AdminApi
 
                 return Success(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
+                return BadRequest($"Что-то пошло не так, повторите попытку. Ошибка: {ex.Message}");
             }
         }
 

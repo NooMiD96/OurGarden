@@ -6,7 +6,7 @@ using Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 using Model.DB;
-using Model.DTO;
+using Model.DTO.Subcategory;
 
 using System;
 using System.Linq;
@@ -140,6 +140,7 @@ namespace Web.Services.Controllers.AdminApi
                 catch (Exception ex)
                 {
                     Console.Error.WriteLine($"err: {ex.Message}");
+                    Console.Error.WriteLine(ex.StackTrace);
                     return cancelUpdate((
                         false,
                         $"Ошибка при обновлении подкатегории. Возможно товар с такой подкатегорией уже существует. Текст ошибки: {ex.Message}"

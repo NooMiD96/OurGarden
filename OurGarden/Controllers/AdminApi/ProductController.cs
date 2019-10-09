@@ -51,7 +51,7 @@ namespace Web.Controllers.AdminApi
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCategoryDictionary()
         {
-            var result = await _repository.GetCategoryDictionaryAsync();
+            var result = await _repository.GetSimpleCategories(includeSubcategory: true);
             return Success(result);
         }
 
@@ -96,7 +96,7 @@ namespace Web.Controllers.AdminApi
                         return BadRequest("Товар не найден.");
 
                     if (
-                        productDTO.Alias != oldProduct.Alias
+                        productDTO.Alias.TransformToId() != oldProduct.Alias.TransformToId()
                         || productDTO.CategoryId != productDTO.NewCategoryId
                         || productDTO.SubcategoryId != productDTO.NewSubcategoryId
                     )
@@ -117,7 +117,8 @@ namespace Web.Controllers.AdminApi
                             oldProduct.Photos = photos;
                         }
 
-                        oldProduct.IsVisible = oldProduct.IsVisible ?? true;
+                        oldProduct.Alias = productDTO.Alias;
+                        oldProduct.IsVisible = productDTO.IsVisible ?? true;
                         oldProduct.Price = productDTO.Price;
                         oldProduct.Description = productDTO.Description;
 
@@ -133,6 +134,7 @@ namespace Web.Controllers.AdminApi
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
                 return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }

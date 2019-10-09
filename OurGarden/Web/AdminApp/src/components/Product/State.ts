@@ -1,4 +1,5 @@
 import { IPhoto } from "@src/core/IPhoto";
+import { ICategoryDictionary } from "@components/Category/State";
 
 // -----------------
 //#region STATE
@@ -11,15 +12,6 @@ export interface IProduct {
   price: number;
   description: string;
   photos: IPhoto[];
-}
-
-export interface ICategoryDictionary {
-  categoryId: string;
-  alias: string;
-  subcategories: {
-    subcategoryId: string;
-    alias: string;
-  }[];
 }
 
 export interface IProductDTO {
@@ -48,6 +40,6 @@ export const unloadedState: IProductState = {
   listItem: [],
   categoryList: [],
   pending: false,
-  errorInner: "",
+  errorInner: ""
 };
 //#endregion

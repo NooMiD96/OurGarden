@@ -5,7 +5,10 @@ import { Reducer } from "redux";
 import { IProductListState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<IProductListState> = (state: IProductListState = unloadedState, action: KnownAction) => {
+export const reducer: Reducer<IProductListState> = (
+  state: IProductListState = unloadedState,
+  action: KnownAction
+) => {
   switch (action.type) {
     case t.GET_PRODUCT_LIST_REQUEST:
       return {
@@ -33,10 +36,16 @@ export const reducer: Reducer<IProductListState> = (state: IProductListState = u
         productList: []
       } as IProductListState;
 
+    case t.SAVE_SUBCATEGORY:
+      return {
+        ...state,
+        subcategory: action.payload
+      } as IProductListState;
+
     case t.CLEAN_ERROR_INNER:
       return {
         ...state,
-        errorInner: "",
+        errorInner: ""
       } as IProductListState;
 
     default:

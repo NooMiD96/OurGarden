@@ -1,10 +1,17 @@
 import moment from "moment";
-import { ColDef } from "ag-grid-community";
 
 import ActionRenderer from "./cellRenderers/ActionRenderer";
 
 import { dateComparator } from "@src/core/helpers/AgGrid";
+import {
+  parseIdField,
+  parseCategoryIdField,
+  parseSubcategoryIdField
+} from "./utils";
+
+import { ColDef } from "ag-grid-community";
 import { IOrderStatus } from "@src/components/Order/State";
+import { IAgGridProps } from "./IAgGrid";
 
 const columnTypesDef: { [key: string]: ColDef } = {
   selectColumn: {
@@ -59,15 +66,47 @@ const columnTypesDef: { [key: string]: ColDef } = {
       return value.name;
     }
   },
+
+  categoryId: {
+    valueGetter: params => {
+      const {
+        colDef: { field },
+        data,
+        context: { parentComponent }
+      } = params;
+
+      return parseCategoryIdField(
+        field!,
+        data,
+        (parentComponent.props as IAgGridProps<any>).categoryList
+      );
+    }
+  },
+
+  subcategoryId: {
+    valueGetter: params => {
+      const {
+        colDef: { field },
+        data,
+        context: { parentComponent }
+      } = params;
+
+      return parseSubcategoryIdField(
+        field!,
+        data,
+        (parentComponent.props as IAgGridProps<any>).categoryList
+      );
+    }
+  },
+
   idField: {
     valueGetter: params => {
       const {
         colDef: { field },
         data
       } = params;
-      const idValue = data[field!];
-      const value = idValue.replace(/-/g, " ");
-      return `${value[0].toUpperCase()}${value.slice(1).toLowerCase()}`;
+
+      return parseIdField(field!, data);
     }
   }
 };

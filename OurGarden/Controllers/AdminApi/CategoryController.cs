@@ -72,7 +72,7 @@ namespace Web.Controllers.AdminApi
                     if (oldCategory is null)
                         return BadRequest("Категория не найдена.");
 
-                    if (categoryDTO.Alias != oldCategory.Alias)
+                    if (categoryDTO.Alias.TransformToId() != oldCategory.Alias.TransformToId())
                     {
                         (isSuccess, error) = await _service.UpdateCategory(categoryDTO, oldCategory);
                     }
@@ -88,6 +88,7 @@ namespace Web.Controllers.AdminApi
 
                         }
 
+                        oldCategory.Alias = categoryDTO.Alias;
                         oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
 
                         (isSuccess, error) = await _repository.UpdateCategory(oldCategory);
@@ -102,6 +103,7 @@ namespace Web.Controllers.AdminApi
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
                 return BadRequest($"{error}. Ошибка: {ex.Message}");
             }
         }

@@ -4,12 +4,12 @@ import Modal from "@core/antd/Modal";
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 
 import EditModalContent from "./EditModalContent";
-import { ICategory } from "@src/components/Category/State";
+import { ICategoryDictionary } from "@src/components/Category/State";
 
 interface IEditModalProps {
   isShow: boolean;
   item: ISubcategory | null;
-  dropdownData: ICategory[];
+  dropdownData: ICategoryDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
   handleClose: Function;
 }

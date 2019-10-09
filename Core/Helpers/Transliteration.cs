@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Core.Helpers
 {
-    public class Transliteration
+    public static class Transliteration
     {
         public static char[] chOrigTable =
         {
@@ -31,7 +29,7 @@ namespace Core.Helpers
 
         public static char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-        public static string Transform(string text, int maxLength = 255)
+        public static string TransformToId(this string text, int maxLength = 255)
         {
             text = RemoveTags(text);
             text = ConvertToLatin(text);

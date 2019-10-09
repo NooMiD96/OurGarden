@@ -10,7 +10,6 @@ import HeaderHelmet from "@src/core/components/Helmet";
 import ProductCard from "./ProductCard";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
-import { displayNameFromId } from "@src/core/utils";
 
 import "./style/ProductList.style.scss";
 
@@ -100,18 +99,19 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
             <Loading />
           </>
         ) : (
-          <React.Fragment>
-            <HeaderHelmet
-              title={
-                seoSection.title
-                && productList[0]
-                && seoSection.title.replace(
-                  "{{value}}",
-                  displayNameFromId(productList[0].subcategoryId)
-                )
-              }
-              metaDescription={seoSection.meta}
-            />
+          <>
+            {this.props.subcategory && (
+              <HeaderHelmet
+                title={
+                  seoSection.title
+                  && seoSection.title.replace(
+                    "{{value}}",
+                    this.props.subcategory.alias
+                  )
+                }
+                metaDescription={seoSection.meta}
+              />
+            )}
             <Pagination
               current={page}
               itemRender={PaginationItemRenderer}
@@ -123,13 +123,19 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
               onChange={this.onChange}
             />
             <Row type="flex" gutter={16}>
-              {dataList.slice((page - 1) * pageSize, page * pageSize).map((item) => (
-                <Col {...this.cardStyle} key={item.link} className="card-wrapper">
-                  <ProductCard pending={pending} product={item} push={push} />
-                </Col>
-              ))}
+              {dataList
+                .slice((page - 1) * pageSize, page * pageSize)
+                .map((item) => (
+                  <Col
+                    {...this.cardStyle}
+                    key={item.link}
+                    className="card-wrapper"
+                  >
+                    <ProductCard pending={pending} product={item} push={push} />
+                  </Col>
+                ))}
             </Row>
-          </React.Fragment>
+          </>
         )}
       </div>
     );

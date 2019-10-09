@@ -25,7 +25,7 @@ namespace Database.Repositories
         }
 
         #region Category
-        private const string __category_alredy_exist = "Не удалось {0} категорию с наименованием \"{1}\" поскольку такая категория уже существует.";
+        private const string __category_alredy_exist = "Не удалось {0} категорию с наименованием \"{1}\" поскольку уже существует категория с наименованием \"{2}\".";
 
         public async Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false) =>
             await GetCategoryImpl(isGetOnlyVisible: isGetOnlyVisible);
@@ -36,29 +36,58 @@ namespace Database.Repositories
             )
             .FirstOrDefault();
 
-        public async Task<IEnumerable<Category>> GetSimpleCategories() =>
-            await _context.Category.Select(x => new Category()
+        public async Task<IEnumerable<CategoryDictionaryDTO>> GetSimpleCategories(bool includeSubcategory = false)
+        {
+            IQueryable<CategoryDictionaryDTO> query;
+
+            if (includeSubcategory)
             {
-                Alias = x.Alias,
-                CategoryId = x.CategoryId,
-            })
-            .ToListAsync();
+                query = _context
+                    .Category
+                    .Include(x => x.Subcategories)
+                    .Select(cat => new CategoryDictionaryDTO()
+                    {
+                        CategoryId = cat.CategoryId,
+                        Alias = cat.Alias,
+                        Subcategories = cat.Subcategories.Select(sub => new SubcategoryDictionaryDTO()
+                        {
+                            SubcategoryId = sub.SubcategoryId,
+                            Alias = sub.Alias,
+                        })
+                    })
+                    .AsQueryable();
+            }
+            else
+            {
+                query = _context
+                    .Category
+                    .Select(cat => new CategoryDictionaryDTO()
+                    {
+                        CategoryId = cat.CategoryId,
+                        Alias = cat.Alias
+                    })
+                    .AsQueryable();
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async ValueTask<(bool isSuccess, string error)> AddCategory(Category category)
         {
             const string crudName = "добавить";
 
-            var result = await AddNewEntityImpl(category);
-            if (!result.isSuccess && result.error == __entity_alredy_exists)
+            var (isSuccess, error, findedEntity) = await AddNewEntityImpl(category);
+            if (!isSuccess && error == __entity_alredy_exists)
             {
-                result.error = String.Format(
+                error = String.Format(
                     __category_alredy_exist,
                     crudName,
-                    category.Alias
+                    category.Alias,
+                    findedEntity.Alias
                 );
             }
 
-            return result;
+            return (isSuccess, error);
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateCategory(Category category)
@@ -123,7 +152,7 @@ namespace Database.Repositories
         #endregion
 
         #region Subcategory
-        private const string __subcategory_alredy_exist = "Не удалось {0} подкатегорию с выбранной категорией \"{1}\" и наименованием \"{2}\" поскольку такая подкатегорию уже существует.";
+        private const string __subcategory_alredy_exist = "Не удалось {0} подкатегорию с выбранной категорией \"{1}\" и наименованием \"{2}\" поскольку уже существует подкатегория с наименованием \"{3}\".";
 
         public async Task<IEnumerable<Subcategory>> GetSubcategories(bool isGetOnlyVisible = false) =>
             await GetSubcategoriesImpl(isGetOnlyVisible: isGetOnlyVisible);
@@ -167,25 +196,26 @@ namespace Database.Repositories
         {
             const string crudName = "добавить";
 
-            var result = await AddNewEntityImpl(subcategory);
-            if (!result.isSuccess && result.error == __entity_alredy_exists)
+            var (isSuccess, error, findedEntity) = await AddNewEntityImpl(subcategory);
+            if (!isSuccess && error == __entity_alredy_exists)
             {
-                if (subcategory.Category is null)
+                if (findedEntity.Category is null)
                 {
-                    await _context.Entry(subcategory)
+                    await _context.Entry(findedEntity)
                         .Reference(x => x.Category)
                         .LoadAsync();
                 }
 
-                result.error = String.Format(
+                error = String.Format(
                     __subcategory_alredy_exist,
                     crudName,
-                    subcategory.Category.Alias,
-                    subcategory.Alias
+                    findedEntity.Category.Alias,
+                    subcategory.Alias,
+                    findedEntity.Alias
                 );
             }
 
-            return result;
+            return (isSuccess, error);
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(Subcategory subcategory)
@@ -214,7 +244,7 @@ namespace Database.Repositories
         #endregion
 
         #region Product
-        private const string __product_alredy_exist = "Не удалось {0} продукт с выбранной категорией \"{1}\", подкатегорией \"{2}\" и наименованием \"{3}\" поскольку такой продукт уже существует.";
+        private const string __product_alredy_exist = "Не удалось {0} продукт с выбранной категорией \"{1}\", подкатегорией \"{2}\" и наименованием \"{3}\" поскольку уже существует продукт с наименованием \"{4}\".";
 
         public async Task<IEnumerable<Product>> GetProducts() => await GetProductsImpl();
 
@@ -226,25 +256,6 @@ namespace Database.Repositories
                 await GetProductsImpl(productId: productId, categoryId: categoryId, subcategoryId: subcategoryId)
             )
             .FirstOrDefault();
-
-        public async Task<IEnumerable<CategoryDictionaryDTO>> GetCategoryDictionaryAsync()
-        {
-            var categoryList = await _context
-                .Category
-                .Include(x => x.Subcategories)
-                .ToListAsync();
-
-            return categoryList.Select(cat => new CategoryDictionaryDTO()
-            {
-                CategoryId = cat.CategoryId,
-                Alias = cat.Alias,
-                Subcategories = cat.Subcategories.Select(sub => new SubcategoryDictionaryDTO()
-                {
-                    SubcategoryId = sub.SubcategoryId,
-                    Alias = sub.Alias
-                })
-            });
-        }
 
         public async Task<List<Breadcrumb>> GetProductBreadcrumb(string categoryId, string subcategoryId)
         {
@@ -334,33 +345,34 @@ namespace Database.Repositories
         {
             const string crudName = "добавить";
 
-            var result = await AddNewEntityImpl(product);
-            if (!result.isSuccess && result.error == __entity_alredy_exists)
+            var (isSuccess, error, findedEntity) = await AddNewEntityImpl(product);
+            if (!isSuccess && error == __entity_alredy_exists)
             {
-                if (product.Subcategory is null)
+                if (findedEntity.Subcategory is null)
                 {
-                    await _context.Entry(product)
+                    await _context.Entry(findedEntity)
                         .Reference(x => x.Subcategory)
                         .LoadAsync();
                 }
 
-                if (product.Subcategory.Category is null)
+                if (findedEntity.Subcategory.Category is null)
                 {
-                    await _context.Entry(product.Subcategory)
+                    await _context.Entry(findedEntity.Subcategory)
                         .Reference(x => x.Category)
                         .LoadAsync();
                 }
 
-                result.error = String.Format(
+                error = String.Format(
                     __product_alredy_exist,
                     crudName,
-                    product.Subcategory.Category.Alias,
-                    product.Subcategory.Alias,
-                    product.Alias
+                    findedEntity.Subcategory.Category.Alias,
+                    findedEntity.Subcategory.Alias,
+                    product.Alias,
+                    findedEntity.Alias
                 );
             }
 
-            return result;
+            return (isSuccess, error);
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateProduct(Product product)
@@ -627,7 +639,6 @@ namespace Database.Repositories
             await _context.Status.ToListAsync();
 
         #endregion
-
 
         #region Search
         public async Task<IEnumerable<SearchDTO>> Search(string search, bool isGetOnlyVisible = true)

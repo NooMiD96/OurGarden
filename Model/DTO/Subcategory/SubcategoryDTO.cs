@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Model.DTO
+namespace Model.DTO.Subcategory
 {
     public class SubcategoryDTO
     {

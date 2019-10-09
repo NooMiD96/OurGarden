@@ -126,7 +126,7 @@ namespace Database.Repositories
         {
             var query = _context.News.Include(x => x.Photo).AsQueryable();
 
-            if (!newsId.HasValue)
+            if (newsId.HasValue)
             {
                 query = query.Where(x => x.NewsId == newsId);
             }
@@ -156,7 +156,7 @@ namespace Database.Repositories
 
         #region General
 
-        private async ValueTask<(bool isSuccess, string error)> AddNewEntityImpl<T>(T entity)
+        private async ValueTask<(bool isSuccess, string error, T findedEntity)> AddNewEntityImpl<T>(T entity)
         {
             try
             {
@@ -164,19 +164,19 @@ namespace Database.Repositories
 
                 var contextEntity = await _context.FindAsync(entity.GetType(), values);
 
-                if (contextEntity != null)
+                if (contextEntity != null && contextEntity is T)
                 {
-                    return (false, __entity_alredy_exists);
+                    return (false, __entity_alredy_exists, (T)contextEntity);
                 }
 
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
 
-                return (true, null);
+                return (true, null, default);
             }
             catch (Exception ex)
             {
-                return (false, $"Не удалось сохранить запись, ошибка: {ex.Message}");
+                return (false, $"Не удалось сохранить запись, ошибка: {ex.Message}", default);
             }
         }
 

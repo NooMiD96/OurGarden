@@ -4,7 +4,6 @@ import Loading from "@core/components/Loading";
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { displayNameFromId } from "@src/core/utils";
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
@@ -68,17 +67,18 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
           </>
         ) : (
           <>
-            <HeaderHelmet
-              title={
-                seoSection.title
-                && subcategoryList[0]
-                && seoSection.title.replace(
-                  "{{value}}",
-                  displayNameFromId(subcategoryList[0].categoryId)
-                )
-              }
-              metaDescription={seoSection.meta}
-            />
+            {this.props.category && (
+              <HeaderHelmet
+                title={
+                  seoSection.title
+                  && seoSection.title.replace(
+                    "{{value}}",
+                    this.props.category.alias
+                  )
+                }
+                metaDescription={seoSection.meta}
+              />
+            )}
             <CatalogCardList dataList={subcategoryList} push={push} />
           </>
         )}

@@ -22,12 +22,12 @@ class Product extends React.PureComponent<TState, TComponentState> {
     {
       headerName: "Категория",
       field: "categoryId",
-      type: ["idField"]
+      type: ["categoryId"]
     },
     {
       headerName: "Подкатегория",
       field: "subcategoryId",
-      type: ["idField"]
+      type: ["subcategoryId"]
     },
     {
       headerName: "Продукт",
@@ -131,6 +131,7 @@ class Product extends React.PureComponent<TState, TComponentState> {
           columns={this.columns}
           rowData={listItem}
           onDoubleClickHandler={this.onDoubleClickHandler}
+          categoryList={categoryList}
         />
         <EditModal
           item={editItem}

@@ -1,4 +1,5 @@
-﻿using Database.Repositories;
+﻿using Core;
+using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,9 +62,19 @@ namespace Web.Controllers.Api
                 return BadRequest("Что-то пошло не так, необходимо выбрать категорию с подкатегорией");
             }
 
-            var result = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
+            var subcategory = (await _repository.GetSubcategory(categoryId, subcategoryId)).DeepClone();
+            var products = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
 
-            return Success(result.OrderBy(x => x.ProductId));
+            subcategory.Products = products
+                .OrderBy(x => x.ProductId)
+                .Select(x =>
+                {
+                    x.Subcategory = null;
+                    return x;
+                })
+                .ToList();
+
+            return Success(subcategory);
         }
 
         [HttpGet("[action]")]

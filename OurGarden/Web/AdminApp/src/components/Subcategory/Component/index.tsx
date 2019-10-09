@@ -22,7 +22,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     {
       headerName: "Категория",
       field: "categoryId",
-      type: ["idField"]
+      type: ["categoryId"]
     },
     {
       headerName: "Подкатегория",
@@ -88,8 +88,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     const {
       errorInner,
       cleanErrorInner,
-      subcategoriesList: subcategoriesList,
-      categoriesList: categoriesList,
+      subcategoriesList,
+      categoriesList,
       pending
     } = this.props;
     const { showModal, editItem } = this.state;
@@ -119,6 +119,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
           columns={this.columns}
           rowData={subcategoriesList}
           onDoubleClickHandler={this.onDoubleClickHandler}
+          categoryList={categoriesList}
         />
         <EditModal
           isShow={showModal}

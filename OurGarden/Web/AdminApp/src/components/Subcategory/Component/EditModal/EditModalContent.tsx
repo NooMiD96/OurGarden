@@ -13,12 +13,12 @@ import { filterOption } from "@core/utils/select";
 
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import { ICategory } from "@src/components/Category/State";
+import { ICategoryDictionary } from "@src/components/Category/State";
 
 interface IProps extends FormComponentProps {
   item: ISubcategory | null;
   loading: boolean;
-  dropdownData: ICategory[];
+  dropdownData: ICategoryDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
   handleClose: Function;
 }
