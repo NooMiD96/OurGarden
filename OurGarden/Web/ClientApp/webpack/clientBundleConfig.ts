@@ -3,11 +3,11 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ManifestPlugin from "webpack-manifest-plugin";
-// import CopyWebpackPlugin from "copy-webpack-plugin";
 import merge from "webpack-merge";
 import path from "path";
 import { Configuration, Plugin } from "webpack";
 import { ReactLoadablePlugin } from "react-loadable/webpack";
+import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
@@ -104,13 +104,14 @@ const getClientBundleConfig = (
   });
 
   if (isDevBuild) {
-    // clientBundleConfig!.plugins!.push(
-    //   // https://github.com/webpack-contrib/copy-webpack-plugin
-    //   new CopyWebpackPlugin([{
-    //     from: "src/sw.ts",
-    //     to: "service-worker.js",
-    //   }])
-    // );
+    clientBundleConfig!.plugins!.push(
+      // https://github.com/webpack-contrib/copy-webpack-plugin
+      // new CopyWebpackPlugin([{
+      //   from: "src/sw.ts",
+      //   to: "service-worker.js",
+      // }])
+      new CaseSensitivePathsPlugin(),
+    );
   } else {
     // clientBundleConfig.entry["service-worker"] = "./src/sw.ts";
   }
