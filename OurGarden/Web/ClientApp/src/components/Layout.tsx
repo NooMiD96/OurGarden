@@ -30,26 +30,28 @@ const colStyle = {
 
 export const Layout = ({ children }: { children?: React.ReactNode }) => (
   <ErrorHandler>
-    <Row type="flex" className="layout-wrapper">
-      <Col {...colStyle}>
-        <AntdLayout>
-          <Header className="antd-header">
-            <TopBar />
-          </Header>
-          <AntdLayout className="antd-layout" hasSider>
-            <Sider />
-            <AntdLayout>
-              <Content className="main-content-wrapper">
-                <ConfigProvider renderEmpty={RenderEmptyProvider}>
-                  <Breadcrumb />
-                  {children}
-                </ConfigProvider>
-              </Content>
-            </AntdLayout>
+    <Header className="antd-header">
+      <Row type="flex">
+        <Col {...colStyle}>
+          <TopBar />
+        </Col>
+      </Row>
+    </Header>
+    <AntdLayout className="antd-layout" hasSider>
+      <Row type="flex">
+        <Col {...colStyle}>
+          <Sider />
+          <AntdLayout>
+            <Content className="main-content-wrapper">
+              <ConfigProvider renderEmpty={RenderEmptyProvider}>
+                <Breadcrumb />
+                {children}
+              </ConfigProvider>
+            </Content>
           </AntdLayout>
-        </AntdLayout>
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </AntdLayout>
     <div id="global-modals-container" />
   </ErrorHandler>
 );

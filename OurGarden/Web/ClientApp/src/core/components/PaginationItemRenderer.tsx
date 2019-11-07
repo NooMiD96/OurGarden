@@ -7,6 +7,7 @@ const PaginationItemRenderer = (
   type: "page" | "prev" | "next" | "jump-prev" | "jump-next",
   originalElement: React.ReactElement<HTMLElement>
 ) => {
+  return originalElement;
   switch (type) {
     case "prev":
       return (

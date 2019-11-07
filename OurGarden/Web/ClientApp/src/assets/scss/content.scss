@@ -1,0 +1,57 @@
+.antd-layout > .ant-row-flex {
+  flex: 1 1 auto;
+
+  > .ant-col {
+    display: flex;
+    flex-direction: row;
+
+    .main-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      padding-left: 3em;
+
+      @media (max-width: 767px) {
+        padding-left: 8px;
+      }
+
+      .ant-layout-header {
+        background: unset;
+        line-height: inherit;
+        padding: unset;
+        height: auto;
+
+        .breadcrumb {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          min-height: 67px;
+          font-size: 18px;
+          font-weight: 500;
+
+          .slash {
+            padding: 0 5px;
+          }
+        }
+      }
+
+      .content {
+        flex: 0 1 auto;
+        overflow: auto;
+      }
+    }
+  }
+
+  .ant-spin-nested-loading {
+    height: 100%;
+
+    > div > .ant-spin {
+      max-height: unset;
+    }
+  }
+}
+
+.ant-layout {
+  height: 100%;
+  background: unset;
+  font-family: "ProbaPro";
+}

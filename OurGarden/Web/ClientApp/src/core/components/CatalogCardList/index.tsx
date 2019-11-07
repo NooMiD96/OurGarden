@@ -1,10 +1,13 @@
 import React from "react";
+import Image from "react-graceful-image";
 
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import Card from "@core/antd/Card";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
+
+import { cardStyle } from "./CardStyle";
 
 import { ICatalogProps, ICatalogState, IDisplayItem } from "./ICatalogCard";
 import { ISubcategory } from "@src/components/Subcategory/State";
@@ -13,21 +16,6 @@ import { ICategory } from "@src/components/Category/State";
 import "./style/CatalogCard.style.scss";
 
 export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
-  cardStyle = {
-    // xs <576px
-    xs: { span: 24 },
-    // sm ≥576px
-    sm: { span: 24 },
-    // md ≥768px
-    // md: { span: 24 },
-    // lg ≥992px
-    lg: { span: 12 },
-    // xl ≥1200px
-    xl: { span: 8 }
-    // xxl ≥1600px
-    // xxl: { span: 8 }
-  };
-
   constructor(props: ICatalogProps) {
     super(props);
 
@@ -76,13 +64,14 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           hideOnSinglePage
           total={displayList.length}
           onChange={this.onChange}
+          showLessItems
         />
         <Row type="flex" gutter={16}>
           {displayList.slice((page - 1) * pageSize, page * pageSize).map((x) => (
-            <Col {...this.cardStyle} key={x.link} className="card-wrapper">
+            <Col {...cardStyle} key={x.link} className="card-wrapper">
               <Card
                 hoverable
-                cover={<img alt={x.alias} src={x.photoUrl} />}
+                cover={<Image alt={x.alias} src={x.photoUrl} />}
                 onClick={() => {
                   this.setState({
                     page: 1

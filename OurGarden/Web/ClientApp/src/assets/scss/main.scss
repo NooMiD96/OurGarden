@@ -2,6 +2,8 @@
 @import "./sider.scss";
 @import "./topbar/index.scss";
 @import "./pagination.scss";
+@import "./content.scss";
+@import "./utils.scss";
 
 html {
   --antd-wave-shadow-color: rgb(98, 98, 98);
@@ -21,83 +23,6 @@ a {
 
   &:hover {
     color: $greenColor;
-  }
-}
-
-.layout-wrapper.ant-row-flex {
-  height: 100%;
-
-  > .ant-col {
-    height: 100%;
-
-    > .ant-layout {
-      height: 100%;
-
-      .main-content-wrapper {
-        display: flex;
-        flex-direction: column;
-        padding-left: 3em;
-
-        .ant-layout-header {
-          background: unset;
-          line-height: inherit;
-          padding: unset;
-          height: auto;
-
-          .breadcrumb {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            min-height: 67px;
-            font-size: 18px;
-            font-weight: 500;
-
-            .slash {
-              padding: 0 5px;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .ant-spin-nested-loading {
-    height: 100%;
-
-    > div > .ant-spin {
-      max-height: unset;
-    }
-  }
-}
-
-.ant-layout {
-  height: 100%;
-  background: unset;
-  font-family: "ProbaPro";
-
-  .antd-header.ant-layout-header {
-    font-weight: 500;
-    height: auto;
-    padding: unset;
-    background: unset;
-    line-height: initial;
-
-    background: no-repeat url(../image/logo.png);
-    background-position-x: 2rem;
-    background-position-y: top;
-    background-size: unset;
-
-    @media (max-width: 1200px) {
-      background-position-x: 8rem;
-    }
-
-    @media (max-width: 768px) {
-      background-size: 20%;
-    }
-
-    @media (max-width: 580px) {
-      background-size: 130px;
-    }
   }
 }
 
@@ -151,8 +76,4 @@ a {
 .white-background {
   background: #fff;
   border: 1px solid $borderColor;
-}
-.main-content-wrapper .content {
-  flex: 0 1 auto;
-  overflow: auto;
 }

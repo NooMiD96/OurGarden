@@ -32,7 +32,7 @@ const Card = (props: ICard) => {
       </Badge>
     </React.Fragment>
   );
-}
+};
 
 export default connect(
   (state: IApplicationState) => ({

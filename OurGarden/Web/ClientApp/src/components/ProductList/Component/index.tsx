@@ -10,27 +10,13 @@ import HeaderHelmet from "@src/core/components/Helmet";
 import ProductCard from "./ProductCard";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
+import { cardStyle } from "@core/components/CatalogCardList/CardStyle";
 
 import "./style/ProductList.style.scss";
 
 import { TState, TComponentState } from "../TState";
 
 export class ProductList extends React.PureComponent<TState, TComponentState> {
-  cardStyle = {
-    // xs <576px
-    xs: { span: 24 },
-    // sm ≥576px
-    sm: { span: 24 },
-    // md ≥768px
-    // md: { span: 24 },
-    // lg ≥992px
-    lg: { span: 12 },
-    // xl ≥1200px
-    xl: { span: 12 },
-    // xxl ≥1600px
-    xxl: { span: 8 }
-  };
-
   constructor(props: TState) {
     super(props);
 
@@ -126,11 +112,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
               {dataList
                 .slice((page - 1) * pageSize, page * pageSize)
                 .map((item) => (
-                  <Col
-                    {...this.cardStyle}
-                    key={item.link}
-                    className="card-wrapper"
-                  >
+                  <Col {...cardStyle} key={item.link} className="card-wrapper">
                     <ProductCard pending={pending} product={item} push={push} />
                   </Col>
                 ))}
