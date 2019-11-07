@@ -91,7 +91,7 @@ namespace Web.Services.Controllers.AdminApi
                         newSubcategory = new Subcategory()
                         {
                             CategoryId = newCategoryId,
-                            SubcategoryId = oldSubcategory.SubcategoryId,
+                            SubcategoryId = oldSubcategory.SubcategoryId.TransformToId(),
 
                             Alias = oldSubcategory.Alias,
                             Photo = _fileHelper.ClonePhoto(oldSubcategory.Photo.Url),
@@ -110,8 +110,8 @@ namespace Web.Services.Controllers.AdminApi
                             var newProduct = new Product()
                             {
                                 CategoryId = newSubcategory.CategoryId,
-                                SubcategoryId = newSubcategory.SubcategoryId,
-                                ProductId = product.ProductId,
+                                SubcategoryId = newSubcategory.SubcategoryId.TransformToId(),
+                                ProductId = product.ProductId.TransformToId(),
 
                                 Alias = product.Alias,
                                 Price = product.Price,
