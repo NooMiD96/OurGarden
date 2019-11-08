@@ -56,8 +56,8 @@ namespace Web
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddSingleton<IEmailSender, EmailSender>();
 
-            //services.AddHostedService<DummyHostedService>();
-            //services.AddScoped<IDummyWorkerService, DummyWorkerService>();
+            services.AddHostedService<DummyHostedService>();
+            services.AddScoped<IDummyWorkerService, DummyWorkerService>();
 
             StartUpVendors.Configuration = Configuration;
         }
