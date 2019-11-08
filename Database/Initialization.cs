@@ -1,5 +1,7 @@
 ﻿using Database.Contexts;
 using Database.Repositories;
+
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Model.Identity;
 
 using System;
+using System.IO;
 
 using static Database.DIServices.DependencyInjections;
 
@@ -53,10 +56,20 @@ namespace Database
                 {
                     options.ApplicationCookie.Configure(appConfig =>
                     {
-                        appConfig.ExpireTimeSpan = TimeSpan.FromDays(1);
+                        appConfig.ExpireTimeSpan = TimeSpan.FromDays(90);
                     });
                 });
+
             services.AddTransient<IOurGardenRepository, OurGardenRepository>();
+
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(
+                    new DirectoryInfo(
+                        $@"{Directory.GetCurrentDirectory()}\key\"
+                    )
+                )
+                .ProtectKeysWithDpapi()
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
         }
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
