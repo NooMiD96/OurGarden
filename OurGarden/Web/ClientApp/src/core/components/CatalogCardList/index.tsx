@@ -1,11 +1,11 @@
 import React from "react";
-import Image from "react-graceful-image";
 
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import Card from "@core/antd/Card";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
+import LazyImage from "@core/components/LazyImage";
 
 import { cardStyle } from "./CardStyle";
 
@@ -71,7 +71,7 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
             <Col {...cardStyle} key={x.link} className="card-wrapper">
               <Card
                 hoverable
-                cover={<Image alt={x.alias} src={x.photoUrl} />}
+                cover={<LazyImage alt={x.alias} src={x.photoUrl} />}
                 onClick={() => {
                   this.setState({
                     page: 1
