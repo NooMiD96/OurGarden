@@ -1,13 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Services.BackgroundWork.DummyWorker
 {
-    public class DummyWorkerService : IDummyWorker
+    public class DummyWorkerService : IDummyWorkerService
     {
-        readonly int millisecond = 1000;
+        private const string PageUrl = "https://xn----7sbbq5b0a1c.com";
+        private const int millisecond = 1000;
         
         readonly ILogger _logger;
 
@@ -20,8 +22,14 @@ namespace Services.BackgroundWork.DummyWorker
         {
             while (true)
             {
-                await Task.Delay(60 * millisecond);
-                _logger.LogInformation($"Scoped Processing Service is working. {DateTime.UtcNow}");
+                using (var client = new WebClient())
+                {
+                    await client.DownloadDataTaskAsync(new Uri(PageUrl));
+                }
+
+                _logger.LogCritical($"Scoped Processing Service is working. {DateTime.UtcNow}");
+
+                await Task.Delay(180 * millisecond);
             }
         }
     }

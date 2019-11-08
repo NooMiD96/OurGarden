@@ -35,7 +35,7 @@ namespace Services.BackgroundWork.DummyWorker
             {
                 var dummyWorker =
                     scope.ServiceProvider
-                        .GetRequiredService<IDummyWorker>();
+                        .GetRequiredService<IDummyWorkerService>();
 
                 await dummyWorker.DoLoopWork();
             }

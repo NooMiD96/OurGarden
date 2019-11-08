@@ -57,7 +57,7 @@ namespace Web
             services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddHostedService<DummyHostedService>();
-            services.AddScoped<IDummyWorker, DummyWorkerService>();
+            services.AddScoped<IDummyWorkerService, DummyWorkerService>();
 
             StartUpVendors.Configuration = Configuration;
         }
