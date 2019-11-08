@@ -22,14 +22,14 @@ namespace Services.BackgroundWork.DummyWorker
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Consume Scoped Service Hosted Service is starting.");
+            _logger.LogCritical("Consume Scoped Service Hosted Service is starting.");
 
             return DoWork();
         }
 
         private async Task DoWork()
         {
-            _logger.LogInformation("Consume Scoped Service Hosted Service is working.");
+            _logger.LogCritical("Consume Scoped Service Hosted Service is working.");
 
             using (var scope = Services.CreateScope())
             {
@@ -43,7 +43,7 @@ namespace Services.BackgroundWork.DummyWorker
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Consume Scoped Service Hosted Service is stopping.");
+            _logger.LogCritical("Consume Scoped Service Hosted Service is stopping.");
 
             return Task.CompletedTask;
         }

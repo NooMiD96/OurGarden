@@ -22,9 +22,16 @@ namespace Services.BackgroundWork.DummyWorker
         {
             while (true)
             {
-                using (var client = new WebClient())
+                try
                 {
-                    await client.DownloadDataTaskAsync(new Uri(PageUrl));
+                    using (var client = new WebClient())
+                    {
+                        await client.DownloadDataTaskAsync(new Uri(PageUrl));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"DummyWorkerService: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
                 }
 
                 _logger.LogCritical($"Scoped Processing Service is working. {DateTime.UtcNow}");
