@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Model.EMail;
-
+using Services.BackgroundWork.DummyWorker;
 using Services.EMail;
 
 using System.Collections.Generic;
@@ -55,6 +55,9 @@ namespace Web
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddSingleton<IEmailSender, EmailSender>();
+
+            services.AddHostedService<DummyHostedService>();
+            services.AddScoped<IDummyWorker, DummyWorkerService>();
 
             StartUpVendors.Configuration = Configuration;
         }
