@@ -265,7 +265,6 @@ namespace Database.Repositories
             var result = new List<Breadcrumb>();
 
             var subcategory = await _context.Subcategory
-                .Include(x => x.Category)
                 .Select(x => new
                 {
                     CategoryAlias = x.Category.Alias,
@@ -302,8 +301,6 @@ namespace Database.Repositories
             var result = new List<Breadcrumb>();
 
             var product = await _context.Product
-                .Include(x => x.Subcategory)
-                .ThenInclude(x => x.Category)
                 .Select(x => new
                 {
                     CategoryAlias = x.Subcategory.Category.Alias,

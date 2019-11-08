@@ -124,7 +124,7 @@ namespace Database.Repositories
                                                           string alias = null,
                                                           bool includeDescriptions = true)
         {
-            var query = _context.News.Include(x => x.Photo).AsQueryable();
+            var query = _context.News.AsQueryable();
 
             if (newsId.HasValue)
             {
@@ -147,6 +147,10 @@ namespace Database.Repositories
                     Description = null,
                     Photo = x.Photo,
                 });
+            }
+            else
+            {
+                query = query.Include(x => x.Photo);
             }
 
             return await query.ToListAsync();
