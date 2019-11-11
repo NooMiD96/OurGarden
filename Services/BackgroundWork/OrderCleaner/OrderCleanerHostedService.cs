@@ -6,9 +6,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Services.BackgroundWork.DummyWorker
+namespace Services.BackgroundWork.OrderCleaner
 {
-    public class DummyHostedService : IHostedService, IDisposable
+    public class OrderCleanerHostedService : IHostedService, IDisposable
     {
         // Flag: Has Dispose already been called?
         bool disposed = false;
@@ -17,11 +17,11 @@ namespace Services.BackgroundWork.DummyWorker
         private readonly IServiceProvider _services;
         private Timer _timer;
 
-        const string HostServiceStart = "DummyHostedService is starting.";
-        const string HostServiceWork = "DummyHostedService is working.";
-        const string HostServiceEnd = "DummyHostedService is stopping.";
+        const string HostServiceStart = "OrderCleanerHostedService is starting.";
+        const string HostServiceWork = "OrderCleanerHostedService is working.";
+        const string HostServiceEnd = "OrderCleanerHostedService is stopping.";
 
-        public DummyHostedService(IServiceProvider services, ILogger<DummyHostedService> logger)
+        public OrderCleanerHostedService(IServiceProvider services, ILogger<OrderCleanerHostedService> logger)
         {
             _services = services;
             _logger = logger;
@@ -31,7 +31,10 @@ namespace Services.BackgroundWork.DummyWorker
         {
             _logger.LogInformation(HostServiceStart);
 
-            _timer = new Timer(DoWork, null, TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3));
+            var startTimeSpan = DateTime.Now.AddDays(1).GetToday() - DateTime.Now;
+            //var startTimeSpan = TimeSpan.Zero;
+
+            _timer = new Timer(DoWork, null, startTimeSpan, TimeSpan.FromDays(1));
 
             return Task.CompletedTask;
         }
@@ -42,7 +45,7 @@ namespace Services.BackgroundWork.DummyWorker
 
             using (var scope = _services.CreateScope())
             {
-                var service = scope.ServiceProvider.GetRequiredService<IDummyWorkerService>();
+                var service = scope.ServiceProvider.GetRequiredService<IOrderCleanerService>();
 
                 service.DoWork();
             }

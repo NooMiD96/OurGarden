@@ -55,12 +55,12 @@ namespace Database.Contexts
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OrderStatus>().HasData(
-                new OrderStatus() { StatusId = 1, Name = "Новый заказ"},
-                new OrderStatus() { StatusId = 2, Name = "Заказ подтверждён"},
-                new OrderStatus() { StatusId = 3, Name = "Заказ отправлен" },
-                new OrderStatus() { StatusId = 4, Name = "Заказ ожидает получателя" },
-                new OrderStatus() { StatusId = 5, Name = "Заказ закрыт"},
-                new OrderStatus() { StatusId = -1, Name = "Заказ отменён"});
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.New, Name = "Новый заказ"},
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.Confirmed, Name = "Заказ подтверждён"},
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.Sended, Name = "Заказ отправлен" },
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.WaitClient, Name = "Заказ ожидает получателя" },
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.Closed, Name = "Заказ закрыт"},
+                new OrderStatus() { StatusId = (int)OrderStatusEnum.Canceled, Name = "Заказ отменён"});
 
             modelBuilder.Entity<Category>()
                 .Property(x => x.IsVisible)

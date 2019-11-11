@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Model.DB
 {
@@ -14,5 +11,15 @@ namespace Model.DB
         [Required]
         [MaxLength(128)]
         public string Name { get; set; }
+    }
+
+    public enum OrderStatusEnum
+    {
+        New = 1,
+        Confirmed = 2,
+        Sended = 3,
+        WaitClient = 4,
+        Closed = 5,
+        Canceled = -1
     }
 }

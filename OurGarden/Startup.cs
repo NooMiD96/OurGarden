@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Model.EMail;
 
 using Services.BackgroundWork.DummyWorker;
+using Services.BackgroundWork.OrderCleaner;
 using Services.EMail;
 
 using System.Collections.Generic;
@@ -52,6 +53,9 @@ namespace Web
 
             services.AddHostedService<DummyHostedService>();
             services.AddScoped<IDummyWorkerService, DummyWorkerService>();
+
+            services.AddHostedService<OrderCleanerHostedService>();
+            services.AddScoped<IOrderCleanerService, OrderCleanerService>();
 
             StartUpVendors.Configuration = Configuration;
         }

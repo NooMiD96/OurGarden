@@ -40,7 +40,7 @@ namespace Web.Services.Controllers.AdminApi
                         Phone = orderDTO.Phone,
                         Email = orderDTO.Email,
                         Date = DateTime.Now,
-                        StatusId = 1,
+                        StatusId = (int)OrderStatusEnum.New,
                         TotalPrice = 0
                     };
 

@@ -17,6 +17,8 @@ namespace Services.BackgroundWork.DummyWorker
 
         public void DoWork()
         {
+            _logger.LogInformation($"DummyWorkerService is working. {DateTime.UtcNow}");
+
             try
             {
                 using (var client = new WebClient())
@@ -26,10 +28,11 @@ namespace Services.BackgroundWork.DummyWorker
             }
             catch (Exception ex)
             {
+                // TODO: Send email
                 _logger.LogError($"DummyWorkerService: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
             }
 
-            _logger.LogInformation($"Scoped Processing Service is working. {DateTime.UtcNow}");
+            _logger.LogInformation($"DummyWorkerService is worked. {DateTime.UtcNow}");
         }
     }
 }
