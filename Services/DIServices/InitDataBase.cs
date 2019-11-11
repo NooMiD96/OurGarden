@@ -12,7 +12,7 @@ using Model.Identity;
 using System;
 using System.Threading.Tasks;
 
-namespace Database.DIServices
+namespace Services.DIServices
 {
     /// <summary>
     /// class for initialize custom DI.

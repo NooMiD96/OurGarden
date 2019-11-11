@@ -1,6 +1,8 @@
 import { errorCreater } from "./ErrorCreater";
 
-export const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+export const uncatchError =
+  "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+
 export const responseCatcher = async (res: Response) => {
   if (res.ok) {
     return res.json();
@@ -25,10 +27,10 @@ export const errorCatcher = (
   action: (message: string) => void,
   dispatch: (action: any) => void
 ) => {
-  console.warn(`Catch the error at ${componentName}.\r\nCall ${methodName} method.${
-    error.stack
-      ? `\r\n${error.stack}`
-      : ` ${error.message}`
-  }`);
+  console.warn(
+    `Catch the error at ${componentName}.\r\nCall ${methodName} method.${
+      error.stack ? `\r\n${error.stack}` : ` ${error.message}`
+    }`
+  );
   dispatch(action(error.message));
 };

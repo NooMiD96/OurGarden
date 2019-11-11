@@ -15,7 +15,6 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => (
     <AccountControlComponent>
       <AntdLayout>
         <NavMenu />
-
         <AntdLayout style={{ marginLeft: "200px" }}>
           <Content className="main-content-wrapper">
             <ConfigProvider renderEmpty={RenderEmptyProvider}>

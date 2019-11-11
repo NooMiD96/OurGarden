@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Model.EMail;
+
 using Services.BackgroundWork.DummyWorker;
 using Services.EMail;
 
@@ -14,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using static Database.DatabaseInitialization;
+using static Services.DIServices.DependencyInjections;
 
 namespace Web
 {
@@ -30,20 +32,12 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             SetupDatabaseSettings(services, Configuration);
+            SetupSecureSettings(services, Configuration);
 
             services.AddResponseCompression();
 
-            services.AddAntiforgery(options =>
-            {
-                options.HeaderName = Configuration.GetValue<string>("XsrfName");
-                //cookie is only for the same-site requests
-                options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
-                options.Cookie.Name = Configuration.GetValue<string>("XsrfName");
-            });
-
             var serviceProvider = services.BuildServiceProvider();
-
-            InitializeDb(serviceProvider, Configuration);
+            InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
