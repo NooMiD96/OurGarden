@@ -16,7 +16,7 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class ClientController : BaseController
     {
-        public readonly IOurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         public ClientController(IOurGardenRepository repository)
         {
             _repository = repository;
@@ -37,8 +37,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate(
-            [FromForm]Client client)
+        public async Task<IActionResult> AddOrUpdate([FromForm]Client client)
         {
             try
             {

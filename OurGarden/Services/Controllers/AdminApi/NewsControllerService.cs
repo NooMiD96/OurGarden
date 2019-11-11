@@ -7,6 +7,7 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 using Web.Controllers.AdminApi;
@@ -21,6 +22,8 @@ namespace Web.Services.Controllers.AdminApi
 
         public NewsControllerService(IOurGardenRepository repository)
         {
+            Contract.Requires(_repository != null);
+
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
             _fileHelper = new FileHelper(_repository);
@@ -35,7 +38,7 @@ namespace Web.Services.Controllers.AdminApi
                     var file = default(Photo);
                     if (newsDTO.File == null)
                     {
-                        file = _fileHelper.ClonePhoto(oldNews.Photo.Url);
+                        file = _fileHelper.ClonePhoto(oldNews.Photo);
                         _context.Remove(oldNews.Photo);
                     }
                     else

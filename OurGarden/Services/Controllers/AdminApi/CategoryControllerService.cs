@@ -47,7 +47,7 @@ namespace Web.Services.Controllers.AdminApi
                     var file = default(Photo);
                     if (categoryDTO.File == null)
                     {
-                        file = _fileHelper.ClonePhoto(oldCategory.Photo.Url);
+                        file = _fileHelper.ClonePhoto(oldCategory.Photo);
                         _context.Remove(oldCategory.Photo);
                     }
                     else
@@ -94,7 +94,7 @@ namespace Web.Services.Controllers.AdminApi
                             SubcategoryId = oldSubcategory.SubcategoryId,
 
                             Alias = oldSubcategory.Alias,
-                            Photo = _fileHelper.ClonePhoto(oldSubcategory.Photo.Url),
+                            Photo = _fileHelper.ClonePhoto(oldSubcategory.Photo),
                             Products = new List<Product>()
                         };
 
@@ -121,7 +121,7 @@ namespace Web.Services.Controllers.AdminApi
                                 {
                                     _context.Remove(photo);
 
-                                    return _fileHelper.ClonePhoto(photo.Url);
+                                    return _fileHelper.ClonePhoto(photo);
                                 }).ToList()
                             };
 

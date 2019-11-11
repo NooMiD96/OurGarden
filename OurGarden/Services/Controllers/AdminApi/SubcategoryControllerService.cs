@@ -45,7 +45,7 @@ namespace Web.Services.Controllers.AdminApi
                     var file = default(Photo);
                     if (subcategoryDTO.File == null)
                     {
-                        file = _fileHelper.ClonePhoto(oldSubcategory.Photo.Url);
+                        file = _fileHelper.ClonePhoto(oldSubcategory.Photo);
                         _context.Remove(oldSubcategory.Photo);
                     }
                     else

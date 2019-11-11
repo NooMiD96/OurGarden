@@ -16,10 +16,10 @@ namespace Web.Controllers.AdminApi
     {
         readonly string STATIC_FOLDER = "wwwroot";
         readonly string FILE_FOLDER = "images";
-        readonly static int PREVIEW_WIDTH = 400;
-        readonly static int PREVIEW_HEIGHT = 350;
+        const int MAX_PIXEL = 400;
 
-        public readonly IOurGardenRepository _repository;
+        readonly IOurGardenRepository _repository;
+
         public FileHelper(IOurGardenRepository repository)
         {
             _repository = repository;
@@ -49,48 +49,25 @@ namespace Web.Controllers.AdminApi
             return file;
         }
 
-        public Photo ClonePhoto(string url)
-        {
-            var guid = Guid.NewGuid();
-
-            return new Photo()
-            {
-                PhotoId = guid,
-                Name = guid.ToString(),
-                Date = DateTime.Now,
-                Url = url
-            };
-        }
-
         public async Task<Photo> AddFileWithPreviewToRepository(IFormFile photo)
         {
             var guid = Guid.NewGuid();
             var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
             var previewPath = $"{FILE_FOLDER}/{guid.ToString()}-preview.{GetFileExtension(photo.FileName)}";
 
-            var previewImage = Crop(photo);
-
-            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, path), FileMode.Create))
+            using (var previewImage = GetPreview(photo))
             {
-                await photo.CopyToAsync(fileStream);
-            }
-            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, previewPath), FileMode.Create))
-            {
-               previewImage.Save(fileStream, ImageFormat.Jpeg);
+                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, path), FileMode.Create))
+                {
+                    await photo.CopyToAsync(fileStream);
+                }
+                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, previewPath), FileMode.Create))
+                {
+                   previewImage.Save(fileStream, ImageFormat.Jpeg);
+                }
             }
 
             return await AddFile(path, guid, previewPath);
-        }
-
-        private static Bitmap Crop(IFormFile photo)
-        {
-            Image image = Image.FromStream(photo.OpenReadStream(), true, true);
-            var newImage = new Bitmap(PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            using (var g = Graphics.FromImage(newImage))
-            {
-                g.DrawImage(image, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT);
-            }
-            return newImage;
         }
 
         public async Task<Photo> AddFileToRepository(IFormFile photo)
@@ -106,11 +83,6 @@ namespace Web.Controllers.AdminApi
             return await AddFile(path, guid);
         }
 
-        public async Task<Photo> AddFileToRepository(string photoUrl)
-        {
-            return await AddFile(photoUrl);
-        }
-
         public async ValueTask<bool> RemoveFileFromRepository(Photo photo, bool updateDB = true)
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, photo.Url);
@@ -119,9 +91,51 @@ namespace Web.Controllers.AdminApi
                 File.Delete(filePath);
             }
 
+            filePath = Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, photo.PreviewUrl ?? "");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
             await _repository.DeleteFile(photo.PhotoId, updateDB);
 
             return true;
+        }
+
+        private Bitmap GetPreview(IFormFile photo)
+        {
+            var image = Image.FromStream(photo.OpenReadStream(), true, true);
+
+            var originalWidth = image.Width;
+            var originalHeight = image.Height;
+
+            double factor;
+            if (originalWidth > originalHeight)
+            {
+                factor = (double)MAX_PIXEL / originalWidth;
+            }
+            else
+            {
+                factor = (double)MAX_PIXEL / originalHeight;
+            }
+
+            var size = new Size((int)(originalWidth * factor), (int)(originalHeight * factor));
+
+            return new Bitmap(image, size);
+        }
+
+        public Photo ClonePhoto(Photo photo)
+        {
+            var guid = Guid.NewGuid();
+
+            return new Photo()
+            {
+                PhotoId = guid,
+                Name = guid.ToString(),
+                Date = DateTime.Now,
+                Url = photo.Url,
+                PreviewUrl = photo.PreviewUrl
+            };
         }
     }
 }

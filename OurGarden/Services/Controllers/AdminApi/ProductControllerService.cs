@@ -47,7 +47,7 @@ namespace Web.Services.Controllers.AdminApi
                     var file = default(Photo);
                     if (productDTO.File == null)
                     {
-                        file = _fileHelper.ClonePhoto(oldProduct.Photos.ElementAt(0).Url);
+                        file = _fileHelper.ClonePhoto(oldProduct.Photos.ElementAt(0));
                         _context.RemoveRange(oldProduct.Photos);
                     }
                     else

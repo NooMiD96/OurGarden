@@ -2,3 +2,15 @@
 
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = none
+
+#CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+#CA1307: Specify StringComparison
+dotnet_diagnostic.CA1307.severity = none
+
+#CA1052: Static holder types should be Static or NotInheritable
+dotnet_diagnostic.CA1052.severity = none
