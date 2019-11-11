@@ -28,11 +28,14 @@
         flex: 1 1 auto;
         border: 1px solid $borderColor;
         border-top: unset;
+        overflow-y: auto;
+        overflow-x: hidden;
 
         color: $darkGreyColor;
 
         .ant-menu-item {
           font-size: 16px;
+          width: 100%;
 
           > a.nav-link {
             max-height: 600px;
@@ -67,13 +70,6 @@
   }
 
   @media (max-width: 767px) {
-    overflow: unset;
-
-    > .ant-layout {
-      overflow: unset;
-      max-width: 100%;
-    }
-
     .ant-layout-sider {
       z-index: 5;
       position: fixed;
@@ -84,10 +80,6 @@
 
     .ant-layout-sider-zero-width-trigger {
       top: 356px;
-    }
-
-    .main-content-wrapper .content {
-      overflow: unset;
     }
   }
 }

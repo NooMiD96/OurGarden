@@ -10,6 +10,8 @@ export interface INewsCarousel {
   push: typeof push;
 }
 
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+
 export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
   caruselRef: Carousel | null = null;
 
@@ -30,28 +32,30 @@ export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
   render() {
     const { displayList, push } = this.props;
 
+    const carouselSource = displayList.map((x) => (
+      <div
+        key={x.newsId}
+        className="slick-slide-content"
+        onClick={() => {
+          push(`/News/${x.alias}`);
+        }}
+        onKeyDown={() => {
+          push(`/News/${x.alias}`);
+        }}
+        role="link"
+      >
+        <img
+          className="slick-slide-content-image"
+          alt={x.title}
+          src={x.photo && x.photo.url}
+        />
+      </div>
+    ));
+
     return (
       <React.Fragment>
-        <Carousel autoplay effect="fade" ref={ref => (this.caruselRef = ref)}>
-          {displayList.map(x => (
-            <div
-              key={x.newsId}
-              className="slick-slide-content"
-              onClick={() => {
-                push(`/News/${x.alias}`);
-              }}
-              onKeyDown={() => {
-                push(`/News/${x.alias}`);
-              }}
-              role="link"
-            >
-              <img
-                className="slick-slide-content-image"
-                alt={x.title}
-                src={x.photo && x.photo.url}
-              />
-            </div>
-          ))}
+        <Carousel autoplay effect="fade" ref={(ref) => (this.caruselRef = ref)}>
+          {carouselSource}
         </Carousel>
         <div
           className="carousel-slide-changer carousel-slide-prev"
@@ -75,5 +79,7 @@ export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
     );
   }
 }
+
+/* eslint-enable jsx-a11y/interactive-supports-focus */
 
 export default NewsCarousel;

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^2.1.1",
-    "antd": "^3.21.2",
+    "antd": "^3.25.1",
     "aspnet-prerendering": "^3.0.1",
     "connected-react-router": "^6.5.2",
     "domain-task": "^3.0.3",

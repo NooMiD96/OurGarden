@@ -19,7 +19,12 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
     const { location, categoryList } = this.props;
 
     return (
-      <AntdSider breakpoint="md" collapsedWidth="0" width={250}>
+      <AntdSider
+        breakpoint="md"
+        collapsedWidth="0"
+        width={250}
+        defaultCollapsed
+      >
         <div className="sider-catalog-header">
           <Title level={4}>Каталог</Title>
         </div>
