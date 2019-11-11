@@ -4,6 +4,6 @@ namespace Services.BackgroundWork.DummyWorker
 {
     public interface IDummyWorkerService
     {
-        Task DoLoopWork();
+        void DoWork();
     }
 }

@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace Services.BackgroundWork.DummyWorker
 {
-    public class DummyHostedService : IHostedService
+    public class DummyHostedService : IHostedService, IDisposable
     {
         private readonly ILogger _logger;
+        private Timer _timer;
+        public IServiceProvider Services { get; }
 
         public DummyHostedService(IServiceProvider services, ILogger<DummyHostedService> logger)
         {
@@ -18,18 +20,18 @@ namespace Services.BackgroundWork.DummyWorker
             _logger = logger;
         }
 
-        public IServiceProvider Services { get; }
-
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogCritical("Consume Scoped Service Hosted Service is starting.");
+            _logger.LogInformation("Consume Scoped Service Hosted Service is starting.");
 
-            return DoWork();
+            _timer = new Timer(DoWork, null, TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3));
+
+            return Task.CompletedTask;
         }
 
-        private async Task DoWork()
+        private void DoWork(object state)
         {
-            _logger.LogCritical("Consume Scoped Service Hosted Service is working.");
+            _logger.LogInformation("Consume Scoped Service Hosted Service is working.");
 
             using (var scope = Services.CreateScope())
             {
@@ -37,15 +39,22 @@ namespace Services.BackgroundWork.DummyWorker
                     scope.ServiceProvider
                         .GetRequiredService<IDummyWorkerService>();
 
-                await dummyWorker.DoLoopWork();
+                dummyWorker.DoWork();
             }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogCritical("Consume Scoped Service Hosted Service is stopping.");
+            _logger.LogInformation("Consume Scoped Service Hosted Service is stopping.");
+
+            _timer?.Change(Timeout.Infinite, 0);
 
             return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
     }
 }
