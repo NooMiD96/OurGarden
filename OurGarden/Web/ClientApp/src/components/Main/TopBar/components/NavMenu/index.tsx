@@ -13,8 +13,8 @@ const tabList = [
   { title: "Главная", link: "Home" },
   { title: "Каталог", link: "Catalog" },
   { title: "Акции", link: "News" },
-  { title: "Доставка и оплата", link: "Payment"},
-  { title: "Ландшафтный дизайн", link: "Design"},
+  { title: "Доставка и оплата", link: "Payment" },
+  { title: "Ландшафтный дизайн", link: "Design" },
   { title: "Видеогалерея", link: "Videogalery" },
   { title: "Контакты", link: "About" }
 ];
@@ -25,7 +25,7 @@ const NavMenu = (props: RouterState) => {
   return (
     <React.Fragment>
       <Tabs className="navigation" activeKey={activeKey}>
-        {tabList.map(x => (
+        {tabList.map((x) => (
           <Tabs.TabPane key={x.link} tab={<GenerateLink {...x} />} />
         ))}
       </Tabs>

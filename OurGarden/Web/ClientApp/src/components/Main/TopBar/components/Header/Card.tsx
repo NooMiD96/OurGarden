@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { push } from "connected-react-router";
+import { push as pushAction } from "connected-react-router";
 import { connect } from "react-redux";
 
 import Archive from "@core/icons/Archive";
@@ -13,7 +13,7 @@ import { IApplicationState } from "@src/Store";
 
 interface ICard {
   totalCount: number;
-  push: typeof push;
+  push: typeof pushAction;
   loadCardFromLocalstate: typeof actionCreators.loadCardFromLocalstate;
 }
 
@@ -39,7 +39,7 @@ export default connect(
     totalCount: state.userCard.totalCount
   }),
   {
-    push,
-    loadCardFromLocalstate: actionCreators.loadCardFromLocalstate,
+    push: pushAction,
+    loadCardFromLocalstate: actionCreators.loadCardFromLocalstate
   }
 )(Card);
