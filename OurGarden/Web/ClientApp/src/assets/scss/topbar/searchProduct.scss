@@ -59,20 +59,42 @@
 }
 
 #product-popup-container {
-  .loading-auto-select {
-    justify-content: center;
-    height: 8em;
-    padding: 1.5em 0;
+  .ant-select-dropdown {
+    .loading-auto-select {
+      display: flex;
+      justify-content: center;
+      height: 8em;
+      padding: 1.5em 0;
 
-    &.ant-select-dropdown-menu-item-disabled {
-      cursor: wait;
+      &.ant-select-dropdown-menu-item-disabled {
+        cursor: wait;
+      }
+
+      .loading-icon {
+        width: 100%;
+
+        path {
+          fill: $mainColor;
+        }
+      }
     }
 
-    .loading-icon {
-      width: 100%;
+    .search-list-is-empty {
+      white-space: unset;
+    }
 
-      path {
-        fill: $mainColor;
+    .search-menu-item {
+      display: flex;
+      flex-flow: row wrap;
+
+      &-image {
+        max-width: 120px;
+      }
+
+      &-text {
+        font-size: 16px;
+        margin-left: 0.5rem;
+        align-self: center;
       }
     }
   }

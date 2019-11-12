@@ -25,10 +25,11 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       }
     } = props;
 
-    if (!product
-      || categoryId !== product.categoryId
-      || subcategoryId !== product.subcategoryId
-      || productId !== product.productId
+    if (
+      !product ||
+      categoryId !== product.categoryId ||
+      subcategoryId !== product.subcategoryId ||
+      productId !== product.productId
     ) {
       props.getProduct(categoryId, subcategoryId, productId);
     }
@@ -92,7 +93,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const seoSection = getSEOMetaData("product");
 
     return (
-      <div className="product-wrapper content white-background">
+      <div className="product-wrapper content white-background grey-border">
         {pending || !product ? (
           <>
             <Loading />
@@ -101,8 +102,8 @@ export class Product extends React.PureComponent<TState, TComponentState> {
           <Row>
             <HeaderHelmet
               title={
-                seoSection.title
-                && seoSection.title.replace("{{value}}", product.alias)
+                seoSection.title &&
+                seoSection.title.replace("{{value}}", product.alias)
               }
               metaDescription={seoSection.meta}
             />

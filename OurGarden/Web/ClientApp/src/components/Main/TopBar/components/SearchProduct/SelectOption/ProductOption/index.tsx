@@ -4,22 +4,13 @@ import AutoComplete from "@core/antd/AutoComplete";
 
 import { getProductPhotoSrc } from "@src/core/helpers/product";
 
-import { ISearchItem } from "./ISearchProduct";
+import { IProductOption } from "./IProductOption";
 import { IProduct } from "@src/components/Product/State";
+import LazyImage from "@src/core/components/LazyImage";
 
 const { Option } = AutoComplete;
 
-const style = {
-  imgStyle: {
-    maxWidth: "120px"
-  },
-  spanStyle: {
-    fontSize: "16px",
-    marginLeft: "0.5rem"
-  }
-};
-
-const Product = (item: ISearchItem) => {
+const ProductOption = (item: IProductOption) => {
   let link = `/Catalog/${item.categoryId}`;
 
   if (item.subcategoryId) {
@@ -38,11 +29,15 @@ const Product = (item: ISearchItem) => {
   }
 
   return (
-    <Option title={item.alias} key={link}>
-      <img src={imgSrc} style={style.imgStyle} alt={item.alias} />
-      <span style={style.spanStyle}>{item.alias}</span>
+    <Option className="search-menu-item" title={item.alias} key={link}>
+      <LazyImage
+        className="search-menu-item-image"
+        src={imgSrc}
+        alt={item.alias}
+      />
+      <span className="search-menu-item-text">{item.alias}</span>
     </Option>
   );
 };
 
-export default Product;
+export default ProductOption;

@@ -1,6 +1,6 @@
 import Table from "antd/es/table/Table";
 import Column from "antd/es/table/Column";
-import { ColumnProps } from "antd/es/table/interface";
+import { ColumnProps } from "antd/lib/table/interface";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 
 import "antd/es/table/style/index.css";

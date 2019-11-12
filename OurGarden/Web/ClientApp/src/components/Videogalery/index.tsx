@@ -15,30 +15,27 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
     super(props);
 
     props.setBreadcrumb({
-      breadcrumb: [{
-        displayName: "Видеогалерея",
-        url: "Videogalery",
-        order: 1,
-      }],
+      breadcrumb: [
+        {
+          displayName: "Видеогалерея",
+          url: "Videogalery",
+          order: 1
+        }
+      ],
       key: "Videogalery"
     });
   }
 
   render() {
     return (
-      <div className="content white-background">
-        <HeaderHelmet
-          {...getSEOMetaData("videogalery")}
-        />
+      <div className="content white-background grey-border p25">
+        <HeaderHelmet {...getSEOMetaData("videogalery")} />
         Данный раздел находится в разработке, приходите позднее!
       </div>
     );
   }
 }
 
-export default connect(
-  null,
-  {
-    setBreadcrumb: breadcrumbActions.setBreadcrumb
-  }
-)(Videogalery);
+export default connect(null, {
+  setBreadcrumb: breadcrumbActions.setBreadcrumb
+})(Videogalery);

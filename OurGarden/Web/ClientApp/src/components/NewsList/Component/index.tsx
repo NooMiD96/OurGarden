@@ -11,6 +11,7 @@ import { NewsCard } from "@src/core/components/NewsCard";
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
+import { INew } from "@src/components/News/State";
 
 import "./style/NewsList.style.scss";
 
@@ -28,11 +29,13 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
     };
 
     props.setBreadcrumb({
-      breadcrumb: [{
-        displayName: "Акции",
-        url: "News",
-        order: 1,
-      }],
+      breadcrumb: [
+        {
+          displayName: "Акции",
+          url: "News",
+          order: 1
+        }
+      ],
       key: "News"
     });
   }
@@ -48,16 +51,19 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
     const { newsList, pending, push } = this.props;
     const { page, pageSize } = this.state;
 
-    const dataList = newsList.map((news) => ({
+    const dataList = newsList.map((news: INew) => ({
       ...news,
       link: `/News/${news.alias}`
     }));
 
     return (
       <div className="content news-list-wrapper">
-        <HeaderHelmet
-          {...getSEOMetaData("newsList")}
-        />
+        <HeaderHelmet {...getSEOMetaData("newsList")} />
+        {dataList.length === 0 && (
+          <div className="content white-background p25">
+            На данный момент никаких активных акций нет.
+          </div>
+        )}
         {pending ? (
           <Loading />
         ) : (
@@ -72,11 +78,11 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
               total={dataList.length}
               onChange={this.onChange}
             />
-            <Row type="flex" className="white-background">
+            <Row type="flex">
               {dataList
                 .slice((page - 1) * pageSize, page * pageSize)
-                .map((item) => (
-                  <Col key={item.link} className="card-wrapper">
+                .map((item: INew & { link: string }) => (
+                  <Col key={item.link} className="card-wrapper grey-border">
                     <NewsCard item={item} push={push} pending={pending} />
                   </Col>
                 ))}

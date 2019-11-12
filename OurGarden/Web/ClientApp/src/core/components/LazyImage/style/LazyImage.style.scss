@@ -1,14 +1,12 @@
-.ant-card-cover {
-  .lazy-load-image-background {
-    min-height: 200px;
+.lazy-load-image-background {
+  min-height: 200px;
 
-    &.lazy-load-image-loaded {
-      min-height: auto;
+  &.lazy-load-image-loaded {
+    min-height: auto;
+
+    img {
+      display: block;
+      width: 100%;
     }
-  }
-
-  img {
-    display: block;
-    width: 100%;
   }
 }

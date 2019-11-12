@@ -1,58 +1,32 @@
 .home-wrapper {
-  flex: 0 1 50% !important;
   position: relative;
   min-height: 350px;
 
-  .ant-carousel {
-    height: 100%;
+  .slick-slider.slick-initialized {
+    text-align: center;
+    overflow: hidden;
 
-    .slick-slider.slick-initialized {
-      height: 100%;
-      text-align: center;
-      overflow: hidden;
+    .slick-list {
+      max-height: 600px;
+    }
 
-      .slick-list {
-        height: 100%;
+    .slick-slide-content-image {
+      cursor: pointer;
+    }
 
-        .slick-track {
-          height: 100%;
+    .slick-dots.slick-dots-bottom {
+      height: 24px;
 
-          .slick-slide {
-            & > div {
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+      & > li {
+        vertical-align: middle;
 
-              .slick-slide-content {
-                cursor: pointer;
-                width: auto !important;
-
-                .slick-slide-content-image {
-                  max-width: 100%;
-                  max-height: 100%;
-                  background: center / contain no-repeat;
-                }
-              }
-            }
-          }
+        & > button {
+          height: 16px;
+          border-radius: 50%;
         }
-      }
 
-      .slick-dots.slick-dots-bottom {
-        height: 24px;
-
-        & > li {
-          vertical-align: middle;
-
-          & > button {
-            height: 16px;
-            border-radius: 50%;
-          }
-
-          &.slick-active > button {
-            height: 24px;
-          }
+        &.slick-active > button {
+          height: 24px;
         }
       }
     }

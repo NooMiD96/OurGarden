@@ -4,42 +4,18 @@ import { push } from "connected-react-router";
 
 import Search from "@core/antd/Search";
 import AutoComplete from "@core/antd/AutoComplete";
-import LoadingIcon from "@src/core/icons/Loading";
 import SearchIcon from "@src/core/icons/Search";
-import Product from "./Product";
+import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
 
-import debounce from "lodash.debounce";
 import { IProduct } from "@src/components/Product/State";
 
-const { Option } = AutoComplete;
-
-const loadingComponent = () => (
-  <Option
-    key="loading-auto-select"
-    className="loading-auto-select"
-    disabled
-    style={{ display: "flex" }}
-  >
-    <LoadingIcon />
-  </Option>
-);
-
-const searchListIsEmpty = () => (
-  <Option
-    key="search-list-is-empty"
-    className="search-list-is-empty"
-    disabled
-    style={{ display: "flex" }}
-  >
-    По вашему запросу ничего не найдено...
-  </Option>
-);
+import debounce from "lodash.debounce";
 
 const fetchProducts = async (search: string) => {
   const result = await fetch(`/api/Search?search=${search}`, {
     credentials: "same-origin",
     method: "GET"
-  }).then(res => res.json());
+  }).then((res: Response) => res.json());
 
   return result;
 };
@@ -85,11 +61,11 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   let dataSource: any[] = [];
 
   if (pending) {
-    dataSource.push(loadingComponent());
+    dataSource.push(LoadOption());
   } else if (!productList.length && searchIsActive) {
-    dataSource.push(searchListIsEmpty());
+    dataSource.push(EmptyOption());
   } else if (productList.length) {
-    dataSource = productList.map(Product);
+    dataSource = productList.map(ProductOption);
   }
 
   return (
@@ -100,9 +76,7 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
         placeholder="Поиск..."
         dataSource={dataSource}
         onSearch={debounceOnSearch}
-        getPopupContainer={() =>
-          document.getElementById("product-popup-container")!
-        }
+        getPopupContainer={() => document.getElementById("product-popup-container")!}
         optionLabelProp="title"
         onSelect={onSelect}
       >
@@ -119,9 +93,6 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   );
 };
 
-export default connect(
-  null,
-  {
-    push
-  }
-)(SearchProduct);
+export default connect(null, {
+  push
+})(SearchProduct);

@@ -1,6 +1,6 @@
 import { IPhoto } from "@src/core/IPhoto";
 
-export interface ISearchItem {
+export interface IProductOption {
   categoryId: string;
   subcategoryId?: string;
   productId?: string;

@@ -14,7 +14,6 @@ html {
   background: no-repeat url(../image/mainBackground.jpg);
   background-position-x: center;
   background-position-y: top;
-  // background-size: cover;
   background-size: 110%;
 }
 
@@ -71,9 +70,4 @@ a {
     font-weight: 100;
     color: #000;
   }
-}
-
-.white-background {
-  background: #fff;
-  border: 1px solid $borderColor;
 }

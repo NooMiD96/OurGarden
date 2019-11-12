@@ -15,32 +15,27 @@ export class Payment extends React.PureComponent<IPayment, {}> {
     super(props);
 
     props.setBreadcrumb({
-      breadcrumb: [{
-        displayName: "Доставка и оплата",
-        url: "Payment",
-        order: 1,
-      }],
+      breadcrumb: [
+        {
+          displayName: "Доставка и оплата",
+          url: "Payment",
+          order: 1
+        }
+      ],
       key: "Payment"
     });
   }
 
   render() {
     return (
-      <>
-        <HeaderHelmet
-          {...getSEOMetaData("payment")}
-        />
-        <div>
-          Данный раздел находится в разработке, приходите позднее!
-        </div>
-      </>
+      <div className="content white-background grey-border p25">
+        <HeaderHelmet {...getSEOMetaData("payment")} />
+        Данный раздел находится в разработке, приходите позднее!
+      </div>
     );
   }
 }
 
-export default connect(
-  null,
-  {
-    setBreadcrumb: breadcrumbActions.setBreadcrumb
-  }
-)(Payment);
+export default connect(null, {
+  setBreadcrumb: breadcrumbActions.setBreadcrumb
+})(Payment);
