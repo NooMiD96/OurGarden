@@ -165,4 +165,14 @@
       }
     }
   }
+
+  @media (max-width: 360px) {
+    .ant-col {
+      flex-basis: 100%;
+
+      .ant-select.ant-select-auto-complete {
+        margin-left: 10px;
+      }
+    }
+  }
 }

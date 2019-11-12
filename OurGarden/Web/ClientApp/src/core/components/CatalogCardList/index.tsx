@@ -23,17 +23,23 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
     if (props.dataList.length) {
       const item = props.dataList[0];
 
-      displayList = (item as ISubcategory).subcategoryId
-        ? (props.dataList as ISubcategory[]).map<IDisplayItem>((x) => ({
-          link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
-          alias: x.alias,
-          photoUrl: x.photo ? x.photo.url : ""
-        }))
-        : (props.dataList as ICategory[]).map<IDisplayItem>((x) => ({
-          link: `/Catalog/${x.categoryId}`,
-          alias: x.alias,
-          photoUrl: x.photo ? x.photo.url : ""
-        }));
+      if ((item as ISubcategory).subcategoryId) {
+        displayList = (props.dataList as ISubcategory[]).map<IDisplayItem>(
+          (x: ISubcategory) => ({
+            link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
+            alias: x.alias,
+            photoUrl: x.photo ? x.photo.url : ""
+          })
+        );
+      } else {
+        displayList = (props.dataList as ICategory[]).map<IDisplayItem>(
+          (x: ICategory) => ({
+            link: `/Catalog/${x.categoryId}`,
+            alias: x.alias,
+            photoUrl: x.photo ? x.photo.url : ""
+          })
+        );
+      }
     }
 
     this.state = {
@@ -60,29 +66,30 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           itemRender={PaginationItemRenderer}
           defaultCurrent={page}
           defaultPageSize={pageSize}
-          // showTitle={false}
           hideOnSinglePage
           total={displayList.length}
           onChange={this.onChange}
           showLessItems
         />
         <Row type="flex" gutter={16}>
-          {displayList.slice((page - 1) * pageSize, page * pageSize).map((x) => (
-            <Col {...cardStyle} key={x.link} className="card-wrapper">
-              <Card
-                hoverable
-                cover={<LazyImage alt={x.alias} src={x.photoUrl} />}
-                onClick={() => {
-                  this.setState({
-                    page: 1
-                  });
-                  this.props.push(x.link);
-                }}
-              >
-                <Card.Meta title={x.alias} />
-              </Card>
-            </Col>
-          ))}
+          {displayList
+            .slice((page - 1) * pageSize, page * pageSize)
+            .map((x: IDisplayItem) => (
+              <Col {...cardStyle} key={x.link} className="card-wrapper">
+                <Card
+                  hoverable
+                  cover={<LazyImage alt={x.alias} src={x.photoUrl} />}
+                  onClick={() => {
+                    this.setState({
+                      page: 1
+                    });
+                    this.props.push(x.link);
+                  }}
+                >
+                  <Card.Meta title={x.alias} />
+                </Card>
+              </Col>
+            ))}
         </Row>
       </div>
     );

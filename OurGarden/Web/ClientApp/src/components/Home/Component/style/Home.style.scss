@@ -43,6 +43,8 @@
 
     background-color: $darkGreenColor;
 
+    z-index: 1;
+
     > .carousel-slide {
       position: absolute;
       top: calc(50% - 12px);
@@ -105,7 +107,7 @@
       &.carousel-slide-prev > .carousel-slide {
         left: calc(50% - 10px);
 
-        ::after {
+        &::after {
           border-top: 10px solid transparent;
           border-right: 16px solid $arrowBorderColor;
           border-bottom: 10px solid transparent;

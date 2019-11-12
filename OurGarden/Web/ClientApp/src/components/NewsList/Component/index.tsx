@@ -6,7 +6,7 @@ import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import Loading from "@src/core/components/Loading";
 import HeaderHelmet from "@src/core/components/Helmet";
-import { NewsCard } from "@src/core/components/NewsCard";
+import { NewsCard } from "./NewsCard";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 

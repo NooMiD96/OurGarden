@@ -1,13 +1,14 @@
 import * as React from "react";
-import { push } from "connected-react-router";
+import { push as pushAction } from "connected-react-router";
 
 import Carousel from "@core/antd/Carousel";
+import { NextArrow, PrevArrow } from "./Arrows";
 
 import { INew } from "@src/components/News/State";
 
 export interface INewsCarousel {
   displayList: INew[];
-  push: typeof push;
+  push: typeof pushAction;
 }
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
@@ -27,20 +28,6 @@ export class NewsCarousel extends React.PureComponent<
       this.setState({ mount: true });
     }, 0);
   }
-
-  prevSlide = () => {
-    this.callSlideChange("prev");
-  };
-
-  nextSlide = () => {
-    this.callSlideChange("next");
-  };
-
-  callSlideChange = (slideChangeFuncName: "next" | "prev") => {
-    if (this.caruselRef) {
-      this.caruselRef[slideChangeFuncName]();
-    }
-  };
 
   render() {
     const { displayList, push } = this.props;
@@ -74,29 +61,14 @@ export class NewsCarousel extends React.PureComponent<
             this.caruselRef = ref;
           }}
           adaptiveHeight
+          arrows
           draggable
           lazyLoad="progressive"
+          prevArrow={<PrevArrow />}
+          nextArrow={<NextArrow />}
         >
           {carouselSource}
         </Carousel>
-        <div
-          className="carousel-slide-changer carousel-slide-prev"
-          onClick={this.prevSlide}
-          onKeyDown={this.prevSlide}
-          role="button"
-          tabIndex={-1}
-        >
-          <span className="carousel-slide" />
-        </div>
-        <div
-          className="carousel-slide-changer carousel-slide-next"
-          onClick={this.nextSlide}
-          onKeyDown={this.nextSlide}
-          role="button"
-          tabIndex={-1}
-        >
-          <span className="carousel-slide" />
-        </div>
       </React.Fragment>
     );
   }
