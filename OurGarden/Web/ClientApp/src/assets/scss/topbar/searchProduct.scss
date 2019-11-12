@@ -87,14 +87,30 @@
       display: flex;
       flex-flow: row wrap;
 
+      .lazy-load-image-background {
+        min-height: 100px;
+        flex: 0 1 auto;
+
+        &.lazy-load-image-loaded {
+          min-height: auto;
+        }
+      }
+
       &-image {
         max-width: 120px;
       }
 
       &-text {
+        flex: 0 0 50%;
+
         font-size: 16px;
         margin-left: 0.5rem;
         align-self: center;
+
+        overflow: hidden;
+        word-break: normal;
+        white-space: normal;
+        text-overflow: ellipsis;
       }
     }
   }
