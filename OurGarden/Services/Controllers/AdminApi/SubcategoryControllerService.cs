@@ -9,6 +9,7 @@ using Model.DB;
 using Model.DTO.Subcategory;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -61,7 +62,9 @@ namespace Web.Services.Controllers.AdminApi
 
                         Alias = subcategoryDTO.Alias,
 
-                        Photo = file
+                        Photo = file,
+
+                        Products = new List<Product>()
                     };
                     var result = await _repository.AddSubcategory(newSubcategory);
                     if (!result.isSuccess)
