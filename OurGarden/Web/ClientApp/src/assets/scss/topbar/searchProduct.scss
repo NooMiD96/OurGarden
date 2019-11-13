@@ -85,7 +85,7 @@
 
     .search-menu-item {
       display: flex;
-      flex-flow: row wrap;
+      flex-flow: row nowrap;
 
       .lazy-load-image-background {
         min-height: 100px;

@@ -8,6 +8,15 @@
   }
 
   .ant-card.ant-card-hoverable {
+    .ant-card-meta-title {
+      white-space: unset;
+      text-overflow: unset;
+    }
+
+    .ant-card-meta-description {
+      color: black;
+    }
+
     &:hover {
       .ant-card-meta-title {
         color: $darkGreenColor;
@@ -17,6 +26,12 @@
       .card-description .ant-input-group-addon .ant-btn {
         background-color: $darkGreenColor;
         color: #fff;
+
+        &:focus,
+        &:active {
+          background-color: $greenColor;
+          color: #fff;
+        }
       }
     }
   }

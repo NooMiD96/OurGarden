@@ -12,7 +12,7 @@ import ProductCard from "./ProductCard";
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { cardStyle } from "@core/components/CatalogCardList/CardStyle";
 
-import "./style/ProductList.style.scss";
+import "@core/components/CatalogCardList/style/CatalogCard.style.scss";
 
 import { TState, TComponentState } from "../TState";
 
@@ -79,7 +79,7 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     const seoSection = getSEOMetaData("productList");
 
     return (
-      <div className="product-list-wrapper content">
+      <div className="product-list-wrapper catalog-card-list content">
         {pending ? (
           <>
             <Loading />
