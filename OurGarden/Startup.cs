@@ -1,3 +1,5 @@
+#pragma warning disable CA1822 // Mark members as static
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -125,3 +127,5 @@ namespace Web
         }
     }
 }
+
+#pragma warning restore CA1822 // Mark members as static

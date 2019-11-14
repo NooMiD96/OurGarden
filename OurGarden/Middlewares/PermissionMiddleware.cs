@@ -8,9 +8,14 @@ namespace Web.Middlewares
     public class PermissionMiddleware
     {
         private readonly RequestDelegate _next;
+
+#pragma warning disable IDE0052 // Remove unread private members
+#pragma warning disable CA1823 // Remove unread private members
         private readonly string[] _adminUrls = new[] {
             "todolist"
         };
+#pragma warning restore CA1823 // Remove unread private members
+#pragma warning restore IDE0052 // Remove unread private members
 
         public PermissionMiddleware(RequestDelegate next)
         {

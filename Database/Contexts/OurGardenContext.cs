@@ -10,7 +10,7 @@ namespace Database.Contexts
     {
         public OurGardenContext(DbContextOptions<OurGardenContext> options) : base(options) { }
 
-        static private object lockObj = new object();
+        //static private object lockObj = new object();
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Gallery> Gallery { get; set; }

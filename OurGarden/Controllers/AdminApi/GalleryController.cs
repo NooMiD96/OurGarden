@@ -88,9 +88,11 @@ namespace Web.Controllers.AdminApi
                         {
                             parsedIds = gallery.RemoveFiles.Split(',').Select(x => new Guid(x)).ToList();
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            return BadRequest();
+                            Console.Error.WriteLine($"err: {ex.Message}");
+                            Console.Error.WriteLine(ex.StackTrace);
+                            return BadRequest($"Что-то пошло не так, повторите попытку. Ошибка: {ex.Message}");
                         }
 
                         var removeFiles = oldGallery.Photos
@@ -112,7 +114,9 @@ namespace Web.Controllers.AdminApi
             }
             catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                Console.Error.WriteLine($"err: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
+                return BadRequest($"Что-то пошло не так, повторите попытку. Ошибка: {ex.Message}");
             }
         }
 

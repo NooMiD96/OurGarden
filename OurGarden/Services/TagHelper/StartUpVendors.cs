@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
+
+using Microsoft.Extensions.Configuration;
 
 using System;
 using System.IO;
@@ -141,3 +143,5 @@ namespace Web
         }
     }
 }
+
+#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations

@@ -424,7 +424,7 @@ namespace Services.EMail
   </div>
 ";
 
-        string CreateOrderBodySubject(Order order)
+        private static string CreateOrderBodySubject(Order order)
         {
             var formatDate = order.Date.ToString("dd-MM-yyyy HH:mm:ss");
             var orderId = order.OrderId;
@@ -434,7 +434,7 @@ namespace Services.EMail
             return subject;
         }
 
-        MimeEntity CreateOrderBody(Order order)
+        private static MimeEntity CreateOrderBody(Order order)
         {
             var startTableMap = "{tableMap[";
             var endTableMap = "]}";
@@ -471,7 +471,7 @@ namespace Services.EMail
             return body.ToMessageBody();
         }
 
-        MimeEntity CreateClientOrderBody(Order order)
+        private static MimeEntity CreateClientOrderBody(Order order)
         {
             var startTableMap = "{tableMap[";
             var endTableMap = "]}";

@@ -25,7 +25,7 @@ namespace Web.Controllers.AdminApi
             _repository = repository;
         }
 
-        private string GetFileExtension(string fileName)
+        static private string GetFileExtension(string fileName)
         {
             var split = fileName.Split(".");
 
@@ -102,7 +102,7 @@ namespace Web.Controllers.AdminApi
             return true;
         }
 
-        private Bitmap GetPreview(IFormFile photo)
+        static private Bitmap GetPreview(IFormFile photo)
         {
             var image = Image.FromStream(photo.OpenReadStream(), true, true);
 
@@ -124,6 +124,7 @@ namespace Web.Controllers.AdminApi
             return new Bitmap(image, size);
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public Photo ClonePhoto(Photo photo)
         {
             var guid = Guid.NewGuid();
@@ -137,5 +138,6 @@ namespace Web.Controllers.AdminApi
                 PreviewUrl = photo.PreviewUrl
             };
         }
+#pragma warning restore CA1822 // Mark members as static
     }
 }
