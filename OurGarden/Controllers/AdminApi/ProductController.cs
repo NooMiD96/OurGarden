@@ -5,6 +5,7 @@ using Database.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Model.DB;
 using Model.DTO.ProductDTO;
@@ -27,12 +28,16 @@ namespace Web.Controllers.AdminApi
         private readonly IOurGardenRepository _repository;
         private readonly ProductControllerService _service;
         private readonly FileHelper _fileHelper;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.ProductController";
 
-        public ProductController(IOurGardenRepository repository)
+        public ProductController(IOurGardenRepository repository,
+                                 ILogger<ProductController> logger)
         {
             _repository = repository;
-            _service = new ProductControllerService(_repository);
+            _service = new ProductControllerService(_repository, _logger);
             _fileHelper = new FileHelper(_repository);
+            _logger = logger;
         }
 
         [HttpGet("[action]")]
@@ -58,7 +63,9 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]ProductDTO productDTO)
         {
-            var error = "Что-то пошло не так, повторите попытку";
+            var error = "Что-то пошло не так, повторите попытку.";
+            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+
             try
             {
                 bool isSuccess;
@@ -93,7 +100,13 @@ namespace Web.Controllers.AdminApi
                     var oldProduct = await _repository.GetProduct(productDTO.CategoryId, productDTO.SubcategoryId, productDTO.ProductId);
 
                     if (oldProduct is null)
-                        return BadRequest("Товар не найден.");
+                    {
+                        return LogBadRequest(
+                            _logger,
+                            API_LOCATE,
+                            $"Что-то пошло не так, не удалось найти товар.\n\tКатегория: {productDTO.CategoryId}\n\tПодкатегория: {productDTO.SubcategoryId}\n\tТовар: {productDTO.ProductId}"
+                        );
+                    }
 
                     if (
                         productDTO.Alias.TransformToId() != oldProduct.Alias.TransformToId()
@@ -133,9 +146,12 @@ namespace Web.Controllers.AdminApi
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"err: {ex.Message}");
-                Console.Error.WriteLine(ex.StackTrace);
-                return BadRequest($"{error}. Ошибка: {ex.Message}");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    error
+                );
             }
         }
 

@@ -3,11 +3,12 @@
 using Database.Contexts;
 using Database.Repositories;
 
+using Microsoft.Extensions.Logging;
+
 using Model.DB;
 using Model.DTO;
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 using Web.Controllers.AdminApi;
@@ -19,18 +20,21 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.NewsController.Service";
 
-        public NewsControllerService(IOurGardenRepository repository)
+        public NewsControllerService(IOurGardenRepository repository, ILogger logger)
         {
-            Contract.Requires(_repository != null);
-
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
             _fileHelper = new FileHelper(_repository);
+            _logger = logger;
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO newsDTO, News oldNews)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateNews";
+
             using (var transaction = await _context.Database.BeginTransactionAsync())
                 try
                 {
@@ -65,9 +69,11 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
+
+                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
 
                     return (false, "Ошибка при обнавлении товара. Возможно данный товара уже существуют в данной категории-подкатегории");
                 }

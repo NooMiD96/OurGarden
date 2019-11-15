@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+using System;
 
 namespace Web.Controllers
 {
@@ -12,6 +15,18 @@ namespace Web.Controllers
         public IActionResult BadRequest(string res)
         {
             return this.Ok(new { error = res });
+        }
+
+        public IActionResult LogBadRequest(ILogger logger, string apiLocate, string error)
+        {
+            logger.LogError($"{DateTime.Now}:\n\t{apiLocate}\n\t{error}");
+            return BadRequest(error);
+        }
+
+        public IActionResult LogBadRequest(ILogger logger, string apiLocate, [FromServices] Exception ex, string error)
+        {
+            logger.LogError(ex, $"{DateTime.Now}:\n\t{apiLocate}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+            return BadRequest($"{error} Ошибка: {ex.Message}");
         }
 
 

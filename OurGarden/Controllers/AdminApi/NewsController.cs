@@ -5,6 +5,7 @@ using Database.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Model.DB;
 using Model.DTO;
@@ -26,12 +27,16 @@ namespace Web.Controllers.AdminApi
         private readonly IOurGardenRepository _repository;
         private readonly NewsControllerService _service;
         private readonly FileHelper _fileHelper;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.NewsController";
 
-        public NewsController(IOurGardenRepository repository)
+        public NewsController(IOurGardenRepository repository,
+                              ILogger<NewsController> logger)
         {
             _repository = repository;
-            _service = new NewsControllerService(_repository);
+            _service = new NewsControllerService(_repository, _logger);
             _fileHelper = new FileHelper(_repository);
+            _logger = logger;
         }
 
         [HttpGet("[action]")]
@@ -45,17 +50,24 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]NewsDTO newsDTO)
         {
+            var error = "Что-то пошло не так, повторите попытку.";
+            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+
             try
             {
+                bool isSuccess;
+
                 if (newsDTO.NewsId <= 0)
                 {
-                    var file = await _fileHelper.AddFileToRepository(newsDTO.File);
                     var alias = newsDTO.Title.TransformToId();
                     var isExist = await _repository.CheckNewsAlias(alias);
+
                     if (isExist)
                     {
-                        return BadRequest("Новость c данным алиасом существует. Измените заголовок, для изменения алиаса.");
+                        return BadRequest("Новость c данным заголовоком существует. Измените заголовок.");
                     }
+
+                    var file = await _fileHelper.AddFileToRepository(newsDTO.File);
 
                     var news = new News()
                     {
@@ -66,20 +78,25 @@ namespace Web.Controllers.AdminApi
                         Photo = file
                     };
                     await _repository.AddNews(news);
+
+                    isSuccess = true;
                 }
                 else
                 {
                     var oldNews = await _repository.GetNews(newsDTO.NewsId);
 
                     if (oldNews is null)
-                        return BadRequest("Новость не найдена.");
+                    {
+                        return LogBadRequest(
+                            _logger,
+                            API_LOCATE,
+                            $"Что-то пошло не так, не удалось найти новость.\n\tНовость: {newsDTO.NewsId}"
+                        );
+                    }
 
                     if (oldNews.Title.TransformToId() != newsDTO.Title.TransformToId())
                     {
-                        var (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
-
-                        if (!isSuccess)
-                            return BadRequest(error);
+                        (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
                     }
                     else
                     {
@@ -96,16 +113,26 @@ namespace Web.Controllers.AdminApi
                         oldNews.Description = newsDTO.Description;
 
                         await _repository.UpdateNews(oldNews);
+
+                        isSuccess = true;
                     }
                 }
 
-                return Success(true);
+                if (!isSuccess)
+                {
+                    return BadRequest(error);
+                }
+
+                return Success(isSuccess);
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"err: {ex.Message}");
-                Console.Error.WriteLine(ex.StackTrace);
-                return BadRequest($"Что-то пошло не так, повторите попытку. Ошибка: {ex.Message}");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    error
+                );
             }
         }
 

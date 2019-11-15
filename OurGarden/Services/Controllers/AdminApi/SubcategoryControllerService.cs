@@ -4,6 +4,7 @@ using Database.Contexts;
 using Database.Repositories;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Model.DB;
 using Model.DTO.Subcategory;
@@ -22,16 +23,22 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.SubcategoryController.Service";
 
-        public SubcategoryControllerService(IOurGardenRepository repository)
+        public SubcategoryControllerService(IOurGardenRepository repository,
+                                            ILogger logger)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
             _fileHelper = new FileHelper(_repository);
+            _logger = logger;
         }
 
         public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateSubcategory";
+
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
@@ -142,8 +149,7 @@ namespace Web.Services.Controllers.AdminApi
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine($"err: {ex.Message}");
-                    Console.Error.WriteLine(ex.StackTrace);
+                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
                     return cancelUpdate((
                         false,
                         $"Ошибка при обновлении подкатегории. Возможно товар с такой подкатегорией уже существует. Текст ошибки: {ex.Message}"
@@ -154,6 +160,8 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> CreateSubcategory(SubcategoryDTO subcategoryDTO)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".CreateSubcategory";
+
             try
             {
                 var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
@@ -175,6 +183,7 @@ namespace Web.Services.Controllers.AdminApi
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
                 return (false, $"Ошибка при создании подкатегории. {ex.Message}");
             }
         }

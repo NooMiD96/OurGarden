@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Constants;
+﻿using Core.Constants;
+
 using Database.Repositories;
+
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
 using Model.DB;
+
+using System;
+using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
@@ -17,37 +19,51 @@ namespace Web.Controllers.AdminApi
     public class ClientController : BaseController
     {
         private readonly IOurGardenRepository _repository;
-        public ClientController(IOurGardenRepository repository)
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.ClientController";
+
+        public ClientController(IOurGardenRepository repository,
+                                ILogger<ClientController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAll()
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".GetAll";
+
             try
             {
                 var result = await _repository.GetClients();
                 return Success(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    "Что-то пошло не так, повторите попытку."
+                );
             }
         }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]Client client)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+
             try
             {
                 if (client.ClientId <= 0)
                 {
                     var newClient = new Client()
                     {
-                      Email = client.Email,
-                      FIO = client.FIO,
-                      Phone = client.Phone,
+                        Email = client.Email,
+                        FIO = client.FIO,
+                        Phone = client.Phone,
                     };
                     await _repository.AddClient(newClient);
                     return Success(newClient);
@@ -68,20 +84,22 @@ namespace Web.Controllers.AdminApi
                     }
                     return Success(client);
                 }
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    "Что-то пошло не так, повторите попытку."
+                );
             }
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Delete(
-            [FromQuery]string clientId)
+        public async Task<IActionResult> Delete([FromQuery]string clientId)
         {
-            int id = 0;
-            if (int.TryParse(clientId, out id))
+            if (Int32.TryParse(clientId, out var id))
                 await _repository.DeleteClient(id);
 
             return Success(true);

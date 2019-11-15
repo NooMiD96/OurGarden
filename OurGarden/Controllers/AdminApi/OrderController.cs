@@ -4,6 +4,7 @@ using Database.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Model.DTO.Order;
 
@@ -20,9 +21,14 @@ namespace Web.Controllers.AdminApi
     public class OrderController : BaseController
     {
         private readonly IOurGardenRepository _repository;
-        public OrderController(IOurGardenRepository repository)
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.OrderController";
+
+        public OrderController(IOurGardenRepository repository,
+                               ILogger<OrderController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet("[action]")]
@@ -68,33 +74,52 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> Get(
-            [FromQuery]int orderId)
+        public async Task<IActionResult> Get([FromQuery]int orderId)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Get";
+
             var order = await _repository.GetOrder(orderId);
 
-            if (order == null)
-                return BadRequest("Что-то пошло не так, повторите попытку");
+            if (order is null)
+            {
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderId}"
+                );
+            }
 
             return Success(order);
-        }        
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Update([FromBody]OrderUpdateDTO orderDTO)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Update";
+
             try
             {
-                var order = await _repository.GetOrder(orderDTO?.OrderId ?? -1);
-                if (order == null)
+                var order = await _repository.GetOrder(orderDTO.OrderId);
+
+                if (order is null)
                 {
-                    return BadRequest("Не удалось найти заказ, повторите попытку.");
+                    return LogBadRequest(
+                        _logger,
+                        API_LOCATE,
+                        $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderDTO.OrderId}"
+                    );
                 }
 
                 var status = await _repository.GetStatus(orderDTO.StatusId);
-                if (status == null)
+                if (status is null)
                 {
-                    return BadRequest("Не удалось найти данный статус заказа, повторите попытку.");
+                    return LogBadRequest(
+                        _logger,
+                        API_LOCATE,
+                        $"Что-то пошло не так, не удалось найти данный статус заказа.\n\tНомер статуса: {orderDTO.StatusId}"
+                    );
                 }
+
                 order.Status = status;
                 order.Description = orderDTO.Description;
 
@@ -102,9 +127,14 @@ namespace Web.Controllers.AdminApi
 
                 return Success(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    "Что-то пошло не так, повторите попытку."
+                );
             }
         }
 
