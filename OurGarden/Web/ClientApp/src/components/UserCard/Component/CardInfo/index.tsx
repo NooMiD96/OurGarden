@@ -11,7 +11,7 @@ const CardInfo = (props: ICardInfo) => {
   );
 
   const totalPrice = dataSource
-    .map(x => x.totalCost)
+    .map((x) => x.totalCost)
     .reduce((val, acc) => acc + val, 0);
 
   return (

@@ -6,6 +6,8 @@
       font-family: "BerlingskeSerif";
       font-size: 30px;
       margin: 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

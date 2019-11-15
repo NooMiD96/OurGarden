@@ -1,12 +1,14 @@
 .lazy-load-image-background {
-  min-height: 200px;
+  min-height: 180px;
+
+  img {
+    height: 100%;
+    width: 100%;
+    display: block;
+    max-width: 100%;
+  }
 
   &.lazy-load-image-loaded {
     min-height: auto;
-
-    img {
-      display: block;
-      width: 100%;
-    }
   }
 }

@@ -1,5 +1,29 @@
 .card-info-table {
-  overflow-x: auto;
+  overflow: hidden;
+  flex: 1 1 auto;
+
+  .ant-table-wrapper,
+  .ant-spin-nested-loading,
+  .ant-spin-container,
+  .ant-table-content,
+  .ant-table-scroll {
+    height: 100%;
+  }
+
+  .ant-table-default.ant-table-fixed-header {
+    height: calc(100% - 64px);
+  }
+
+  .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+    margin-bottom: -37px;
+  }
+
+  .ant-table-fixed-header
+    > .ant-table-content
+    > .ant-table-scroll
+    > .ant-table-body {
+    height: 100%;
+  }
 
   .ant-table {
     color: #000;
@@ -17,9 +41,19 @@
       .table-product-wrapper {
         display: flex;
 
+        .lazy-load-image-background {
+          flex: 0 0 auto;
+          min-height: 150px;
+          min-width: 150px;
+          &.lazy-load-image-loaded {
+            min-height: auto;
+          }
+        }
         .product-img {
           flex: 1 1 auto;
           max-width: 250px;
+          max-height: 150px;
+          width: auto;
         }
 
         .product-name {
@@ -31,15 +65,6 @@
       .remove-icon path {
         stroke: $greyColor;
       }
-    }
-  }
-
-  .ant-table-wrapper .ant-spin-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    .ant-pagination.ant-table-pagination {
-      align-self: flex-end;
     }
   }
 }

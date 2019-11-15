@@ -44,7 +44,6 @@ namespace Database.Repositories
             {
                 query = _context
                     .Category
-                    .Include(x => x.Subcategories)
                     .Select(cat => new CategoryDictionaryDTO()
                     {
                         CategoryId = cat.CategoryId,

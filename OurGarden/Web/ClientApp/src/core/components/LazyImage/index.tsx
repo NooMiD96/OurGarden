@@ -9,6 +9,7 @@ interface ILazyImage {
   src: string;
   style?: object;
   className?: string;
+  threshold?: number;
 }
 
 export const placeholderSrc

@@ -13,13 +13,17 @@ import "./style/UserCard.style.scss";
 
 export class UserCard extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
-    displayType: DisplayTypeEnum.CardInfo
+    displayType: DisplayTypeEnum.CardInfo,
+    mounted: false
   };
 
   componentDidMount() {
     this.props.setBreadcrumb({
       breadcrumb: [],
       key: "",
+    });
+    this.setState({
+      mounted: true
     });
   }
 
@@ -39,7 +43,11 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       сleanProductCard
     } = this.props;
 
-    const { displayType } = this.state;
+    const { displayType, mounted } = this.state;
+
+    if (!mounted) {
+      return <div />;
+    }
 
     const renderComponent
       = displayType === DisplayTypeEnum.CardInfo ? (
@@ -60,7 +68,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       );
 
     return (
-      <div className="user-card-wrapper content white-background">
+      <div className={`user-card-wrapper content white-background grey-border ${displayType === DisplayTypeEnum.CardConfirmation ? "card-confirmation flex-grow-0" : "card-info flex-grow-1"}`}>
         <HeaderHelmet
           {...getSEOMetaData("userCard")}
         />

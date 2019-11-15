@@ -89,9 +89,11 @@
 
       .lazy-load-image-background {
         min-height: 100px;
+        min-width: 100px;
         flex: 0 1 auto;
 
         &.lazy-load-image-loaded {
+          min-width: auto;
           min-height: auto;
         }
       }

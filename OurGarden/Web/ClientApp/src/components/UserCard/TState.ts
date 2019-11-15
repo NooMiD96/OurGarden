@@ -13,6 +13,7 @@ export enum DisplayTypeEnum {
 // STATE OF COMPONENT
 export type TComponentState = {
   displayType: DisplayTypeEnum;
+  mounted: boolean;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT

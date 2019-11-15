@@ -8,32 +8,28 @@ import { DisplayTypeEnum } from "../../TState";
 
 import "../style/ButtonWrapper.style.scss";
 
-const CardInfoFooter = (props: ICardInfoFooter) => {
-  return (
+const CardInfoFooter = (props: ICardInfoFooter) => (
+  <React.Fragment>
+    {props.isVisible && (
     <React.Fragment>
-      {props.isVisible && (
-        <React.Fragment>
-          <div style={{ paddingLeft: "1rem" }}>
-            <TotalPrice totalPrice={props.totalPrice} />
-          </div>
-          <div className="button-wrapper buttons-wrapper-with-padding">
-            <Button className="clean-button" onClick={props.сleanProductCard}>
-              Очистить корзину
-            </Button>
-            <Button
-              type="primary"
-              className="order-button"
-              onClick={() =>
-                props.onChangeOrderStep(DisplayTypeEnum.CardConfirmation)
-              }
-            >
-              Оформить заказ
-            </Button>
-          </div>
-        </React.Fragment>
-      )}
+      <div style={{ paddingLeft: "1rem" }}>
+        <TotalPrice totalPrice={props.totalPrice} />
+      </div>
+      <div className="button-wrapper buttons-wrapper-with-padding">
+        <Button className="clean-button" onClick={props.сleanProductCard}>
+          Очистить корзину
+        </Button>
+        <Button
+          type="primary"
+          className="order-button"
+          onClick={() => props.onChangeOrderStep(DisplayTypeEnum.CardConfirmation)}
+        >
+          Оформить заказ
+        </Button>
+      </div>
     </React.Fragment>
-  );
-};
+    )}
+  </React.Fragment>
+);
 
 export default CardInfoFooter;

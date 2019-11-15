@@ -50,7 +50,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
     const seoSection = getSEOMetaData("news");
 
     return (
-      <div className="news-wrapper content white-background">
+      <div className="news-wrapper content white-background grey-border">
         {pending || !selectedNew ? (
           <>
             <Loading />

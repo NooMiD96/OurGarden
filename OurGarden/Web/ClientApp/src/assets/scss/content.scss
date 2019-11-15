@@ -1,14 +1,26 @@
 .antd-layout > .ant-row-flex {
   flex: 1 1 auto;
+  flex-direction: row;
+  max-width: 100%;
 
   > .ant-col {
     display: flex;
     flex-direction: row;
+    max-height: 100%;
+
+    > .ant-layout {
+      max-width: calc(100% - 250px);
+
+      @media (max-width: 767px) {
+        max-width: 100%;
+      }
+    }
 
     .main-content-wrapper {
       display: flex;
       flex-direction: column;
       padding-left: 3em;
+      max-width: 100%;
 
       @media (max-width: 767px) {
         padding-left: 8px;
@@ -31,6 +43,13 @@
 
           .slash {
             padding: 0 5px;
+          }
+
+          .nav-link {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }

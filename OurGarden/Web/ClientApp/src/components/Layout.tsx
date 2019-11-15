@@ -38,10 +38,10 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => (
       </Row>
     </Header>
     <AntdLayout className="antd-layout" hasSider>
-      <Row type="flex" className="overflow-x-auto">
+      <Row type="flex">
         <Col {...colStyle}>
           <Sider />
-          <AntdLayout className="overflow-x-auto">
+          <AntdLayout>
             <Content className="main-content-wrapper">
               <ConfigProvider renderEmpty={RenderEmptyProvider}>
                 <Breadcrumb />

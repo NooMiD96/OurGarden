@@ -8,6 +8,10 @@
   }
 
   .ant-card.ant-card-hoverable {
+    .ant-card-cover {
+      min-height: 186px;
+    }
+
     .ant-card-meta-title {
       white-space: unset;
       text-overflow: unset;

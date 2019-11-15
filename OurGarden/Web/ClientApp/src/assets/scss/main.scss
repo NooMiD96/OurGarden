@@ -17,6 +17,12 @@ html {
   background-size: 110%;
 }
 
+#react-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 a {
   color: $darkGreenColor;
 
@@ -63,7 +69,6 @@ a {
   background: #fff;
   border: 1px solid #cecece;
   padding: 2rem;
-  overflow: auto;
 
   div.ant-typography {
     font-size: 16px;

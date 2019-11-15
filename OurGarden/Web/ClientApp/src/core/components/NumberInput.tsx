@@ -21,7 +21,8 @@ class NumberInput extends React.Component<INumberInput, {}> {
       (!Number.isNaN((value as any) as number) && reg.test(value))
       || value === ""
     ) {
-      this.props.onValueChange && this.props.onValueChange(value);
+      const { onValueChange } = this.props;
+      onValueChange && onValueChange(value);
     }
   };
 
