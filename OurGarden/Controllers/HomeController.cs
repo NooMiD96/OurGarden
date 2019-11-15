@@ -1,6 +1,4 @@
-﻿using Core.Helpers;
-
-using Database.Repositories;
+﻿using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
-    public class HomeController: Controller
+    public class HomeController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IOurGardenRepository _repository;
@@ -37,9 +35,9 @@ namespace Web.Controllers
         {
             if (!HttpContext.Request.Path.HasValue)
                 return default;
-            
+
             var seoInformation = _configuration.GetSection("SEOInformation");
-             
+
             var url = HttpContext.Request.Path.Value.Substring(1).ToLower();
             if (String.IsNullOrEmpty(url) || url == "home")
             {
@@ -168,7 +166,7 @@ namespace Web.Controllers
                     case "card":
                         sectionName = "userCard";
                         break;
-                        
+
                     default:
                         sectionName = "home";
                         break;

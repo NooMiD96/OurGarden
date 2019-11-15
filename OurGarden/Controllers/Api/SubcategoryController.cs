@@ -20,7 +20,7 @@ namespace Web.Controllers.Api
     {
         private readonly IOurGardenRepository _repository;
         private readonly ILogger _logger;
-        private const string API_LOCATE = "Api.SubcategoryController";
+        private const string CONTROLLER_LOCATE = "Api.SubcategoryController";
 
         public SubcategoryController([FromServices] IOurGardenRepository repository,
                                      ILogger<SubcategoryController> logger)
@@ -59,12 +59,15 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetSubcategories([FromQuery] string categoryId)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".GetSubcategories";
+
             if (String.IsNullOrEmpty(categoryId))
             {
-                var error = "Что-то пошло не так, необходимо выбрать категорию.";
-
-                _logger.LogError($"{DateTime.Now}:\n\t{API_LOCATE}.GetSubcategories\n\t{error}");
-                return BadRequest(error);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, необходимо выбрать категорию."
+                );
             }
 
             var category = (await _repository.GetCategory(categoryId)).DeepClone();
@@ -72,10 +75,11 @@ namespace Web.Controllers.Api
 
             if (category is null)
             {
-                var error = $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}";
-
-                _logger.LogError($"{DateTime.Now}:\n\t{API_LOCATE}.GetSubcategories\n\t{error}");
-                return BadRequest(error);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}"
+                );
             }
 
             category.Subcategories = subcategories

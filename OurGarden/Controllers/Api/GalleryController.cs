@@ -25,8 +25,7 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetGallery(
-            [FromQuery]int galleryId)
+        public async Task<IActionResult> GetGallery([FromQuery]int galleryId)
         {
             var gallery = await _repository.GetGallery(galleryId);
 

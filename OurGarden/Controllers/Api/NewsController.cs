@@ -18,7 +18,7 @@ namespace Web.Controllers.Api
     {
         private readonly IOurGardenRepository _repository;
         private readonly ILogger _logger;
-        private const string API_LOCATE = "Api.NewsController";
+        private const string CONTROLLER_LOCATE = "Api.NewsController";
 
         public NewsController([FromServices] IOurGardenRepository repository,
                               ILogger<SubcategoryController> logger)
@@ -65,22 +65,26 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetNews([FromQuery]string alias)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".GetNews";
+
             if (String.IsNullOrEmpty(alias))
             {
-                var error = "Что-то пошло не так, необходимо выбрать новость.";
-
-                _logger.LogError($"{DateTime.Now}:\n\t{API_LOCATE}.GetNews\n\t{error}");
-                return BadRequest(error);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    "Что-то пошло не так, необходимо выбрать новость."
+                );
             }
 
             var news = await _repository.GetNews(alias);
 
             if (news == null)
             {
-                var error = $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {alias}";
-
-                _logger.LogError($"{DateTime.Now}:\n\t{API_LOCATE}.GetNews\n\t{error}");
-                return BadRequest(error);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {alias}"
+                );
             }
 
             return Success(news);

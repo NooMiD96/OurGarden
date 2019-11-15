@@ -15,7 +15,7 @@ namespace Web.Controllers.Api
     {
         private readonly IOurGardenRepository _repository;
         private readonly ILogger _logger;
-        private const string API_LOCATE = "Api.SearchController";
+        private const string CONTROLLER_LOCATE = "Api.SearchController";
 
         public SearchController([FromServices] IOurGardenRepository repository,
                                 ILogger<SearchController> logger)
@@ -27,12 +27,15 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> Search([FromQuery] string search)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Search";
+
             if (String.IsNullOrEmpty(search))
             {
-                var error = $"Что-то пошло не так, строка поиска отсутствует.";
-
-                _logger.LogError($"{DateTime.Now}:\n\t{API_LOCATE}.Search\n\t{error}");
-                return BadRequest(error);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    "Что-то пошло не так, строка поиска отсутствует."
+                );
             }
 
             var result = await _repository.Search(search);
