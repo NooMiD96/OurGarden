@@ -10,6 +10,7 @@ interface ILazyImage {
   style?: object;
   className?: string;
   threshold?: number;
+  visibleByDefault?: boolean;
 }
 
 export const placeholderSrc

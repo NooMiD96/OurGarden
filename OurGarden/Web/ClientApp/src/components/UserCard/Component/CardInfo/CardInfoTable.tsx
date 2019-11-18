@@ -36,6 +36,7 @@ const getColumns = (
           className="product-img"
           src={getProductPhotoSrc(record.product)}
           alt={record.product.alias}
+          visibleByDefault
         />
         <span className="product-name">{record.product.alias}</span>
       </div>
@@ -111,7 +112,7 @@ const pagination = {
 
 const scroll = {
   x: 809,
-  y: "calc(100% - 87px)",
+  y: "calc(100% - 88px)",
   scrollToFirstRowOnChange: true
 };
 
@@ -121,8 +122,10 @@ const CardInfoTable = (props: ICardInfoTable) => {
     props.removeProductFromCard
   );
 
+  const { dataSource } = props;
+
   return (
-    <div className="card-info-table">
+    <div className={`card-info-table ${dataSource && dataSource.length > 6 ? "with-pagination" : "without-pagination"}`}>
       <Table
         dataSource={props.dataSource}
         columns={columns}

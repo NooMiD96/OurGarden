@@ -10,8 +10,15 @@
     height: 100%;
   }
 
-  .ant-table-default.ant-table-fixed-header {
-    height: calc(100% - 64px);
+  &.without-pagination {
+    .ant-table-default.ant-table-fixed-header {
+      height: 100%;
+    }
+  }
+  &.with-pagination {
+    .ant-table-default.ant-table-fixed-header {
+      height: calc(100% - 64px);
+    }
   }
 
   .ant-table-fixed-header .ant-table-scroll .ant-table-header {
@@ -50,7 +57,6 @@
           }
         }
         .product-img {
-          flex: 1 1 auto;
           max-width: 250px;
           max-height: 150px;
           width: auto;
