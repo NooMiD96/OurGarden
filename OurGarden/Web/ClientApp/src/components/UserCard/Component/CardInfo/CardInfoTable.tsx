@@ -6,7 +6,7 @@ import NumberInput from "@src/core/components/NumberInput";
 import Remove from "@src/core/icons/Remove";
 import LazyImage from "@src/core/components/LazyImage";
 
-import { getProductPhotoSrc } from "@src/core/helpers/product";
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
 
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
@@ -34,7 +34,7 @@ const getColumns = (
       <div className="table-product-wrapper">
         <LazyImage
           className="product-img"
-          src={getProductPhotoSrc(record.product)}
+          src={getPreviewPhotoSrc(record.product)}
           alt={record.product.alias}
           visibleByDefault
         />

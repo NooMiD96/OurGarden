@@ -529,7 +529,8 @@ namespace Database.Repositories
         #region Files
         public async Task AddFile(Photo photo)
         {
-            await _context.Photo.AddAsync(photo);
+            _context.Photo.Add(photo);
+
             await _context.SaveChangesAsync();
         }
 
@@ -661,7 +662,7 @@ namespace Database.Repositories
             result.AddRange(categories.Select(x => new SearchDTO()
             {
                 CategoryId = x.CategoryId,
-                Photo = x.Photo,
+                Photos = x.Photos,
                 Alias = x.Alias
             }));
 

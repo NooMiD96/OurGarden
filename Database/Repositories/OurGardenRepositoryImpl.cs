@@ -20,7 +20,7 @@ namespace Database.Repositories
                                                                   string search = null,
                                                                   bool isGetOnlyVisible = false)
         {
-            var query = _context.Category.Include(x => x.Photo).AsQueryable();
+            var query = _context.Category.Include(x => x.Photos).AsQueryable();
 
             if (!String.IsNullOrEmpty(categoryId))
             {

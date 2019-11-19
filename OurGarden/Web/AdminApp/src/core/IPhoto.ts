@@ -3,4 +3,5 @@ export interface IPhoto {
   name: string;
   date: Date;
   url: string;
+  previewUrl: string;
 }

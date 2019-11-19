@@ -41,7 +41,7 @@ namespace Web
 
             var serviceProvider = services.BuildServiceProvider();
             InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
-            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory

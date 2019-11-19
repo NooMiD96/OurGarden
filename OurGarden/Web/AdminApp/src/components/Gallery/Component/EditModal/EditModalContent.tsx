@@ -4,12 +4,11 @@ import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
-import CKEditor from "@core/components/CKEditor";
-import localeText from "../Text";
-import { getBase64 } from "@core/helpers/files/index";
-
 import Upload, { UploadFile, UploadChangeParam } from "@core/antd/Upload";
 import Modal from "@core/antd/Modal";
+
+import localeText from "../Text";
+import { getBase64 } from "@core/helpers/files/index";
 
 import { IGallery, IGalleryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -25,13 +24,12 @@ export type IState = {
   addFiles: UploadFile[];
   removeFiles: string[];
   previewVisible: boolean;
-  previewImage: string;
+  previewImage?: string;
 };
 
 const onSubmitHandler = (
   state: IState,
   props: IProps,
-  ckEditor: React.RefObject<CKEditor>,
   e?: IPressEnterEvent | React.FormEvent
 ) => {
   e && e.preventDefault();
@@ -39,23 +37,17 @@ const onSubmitHandler = (
   const { form, item } = props;
 
   const galleryId = item ? item.galleryId : 0;
-  const description: string = ckEditor.current!.state.editor.getData();
   const name = form.getFieldValue("name");
   const addFiles = state.addFiles
     .filter((value: UploadFile) => value.originFileObj)
     .map((value: UploadFile) => value.originFileObj as File);
   const removeFiles = state.removeFiles;
 
-  props.form.setFieldsValue({
-    description
-  });
-
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
       props.handleCreateSubmit({
         galleryId: galleryId,
         name: name,
-        description: description,
         addFiles: addFiles,
         removeFiles: removeFiles
       });
@@ -70,16 +62,15 @@ const onClose = (props: IProps, e?: IPressEnterEvent | React.FormEvent) => {
 };
 
 export class EditModalContent extends React.Component<IProps, IState> {
-  ckEditor: React.RefObject<CKEditor> = React.createRef();
   state: IState = {
     addFiles: [],
     removeFiles: [],
     previewVisible: false,
-    previewImage: ""
+    previewImage: undefined
   };
 
   onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
-    onSubmitHandler(this.state, this.props, this.ckEditor, e);
+    onSubmitHandler(this.state, this.props, e);
 
   removeHandler = (file: UploadFile) => {
     if (!file.originFileObj) {
@@ -88,8 +79,8 @@ export class EditModalContent extends React.Component<IProps, IState> {
         removeFiles: [file.name, ...removeFiles]
       });
     }
-    console.log("info");
   };
+
   successHandler = (info: UploadChangeParam) => {
     if (info.fileList) {
       this.setState({
@@ -116,7 +107,7 @@ export class EditModalContent extends React.Component<IProps, IState> {
     const { previewVisible, previewImage } = this.state;
 
     const { getFieldDecorator } = form;
-    const { name, description, photos } = item || ({} as IGallery);
+    const { name, photos } = item || ({} as IGallery);
     const data = {
       listType: "picture-card",
       defaultFileList: photos
@@ -152,13 +143,6 @@ export class EditModalContent extends React.Component<IProps, IState> {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator("description", {
-            rules: [
-              { required: true, message: localeText._rule_require_description }
-            ]
-          })(<CKEditor ref={this.ckEditor} data={description} />)}
-        </FormItem>
-        <FormItem>
           {getFieldDecorator("addFiles", {
             rules: [{ required: true, message: localeText._rule_require_photo }]
           })(
@@ -181,6 +165,7 @@ export class EditModalContent extends React.Component<IProps, IState> {
           >
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
+
           <Button type="primary" onClick={this.onSubmit}>
             Сохранить
           </Button>

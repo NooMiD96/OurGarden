@@ -2,11 +2,14 @@ import React from "react";
 
 import AutoComplete from "@core/antd/AutoComplete";
 
-import { getProductPhotoSrc } from "@src/core/helpers/product";
+import LazyImage from "@src/core/components/LazyImage";
+
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
 
 import { IProductOption } from "./IProductOption";
+import { ICategory } from "@src/components/Category/State";
+import { ISubcategory } from "@src/components/Subcategory/State";
 import { IProduct } from "@src/components/Product/State";
-import LazyImage from "@src/core/components/LazyImage";
 
 const { Option } = AutoComplete;
 
@@ -21,12 +24,7 @@ const ProductOption = (item: IProductOption) => {
     link += `/${item.productId}`;
   }
 
-  let imgSrc = "";
-  if (item.photo) {
-    imgSrc = item.photo.url;
-  } else if (item.photos) {
-    imgSrc = getProductPhotoSrc(item as IProduct);
-  }
+  const imgSrc = getPreviewPhotoSrc(item as ICategory | ISubcategory | IProduct);
 
   return (
     <Option className="search-menu-item" title={item.alias} key={link}>

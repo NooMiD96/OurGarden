@@ -6,7 +6,7 @@ import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
 import LazyImage from "@core/components/LazyImage";
 
-import { getProductPhotoSrc } from "@core/helpers/product";
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
 
 import { IProduct } from "@components/Product/State";
 import { IMouseClickEvent } from "@core/IEvents";
@@ -49,7 +49,7 @@ const ProductCard = (props: IProductCard) => {
       loading={pending}
       hoverable
       cover={
-        <LazyImage alt={product.alias} src={getProductPhotoSrc(product)} />
+        <LazyImage alt={product.alias} src={getPreviewPhotoSrc(product)} />
       }
       onClick={() => {
         push(product.link);

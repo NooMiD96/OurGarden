@@ -1,7 +1,11 @@
 import _isNil from "lodash.isnil";
 
 const generateFormBody = <
-  T extends { file: File | null; addFiles: File[] | null }
+  T extends {
+    file: File | null;
+    addFiles: File[] | null;
+    updateFiles: File[] | null;
+  }
 >(
   data: T
 ) => {
@@ -28,9 +32,16 @@ const generateFormBody = <
   }
 
   if (data.addFiles) {
-    formData.delete("AddFiles");
+    formData.delete("Addfiles");
     data.addFiles.forEach(file => {
       formData.append("AddFiles", file, file.name);
+    });
+  }
+
+  if (data.updateFiles) {
+    formData.delete("Updatefiles");
+    data.updateFiles.forEach(file => {
+      formData.append("UpdateFiles", file, file.name);
     });
   }
 

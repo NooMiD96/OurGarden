@@ -14,7 +14,7 @@ namespace Web.Controllers.AdminApi
 {
     public class FileHelper
     {
-        readonly string STATIC_FOLDER = "wwwroot";
+        readonly string STATIC_FOLDER;
         readonly string FILE_FOLDER = "images";
         const int MAX_PIXEL = 400;
 
@@ -23,16 +23,23 @@ namespace Web.Controllers.AdminApi
         public FileHelper(IOurGardenRepository repository)
         {
             _repository = repository;
+
+            STATIC_FOLDER = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         }
 
         static private string GetFileExtension(string fileName)
         {
             var split = fileName.Split(".");
 
+            if (split.Length == 1)
+            {
+                return "jpg";
+            }
+
             return split[split.Length - 1];
         }
 
-        private async Task<Photo> AddFile(string url,  Guid? guid = null, string previewUrl = null)
+        private async Task<Photo> AddFile(string url,  Guid? guid = null, string previewUrl = null, bool updateDB = true)
         {
             var id = guid ?? Guid.NewGuid();
 
@@ -45,7 +52,9 @@ namespace Web.Controllers.AdminApi
                 PreviewUrl = previewUrl
             };
 
-            await _repository.AddFile(file);
+            if (updateDB)
+                await _repository.AddFile(file);
+
             return file;
         }
 
@@ -57,11 +66,11 @@ namespace Web.Controllers.AdminApi
 
             using (var previewImage = GetPreview(photo))
             {
-                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, path), FileMode.Create))
+                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, path), FileMode.Create))
                 {
                     await photo.CopyToAsync(fileStream);
                 }
-                using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, previewPath), FileMode.Create))
+                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
                 {
                    previewImage.Save(fileStream, ImageFormat.Jpeg);
                 }
@@ -70,28 +79,60 @@ namespace Web.Controllers.AdminApi
             return await AddFile(path, guid, previewPath);
         }
 
-        public async Task<Photo> AddFileToRepository(IFormFile photo)
+        public async Task<Photo> AddFileToRepository(IFormFile photo, IFormFile previewPhoto = null, bool updateDB = true)
         {
             var guid = Guid.NewGuid();
             var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
+            var previewPath = previewPhoto != null
+                ? $"{FILE_FOLDER}/{guid.ToString()}-preview.{GetFileExtension(previewPhoto.FileName)}"
+                : null;
 
-            using (var fileStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, path), FileMode.Create))
+            using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, path), FileMode.Create))
             {
                 await photo.CopyToAsync(fileStream);
             }
 
-            return await AddFile(path, guid);
+            if (previewPath != null)
+            {
+                using (var previewImage = GetPreview(previewPhoto))
+                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
+                {
+                    previewImage.Save(fileStream, ImageFormat.Jpeg);
+                }
+            }
+
+            return await AddFile(path, guid, previewPath, updateDB: updateDB);
+        }
+
+        public void UpdateFilePreview(Photo file, IFormFile newPreviewPhoto)
+        {
+            if (String.IsNullOrEmpty(file.PreviewUrl))
+            {
+                file.PreviewUrl = $"{FILE_FOLDER}/{file.PhotoId.ToString()}-preview.{GetFileExtension(newPreviewPhoto.FileName)}";
+            }
+
+            var previewPath = Path.Combine(STATIC_FOLDER, file.PreviewUrl);
+            if (File.Exists(previewPath))
+            {
+                File.Delete(previewPath);
+            }
+
+            using (var previewImage = GetPreview(newPreviewPhoto))
+            using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
+            {
+                previewImage.Save(fileStream, ImageFormat.Jpeg);
+            }
         }
 
         public async ValueTask<bool> RemoveFileFromRepository(Photo photo, bool updateDB = true)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, photo.Url);
+            var filePath = Path.Combine(STATIC_FOLDER, photo.Url);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
 
-            filePath = Path.Combine(Directory.GetCurrentDirectory(), STATIC_FOLDER, photo.PreviewUrl ?? "");
+            filePath = Path.Combine(STATIC_FOLDER, photo.PreviewUrl ?? "");
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);

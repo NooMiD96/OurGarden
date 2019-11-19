@@ -74,7 +74,7 @@ export const actionCreators = {
             actionsList.saveCategory({
               alias: value.data.alias,
               categoryId: value.data.categoryId,
-              photo: value.data.photo
+              photos: value.data.photos
             })
           );
           dispatch(

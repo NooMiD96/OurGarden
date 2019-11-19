@@ -35,9 +35,145 @@ namespace Web.Services.Controllers.AdminApi
             _logger = logger;
         }
 
-        public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
+        private async ValueTask<(Category category, string error)> CreateCategory(CategoryDTO categoryDTO,
+                                                                                  ICollection<Photo> defaultPhotoList = null,
+                                                                                  List<Photo> scheduleAddedPhotoList = null,
+                                                                                  List<Photo> scheduleDeletePhotoList = null)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateCategory";
+            var category = new Category()
+            {
+                CategoryId = categoryDTO.Alias.TransformToId(),
+
+                Alias = categoryDTO.Alias,
+                IsVisible = categoryDTO.IsVisible ?? true,
+
+                Photos = new List<Photo>()
+            };
+
+            //Добавляем и проверяем можем ли мы добавить данную категорию
+            var (isSuccess, error) = await _repository.AddCategory(category);
+            if (!isSuccess)
+            {
+                return (null, error);
+            }
+
+            if (defaultPhotoList != null)
+            {
+                while (defaultPhotoList.Count > 0)
+                {
+                    var photo = defaultPhotoList.ElementAt(0);
+
+                    defaultPhotoList.Remove(photo);
+                    category.Photos.Add(photo);
+                }
+            }
+
+            await LoadFilesToCategory(category,
+                                      categoryDTO,
+                                      scheduleAddedPhotoList,
+                                      scheduleDeletePhotoList);
+
+            await _context.SaveChangesAsync();
+
+            return (category, null);
+        }
+
+        private async Task LoadFilesToCategory(Category category,
+                                               CategoryDTO categoryDTO,
+                                               List<Photo> scheduleAddedPhotoList = null,
+                                               List<Photo> scheduleDeletePhotoList = null)
+        {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".LoadFilesToCategory";
+
+            if (categoryDTO.AddFiles != null && categoryDTO.AddFiles.Count != 0)
+            {
+                for (var i = 0; i < categoryDTO.AddFiles.Count; i += 2)
+                {
+                    var photoFile = categoryDTO.AddFiles.ElementAt(i);
+                    var previewFile = categoryDTO.AddFiles.ElementAt(i + 1);
+
+                    var photo = await _fileHelper.AddFileToRepository(photoFile, previewFile, updateDB: false);
+
+                    category.Photos.Add(photo);
+
+                    if (scheduleAddedPhotoList != null)
+                        scheduleAddedPhotoList.Add(photo);
+                }
+            }
+
+            if (!String.IsNullOrEmpty(categoryDTO.RemoveFiles))
+            {
+                var parsedIds = new List<Guid>();
+
+                try
+                {
+                    parsedIds = categoryDTO.RemoveFiles
+                        .Split(',')
+                        .Select(x => new Guid(x))
+                        .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: Не удалось распарсить строку {categoryDTO.RemoveFiles}\n\tmes: {ex.Message}\n\t{ex.StackTrace}");
+                }
+
+                var removePhotos = category.Photos
+                    .Where(x => parsedIds.Any(id => id == x.PhotoId))
+                    .ToList();
+
+                foreach (var photo in removePhotos)
+                {
+                    await _repository.DeleteFile(photo.PhotoId, updateDB: false);
+                    category.Photos.Remove(photo);
+
+                    if (scheduleDeletePhotoList != null)
+                        scheduleDeletePhotoList.Add(photo);
+                }
+            }
+
+            if (categoryDTO.UpdateFiles != null && categoryDTO.UpdateFiles.Count != 0)
+            {
+                for (var i = 0; i < categoryDTO.UpdateFiles.Count; i++)
+                {
+                    var newPreview = categoryDTO.UpdateFiles.ElementAt(i);
+                    if (!Guid.TryParse(newPreview.FileName, out var fileGuid))
+                    {
+                        continue;
+                    }
+
+                    var file = category.Photos.FirstOrDefault(x => x.PhotoId == fileGuid);
+                    if (file != null)
+                    {
+                        _fileHelper.UpdateFilePreview(file, newPreview);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Добавление новой категории
+        /// </summary>
+        public async ValueTask<(bool isSuccess, string error)> AddCategory(CategoryDTO categoryDTO)
+        {
+            var (category, error) = await CreateCategory(categoryDTO);
+
+            return (category != null, error);
+        }
+
+        /// <summary>
+        /// Обновление категории, включая её потомков
+        /// </summary>
+        public async ValueTask<(bool isSuccess, string error)> FullUpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
+        {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".FullUpdateCategory";
+
+            // В случае когда нам не удаётся обновить данную модель
+            // Мы должны удалить те фото, которые были добавлены
+            var scheduleAddedPhotoList = new List<Photo>();
+
+            // Если обновление прошло успешно
+            // То нужно окончательно удалить ненужные фото
+            var scheduleDeletePhotoList = new List<Photo>();
 
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -49,35 +185,22 @@ namespace Web.Services.Controllers.AdminApi
 
                 try
                 {
-                    // Создаём новую категорию
-                    var file = default(Photo);
-                    if (categoryDTO.File == null)
-                    {
-                        file = _fileHelper.ClonePhoto(oldCategory.Photo);
-                        _context.Remove(oldCategory.Photo);
-                    }
-                    else
-                    {
-                        file = await _fileHelper.AddFileToRepository(categoryDTO.File);
-                        await _fileHelper.RemoveFileFromRepository(oldCategory.Photo, false);
-                    }
+                    #region Create new category and migrate/update photo list
 
-                    var newCategory = new Category()
-                    {
-                        CategoryId = categoryDTO.Alias.TransformToId(),
+                    var (newCategory, error) = await CreateCategory(categoryDTO,
+                                                                    defaultPhotoList: oldCategory.Photos,
+                                                                    scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                                    scheduleDeletePhotoList: scheduleDeletePhotoList);
 
-                        Alias = categoryDTO.Alias,
-
-                        Photo = file
-                    };
-                    var result = await _repository.AddCategory(newCategory);
-                    if (!result.isSuccess)
+                    if (newCategory is null)
                     {
-                        return cancelUpdate(result);
+                        return cancelUpdate((false, error));
                     }
 
                     var newCategoryId = newCategory.CategoryId;
                     newCategory = null;
+
+                    #endregion
 
                     // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
                     await _context.Entry(oldCategory).Collection(x => x.Subcategories).LoadAsync();
@@ -172,10 +295,21 @@ namespace Web.Services.Controllers.AdminApi
                     await _repository.DeleteCategory(oldCategory.CategoryId);
 
                     transaction.Commit();
+
+                    foreach (var photo in scheduleDeletePhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     return (true, null);
                 }
                 catch (Exception ex)
                 {
+                    foreach (var photo in scheduleAddedPhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
                     return cancelUpdate((
                         false,
@@ -183,6 +317,68 @@ namespace Web.Services.Controllers.AdminApi
                     ));
                 }
             }
+        }
+
+        /// <summary>
+        /// Обновление категории, не включая потомков
+        /// </summary>
+        /// <param name="categoryDTO"></param>
+        /// <param name="oldCategory"></param>
+        /// <returns></returns>
+        public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
+        {
+            await LoadFilesToCategory(oldCategory, categoryDTO);
+
+            oldCategory.Alias = categoryDTO.Alias;
+            oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
+
+            return await _repository.UpdateCategory(oldCategory);
+        }
+
+        /// <summary>
+        /// Удаление категории
+        /// </summary>
+        public async ValueTask<bool> DeleteCategory(string categoryId)
+        {
+            var category = await _repository.GetCategory(categoryId);
+
+            foreach (var photo in category.Photos)
+            {
+                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            }
+
+            await _context.Entry(category)
+                .Collection(x => x.Subcategories)
+                .LoadAsync();
+
+            foreach (var subcategory in category.Subcategories)
+            {
+                await _context.Entry(subcategory)
+                    .Reference(x => x.Photo)
+                    .LoadAsync();
+
+                await _fileHelper.RemoveFileFromRepository(subcategory.Photo, updateDB: false);
+
+                await _context.Entry(subcategory)
+                    .Collection(x => x.Products)
+                    .LoadAsync();
+
+                foreach (var product in subcategory.Products)
+                {
+                    await _context.Entry(product)
+                        .Collection(x => x.Photos)
+                        .LoadAsync();
+
+                    foreach (var photo in product.Photos)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+                }
+            }
+
+            await _repository.DeleteCategory(category);
+
+            return true;
         }
     }
 }

@@ -14,6 +14,10 @@ namespace Model.DTO
 
         public bool? IsVisible { get; set; }
 
-        public IFormFile File { get; set; }
+        public IFormFileCollection AddFiles { get; set; }
+
+        public IFormFileCollection UpdateFiles { get; set; }
+
+        public string RemoveFiles { get; set; }
     }
 }

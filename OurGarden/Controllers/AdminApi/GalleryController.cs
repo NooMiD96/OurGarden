@@ -5,6 +5,7 @@ using Database.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Model.DB;
 using Model.DTO;
@@ -24,11 +25,15 @@ namespace Web.Controllers.AdminApi
     {
         private readonly IOurGardenRepository _repository;
         private readonly FileHelper _fileHelper;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.GalleryController";
 
-        public GalleryController(IOurGardenRepository repository)
+        public GalleryController(IOurGardenRepository repository,
+                                 ILogger<GalleryController> logger)
         {
             _repository = repository;
             _fileHelper = new FileHelper(repository);
+            _logger = logger;
         }
 
         [HttpGet("[action]")]
@@ -39,26 +44,23 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate([FromForm]GalleryDTO gallery)
+        public async Task<IActionResult> AddOrUpdate([FromForm]GalleryDTO galleryDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Что-то пошло не так, повторите попытку");
-            }
+            var error = "Что-то пошло не так, повторите попытку.";
+            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
 
             try
             {
-                if (gallery.GalleryId <= 0)
+                if (galleryDTO.GalleryId <= 0)
                 {
                     var newGallery = new Gallery()
                     {
-                        Name = gallery.Name,
-                        Alias = gallery.Name.TransformToId(),
-                        Description = gallery.Description,
+                        Name = galleryDTO.Name,
+                        Alias = galleryDTO.Name.TransformToId(),
                         Photos = new List<Photo>()
                     };
 
-                    foreach (var file in gallery.AddFiles)
+                    foreach (var file in galleryDTO.AddFiles)
                     {
                         var fileHelper = new FileHelper(_repository);
                         var photo = await fileHelper.AddFileWithPreviewToRepository(file);
@@ -69,25 +71,34 @@ namespace Web.Controllers.AdminApi
                 }
                 else
                 {
-                    var oldGallery = await _repository.GetGallery(gallery.GalleryId);
-                    oldGallery.Name = gallery.Name;
-                    oldGallery.Description = gallery.Description;
+                    var oldGallery = await _repository.GetGallery(galleryDTO.GalleryId);
 
-                    if (gallery.AddFiles != null && gallery.AddFiles.Any())
+                    if (oldGallery is null)
                     {
-                        foreach (var file in gallery.AddFiles)
+                        return LogBadRequest(
+                            _logger,
+                            API_LOCATE,
+                            $"Что-то пошло не так, не удалось найти галерею.\n\tГалерея: {galleryDTO.GalleryId}"
+                        );
+                    }
+
+                    oldGallery.Name = galleryDTO.Name;
+
+                    if (galleryDTO.AddFiles != null && galleryDTO.AddFiles.Count != 0)
+                    {
+                        foreach (var file in galleryDTO.AddFiles)
                         {
                             var photo = await _fileHelper.AddFileWithPreviewToRepository(file);
                             oldGallery.Photos.Add(photo);
                         }
                     }
 
-                    if (!String.IsNullOrEmpty(gallery.RemoveFiles))
+                    if (!String.IsNullOrEmpty(galleryDTO.RemoveFiles))
                     {
                         var parsedIds = new List<Guid>();
                         try
                         {
-                            parsedIds = gallery.RemoveFiles.Split(',').Select(x => new Guid(x)).ToList();
+                            parsedIds = galleryDTO.RemoveFiles.Split(',').Select(x => new Guid(x)).ToList();
                         }
                         catch (Exception ex)
                         {
@@ -111,13 +122,16 @@ namespace Web.Controllers.AdminApi
                     await _repository.UpdateGallery(oldGallery);
                 }
 
-                return Success(gallery);
+                return Success(galleryDTO);
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"err: {ex.Message}");
-                Console.Error.WriteLine(ex.StackTrace);
-                return BadRequest($"Что-то пошло не так, повторите попытку. Ошибка: {ex.Message}");
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    ex,
+                    error
+                );
             }
         }
 

@@ -5,7 +5,7 @@ import { IPhoto } from "@src/core/IPhoto";
 export interface ICategory {
   categoryId: string;
   alias: string;
-  photo: IPhoto;
+  photos: IPhoto[];
 }
 
 export interface ICategoryState {

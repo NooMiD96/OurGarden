@@ -20,10 +20,6 @@ namespace Model.DB
         [MaxLength(128)]
         public string Alias { get; set; }
 
-        [Required]
-        [MaxLength(256)]
-        public string Description { get; set; }
-
         public ICollection<Photo> Photos { get; set; }
     }
 }

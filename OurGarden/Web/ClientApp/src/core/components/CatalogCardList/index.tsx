@@ -9,6 +9,8 @@ import LazyImage from "@core/components/LazyImage";
 
 import { cardStyle } from "./CardStyle";
 
+import { getPreviewPhotoSrc } from "@core/utils/photo";
+
 import { ICatalogProps, ICatalogState, IDisplayItem } from "./ICatalogCard";
 import { ISubcategory } from "@src/components/Subcategory/State";
 import { ICategory } from "@src/components/Category/State";
@@ -28,7 +30,7 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           (x: ISubcategory) => ({
             link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
             alias: x.alias,
-            photoUrl: x.photo ? x.photo.url : ""
+            photoUrl: getPreviewPhotoSrc(x)
           })
         );
       } else {
@@ -36,7 +38,7 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           (x: ICategory) => ({
             link: `/Catalog/${x.categoryId}`,
             alias: x.alias,
-            photoUrl: x.photo ? x.photo.url : ""
+            photoUrl: getPreviewPhotoSrc(x)
           })
         );
       }

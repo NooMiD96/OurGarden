@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Model.DB;
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Model.DTO
 {
@@ -13,9 +10,6 @@ namespace Model.DTO
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public string Description { get; set; }
 
         public IFormFileCollection AddFiles { get; set; }
 

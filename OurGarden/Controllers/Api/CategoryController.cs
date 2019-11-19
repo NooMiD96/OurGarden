@@ -21,9 +21,15 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCategories()
         {
-            var result = await _repository.GetCategories(isGetOnlyVisible: true);
+            var result = (await _repository.GetCategories(isGetOnlyVisible: true))
+                .OrderBy(x => x.CategoryId);
 
-            return Success(result.OrderBy(x => x.CategoryId));
+            foreach (var category in result)
+            {
+                category.Photos = category.Photos.OrderBy(x => x.Date).ToList();
+            }
+
+            return Success(result);
         }
     }
 }

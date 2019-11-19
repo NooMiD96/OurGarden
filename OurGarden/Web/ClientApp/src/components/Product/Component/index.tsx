@@ -6,7 +6,7 @@ import { Title } from "@src/core/antd/Typography";
 import AddToCardButton from "@src/core/components/AddToCardButton";
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { getProductPhotoSrc } from "@src/core/helpers/product";
+import { getPhotoSrc } from "@src/core/utils/photo";
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
@@ -26,10 +26,10 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     } = props;
 
     if (
-      !product ||
-      categoryId !== product.categoryId ||
-      subcategoryId !== product.subcategoryId ||
-      productId !== product.productId
+      !product
+      || categoryId !== product.categoryId
+      || subcategoryId !== product.subcategoryId
+      || productId !== product.productId
     ) {
       props.getProduct(categoryId, subcategoryId, productId);
     }
@@ -89,7 +89,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { product, pending } = this.props;
     const { itemCount } = this.state;
 
-    const productPhoto = product && getProductPhotoSrc(product);
+    const productPhoto = product && getPhotoSrc(product);
     const seoSection = getSEOMetaData("product");
 
     return (
@@ -102,8 +102,8 @@ export class Product extends React.PureComponent<TState, TComponentState> {
           <Row>
             <HeaderHelmet
               title={
-                seoSection.title &&
-                seoSection.title.replace("{{value}}", product.alias)
+                seoSection.title
+                && seoSection.title.replace("{{value}}", product.alias)
               }
               metaDescription={seoSection.meta}
             />

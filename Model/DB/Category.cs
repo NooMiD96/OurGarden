@@ -19,6 +19,6 @@ namespace Model.DB
 
         //Childrens
         public ICollection<Subcategory> Subcategories { get; set; }
-        public Photo Photo { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }
