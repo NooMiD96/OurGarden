@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Model.Interfaces.DB;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Model.DB
 {
-    public class Product
+    public class Product : IPhoto
     {
         [Required]
         [MaxLength(128)]

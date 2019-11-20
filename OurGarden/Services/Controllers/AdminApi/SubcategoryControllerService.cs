@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Controllers.AdminApi;
+using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -23,6 +24,7 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
+        private readonly PhotoHelper _photoHelper;
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "AdminApi.SubcategoryController.Service";
 
@@ -31,13 +33,74 @@ namespace Web.Services.Controllers.AdminApi
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
-            _fileHelper = new FileHelper(_repository);
             _logger = logger;
+            _fileHelper = new FileHelper(repository);
+            _photoHelper = new PhotoHelper(repository, logger);
         }
 
-        public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
+        private async ValueTask<(Subcategory subcategory, string error)> CreateSubcategory(SubcategoryDTO entityDTO,
+                                                                                           ICollection<Photo> defaultPhotoList = null,
+                                                                                           List<Photo> scheduleAddedPhotoList = null,
+                                                                                           List<Photo> scheduleDeletePhotoList = null)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateSubcategory";
+            var subcategory = new Subcategory()
+            {
+                CategoryId = entityDTO.NewCategoryId,
+                SubcategoryId = entityDTO.Alias.TransformToId(),
+
+                Alias = entityDTO.Alias,
+                IsVisible = entityDTO.IsVisible ?? true,
+
+                Products = new List<Product>(),
+                Photos = new List<Photo>()
+            };
+
+            //Добавляем и проверяем можем ли мы добавить данную категорию
+            var (isSuccess, error) = await _repository.AddSubcategory(subcategory);
+            if (!isSuccess)
+            {
+                return (null, error);
+            }
+
+            if (defaultPhotoList != null)
+            {
+                while (defaultPhotoList.Count > 0)
+                {
+                    var photo = defaultPhotoList.ElementAt(0);
+
+                    defaultPhotoList.Remove(photo);
+                    subcategory.Photos.Add(photo);
+                }
+            }
+
+            await _photoHelper.LoadPhotosToEntity(subcategory,
+                                                  entityDTO,
+                                                  scheduleAddedPhotoList,
+                                                  scheduleDeletePhotoList);
+
+            await _context.SaveChangesAsync();
+
+            return (subcategory, null);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> AddSubcategory(SubcategoryDTO subcategoryDTO)
+        {
+            var (subcategory, error) = await CreateSubcategory(subcategoryDTO);
+
+            return (subcategory != null, error);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> FullUpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
+        {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".FullUpdateSubcategory";
+
+            // В случае когда нам не удаётся обновить данную модель
+            // Мы должны удалить те фото, которые были добавлены
+            var scheduleAddedPhotoList = new List<Photo>();
+
+            // Если обновление прошло успешно
+            // То нужно окончательно удалить ненужные фото
+            var scheduleDeletePhotoList = new List<Photo>();
 
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -49,42 +112,32 @@ namespace Web.Services.Controllers.AdminApi
 
                 try
                 {
-                    // Создаём новую подкатегорию
-                    var file = default(Photo);
-                    if (subcategoryDTO.File == null)
+                    #region Create new entity and migrate/update photo list
+
+                    var (newSubcategory, error) = await CreateSubcategory(subcategoryDTO,
+                                                                          defaultPhotoList: oldSubcategory.Photos,
+                                                                          scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                                          scheduleDeletePhotoList: scheduleDeletePhotoList);
+
+                    if (newSubcategory is null)
                     {
-                        file = _fileHelper.ClonePhoto(oldSubcategory.Photo);
-                        _context.Remove(oldSubcategory.Photo);
+                        return cancelUpdate((false, error));
                     }
-                    else
-                    {
-                        file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
-                        await _fileHelper.RemoveFileFromRepository(oldSubcategory.Photo, false);
-                    }
 
-                    var newSubcategory = new Subcategory()
-                    {
-                        CategoryId = subcategoryDTO.NewCategoryId,
-                        SubcategoryId = subcategoryDTO.Alias.TransformToId(),
-
-                        Alias = subcategoryDTO.Alias,
-
-                        Photo = file,
-
-                        Products = new List<Product>()
-                    };
-                    var result = await _repository.AddSubcategory(newSubcategory);
-                    if (!result.isSuccess)
-                    {
-                        return cancelUpdate(result);
-                    }
+                    #endregion
 
                     // Загружаем список продуктов
-                    await _context.Entry(oldSubcategory).Collection(x => x.Products).LoadAsync();
+                    await _context
+                        .Entry(oldSubcategory)
+                        .Collection(x => x.Products)
+                        .LoadAsync();
 
                     foreach (var product in oldSubcategory.Products)
                     {
-                        await _context.Entry(product).Collection(x => x.Photos).LoadAsync();
+                        await _context
+                            .Entry(product)
+                            .Collection(x => x.Photos)
+                            .LoadAsync();
 
                         var newProduct = new Product()
                         {
@@ -96,28 +149,16 @@ namespace Web.Services.Controllers.AdminApi
                             Price = product.Price,
                             Description = product.Description,
 
-                            Photos = product.Photos.Select(photo =>
-                            {
-                                var id = Guid.NewGuid();
-
-                                _context.Remove(photo);
-
-                                return new Photo()
-                                {
-                                    Date = DateTime.Now,
-                                    Name = id.ToString(),
-                                    PhotoId = id,
-                                    Url = photo.Url
-                                };
-                            }).ToList()
+                            Photos = new List<Photo>()
                         };
+
+                        _photoHelper.MovePhotosToEntity(newProduct, product.Photos);
 
                         newSubcategory.Products.Add(newProduct);
                     }
 
                     // Теперь мы можем изменить заказы, т.к. новая подкатегория и продукты добавлены
                     var orderList = _context.OrderPosition
-                        .Include(x => x.Product)
                         .Where(
                             order => oldSubcategory.Products.Any(
                                 product => product.CategoryId == order.Product.CategoryId
@@ -145,10 +186,21 @@ namespace Web.Services.Controllers.AdminApi
                     await _context.SaveChangesAsync();
 
                     transaction.Commit();
+
+                    foreach (var photo in scheduleDeletePhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     return (true, null);
                 }
                 catch (Exception ex)
                 {
+                    foreach (var photo in scheduleAddedPhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
                     return cancelUpdate((
                         false,
@@ -158,34 +210,44 @@ namespace Web.Services.Controllers.AdminApi
             }
         }
 
-        public async ValueTask<(bool isSuccess, string error)> CreateSubcategory(SubcategoryDTO subcategoryDTO)
+        public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".CreateSubcategory";
+            await _photoHelper.LoadPhotosToEntity(oldSubcategory, subcategoryDTO);
 
-            try
+            oldSubcategory.Alias = subcategoryDTO.Alias;
+            oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
+
+            return await _repository.UpdateSubcategory(oldSubcategory);
+        }
+
+        public async ValueTask<bool> DeleteSubcategory(string categoryId, string subcategoryId)
+        {
+            var subcategory = await _repository.GetSubcategory(categoryId, subcategoryId);
+
+            foreach (var photo in subcategory.Photos)
             {
-                var file = await _fileHelper.AddFileToRepository(subcategoryDTO.File);
+                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            }
 
-                var subcategory = new Subcategory()
+            await _context.Entry(subcategory)
+                .Collection(x => x.Products)
+                .LoadAsync();
+
+            foreach (var product in subcategory.Products)
+            {
+                await _context.Entry(product)
+                    .Collection(x => x.Photos)
+                    .LoadAsync();
+
+                foreach (var photo in product.Photos)
                 {
-                    CategoryId = subcategoryDTO.NewCategoryId,
-                    SubcategoryId = subcategoryDTO.Alias.TransformToId(),
-
-                    Alias = subcategoryDTO.Alias,
-                    IsVisible = subcategoryDTO.IsVisible ?? true,
-
-                    Photo = file
-                };
-
-                var result = await _repository.AddSubcategory(subcategory);
-
-                return result;
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
-                return (false, $"Ошибка при создании подкатегории. {ex.Message}");
-            }
+
+            await _repository.DeleteSubcategory(subcategory);
+
+            return true;
         }
     }
 }

@@ -76,7 +76,7 @@ export const actionCreators = {
           actionsList.saveSubcategory({
             alias: value.data.alias,
             categoryId: value.data.categoryId,
-            photo: value.data.photo,
+            photos: value.data.photos,
             subcategoryId: value.data.subcategoryId
           })
         );

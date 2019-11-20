@@ -50,7 +50,7 @@ namespace Database.Repositories
                                                                           bool isGetOnlyVisible = false)
         {
             var query = _context.Subcategory
-                .Include(x => x.Photo)
+                .Include(x => x.Photos)
                 .AsQueryable();
 
             if (!String.IsNullOrEmpty(categoryId))

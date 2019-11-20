@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Model.Interfaces.DB;
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Model.DB
 {
-    public class Subcategory
+    public class Subcategory : IPhoto
     {
         [Required]
         [MaxLength(64)]
@@ -27,7 +26,7 @@ namespace Model.DB
         public Category Category { get; set; }
 
         //Childrens
-        public Photo Photo { get; set; }
+        public ICollection<Photo> Photos { get; set; }
         public ICollection<Product> Products { get; set; }
     }
 }

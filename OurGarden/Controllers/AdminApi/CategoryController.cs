@@ -33,8 +33,8 @@ namespace Web.Controllers.AdminApi
                                   ILogger<CategoryController> logger)
         {
             _repository = repository;
-            _service = new CategoryControllerService(_repository, _logger);
             _logger = logger;
+            _service = new CategoryControllerService(_repository, logger);
         }
 
         [HttpGet("[action]")]
@@ -60,6 +60,7 @@ namespace Web.Controllers.AdminApi
             try
             {
                 bool isSuccess;
+
                 if (String.IsNullOrEmpty(categoryDTO?.CategoryId))
                 {
                     (isSuccess, error) = await _service.AddCategory(categoryDTO);
@@ -82,7 +83,11 @@ namespace Web.Controllers.AdminApi
                 }
 
                 if (!isSuccess)
-                    return BadRequest(error);
+                    return LogBadRequest(
+                        _logger,
+                        API_LOCATE,
+                        error
+                    );
 
                 return Success(isSuccess);
             }
@@ -100,12 +105,18 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete([FromQuery]string categoryId)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
+
             var isSuccess = await _service.DeleteCategory(categoryId);
 
             if (isSuccess)
                 return Success(isSuccess);
             else
-                return BadRequest(ERROR);
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, не удалось удалить категорию.\n\tКатегория: {categoryId}"
+                );
         }
     }
 }

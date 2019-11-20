@@ -670,7 +670,7 @@ namespace Database.Repositories
             {
                 CategoryId = x.CategoryId,
                 SubcategoryId = x.SubcategoryId,
-                Photo = x.Photo,
+                Photos = x.Photos,
                 Alias = x.Alias
             }));
 

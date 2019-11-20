@@ -7,7 +7,7 @@ export interface ISubcategory {
   subcategoryId: string;
   categoryId: string;
   alias: string;
-  photo: IPhoto;
+  photos: IPhoto[];
 }
 
 export interface ISubcategoryState {

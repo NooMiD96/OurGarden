@@ -13,7 +13,7 @@ export interface ISubcategory {
   categoryId: string;
   alias: string;
   isVisible: boolean;
-  photo: IPhoto;
+  photos: IPhoto[];
 }
 
 export interface ISubcategoryDTO {
@@ -24,7 +24,9 @@ export interface ISubcategoryDTO {
 
   alias: string;
   isVisible: boolean;
-  file: File;
+  addFiles: File[];
+  removeFiles: string[];
+  updateFiles: File[];
 }
 
 export interface ISubcategoryState {

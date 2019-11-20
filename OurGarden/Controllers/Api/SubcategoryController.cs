@@ -32,6 +32,17 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBreadcrumb([FromQuery] string categoryId)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".GetBreadcrumb";
+
+            if (String.IsNullOrEmpty(categoryId))
+            {
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, необходимо выбрать категорию."
+                );
+            }
+
             var breadcrumb = await _repository.GetSubcategoryBreadcrumb(categoryId);
             var order = 1;
 
@@ -71,7 +82,6 @@ namespace Web.Controllers.Api
             }
 
             var category = (await _repository.GetCategory(categoryId)).DeepClone();
-            var subcategories = await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true);
 
             if (category is null)
             {
@@ -82,7 +92,7 @@ namespace Web.Controllers.Api
                 );
             }
 
-            category.Subcategories = subcategories
+            category.Subcategories = (await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true))
                 .OrderBy(x => x.SubcategoryId)
                 .Select(x =>
                 {
@@ -90,6 +100,11 @@ namespace Web.Controllers.Api
                     return x;
                 })
                 .ToList();
+
+            foreach (var entity in category.Subcategories)
+            {
+                entity.Photos = entity.Photos.OrderBy(x => x.Date).ToList();
+            }
 
             return Success(category);
         }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 
+using Model.Interfaces.DTO;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO.Subcategory
 {
-    public class SubcategoryDTO
+    public class SubcategoryDTO : IPhotoDTO
     {
         public string SubcategoryId { get; set; }
 
@@ -19,6 +21,10 @@ namespace Model.DTO.Subcategory
 
         public bool? IsVisible { get; set; }
 
-        public IFormFile File { get; set; }
+        public IFormFileCollection AddFiles { get; set; }
+
+        public IFormFileCollection UpdateFiles { get; set; }
+
+        public string RemoveFiles { get; set; }
     }
 }

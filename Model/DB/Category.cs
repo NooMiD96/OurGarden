@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Model.Interfaces.DB;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
-    public class Category
+    public class Category : IPhoto
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(64)]

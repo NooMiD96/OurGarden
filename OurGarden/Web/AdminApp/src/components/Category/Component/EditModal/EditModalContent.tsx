@@ -5,9 +5,9 @@ import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import Button from "@core/antd/Button";
 import Checkbox from "@core/antd/Checkbox";
-import localeText from "../Text";
-
 import MultiplyUploader from "@src/core/components/MultiplyUploader";
+
+import localeText from "../Text";
 
 import { ICategory, ICategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
@@ -30,8 +30,8 @@ export const EditModalContent = (props: IProps) => {
   const { form, item } = props;
   const { getFieldDecorator } = form;
 
-  const { categoryId, alias, photos, isVisible } =
-    item || ({ isVisible: true } as ICategory);
+  const { categoryId, alias, photos, isVisible }
+    = item || ({ isVisible: true } as ICategory);
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();

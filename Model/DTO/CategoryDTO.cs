@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 
+using Model.Interfaces.DTO;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO
 {
-    public class CategoryDTO
+    public class CategoryDTO : IPhotoDTO
     {
         public string CategoryId { get; set; }
 
