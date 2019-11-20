@@ -46,8 +46,8 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]GalleryDTO galleryDTO)
         {
-            var error = "Что-то пошло не так, повторите попытку.";
             const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+            var error = "Что-то пошло не так, повторите попытку.";
 
             try
             {
@@ -135,10 +135,18 @@ namespace Web.Controllers.AdminApi
             }
         }
 
-        [HttpDelete("[action]")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Delete([FromQuery]int galleryId)
         {
+            var gallery = await _repository.GetGallery(galleryId);
+
+            foreach (var photo in gallery.Photos)
+            {
+                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            }
+
             await _repository.DeleteGallery(galleryId);
+
             return Success(true);
         }
     }

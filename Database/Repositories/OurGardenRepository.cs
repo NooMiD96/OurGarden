@@ -518,10 +518,12 @@ namespace Database.Repositories
             var gallery = await _context.Gallery
                 .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
+
             if (gallery == null)
                 return;
-            _context.Photo.RemoveRange(gallery.Photos);
-            _context.Gallery.Remove(gallery);
+
+            _context.Remove(gallery);
+
             await _context.SaveChangesAsync();
         }
         #endregion

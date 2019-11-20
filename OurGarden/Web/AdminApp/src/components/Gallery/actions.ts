@@ -157,7 +157,7 @@ export const actionCreators = {
     dispatch(actionCreators.cleanErrorInner());
 
     const fetchTask = fetch(
-      `/apiAdmin/${controllerName}/${apiUrl}?categoryId=${categoryId}`,
+      `/apiAdmin/${controllerName}/${apiUrl}?galleryId=${categoryId}`,
       {
         credentials: "same-origin",
         method: "POST",

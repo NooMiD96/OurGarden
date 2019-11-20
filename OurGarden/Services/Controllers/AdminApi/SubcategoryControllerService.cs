@@ -149,14 +149,25 @@ namespace Web.Services.Controllers.AdminApi
                     }
 
                     // Теперь мы можем изменить заказы, т.к. новая подкатегория и продукты добавлены
+                    var categoryKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.CategoryId);
+
+                    var subcategoryKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.SubcategoryId);
+
+                    var productKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.ProductId);
+
                     var orderList = _context.OrderPosition
                         .Where(
-                            order => oldSubcategory.Products.Any(
-                                product => product.CategoryId == order.Product.CategoryId
-                                           && product.SubcategoryId == order.Product.SubcategoryId
-                                           && product.ProductId == order.Product.ProductId
+                            order => categoryKeys.Contains(order.Product.CategoryId)
+                            && subcategoryKeys.Contains(order.Product.SubcategoryId)
+                            && productKeys.Contains(order.Product.ProductId)
                         )
-                    ).ToList();
+                        .ToList();
 
                     // Обновляем ссылку на продукт
                     orderList.ForEach(order =>
