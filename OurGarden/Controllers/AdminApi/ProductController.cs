@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-using Model.DB;
 using Model.DTO.ProductDTO;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,17 +25,16 @@ namespace Web.Controllers.AdminApi
     {
         private readonly IOurGardenRepository _repository;
         private readonly ProductControllerService _service;
-        private readonly FileHelper _fileHelper;
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "AdminApi.ProductController";
+        private const string ERROR = "Что-то пошло не так, повторите попытку.";
 
         public ProductController(IOurGardenRepository repository,
                                  ILogger<ProductController> logger)
         {
             _repository = repository;
-            _service = new ProductControllerService(_repository, _logger);
-            _fileHelper = new FileHelper(_repository);
             _logger = logger;
+            _service = new ProductControllerService(repository, logger);
         }
 
         [HttpGet("[action]")]
@@ -63,37 +60,20 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrUpdate([FromForm]ProductDTO productDTO)
         {
-            var error = "Что-то пошло не так, повторите попытку.";
             const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+            var error = ERROR;
 
             try
             {
                 bool isSuccess;
+
                 if (
                     String.IsNullOrEmpty(productDTO?.CategoryId)
                     || String.IsNullOrEmpty(productDTO?.SubcategoryId)
                     || String.IsNullOrEmpty(productDTO?.ProductId)
                 )
                 {
-                    var photos = new List<Photo>();
-                    var file = await _fileHelper.AddFileToRepository(productDTO.File);
-                    photos.Add(file);
-
-                    var product = new Product()
-                    {
-                        CategoryId = productDTO.NewCategoryId,
-                        SubcategoryId = productDTO.NewSubcategoryId,
-                        ProductId = productDTO.Alias.TransformToId(),
-
-                        Alias = productDTO.Alias,
-                        Price = productDTO.Price,
-                        Description = productDTO.Description,
-                        IsVisible = productDTO.IsVisible ?? true,
-
-                        Photos = photos
-                    };
-
-                    (isSuccess, error) = await _repository.AddProduct(product);
+                    (isSuccess, error) = await _service.AddProduct(productDTO);
                 }
                 else
                 {
@@ -114,35 +94,22 @@ namespace Web.Controllers.AdminApi
                         || productDTO.SubcategoryId != productDTO.NewSubcategoryId
                     )
                     {
-                        (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
+                        (isSuccess, error) = await _service.FullUpdateProduct(productDTO, oldProduct);
                     }
                     else
                     {
-                        if (productDTO.File != null)
-                        {
-                            var photos = new List<Photo>();
-                            var file = await _fileHelper.AddFileToRepository(productDTO.File);
-                            photos.Add(file);
-
-                            foreach (var photo in oldProduct.Photos)
-                                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
-
-                            oldProduct.Photos = photos;
-                        }
-
-                        oldProduct.Alias = productDTO.Alias;
-                        oldProduct.IsVisible = productDTO.IsVisible ?? true;
-                        oldProduct.Price = productDTO.Price;
-                        oldProduct.Description = productDTO.Description;
-
-                        (isSuccess, error) = await _repository.UpdateProduct(oldProduct);
+                        (isSuccess, error) = await _service.UpdateProduct(productDTO, oldProduct);
                     }
                 }
 
                 if (!isSuccess)
-                    return BadRequest(error);
+                    return LogBadRequest(
+                        _logger,
+                        API_LOCATE,
+                        error
+                    );
 
-                return Success(true);
+                return Success(isSuccess);
             }
             catch (Exception ex)
             {
@@ -160,14 +127,18 @@ namespace Web.Controllers.AdminApi
                                                 [FromQuery]string subcategoryId,
                                                 [FromQuery]string productId)
         {
-            var product = await _repository.GetProduct(categoryId, subcategoryId, productId);
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
 
-            foreach (var photo in product.Photos)
-                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            var (isSuccess, error) = await _service.DeleteProduct(categoryId, subcategoryId, productId);
 
-            await _repository.DeleteProduct(product);
-
-            return Success(true);
+            if (isSuccess)
+                return Success(isSuccess);
+            else
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    error
+                );
         }
     }
 }

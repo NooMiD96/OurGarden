@@ -1,7 +1,10 @@
-﻿using Database.Contexts;
+﻿using Core.Helpers;
+
+using Database.Contexts;
 using Database.Repositories;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using Model.DB;
 using Model.DTO.Order;
@@ -12,24 +15,30 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Services.Controllers.AdminApi
+namespace Web.Services.Controllers.Api
 {
     public class OrderControllerService
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "Api.OrderController.Service";
 
         public OrderControllerService(IOurGardenRepository repository,
-                                      IEmailSender emailSender)
+                                      IEmailSender emailSender,
+                                      ILogger logger)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         public async ValueTask<(bool isSuccess, string error)> AddOrder(OrderCreateDTO orderDTO)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrder";
+
             using (var transaction = await _context.Database.BeginTransactionAsync())
                 try
                 {
@@ -61,6 +70,7 @@ namespace Web.Services.Controllers.AdminApi
 
                                 Number = x.Number,
                                 Price = 0,
+                                Name = "",
 
                                 OrderId = order.OrderId,
 
@@ -81,6 +91,7 @@ namespace Web.Services.Controllers.AdminApi
                     foreach (var orderPos in order.OrderPositions)
                     {
                         orderPos.Price = orderPos.Product.Price;
+                        orderPos.Name = orderPos.Product.Alias;
                     }
 
                     order.TotalPrice = order.OrderPositions.Select(x => x.Number * x.Price).Sum();
@@ -96,11 +107,12 @@ namespace Web.Services.Controllers.AdminApi
                     transaction.Commit();
                     return (true, null);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
 
-                    return (false, "Ошибка при обнавлении категории. Возможно подкатегория или товар с такой категорией уже существуют");
+                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\tmes: Не удалось создать заказ, DTO: {JsonHelper.Serialize(orderDTO)}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+                    return (false, "Не удалось создать заказ!");
                 }
         }
     }

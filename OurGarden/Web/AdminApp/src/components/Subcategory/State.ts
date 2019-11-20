@@ -24,6 +24,7 @@ export interface ISubcategoryDTO {
 
   alias: string;
   isVisible: boolean;
+
   addFiles: File[];
   removeFiles: string[];
   updateFiles: File[];

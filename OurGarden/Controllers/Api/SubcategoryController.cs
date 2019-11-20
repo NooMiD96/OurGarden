@@ -39,7 +39,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, необходимо выбрать категорию."
+                    $"Что-то пошло не так, не удалось получить Breadcrumb."
                 );
             }
 

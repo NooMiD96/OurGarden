@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Model.DTO.Order
+﻿namespace Model.DTO.Order
 {
     public class OrderPositionAdminDTO
     {
@@ -11,6 +7,8 @@ namespace Model.DTO.Order
         public int Number { get; set; }
 
         public double Price { get; set; }
+
+        public string OldProductAlias { get; set; }
 
         public string ProductId { get; set; }
         public string ProductAlias { get; set; }

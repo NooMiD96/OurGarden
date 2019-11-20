@@ -3,7 +3,6 @@
 using Database.Contexts;
 using Database.Repositories;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using Model.DB;
@@ -15,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Controllers.AdminApi;
+using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -23,6 +23,7 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
+        private readonly PhotoHelper _photoHelper;
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "AdminApi.ProductController.Service";
 
@@ -31,13 +32,67 @@ namespace Web.Services.Controllers.AdminApi
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
-            _fileHelper = new FileHelper(_repository);
             _logger = logger;
+            _fileHelper = new FileHelper(repository);
+            _photoHelper = new PhotoHelper(repository, logger);
         }
 
-        public async ValueTask<(bool isSuccess, string error)> UpdateProduct(ProductDTO productDTO, Product oldProduct)
+        private async ValueTask<(Product product, string error)> CreateProduct(ProductDTO entityDTO,
+                                                                               ICollection<Photo> defaultPhotoList = null,
+                                                                               List<Photo> scheduleAddedPhotoList = null,
+                                                                               List<Photo> scheduleDeletePhotoList = null)
+        {
+            var product = new Product()
+            {
+                CategoryId = entityDTO.NewCategoryId,
+                SubcategoryId = entityDTO.NewSubcategoryId,
+                ProductId = entityDTO.Alias.TransformToId(),
+
+                Alias = entityDTO.Alias,
+                Price = entityDTO.Price,
+                Description = entityDTO.Description,
+                IsVisible = entityDTO.IsVisible ?? true,
+
+                Photos = new List<Photo>()
+            };
+
+            //Добавляем и проверяем можем ли мы добавить данную категорию
+            var (isSuccess, error) = await _repository.AddProduct(product);
+            if (!isSuccess)
+            {
+                return (null, error);
+            }
+
+            _photoHelper.MovePhotosToEntity(product, defaultPhotoList);
+
+            await _photoHelper.LoadPhotosToEntity(product,
+                                                  entityDTO,
+                                                  scheduleAddedPhotoList,
+                                                  scheduleDeletePhotoList);
+
+            await _context.SaveChangesAsync();
+
+            return (product, null);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> AddProduct(ProductDTO productDTO)
+        {
+            var (product, error) = await CreateProduct(productDTO);
+
+            return (product != null, error);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> FullUpdateProduct(ProductDTO productDTO, Product oldProduct)
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateProduct";
+
+            // В случае когда нам не удаётся обновить данную модель
+            // Мы должны удалить те фото, которые были добавлены
+            var scheduleAddedPhotoList = new List<Photo>();
+
+            // Если обновление прошло успешно
+            // То нужно окончательно удалить ненужные фото
+            var scheduleDeletePhotoList = new List<Photo>();
 
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -49,42 +104,22 @@ namespace Web.Services.Controllers.AdminApi
 
                 try
                 {
-                    // Создаём новую категорию
-                    var photos = new List<Photo>();
-                    var file = default(Photo);
-                    if (productDTO.File == null)
-                    {
-                        file = _fileHelper.ClonePhoto(oldProduct.Photos.ElementAt(0));
-                        _context.RemoveRange(oldProduct.Photos);
-                    }
-                    else
-                    {
-                        file = await _fileHelper.AddFileToRepository(productDTO.File);
+                    #region Create new entity and migrate/update photo list
 
-                        foreach (var photo in oldProduct.Photos)
-                            await _fileHelper.RemoveFileFromRepository(photo, false);
-                    }
-                    photos.Add(file);
+                    var (newProduct, error) = await CreateProduct(productDTO,
+                                                                          defaultPhotoList: oldProduct.Photos,
+                                                                          scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                                          scheduleDeletePhotoList: scheduleDeletePhotoList);
 
-                    var product = new Product()
+                    if (newProduct is null)
                     {
-                        CategoryId = productDTO.NewCategoryId,
-                        SubcategoryId = productDTO.NewSubcategoryId,
-                        ProductId = productDTO.Alias.TransformToId(),
-                        Alias = productDTO.Alias,
-                        Price = productDTO.Price,
-                        Description = productDTO.Description,
-                        Photos = photos
-                    };
-                    var result = await _repository.AddProduct(product);
-                    if (!result.isSuccess)
-                    {
-                        return cancelUpdate(result);
+                        return cancelUpdate((false, error));
                     }
+
+                    #endregion
 
                     // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
                     var orderList = _context.OrderPosition
-                            .Include(x => x.Product)
                             .Where(
                                 order => productDTO.CategoryId == order.Product.CategoryId
                                             && productDTO.SubcategoryId == order.Product.SubcategoryId
@@ -94,7 +129,7 @@ namespace Web.Services.Controllers.AdminApi
                     // Обновляем ссылку на продукт
                     orderList.ForEach(order =>
                     {
-                        order.Product = product;
+                        order.Product = newProduct;
 
                         _context.Update(order);
                     });
@@ -105,10 +140,21 @@ namespace Web.Services.Controllers.AdminApi
                     await _context.SaveChangesAsync();
 
                     transaction.Commit();
+
+                    foreach (var photo in scheduleDeletePhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     return (true, null);
                 }
                 catch (Exception ex)
                 {
+                    foreach (var photo in scheduleAddedPhotoList)
+                    {
+                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    }
+
                     _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
                     return cancelUpdate((
                         false,
@@ -116,6 +162,40 @@ namespace Web.Services.Controllers.AdminApi
                     ));
                 }
             }
+        }
+        
+        public async ValueTask<(bool isSuccess, string error)> UpdateProduct(ProductDTO productDTO, Product oldProduct)
+        {
+            await _photoHelper.LoadPhotosToEntity(oldProduct, productDTO);
+
+            oldProduct.Alias = productDTO.Alias;
+            oldProduct.IsVisible = productDTO.IsVisible ?? true;
+            oldProduct.Price = productDTO.Price;
+            oldProduct.Description = productDTO.Description;
+
+            return await _repository.UpdateProduct(oldProduct);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> DeleteProduct(string categoryId, string subcategoryId, string productId)
+        {
+            var product = await _repository.GetProduct(categoryId, subcategoryId, productId);
+
+            if (product is null)
+            {
+                return (
+                    false,
+                    $"Что-то пошло не так, не удалось найти товар.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}\n\tТовар: {productId}"
+                );
+            }
+
+            foreach (var photo in product.Photos)
+            {
+                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            }
+
+            await _repository.DeleteProduct(product);
+
+            return (true, null);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Database.Repositories;
+﻿#pragma warning disable CA1822 // Mark members as static
+
+using Database.Repositories;
 
 using Microsoft.Extensions.Logging;
 
@@ -117,3 +119,5 @@ namespace Web.Helpers
         }
     }
 }
+
+#pragma warning restore CA1822 // Mark members as static

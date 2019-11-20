@@ -124,7 +124,7 @@ namespace Web.Controllers.AdminApi
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
 
-            var isSuccess = await _service.DeleteSubcategory(categoryId, subcategoryId);
+            var (isSuccess, error) = await _service.DeleteSubcategory(categoryId, subcategoryId);
 
             if (isSuccess)
                 return Success(isSuccess);
@@ -132,7 +132,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, не удалось удалить подкатегорию.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}"
+                    error
                 );
         }
     }

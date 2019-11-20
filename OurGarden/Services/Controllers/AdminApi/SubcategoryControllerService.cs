@@ -62,16 +62,7 @@ namespace Web.Services.Controllers.AdminApi
                 return (null, error);
             }
 
-            if (defaultPhotoList != null)
-            {
-                while (defaultPhotoList.Count > 0)
-                {
-                    var photo = defaultPhotoList.ElementAt(0);
-
-                    defaultPhotoList.Remove(photo);
-                    subcategory.Photos.Add(photo);
-                }
-            }
+            _photoHelper.MovePhotosToEntity(subcategory, defaultPhotoList);
 
             await _photoHelper.LoadPhotosToEntity(subcategory,
                                                   entityDTO,
@@ -220,9 +211,17 @@ namespace Web.Services.Controllers.AdminApi
             return await _repository.UpdateSubcategory(oldSubcategory);
         }
 
-        public async ValueTask<bool> DeleteSubcategory(string categoryId, string subcategoryId)
+        public async ValueTask<(bool isSuccess, string error)> DeleteSubcategory(string categoryId, string subcategoryId)
         {
             var subcategory = await _repository.GetSubcategory(categoryId, subcategoryId);
+
+            if (subcategory is null)
+            {
+                return (
+                    false,
+                    $"Что-то пошло не так, не удалось найти подкатегорию.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}"
+                );
+            }
 
             foreach (var photo in subcategory.Photos)
             {
@@ -247,7 +246,7 @@ namespace Web.Services.Controllers.AdminApi
 
             await _repository.DeleteSubcategory(subcategory);
 
-            return true;
+            return (true, null);
         }
     }
 }

@@ -26,7 +26,10 @@ export interface IProductDTO {
   isVisible: boolean;
   price: number;
   description: string;
-  file: File;
+
+  addFiles: File[];
+  removeFiles: string[];
+  updateFiles: File[];
 }
 
 export interface IProductState {

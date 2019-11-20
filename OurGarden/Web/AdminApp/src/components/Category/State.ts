@@ -14,14 +14,15 @@ export interface ICategoryDictionary {
 export interface ICategory {
   categoryId: string;
   alias: string;
-  photos: IPhoto[];
   isVisible: boolean;
+  photos: IPhoto[];
 }
 
 export interface ICategoryDTO {
   categoryId: string | null;
   alias: string;
   isVisible: boolean;
+
   addFiles: File[];
   removeFiles: string[];
   updateFiles: File[];

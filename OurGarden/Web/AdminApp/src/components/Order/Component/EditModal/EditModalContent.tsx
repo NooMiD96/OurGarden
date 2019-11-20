@@ -33,12 +33,18 @@ const columns: ColDef[] = [
     field: "productAlias"
   },
   {
+    headerName: "Старое наим. продукта",
+    field: "oldProductAlias"
+  },
+  {
     headerName: "Цена за шт.",
-    field: "price"
+    field: "price",
+    type: ["number"]
   },
   {
     headerName: "Кол-во",
-    field: "number"
+    field: "number",
+    type: ["number"]
   }
 ];
 
@@ -83,26 +89,31 @@ export const EditModalContent = (props: IProps) => {
           initialValue: fio
         })(<Input disabled />)}
       </FormItem>
+
       <FormItem label="Номер">
         {getFieldDecorator("phone", {
           initialValue: phone
         })(<Input disabled />)}
       </FormItem>
+
       <FormItem label="Почта">
         {getFieldDecorator("email", {
           initialValue: email
         })(<Input disabled />)}
       </FormItem>
+
       <FormItem label="Дата заказа">
         {getFieldDecorator("date", {
           initialValue: moment(date).format("DD.MM.YYYY HH:mm:ss")
         })(<Input disabled />)}
       </FormItem>
+
       <FormItem label="Сумма заказа">
         {getFieldDecorator("totalPrice", {
           initialValue: totalPrice
         })(<Input disabled />)}
       </FormItem>
+
       <FormItem label="Статус заказа">
         {getFieldDecorator("statusId", {
           initialValue: status.statusId
@@ -116,6 +127,7 @@ export const EditModalContent = (props: IProps) => {
           </Select>
         )}
       </FormItem>
+
       <FormItem label="Примечание">
         {getFieldDecorator("description", {
           initialValue: description

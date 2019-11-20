@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
@@ -8,14 +8,15 @@ import Select from "@core/antd/Select";
 import CKEditor from "@core/components/CKEditor";
 import InputNumber from "@core/antd/InputNumber";
 import Checkbox from "@core/antd/Checkbox";
-import localeText from "../Text";
+import MultiplyUploader from "@src/core/components/MultiplyUploader";
 
-import { FileUploader } from "@src/core/components/Uploader/File";
+import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
 
 import { IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { ICategoryDictionary } from "@components/Category/State";
+import { UploadFile } from "@core/antd/Upload";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
@@ -24,55 +25,6 @@ interface IProps extends FormComponentProps {
   handleCreateSubmit: (data: IProductDTO) => void;
   handleClose: () => void;
 }
-
-const onSubmitHandler = (
-  props: IProps,
-  ckEditor: React.RefObject<CKEditor>,
-  e?: IPressEnterEvent | React.FormEvent
-) => {
-  e && e.preventDefault();
-
-  const { form, item } = props;
-
-  const newCategoryId = form.getFieldValue("newCategoryId");
-  const newSubcategoryId = form.getFieldValue("newSubcategoryId");
-
-  const description: string = ckEditor.current!.state.editor.getData();
-
-  const alias = form.getFieldValue("alias");
-  const isVisible = form.getFieldValue("isVisible");
-  const price = form.getFieldValue("price");
-  const image = form.getFieldValue("image");
-
-  props.form.setFieldsValue({
-    description
-  });
-
-  props.form.validateFields((err: any, _values: any) => {
-    if (!err) {
-      props.handleCreateSubmit({
-        categoryId: item ? item.categoryId : "",
-        subcategoryId: item ? item.subcategoryId : "",
-        productId: item ? item.productId : "",
-
-        newCategoryId,
-        newSubcategoryId,
-
-        alias,
-        isVisible,
-        price,
-        description,
-        file: image
-      });
-    }
-  });
-};
-
-const onClose = (props: IProps, e?: IPressEnterEvent | React.FormEvent) => {
-  e && e.preventDefault();
-
-  props.handleClose();
-};
 
 const getSubcategoryList = (
   selectedCategoryId: string,
@@ -88,18 +40,17 @@ const getSubcategoryList = (
 
 export const EditModalContent = (props: IProps) => {
   const ckEditor: React.RefObject<CKEditor> = useRef(null);
+  const [addFiles, setAddFiles] = useState([] as UploadFile[]);
+  const [updateFiles, setUpdateFiles] = useState(
+    [] as { uid: string; url: string }[]
+  );
+  const [removeFiles, setRemoveFiles] = useState([] as string[]);
 
   const { form, item, categoryList } = props;
   const { getFieldDecorator } = form;
   const { categoryId, alias, price, description, photos, isVisible }
     = item || ({ isVisible: true } as IProduct);
   let { subcategoryId } = item || ({} as IProduct);
-
-  const onUploadImage = (image?: File) => {
-    form.setFieldsValue({
-      image
-    });
-  };
 
   const selectedCategoryId = form.isFieldTouched("newCategoryId")
     ? form.getFieldValue("newCategoryId")
@@ -110,10 +61,108 @@ export const EditModalContent = (props: IProps) => {
 
   const subcategoryList = getSubcategoryList(selectedCategoryId, categoryList);
 
-  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
-    onSubmitHandler(props, ckEditor, e);
+  const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
+    e && e.preventDefault();
 
-  const photo = photos && photos[0];
+    const { form, item } = props;
+
+    const newCategoryId = form.getFieldValue("newCategoryId");
+    const newSubcategoryId = form.getFieldValue("newSubcategoryId");
+
+    const description: string = ckEditor.current!.state.editor.getData();
+
+    const alias = form.getFieldValue("alias");
+    const isVisible = form.getFieldValue("isVisible");
+    const price = form.getFieldValue("price");
+
+    props.form.setFieldsValue({
+      description
+    });
+
+    const addFilesDTO: File[] = [];
+    for (let i = 0; i < addFiles.length; i++) {
+      const file = addFiles[i];
+
+      if (file.originFileObj) {
+        addFilesDTO.push(file.originFileObj as File);
+
+        const previewFile: any = await fetch(file.preview!).then(res =>
+          res.blob()
+        );
+
+        previewFile.lastModified = new Date().getTime();
+        previewFile.name = file.name;
+        addFilesDTO.push(previewFile as File);
+      }
+    }
+
+    const updateFilesDTO: File[] = [];
+    for (let i = 0; i < updateFiles.length; i++) {
+      const file = updateFiles[i];
+
+      const previewFile: any = await fetch(file.url).then(res => res.blob());
+
+      previewFile.lastModified = new Date().getTime();
+      previewFile.name = file.uid;
+      updateFilesDTO.push(previewFile as File);
+    }
+
+    props.form.validateFields((err: any, _values: any) => {
+      if (!err) {
+        props.handleCreateSubmit({
+          categoryId: item ? item.categoryId : "",
+          subcategoryId: item ? item.subcategoryId : "",
+          productId: item ? item.productId : "",
+
+          newCategoryId,
+          newSubcategoryId,
+
+          alias,
+          isVisible,
+          price,
+          description,
+
+          addFiles: addFilesDTO,
+          removeFiles,
+          updateFiles: updateFilesDTO
+        });
+      }
+    });
+  };
+
+  const onClose = () => {
+    form.resetFields();
+    props.handleClose();
+  };
+
+  const updatePreview = (fileUid: string, fileUrl: string) => {
+    const findIndex = updateFiles.findIndex(x => x.uid === fileUid);
+    if (findIndex !== -1) {
+      setUpdateFiles(
+        updateFiles.map((x, index) => {
+          if (index === findIndex) {
+            return { uid: fileUid, url: fileUrl };
+          } else {
+            return x;
+          }
+        })
+      );
+    } else {
+      setUpdateFiles([...updateFiles, { uid: fileUid, url: fileUrl }]);
+    }
+  };
+
+  const defaultFileList = photos
+    ? photos.map(photo => {
+        return {
+          uid: photo.photoId,
+          name: photo.photoId,
+          status: "done",
+          url: photo.url,
+          preview: photo.previewUrl
+        } as UploadFile;
+      })
+    : [];
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -204,13 +253,17 @@ export const EditModalContent = (props: IProps) => {
       </FormItem>
 
       <FormItem>
-        {getFieldDecorator("image", {
-          initialValue: photo ? photo.url : null,
-          rules: [{ required: true, message: localeText._rule_require_photo }]
+        {getFieldDecorator("addFiles", {
+          rules: [{ required: false, message: localeText._rule_require_photo }]
         })(
-          <FileUploader
-            onUpload={onUploadImage}
-            oldImageUrl={photo ? photo.url : null}
+          <MultiplyUploader
+            defaultFileList={defaultFileList}
+            updateAddedList={files => setAddFiles(files)}
+            updateRemovedList={file => setRemoveFiles([...removeFiles, file])}
+            removeFile={fileUid =>
+              setAddFiles(addFiles.filter(x => x.uid !== fileUid))
+            }
+            updatePreview={updatePreview}
           />
         )}
       </FormItem>
@@ -227,7 +280,7 @@ export const EditModalContent = (props: IProps) => {
         <Button type="primary" onClick={onSubmit}>
           Сохранить
         </Button>
-        <Button type="danger" onClick={e => onClose(props, e)}>
+        <Button type="danger" onClick={onClose}>
           Отмена
         </Button>
       </div>

@@ -73,6 +73,7 @@ export const EditModalContent = (props: IProps) => {
           categoryId,
           alias,
           isVisible,
+
           addFiles: addFilesDTO,
           removeFiles,
           updateFiles: updateFilesDTO

@@ -24,6 +24,7 @@ export interface IOrderPosition {
   orderPositionId: number;
   number: number;
   price: number;
+  oldProductAlias: string;
   productId: string;
   productAlias: string;
   subcategoryId: string;

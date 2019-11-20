@@ -34,6 +34,17 @@ namespace Web.Controllers.Api
                                                        [FromQuery] string subcategoryId,
                                                        [FromQuery] string productId)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".GetBreadcrumb";
+
+            if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
+            {
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    $"Что-то пошло не так, не удалось получить Breadcrumb."
+                );
+            }
+
             var breadcrumb = String.IsNullOrEmpty(productId)
                 ? await _repository.GetProductBreadcrumb(categoryId, subcategoryId)
                 : await _repository.GetProductBreadcrumb(categoryId, subcategoryId, productId);

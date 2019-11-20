@@ -57,6 +57,7 @@ namespace Web.Controllers.AdminApi
                             OrderPositionId = op.OrderPositionId,
                             Number = op.Number,
                             Price = op.Price,
+                            OldProductAlias = op.Name,
                             OrderId = o.OrderId,
                             ProductAlias = op.Product.Alias,
                             ProductId = op.Product.ProductId,

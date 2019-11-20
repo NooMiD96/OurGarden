@@ -268,9 +268,17 @@ namespace Web.Services.Controllers.AdminApi
         /// <summary>
         /// Удаление категории
         /// </summary>
-        public async ValueTask<bool> DeleteCategory(string categoryId)
+        public async ValueTask<(bool isSuccess, string error)> DeleteCategory(string categoryId)
         {
             var category = await _repository.GetCategory(categoryId);
+
+            if (category is null)
+            {
+                return (
+                    false,
+                    $"Что-то пошло не так, не удалось найти категорию.\n\tКатегория: {categoryId}"
+                );
+            }
 
             foreach (var photo in category.Photos)
             {
@@ -311,7 +319,7 @@ namespace Web.Services.Controllers.AdminApi
 
             await _repository.DeleteCategory(category);
 
-            return true;
+            return (true, null);
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 
+using Model.Interfaces.DTO;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO.ProductDTO
 {
-    public class ProductDTO
+    public class ProductDTO : IPhotoDTO
     {
         public string CategoryId { get; set; }
 
@@ -32,6 +34,10 @@ namespace Model.DTO.ProductDTO
 
         public bool? IsVisible { get; set; }
 
-        public IFormFile File { get; set; }
+        public IFormFileCollection AddFiles { get; set; }
+
+        public IFormFileCollection UpdateFiles { get; set; }
+
+        public string RemoveFiles { get; set; }
     }
 }

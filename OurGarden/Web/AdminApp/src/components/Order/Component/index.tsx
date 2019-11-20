@@ -22,6 +22,11 @@ export class Order extends React.PureComponent<TState, TComponentState> {
 
   columns: ColDef[] = [
     {
+      headerName: "Номер заказа",
+      field: "orderId",
+      type: ["number"]
+    },
+    {
       headerName: "ФИО",
       field: "fio"
     },

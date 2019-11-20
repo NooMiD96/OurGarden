@@ -1,6 +1,7 @@
 ﻿using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Model.DTO.Order;
 
@@ -8,7 +9,7 @@ using Services.EMail;
 
 using System.Threading.Tasks;
 
-using Web.Services.Controllers.AdminApi;
+using Web.Services.Controllers.Api;
 
 namespace Web.Controllers.Api
 {
@@ -16,16 +17,13 @@ namespace Web.Controllers.Api
     [ApiController]
     public class OrderController : BaseController
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly IEmailSender _emailSender;
         private readonly OrderControllerService _service;
 
         public OrderController([FromServices] IOurGardenRepository repository,
-                               [FromServices] IEmailSender emailSender)
+                               [FromServices] IEmailSender emailSender,
+                               ILogger<OrderController> logger)
         {
-            _repository = repository;
-            _emailSender = emailSender;
-            _service = new OrderControllerService(_repository, _emailSender);
+            _service = new OrderControllerService(repository, emailSender, logger);
         }
 
         [HttpPost("[action]")]

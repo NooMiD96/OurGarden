@@ -15,10 +15,17 @@ namespace Model.DB
         public double Price { get; set; }
 
         [Required]
+        [MaxLength(128)]
+        public string Name { get; set; }
+
+        [Required]
+        [MaxLength(128)]
         public string ProductId { get; set; }
         [Required]
+        [MaxLength(64)]
         public string SubcategoryId { get; set; }
         [Required]
+        [MaxLength(64)]
         public string CategoryId { get; set; }
 
         [Required]
