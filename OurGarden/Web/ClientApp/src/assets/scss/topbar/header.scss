@@ -18,11 +18,11 @@
     margin-top: -10px;
     z-index: 1;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1199px) {
       margin-left: 8rem;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       width: 160px;
       height: 160px;
     }
@@ -120,7 +120,7 @@
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1199px) {
     .ant-col {
       flex: 0 1 60%;
 

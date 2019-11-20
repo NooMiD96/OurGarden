@@ -12,7 +12,7 @@ const CardConfirmation = (props: ICardConfirmation) => {
   const [isOrderCreate, changeOrderState] = useState(false);
 
   const totalPrice = props.productList
-    .map(x => x.count * x.product.price)
+    .map((x) => x.count * x.product.price)
     .reduce((val, acc) => acc + val, 0);
 
   return (
@@ -29,7 +29,7 @@ const CardConfirmation = (props: ICardConfirmation) => {
       ) : (
         <CardConfirmationForm
           cancel={() => props.onChangeOrderStep(DisplayTypeEnum.CardInfo)}
-          submit={model => {
+          submit={(model) => {
             props.sendOrder(model);
             changeOrderState(true);
           }}

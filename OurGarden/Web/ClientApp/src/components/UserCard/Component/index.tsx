@@ -33,6 +33,17 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
     });
   };
 
+  getAdditionalClassName = () => {
+    const { productList } = this.props;
+    const { displayType } = this.state;
+
+    if (!productList || productList.length === 0) {
+      return "flex-grow-0";
+    }
+
+    return displayType === DisplayTypeEnum.CardConfirmation ? "card-confirmation flex-grow-0" : "card-info flex-grow-1";
+  };
+
   render() {
     const {
       productList,
@@ -67,8 +78,10 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
         />
       );
 
+    const additionalClassName = this.getAdditionalClassName(productList);
+
     return (
-      <div className={`user-card-wrapper content white-background grey-border ${displayType === DisplayTypeEnum.CardConfirmation ? "card-confirmation flex-grow-0" : "card-info flex-grow-1"}`}>
+      <div className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}>
         <HeaderHelmet
           {...getSEOMetaData("userCard")}
         />

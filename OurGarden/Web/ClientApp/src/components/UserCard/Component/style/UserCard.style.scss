@@ -7,6 +7,18 @@
 
   &.card-confirmation {
     min-height: 560px;
+
+    @media (min-width: 408px) {
+      min-height: 504px;
+    }
+
+    @media (min-width: 768px) {
+      min-height: 416px;
+    }
+
+    @media (min-width: 1200px) {
+      min-height: 353px;
+    }
   }
   &.card-info {
     min-height: 460px;

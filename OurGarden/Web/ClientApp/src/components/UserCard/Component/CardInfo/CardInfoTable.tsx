@@ -116,6 +116,14 @@ const scroll = {
   scrollToFirstRowOnChange: true
 };
 
+const getAdditionalClassName = (dataSource: IDisplayInfo[]) => {
+  if (!dataSource || dataSource.length === 0) {
+    return "empty-table";
+  }
+
+  return dataSource.length > 6 ? "with-pagination" : "without-pagination";
+};
+
 const CardInfoTable = (props: ICardInfoTable) => {
   const columns = getColumns(
     props.changeCountOfProduct,
@@ -124,8 +132,10 @@ const CardInfoTable = (props: ICardInfoTable) => {
 
   const { dataSource } = props;
 
+  const additionalClassName = getAdditionalClassName(dataSource);
+
   return (
-    <div className={`card-info-table ${dataSource && dataSource.length > 6 ? "with-pagination" : "without-pagination"}`}>
+    <div className={`card-info-table ${additionalClassName}`}>
       <Table
         dataSource={props.dataSource}
         columns={columns}

@@ -1,6 +1,17 @@
 .card-confirmation-form {
+  display: flex;
+  flex: 1 1 auto;
+
   .ant-form {
+    display: flex;
+    flex-direction: column;
+
     padding: 1rem 12px;
+
+    .ant-row-flex {
+      align-content: flex-start;
+      flex: 1 1 auto;
+    }
 
     .order-confirmation-footer {
       margin-top: 1rem;
