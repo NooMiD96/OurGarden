@@ -31,7 +31,21 @@
 .buttons-control {
   flex: 0 0 auto;
   align-self: flex-end;
-  padding: 5px 0;
+  padding: 5px;
+  width: 100%;
+
+  .refresh-btn {
+    float: left;
+  }
+
+  .delete-btn,
+  .add-btn {
+    float: right;
+  }
+
+  > .ant-btn + .ant-btn {
+    margin-left: 5px;
+  }
 }
 
 .ant-form-item-children .ant-input-number {

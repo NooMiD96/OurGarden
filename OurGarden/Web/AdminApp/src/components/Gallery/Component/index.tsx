@@ -1,14 +1,15 @@
 import React, { createRef } from "react";
 
-import { TState, TComponentState } from "../TState";
-import { IGallery, IGalleryDTO } from "../State";
-
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
-import Button from "@src/core/antd/Button";
+import GridButtonsControl from "@core/components/GridButtonsControl";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { ColDef } from "ag-grid-community";
+import { TState, TComponentState } from "../TState";
+import { IGallery, IGalleryDTO } from "../State";
 
 export class Gallery extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -17,7 +18,7 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
   };
   gridRef: React.RefObject<AgGrid<IGallery>> = createRef();
 
-  columns = [
+  columns: ColDef[] = [
     {
       headerName: "Название",
       field: "name"
@@ -25,8 +26,12 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
   ];
 
   componentDidMount() {
-    this.props.getGalleryList();
+    this.getGalleryList();
   }
+
+  getGalleryList = () => {
+    this.props.getGalleryList();
+  };
 
   onDoubleClickHandler = (data: IGallery) => {
     this.setState({
@@ -89,14 +94,11 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
             onClose={cleanErrorInner}
           />
         )}
-        <div className="buttons-control">
-          <Button type="primary" onClick={this.onAddNewItemClickHandler}>
-            Добавить
-          </Button>
-          <Button type="danger" onClick={this.onRemoveClickHandler}>
-            Удалить
-          </Button>
-        </div>
+        <GridButtonsControl
+          onAdd={this.onAddNewItemClickHandler}
+          onRefresh={this.getGalleryList}
+          onRemove={this.onRemoveClickHandler}
+        />
         <AgGrid
           ref={this.gridRef}
           columns={this.columns}

@@ -2,7 +2,7 @@ import React, { createRef } from "react";
 
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
-import Button from "@src/core/antd/Button";
+import GridButtonsControl from "@core/components/GridButtonsControl";
 import { confirm } from "@src/core/antd/Modal";
 import Spin from "@core/antd/Spin";
 
@@ -56,8 +56,12 @@ export class Order extends React.PureComponent<TState, TComponentState> {
   ];
 
   componentDidMount() {
-    this.props.getOrderList();
+    this.getOrderList();
   }
+
+  getOrderList = () => {
+    this.props.getOrderList();
+  };
 
   onDoubleClickHandler = (data: IOrder) => {
     this.setState({
@@ -79,13 +83,6 @@ export class Order extends React.PureComponent<TState, TComponentState> {
         let data = this.gridRef.current!.state.gridApi.getSelectedRows() as IOrder[];
         this.props.RemoveOrder(data[0].orderId);
       }
-    });
-  };
-
-  onAddNewItemClickHandler = () => {
-    this.setState({
-      editItem: null,
-      showModal: true
     });
   };
 
@@ -126,11 +123,10 @@ export class Order extends React.PureComponent<TState, TComponentState> {
             onClose={cleanErrorInner}
           />
         )}
-        <div className="buttons-control">
-          <Button type="danger" onClick={this.onRemoveClickHandler}>
-            Удалить
-          </Button>
-        </div>
+        <GridButtonsControl
+          onRefresh={this.getOrderList}
+          onRemove={this.onRemoveClickHandler}
+        />
         <AgGrid
           ref={this.gridRef}
           columns={this.columns}

@@ -2,7 +2,7 @@ import React, { createRef } from "react";
 
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
-import Button from "@src/core/antd/Button";
+import GridButtonsControl from "@core/components/GridButtonsControl";
 import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
@@ -31,8 +31,12 @@ export class Category extends React.PureComponent<TState, TComponentState> {
   ];
 
   componentDidMount() {
-    this.props.getCategoryList();
+    this.getCategoryList();
   }
+
+  getCategoryList = () => {
+    this.props.getCategoryList();
+  };
 
   onDoubleClickHandler = (data: ICategory) => {
     this.setState({
@@ -95,14 +99,11 @@ export class Category extends React.PureComponent<TState, TComponentState> {
             onClose={cleanErrorInner}
           />
         )}
-        <div className="buttons-control">
-          <Button type="primary" onClick={this.onAddNewItemClickHandler}>
-            Добавить
-          </Button>
-          <Button type="danger" onClick={this.onRemoveClickHandler}>
-            Удалить
-          </Button>
-        </div>
+        <GridButtonsControl
+          onAdd={this.onAddNewItemClickHandler}
+          onRefresh={this.getCategoryList}
+          onRemove={this.onRemoveClickHandler}
+        />
         <AgGrid
           ref={this.gridRef}
           columns={this.columns}
