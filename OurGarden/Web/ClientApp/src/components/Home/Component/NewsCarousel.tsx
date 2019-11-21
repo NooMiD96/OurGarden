@@ -24,9 +24,7 @@ export class NewsCarousel extends React.PureComponent<
   };
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ mount: true });
-    }, 0);
+    this.setState({ mount: true });
   }
 
   render() {

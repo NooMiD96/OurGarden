@@ -4,16 +4,19 @@ import HeaderHelmet from "@src/core/components/Helmet";
 
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
+import CardConfirm from "./CardConfirm";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
 
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
+import { IOrderUserInformation } from "../IModel";
 
 import "./style/UserCard.style.scss";
 
 export class UserCard extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     displayType: DisplayTypeEnum.CardInfo,
+    orderCreated: false,
     mounted: false
   };
 
@@ -35,33 +38,51 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
   getAdditionalClassName = () => {
     const { productList } = this.props;
-    const { displayType } = this.state;
+    const { displayType, orderCreated } = this.state;
 
     if (!productList || productList.length === 0) {
-      return "flex-grow-0";
+      return "card-empty";
+    }
+
+    if (orderCreated) {
+      return "card-confirm";
     }
 
     return displayType === DisplayTypeEnum.CardConfirmation ? "card-confirmation flex-grow-0" : "card-info flex-grow-1";
   };
 
+  sendOrder = (userInfo: IOrderUserInformation) => {
+    this.setState({
+      orderCreated: true,
+    });
+    this.props.sendOrder(userInfo);
+  }
+
   render() {
     const {
       productList,
       pending,
-      sendOrder,
       changeCountOfProduct,
       removeProductFromCard,
       сleanProductCard
     } = this.props;
 
-    const { displayType, mounted } = this.state;
+    const { displayType, orderCreated, mounted } = this.state;
 
     if (!mounted) {
       return <div />;
     }
 
-    const renderComponent
-      = displayType === DisplayTypeEnum.CardInfo ? (
+    let renderComponent = null;
+
+    if (orderCreated) {
+      renderComponent = (
+        <CardConfirm
+          pending={pending}
+        />
+      );
+    } else {
+      renderComponent = displayType === DisplayTypeEnum.CardInfo ? (
         <CardInfo
           productList={productList}
           removeProductFromCard={removeProductFromCard}
@@ -72,13 +93,13 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       ) : (
         <CardConfirmation
           productList={productList}
-          sendOrder={sendOrder}
+          sendOrder={this.sendOrder}
           onChangeOrderStep={this.onChangeOrderStep}
-          pending={pending}
         />
       );
+    }
 
-    const additionalClassName = this.getAdditionalClassName(productList);
+    const additionalClassName = this.getAdditionalClassName();
 
     return (
       <div className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}>

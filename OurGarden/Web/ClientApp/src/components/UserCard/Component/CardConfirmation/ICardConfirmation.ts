@@ -1,5 +1,4 @@
 import { FormComponentProps, WrappedFormUtils } from "@core/antd/Form";
-import { actionCreators } from "../../actions";
 import { DisplayTypeEnum } from "../../TState";
 import { IOrderUserInformation } from "../../IModel";
 import { IUserCardProduct } from "../../State";
@@ -17,7 +16,6 @@ export interface ICardConfirmationFormFields {
 
 export interface ICardConfirmation {
   productList: IUserCardProduct[];
-  pending: boolean;
-  sendOrder: typeof actionCreators.sendOrder;
+  sendOrder: (userInfo: IOrderUserInformation) => void;
   onChangeOrderStep: (payload: DisplayTypeEnum) => void;
 }

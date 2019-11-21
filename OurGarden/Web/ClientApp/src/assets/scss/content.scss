@@ -27,6 +27,15 @@
         padding-right: 8px;
       }
 
+      @media (max-width: 991px) {
+        > div,
+        > article {
+          &:not(.ant-layout-header) {
+            margin-bottom: 85px;
+          }
+        }
+      }
+
       .ant-layout-header {
         background: unset;
         line-height: inherit;

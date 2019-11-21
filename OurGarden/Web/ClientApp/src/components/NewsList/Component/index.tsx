@@ -60,7 +60,7 @@ export class NewsList extends React.PureComponent<TState, TComponentState> {
       <div className="content news-list-wrapper">
         <HeaderHelmet {...getSEOMetaData("newsList")} />
         {dataList.length === 0 && (
-          <div className="content white-background p25">
+          <div className="content white-background grey-border p25">
             На данный момент никаких активных акций нет.
           </div>
         )}

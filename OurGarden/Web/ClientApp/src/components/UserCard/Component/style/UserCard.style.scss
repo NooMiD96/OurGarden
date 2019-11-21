@@ -20,8 +20,14 @@
       min-height: 353px;
     }
   }
+
   &.card-info {
     min-height: 460px;
+  }
+
+  &.card-empty,
+  &.card-confirm {
+    margin-bottom: 0 !important;
   }
 
   h1.ant-typography {

@@ -13,6 +13,7 @@ export enum DisplayTypeEnum {
 // STATE OF COMPONENT
 export type TComponentState = {
   displayType: DisplayTypeEnum;
+  orderCreated: boolean;
   mounted: boolean;
 };
 // -----------------------------
