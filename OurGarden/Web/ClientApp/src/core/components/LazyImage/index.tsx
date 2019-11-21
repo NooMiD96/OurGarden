@@ -23,7 +23,6 @@ const LazyImage = ({ alt, src, ...props }: ILazyImage) => (
     placeholderSrc={placeholderSrc}
     effect="opacity"
     placeholder={<span />}
-    wrapperClassName
     {...props}
   />
 );
