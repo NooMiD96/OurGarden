@@ -11,8 +11,16 @@
     padding-left: 6rem;
     padding: 2rem 5rem;
 
-    @media (max-width: 580px) {
+    @media (max-width: 654px) {
       padding: 2rem 2rem;
+    }
+
+    @media (max-width: 654px) {
+      padding: 2rem 2rem;
+    }
+
+    @media (max-width: 360px) {
+      padding: 2rem 1rem;
     }
 
     h1 {
