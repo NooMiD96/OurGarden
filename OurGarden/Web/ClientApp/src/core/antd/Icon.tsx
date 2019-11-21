@@ -13,6 +13,8 @@ export interface ICustomIconState {
 }
 
 class CustomIcon extends React.PureComponent<ICustomIconProps, ICustomIconState> {
+  unmaunted = false;
+
   state: ICustomIconState = {
     svgProps: null,
   };
@@ -22,12 +24,18 @@ class CustomIcon extends React.PureComponent<ICustomIconProps, ICustomIconState>
     try {
       const svgProps = await getIconAsync(type);
 
-      this.setState({svgProps: svgProps});
+      if (!this.unmaunted) {
+        this.setState({ svgProps });
+      }
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         throw new Error(err.message);
       }
     }
+  }
+
+  componentWillUnmount() {
+    this.unmaunted = true;
   }
 
   render() {
