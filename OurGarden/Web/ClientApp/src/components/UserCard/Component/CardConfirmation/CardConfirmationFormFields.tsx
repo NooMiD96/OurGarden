@@ -5,21 +5,22 @@ import Icon from "@core/antd/Icon";
 import Input from "@src/core/antd/Input";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
+import PhoneNumberInput, { CISPhoneNumberRegExp } from "@src/core/components/PhoneNumberInput";
 
 import { ICardConfirmationFormFields } from "./ICardConfirmation";
 
 const colStyle = {
-  // xs	<576px
+  // xs <576px
   xs: { span: 24 },
-  // sm	≥576px
+  // sm ≥576px
   sm: { span: 24 },
-  // md	≥768px
+  // md ≥768px
   md: { span: 12 },
-  // lg	≥992px
+  // lg ≥992px
   lg: { span: 12 },
-  // xl	≥1200px
+  // xl ≥1200px
   xl: { span: 8 },
-  // xxl	≥1600px
+  // xxl ≥1600px
   xxl: { span: 8 }
 };
 
@@ -85,13 +86,13 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
               {
                 required: true,
                 message: "Введите ваш контактный телефон",
-                pattern: /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/
+                pattern: CISPhoneNumberRegExp
               }
             ]
           })(
-            <Input
+            <PhoneNumberInput
               placeholder="Телефон"
-              prefix={<Icon type="phone" className="input-icon" />}
+              prefix={<Icon type="mail" className="input-icon" />}
               onPressEnter={onSubmit}
             />
           )}
