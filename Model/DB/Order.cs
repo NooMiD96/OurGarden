@@ -12,7 +12,7 @@ namespace Model.DB
 
         [Required]
         [Phone]
-        [MaxLength(16)]
+        [MaxLength(32)]
         public string Phone { get; set; }
 
         [EmailAddress]

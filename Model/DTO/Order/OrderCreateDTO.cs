@@ -11,7 +11,7 @@ namespace Model.DTO.Order
 
         [Required]
         [Phone]
-        [MaxLength(16)]
+        [MaxLength(32)]
         public string Phone { get; set; }
 
         [Required]
