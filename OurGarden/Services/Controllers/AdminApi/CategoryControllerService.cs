@@ -63,9 +63,9 @@ namespace Web.Services.Controllers.AdminApi
             _photoHelper.MovePhotosToEntity(category, defaultPhotoList);
 
             await _photoHelper.LoadPhotosToEntity(category,
-                                                 entityDTO,
-                                                 scheduleAddedPhotoList,
-                                                 scheduleDeletePhotoList);
+                                                  entityDTO,
+                                                  scheduleAddedPhotoList,
+                                                  scheduleDeletePhotoList);
 
             await _context.SaveChangesAsync();
 

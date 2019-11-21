@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Model.Interfaces.DB;
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
-    public class Gallery
+    public class Gallery : IPhoto
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GalleryId { get; set; }
@@ -19,6 +18,9 @@ namespace Model.DB
         [Required]
         [MaxLength(128)]
         public string Alias { get; set; }
+
+        [Required]
+        public bool? IsVisible { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
     }

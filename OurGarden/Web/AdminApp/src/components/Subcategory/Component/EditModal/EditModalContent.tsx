@@ -3,38 +3,44 @@ import React, { useState } from "react";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
+import EditModalFooter from "@src/core/components/EditModalFooter";
 import Select from "@core/antd/Select";
 import Checkbox from "@core/antd/Checkbox";
 import MultiplyUploader from "@src/core/components/MultiplyUploader";
 
-import { filterOption } from "@core/utils/select";
 import localeText from "../Text";
+import { filterOption } from "@core/utils/select";
+import {
+  getAddFilesDTO,
+  getUpdateFilesDTO,
+  getDefaultFileList,
+  updatePreview
+} from "@src/core/utils/photo";
 
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { ICategoryDictionary } from "@src/components/Category/State";
 import { UploadFile } from "@core/antd/Upload";
+import { IUpdateFile } from "@src/core/utils/photo/IPhotoUtils";
 
 interface IProps extends FormComponentProps {
   item: ISubcategory | null;
   loading: boolean;
   dropdownData: ICategoryDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
-  handleClose: Function;
+  handleClose: () => void;
 }
 
 export const EditModalContent = (props: IProps) => {
   const [addFiles, setAddFiles] = useState([] as UploadFile[]);
-  const [updateFiles, setUpdateFiles] = useState(
-    [] as { uid: string; url: string }[]
-  );
+  const [updateFiles, setUpdateFiles] = useState([] as IUpdateFile[]);
   const [removeFiles, setRemoveFiles] = useState([] as string[]);
 
-  const { form, item } = props;
+  const { form } = props;
   const { getFieldDecorator } = form;
-  const { subcategoryId, categoryId, alias, photos, isVisible }
-    = item || ({ isVisible: true } as ISubcategory);
+
+  const item = props.item || ({ isVisible: true } as ISubcategory);
+  const { subcategoryId, categoryId, alias, photos, isVisible } = item;
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -44,33 +50,8 @@ export const EditModalContent = (props: IProps) => {
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
 
-    const addFilesDTO: File[] = [];
-    for (let i = 0; i < addFiles.length; i++) {
-      const file = addFiles[i];
-
-      if (file.originFileObj) {
-        addFilesDTO.push(file.originFileObj as File);
-
-        const previewFile: any = await fetch(file.preview!).then(res =>
-          res.blob()
-        );
-
-        previewFile.lastModified = new Date().getTime();
-        previewFile.name = file.name;
-        addFilesDTO.push(previewFile as File);
-      }
-    }
-
-    const updateFilesDTO: File[] = [];
-    for (let i = 0; i < updateFiles.length; i++) {
-      const file = updateFiles[i];
-
-      const previewFile: any = await fetch(file.url).then(res => res.blob());
-
-      previewFile.lastModified = new Date().getTime();
-      previewFile.name = file.uid;
-      updateFilesDTO.push(previewFile as File);
-    }
+    const addFilesDTO = await getAddFilesDTO(addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(updateFiles);
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
@@ -101,34 +82,11 @@ export const EditModalContent = (props: IProps) => {
     props.handleClose();
   };
 
-  const updatePreview = (fileUid: string, fileUrl: string) => {
-    const findIndex = updateFiles.findIndex(x => x.uid === fileUid);
-    if (findIndex !== -1) {
-      setUpdateFiles(
-        updateFiles.map((x, index) => {
-          if (index === findIndex) {
-            return { uid: fileUid, url: fileUrl };
-          } else {
-            return x;
-          }
-        })
-      );
-    } else {
-      setUpdateFiles([...updateFiles, { uid: fileUid, url: fileUrl }]);
-    }
+  const updatePreviewHandler = (uid: string, url: string) => {
+    updatePreview(updateFiles, setUpdateFiles, { uid, url });
   };
 
-  const defaultFileList = photos
-    ? photos.map(photo => {
-        return {
-          uid: photo.photoId,
-          name: photo.photoId,
-          status: "done",
-          url: photo.url,
-          preview: photo.previewUrl
-        } as UploadFile;
-      })
-    : [];
+  const defaultFileList = getDefaultFileList(photos);
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -181,19 +139,12 @@ export const EditModalContent = (props: IProps) => {
             removeFile={fileUid =>
               setAddFiles(addFiles.filter(x => x.uid !== fileUid))
             }
-            updatePreview={updatePreview}
+            updatePreview={updatePreviewHandler}
           />
         )}
       </FormItem>
 
-      <div className="ant-modal-footer">
-        <Button type="primary" onClick={onSubmit}>
-          Сохранить
-        </Button>
-        <Button type="danger" onClick={onClose}>
-          Отмена
-        </Button>
-      </div>
+      <EditModalFooter onSubmit={onSubmit} onClose={onClose} />
     </Form>
   );
 };

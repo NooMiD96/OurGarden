@@ -1,5 +1,6 @@
-import { IPhoto } from "@src/core/IPhoto";
+import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
 import { ICategoryDictionary } from "../Category/State";
+import { IDefaultState } from "@src/core/IDefaultState";
 
 // -----------------
 //#region STATE
@@ -16,7 +17,7 @@ export interface ISubcategory {
   photos: IPhoto[];
 }
 
-export interface ISubcategoryDTO {
+export interface ISubcategoryDTO extends IMultiplyPhotoDTO {
   categoryId: string | null;
   subcategoryId: string | null;
 
@@ -24,17 +25,11 @@ export interface ISubcategoryDTO {
 
   alias: string;
   isVisible: boolean;
-
-  addFiles: File[];
-  removeFiles: string[];
-  updateFiles: File[];
 }
 
-export interface ISubcategoryState {
+export interface ISubcategoryState extends IDefaultState {
   subcategoriesList: ISubcategory[];
   categoriesList: ICategoryDictionary[];
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: ISubcategoryState = {

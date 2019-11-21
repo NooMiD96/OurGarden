@@ -67,8 +67,9 @@ namespace Database.Repositories
         #region Gallery
         Task<IEnumerable<Gallery>> GetGalleries();
         Task<Gallery> GetGallery(int galleryId);
-        Task AddGallery(Gallery gallery);
-        Task UpdateGallery(Gallery gallery);
+        Task<Gallery> GetGallery(string galleryAlias);
+        ValueTask<(bool isSuccess, string error)> AddGallery(Gallery gallery);
+        ValueTask<(bool isSuccess, string error)> UpdateGallery(Gallery gallery);
         Task DeleteGallery(int galleryId);
         #endregion Gallery
 

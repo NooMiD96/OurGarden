@@ -2,9 +2,9 @@ import _isNil from "lodash.isnil";
 
 const generateFormBody = <
   T extends {
-    file: File | null;
-    addFiles: File[] | null;
-    updateFiles: File[] | null;
+    file?: File | null;
+    addFiles?: File[] | null;
+    updateFiles?: File[] | null;
   }
 >(
   data: T

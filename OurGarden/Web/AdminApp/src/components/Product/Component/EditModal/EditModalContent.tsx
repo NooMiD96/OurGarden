@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
+import EditModalFooter from "@src/core/components/EditModalFooter";
 import Select from "@core/antd/Select";
 import CKEditor from "@core/components/CKEditor";
 import InputNumber from "@core/antd/InputNumber";
@@ -12,11 +12,18 @@ import MultiplyUploader from "@src/core/components/MultiplyUploader";
 
 import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
+import {
+  getAddFilesDTO,
+  getUpdateFilesDTO,
+  getDefaultFileList,
+  updatePreview
+} from "@src/core/utils/photo";
 
 import { IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { ICategoryDictionary } from "@components/Category/State";
 import { UploadFile } from "@core/antd/Upload";
+import { IUpdateFile } from "@src/core/utils/photo/IPhotoUtils";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
@@ -41,15 +48,14 @@ const getSubcategoryList = (
 export const EditModalContent = (props: IProps) => {
   const ckEditor: React.RefObject<CKEditor> = useRef(null);
   const [addFiles, setAddFiles] = useState([] as UploadFile[]);
-  const [updateFiles, setUpdateFiles] = useState(
-    [] as { uid: string; url: string }[]
-  );
+  const [updateFiles, setUpdateFiles] = useState([] as IUpdateFile[]);
   const [removeFiles, setRemoveFiles] = useState([] as string[]);
 
-  const { form, item, categoryList } = props;
+  const { form, categoryList } = props;
   const { getFieldDecorator } = form;
-  const { categoryId, alias, price, description, photos, isVisible }
-    = item || ({ isVisible: true } as IProduct);
+
+  const item = props.item || ({ isVisible: true } as IProduct);
+  const { categoryId, alias, price, description, photos, isVisible } = item;
   let { subcategoryId } = item || ({} as IProduct);
 
   const selectedCategoryId = form.isFieldTouched("newCategoryId")
@@ -79,33 +85,8 @@ export const EditModalContent = (props: IProps) => {
       description
     });
 
-    const addFilesDTO: File[] = [];
-    for (let i = 0; i < addFiles.length; i++) {
-      const file = addFiles[i];
-
-      if (file.originFileObj) {
-        addFilesDTO.push(file.originFileObj as File);
-
-        const previewFile: any = await fetch(file.preview!).then(res =>
-          res.blob()
-        );
-
-        previewFile.lastModified = new Date().getTime();
-        previewFile.name = file.name;
-        addFilesDTO.push(previewFile as File);
-      }
-    }
-
-    const updateFilesDTO: File[] = [];
-    for (let i = 0; i < updateFiles.length; i++) {
-      const file = updateFiles[i];
-
-      const previewFile: any = await fetch(file.url).then(res => res.blob());
-
-      previewFile.lastModified = new Date().getTime();
-      previewFile.name = file.uid;
-      updateFilesDTO.push(previewFile as File);
-    }
+    const addFilesDTO = await getAddFilesDTO(addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(updateFiles);
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
@@ -135,34 +116,11 @@ export const EditModalContent = (props: IProps) => {
     props.handleClose();
   };
 
-  const updatePreview = (fileUid: string, fileUrl: string) => {
-    const findIndex = updateFiles.findIndex(x => x.uid === fileUid);
-    if (findIndex !== -1) {
-      setUpdateFiles(
-        updateFiles.map((x, index) => {
-          if (index === findIndex) {
-            return { uid: fileUid, url: fileUrl };
-          } else {
-            return x;
-          }
-        })
-      );
-    } else {
-      setUpdateFiles([...updateFiles, { uid: fileUid, url: fileUrl }]);
-    }
+  const updatePreviewHandler = (uid: string, url: string) => {
+    updatePreview(updateFiles, setUpdateFiles, { uid, url });
   };
 
-  const defaultFileList = photos
-    ? photos.map(photo => {
-        return {
-          uid: photo.photoId,
-          name: photo.photoId,
-          status: "done",
-          url: photo.url,
-          preview: photo.previewUrl
-        } as UploadFile;
-      })
-    : [];
+  const defaultFileList = getDefaultFileList(photos);
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -263,7 +221,7 @@ export const EditModalContent = (props: IProps) => {
             removeFile={fileUid =>
               setAddFiles(addFiles.filter(x => x.uid !== fileUid))
             }
-            updatePreview={updatePreview}
+            updatePreview={updatePreviewHandler}
           />
         )}
       </FormItem>
@@ -276,14 +234,7 @@ export const EditModalContent = (props: IProps) => {
         })(<CKEditor ref={ckEditor} data={description} />)}
       </FormItem>
 
-      <div className="ant-modal-footer">
-        <Button type="primary" onClick={onSubmit}>
-          Сохранить
-        </Button>
-        <Button type="danger" onClick={onClose}>
-          Отмена
-        </Button>
-      </div>
+      <EditModalFooter onSubmit={onSubmit} onClose={onClose} />
     </Form>
   );
 };

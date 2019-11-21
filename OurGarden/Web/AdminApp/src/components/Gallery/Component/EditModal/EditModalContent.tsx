@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
-import Upload, { UploadFile, UploadChangeParam } from "@core/antd/Upload";
-import Modal from "@core/antd/Modal";
+import EditModalFooter from "@src/core/components/EditModalFooter";
+import Checkbox from "@core/antd/Checkbox";
+import MultiplyUploader from "@src/core/components/MultiplyUploader";
 
 import localeText from "../Text";
-import { getBase64 } from "@core/helpers/files/index";
+import {
+  getAddFilesDTO,
+  getUpdateFilesDTO,
+  updatePreview,
+  getDefaultFileList
+} from "@src/core/utils/photo";
 
 import { IGallery, IGalleryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
+import { UploadFile } from "@core/antd/Upload";
+import { IUpdateFile } from "@src/core/utils/photo/IPhotoUtils";
 
 interface IProps extends FormComponentProps {
   item: IGallery | null;
@@ -20,162 +27,92 @@ interface IProps extends FormComponentProps {
   handleClose: Function;
 }
 
-export type IState = {
-  addFiles: UploadFile[];
-  removeFiles: string[];
-  previewVisible: boolean;
-  previewImage?: string;
-};
+export const EditModalContent = (props: IProps) => {
+  const [addFiles, setAddFiles] = useState([] as UploadFile[]);
+  const [updateFiles, setUpdateFiles] = useState([] as IUpdateFile[]);
+  const [removeFiles, setRemoveFiles] = useState([] as string[]);
 
-const onSubmitHandler = (
-  state: IState,
-  props: IProps,
-  e?: IPressEnterEvent | React.FormEvent
-) => {
-  e && e.preventDefault();
+  const { form } = props;
+  const { getFieldDecorator } = form;
 
-  const { form, item } = props;
+  const item = props.item || ({ isVisible: true } as IGallery);
+  const { galleryId, name, photos, isVisible } = item;
 
-  const galleryId = item ? item.galleryId : 0;
-  const name = form.getFieldValue("name");
-  const addFiles = state.addFiles
-    .filter((value: UploadFile) => value.originFileObj)
-    .map((value: UploadFile) => value.originFileObj as File);
-  const removeFiles = state.removeFiles;
+  const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
+    e && e.preventDefault();
 
-  props.form.validateFields((err: any, _values: any) => {
-    if (!err) {
-      props.handleCreateSubmit({
-        galleryId: galleryId,
-        name: name,
-        addFiles: addFiles,
-        removeFiles: removeFiles
-      });
-    }
-  });
-};
+    const name = form.getFieldValue("name");
+    const isVisible = form.getFieldValue("name");
 
-const onClose = (props: IProps, e?: IPressEnterEvent | React.FormEvent) => {
-  e && e.preventDefault();
+    const addFilesDTO = await getAddFilesDTO(addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(updateFiles);
 
-  props.handleClose();
-};
+    props.form.validateFields((err: any, _values: any) => {
+      if (!err) {
+        props.handleCreateSubmit({
+          galleryId,
+          name,
+          isVisible,
 
-export class EditModalContent extends React.Component<IProps, IState> {
-  state: IState = {
-    addFiles: [],
-    removeFiles: [],
-    previewVisible: false,
-    previewImage: undefined
-  };
-
-  onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
-    onSubmitHandler(this.state, this.props, e);
-
-  removeHandler = (file: UploadFile) => {
-    if (!file.originFileObj) {
-      const { removeFiles } = this.state;
-      this.setState({
-        removeFiles: [file.name, ...removeFiles]
-      });
-    }
-  };
-
-  successHandler = (info: UploadChangeParam) => {
-    if (info.fileList) {
-      this.setState({
-        addFiles: info.fileList
-      });
-    }
-  };
-
-  cancelHandler = () => this.setState({ previewVisible: false });
-
-  previewHandler = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true
+          addFiles: addFilesDTO,
+          removeFiles,
+          updateFiles: updateFilesDTO
+        });
+      }
     });
   };
 
-  render() {
-    const { form, item } = this.props;
-    const { previewVisible, previewImage } = this.state;
+  const onClose = () => {
+    form.resetFields();
+    props.handleClose();
+  };
 
-    const { getFieldDecorator } = form;
-    const { name, photos } = item || ({} as IGallery);
-    const data = {
-      listType: "picture-card",
-      defaultFileList: photos
-        ? photos.map((photo, index) => {
-            return {
-              uid: "-" + index,
-              name: photo.name,
-              status: "done",
-              url: photo.url
-            };
-          })
-        : []
-    };
+  const updatePreviewHandler = (uid: string, url: string) => {
+    updatePreview(updateFiles, setUpdateFiles, { uid, url });
+  };
 
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
+  const defaultFileList = getDefaultFileList(photos);
 
-    return (
-      <Form layout="vertical" onSubmit={this.onSubmit}>
-        <FormItem>
-          {getFieldDecorator("name", {
-            initialValue: name,
-            rules: [{ required: true, message: localeText._rule_require_name }]
-          })(
-            <Input
-              prefix={<Icon type="edit" className="input-prefix-color" />}
-              placeholder={localeText._label_name}
-            />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator("addFiles", {
-            rules: [{ required: true, message: localeText._rule_require_photo }]
-          })(
-            <Upload
-              {...data}
-              multiple
-              onChange={this.successHandler}
-              onRemove={this.removeHandler}
-              onPreview={this.previewHandler}
-            >
-              {uploadButton}
-            </Upload>
-          )}
-        </FormItem>
-        <div className="ant-modal-footer">
-          <Modal
-            visible={previewVisible}
-            footer={null}
-            onCancel={this.cancelHandler}
-          >
-            <img alt="example" style={{ width: "100%" }} src={previewImage} />
-          </Modal>
+  return (
+    <Form layout="vertical" onSubmit={onSubmit}>
+      <FormItem>
+        {getFieldDecorator("name", {
+          initialValue: name,
+          rules: [{ required: true, message: localeText._rule_require_name }]
+        })(
+          <Input
+            prefix={<Icon type="edit" className="input-prefix-color" />}
+            placeholder={localeText._label_name}
+          />
+        )}
+      </FormItem>
 
-          <Button type="primary" onClick={this.onSubmit}>
-            Сохранить
-          </Button>
-          <Button type="danger" onClick={e => onClose(this.props, e)}>
-            Отмена
-          </Button>
-        </div>
-      </Form>
-    );
-  }
-}
+      <FormItem>
+        {getFieldDecorator("isVisible", {
+          initialValue: isVisible,
+          valuePropName: "checked"
+        })(<Checkbox>Категория видна пользователю</Checkbox>)}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("addFiles", {
+          rules: [{ required: false, message: localeText._rule_require_photo }]
+        })(
+          <MultiplyUploader
+            defaultFileList={defaultFileList}
+            updateAddedList={files => setAddFiles(files)}
+            updateRemovedList={file => setRemoveFiles([...removeFiles, file])}
+            removeFile={fileUid =>
+              setAddFiles(addFiles.filter(x => x.uid !== fileUid))
+            }
+            updatePreview={updatePreviewHandler}
+          />
+        )}
+      </FormItem>
+
+      <EditModalFooter onSubmit={onSubmit} onClose={onClose} />
+    </Form>
+  );
+};
 
 export default Form.create<IProps>()(EditModalContent);

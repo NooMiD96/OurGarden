@@ -1,4 +1,5 @@
-import { IPhoto } from "@src/core/IPhoto";
+import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
+import { IDefaultState } from "@src/core/IDefaultState";
 
 // -----------------
 //#region STATE
@@ -6,20 +7,18 @@ export interface IGallery {
   galleryId: number;
   name: string;
   alias: string;
+  isVisible: boolean;
   photos: IPhoto[];
 }
 
-export interface IGalleryDTO {
+export interface IGalleryDTO extends IMultiplyPhotoDTO {
   galleryId: number;
   name: string;
-  addFiles: File[];
-  removeFiles: string[] | null;
+  isVisible: boolean;
 }
 
-export interface IGalleryState {
+export interface IGalleryState extends IDefaultState {
   listItem: IGallery[];
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: IGalleryState = {

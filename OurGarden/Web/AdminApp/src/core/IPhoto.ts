@@ -5,3 +5,9 @@ export interface IPhoto {
   url: string;
   previewUrl: string;
 }
+
+export interface IMultiplyPhotoDTO {
+  addFiles: File[];
+  removeFiles: string[];
+  updateFiles: File[];
+}

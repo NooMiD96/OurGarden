@@ -488,29 +488,40 @@ namespace Database.Repositories
         #region Gallery
         public async Task<IEnumerable<Gallery>> GetGalleries() =>
             await _context.Gallery
-            .Include(x => x.Photos)
-            .ToListAsync();
+                .Include(x => x.Photos)
+                .ToListAsync();
 
         public async Task<Gallery> GetGallery(int galleryId) =>
             await _context.Gallery
-            .Include(x => x.Photos)
-            .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
+                .Include(x => x.Photos)
+                .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
 
-        public async Task AddGallery(Gallery gallery)
+        public async Task<Gallery> GetGallery(string galleryAlias) =>
+            await _context.Gallery
+                .Include(x => x.Photos)
+                .FirstOrDefaultAsync(x => x.Alias == galleryAlias);
+
+        public async ValueTask<(bool isSuccess, string error)> AddGallery(Gallery gallery)
         {
-            var chek = await _context.Gallery.FirstOrDefaultAsync(x => x.GalleryId == gallery.GalleryId);
-            if (chek != null)
-            {
-                throw new Exception();
-            }
-            await _context.Gallery.AddAsync(gallery);
+            var entity = await _context
+                .Gallery
+                .FirstOrDefaultAsync(x => x.GalleryId == gallery.GalleryId || x.Alias == gallery.Alias);
+
+            if (entity != null)
+                return (false, "Галерея с таким наименованием уже существует");
+
+            _context.Add(gallery);
             await _context.SaveChangesAsync();
+
+            return (true, null);
         }
 
-        public async Task UpdateGallery(Gallery gallery)
+        public async ValueTask<(bool isSuccess, string error)> UpdateGallery(Gallery gallery)
         {
-            _context.Gallery.Update(gallery);
+            _context.Update(gallery);
             await _context.SaveChangesAsync();
+
+            return (true, null);
         }
 
         public async Task DeleteGallery(int galleryId)

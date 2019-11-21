@@ -1,5 +1,6 @@
-import { IPhoto } from "@src/core/IPhoto";
+import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
 import { ICategoryDictionary } from "@components/Category/State";
+import { IDefaultState } from "@src/core/IDefaultState";
 
 // -----------------
 //#region STATE
@@ -14,7 +15,7 @@ export interface IProduct {
   photos: IPhoto[];
 }
 
-export interface IProductDTO {
+export interface IProductDTO extends IMultiplyPhotoDTO {
   categoryId: string | null;
   subcategoryId: string | null;
   productId: string | null;
@@ -26,17 +27,11 @@ export interface IProductDTO {
   isVisible: boolean;
   price: number;
   description: string;
-
-  addFiles: File[];
-  removeFiles: string[];
-  updateFiles: File[];
 }
 
-export interface IProductState {
+export interface IProductState extends IDefaultState {
   listItem: IProduct[];
   categoryList: ICategoryDictionary[];
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: IProductState = {
