@@ -4,6 +4,8 @@ import AntdSider from "@core/antd/LayoutSider";
 import { Title } from "@src/core/antd/Typography";
 import CategoryList from "./CategoryList";
 
+import { MobileContext } from "@src/core/constants";
+
 import { TState, TComponentState } from "../TState";
 
 export class Sider extends React.PureComponent<TState, TComponentState> {
@@ -23,7 +25,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
         breakpoint="md"
         collapsedWidth="0"
         width={250}
-        defaultCollapsed
+        defaultCollapsed={this.context}
       >
         <div className="sider-catalog-header">
           <Title level={4}>Каталог</Title>
@@ -33,3 +35,5 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
     );
   }
 }
+
+Sider.contextType = MobileContext;

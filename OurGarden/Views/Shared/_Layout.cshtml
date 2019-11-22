@@ -25,15 +25,8 @@
     <environment include="Production">
         <script src="//code.jivosite.com/widget.js" data-jv-id="b8MJ1ut90X" async></script>
     </environment>
-
-    @foreach (var stylesheetSrc in StartUpVendors.CssVendors)
-    {
-        <link rel="stylesheet" href="@stylesheetSrc" asp-append-version="true" />
-    }
 </head>
 <body>
     @RenderBody()
-
-    @RenderSection("scripts", required: true)
 </body>
 </html>

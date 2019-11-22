@@ -1,13 +1,10 @@
 ﻿<div id="react-app"
-     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")>
+     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
+     asp-prerender-data="new {
+        isMobileBrowser = @ViewData["isMobileBrowser"],
+    }"
+>
     <div class="styles"></div>
     <div class="scriptes"></div>
     <div id="react-content"></div>
 </div>
-
-@section scripts {
-    @foreach (var scriptSrc in StartUpVendors.JsVendors)
-    {
-        <script src="@scriptSrc" asp-append-version="true"></script>
-    }
-}

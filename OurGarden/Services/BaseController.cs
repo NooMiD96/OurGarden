@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Text;
 
 namespace Web.Controllers
 {
@@ -19,6 +20,9 @@ namespace Web.Controllers
 
         public IActionResult LogBadRequest(ILogger logger, string apiLocate, string error)
         {
+            byte[] bytes = Encoding.Default.GetBytes(error);
+            error = Encoding.UTF8.GetString(bytes);
+
             logger.LogError($"{DateTime.Now}:\n\t{apiLocate}\n\t{error}");
             return BadRequest(error);
         }

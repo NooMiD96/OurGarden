@@ -7,6 +7,8 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+using static Core.Utils.WebUtils;
+
 namespace Web.Controllers
 {
     public class HomeController : Controller
@@ -25,6 +27,7 @@ namespace Web.Controllers
         {
             var (title, metaDescription) = await GetSEOInfo();
 
+            ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
             ViewData["title"] = title;
             ViewData["metaDescription"] = metaDescription;
 

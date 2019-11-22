@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 //#region Style
 //rgb(191, 190, 190)
 export const lightGreyColor = "#bfbebe";
@@ -65,3 +67,5 @@ export const getIconAsync = async (type: TIcons) => {
   }
 };
 //#endregion
+
+export const MobileContext = createContext(true);

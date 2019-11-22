@@ -33,7 +33,12 @@ const getAssetsModuleRules = (
   {
     test: /\.scss$/,
     use: [
-      MiniCssExtractPlugin.loader,
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          hmr: !env || !env.prod,
+        },
+      },
       "css-loader",
       {
         loader: "sass-loader",
@@ -46,7 +51,12 @@ const getAssetsModuleRules = (
   {
     test: /\.css$/,
     use: [
-      MiniCssExtractPlugin.loader,
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          hmr: !env || !env.prod,
+        },
+      },
       require.resolve("css-loader")
     ]
   },

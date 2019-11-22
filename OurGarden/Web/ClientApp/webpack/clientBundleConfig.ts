@@ -2,7 +2,6 @@
 
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import ManifestPlugin from "webpack-manifest-plugin";
 import merge from "webpack-merge";
 import path from "path";
 import { Configuration, Plugin } from "webpack";
@@ -10,6 +9,8 @@ import { ReactLoadablePlugin } from "react-loadable/webpack";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
+
+const ReactLoadableSSRAddon = require('react-loadable-ssr-addon');
 
 const pathToPublic = `${path.join(__dirname, "../../../", "./wwwroot/client/client")}`;
 
@@ -31,14 +32,11 @@ const clientPlugins = (
     analyzerPort: 5500,
   }),
 
-  // https://github.com/danethurber/webpack-manifest-plugin
-  new ManifestPlugin({
-    fileName: "manifest-assets.json",
-    filter: (fileDescriptor) => fileDescriptor.name !== "service-worker.js"
-  }),
-
   new ReactLoadablePlugin({
     filename: `${pathToPublic}/react-loadable.json`,
+  }),
+  new ReactLoadableSSRAddon({
+    filename: `${pathToPublic}/assets-manifest.json`,
   }),
 ]);
 
