@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using MimeKit;
@@ -18,14 +19,18 @@ namespace Services.EMail
         private readonly EmailSettings _emailSettings;
         private readonly IHostingEnvironment _env;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ILogger _logger;
+        private const string CONTROLLER_LOCATE = "AdminApi.CategoryController";
 
         public EmailSender(IOptions<EmailSettings> emailSettings,
+                           ILogger<EmailSender> logger,
                            IHostingEnvironment env,
                            IServiceScopeFactory scopeFactory)
         {
             _emailSettings = emailSettings.Value;
             _env = env;
             _scopeFactory = scopeFactory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -37,6 +42,8 @@ namespace Services.EMail
         /// <returns></returns>
         public async Task SendEmailAsync(string email, string subject, MimeEntity message)
         {
+            const string API_LOCATE = CONTROLLER_LOCATE + ".SendEmailAsync";
+
             try
             {
                 var mimeMessage = new MimeMessage();
@@ -73,8 +80,8 @@ namespace Services.EMail
             }
             catch (Exception ex)
             {
-                // TODO: handle exception
-                throw new InvalidOperationException(ex.Message);
+                _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+                //throw new InvalidOperationException(ex.Message);
             }
         }
     }
