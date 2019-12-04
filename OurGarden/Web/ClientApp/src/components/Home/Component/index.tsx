@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import Loading from "@src/core/components/Loading";
-import HeaderHelmet from "@src/core/components/Helmet";
+import LoadingHOC from "@core/HOC/LoadingHOC";
+import HeaderHelmet from "@core/components/Helmet";
 
 import NewsCarousel from "./NewsCarousel";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
+import { getSEOMetaData } from "@core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
 
@@ -35,11 +35,11 @@ export class Home extends React.PureComponent<TState, TComponentState> {
         <HeaderHelmet
           {...getSEOMetaData("home")}
         />
-        {pending ? (
-          <Loading />
-        ) : (
+        <LoadingHOC
+          pending={pending}
+        >
           <NewsCarousel push={push} displayList={displayList} />
-        )}
+        </LoadingHOC>
       </div>
     );
   }

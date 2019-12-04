@@ -81,6 +81,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
           onPreview={this.previewHandler}
           showUploadList={UPLOAD_LIST}
           customRequest={customRequest}
+          accept="image/png, image/jpeg"
         >
           <UploadButton />
         </Upload>

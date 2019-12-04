@@ -11,7 +11,7 @@ interface IEditModalProps {
   item: ISubcategory | null;
   dropdownData: ICategoryDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
-  handleClose: Function;
+  handleClose: () => void;
 }
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {

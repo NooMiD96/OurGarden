@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Push } from "connected-react-router";
+import { push as pushAction } from "connected-react-router";
 
 import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
 import LazyImage from "@core/components/LazyImage";
+import { Paragraph } from "@src/core/antd/Typography";
 
-import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+import { actionsList } from "@components/UserCard/actions";
+import { META_TITLE_PARAMS } from "@src/core/utils/CardList";
 
 import { IProduct } from "@components/Product/State";
 import { IMouseClickEvent } from "@core/IEvents";
-import { actionsList } from "@components/UserCard/actions";
+import { TDataItem } from "@src/core/components/CatalogCardList/ICatalogCard";
 
 export interface IProductCard {
   pending: boolean;
-  product: IProduct & { link: string };
-  push: Push;
+  item: TDataItem<IProduct>;
+  push: typeof pushAction;
   addToCard: typeof actionsList.addProductToCard;
+  onCardClick?: () => void;
 }
 
 const ProductCard = (props: IProductCard) => {
-  const { pending, product, push } = props;
+  const {
+    pending, item, push, onCardClick
+  } = props;
   const [itemCount, setItemCount] = useState("1");
 
   const addToCardFn = (e: IMouseClickEvent) => {
@@ -31,7 +36,7 @@ const ProductCard = (props: IProductCard) => {
 
     props.addToCard({
       count: Number.parseInt(itemCount, 10),
-      product
+      product: item
     });
   };
 
@@ -39,9 +44,17 @@ const ProductCard = (props: IProductCard) => {
     <AddToCard
       itemCount={itemCount}
       setItemCount={setItemCount}
-      product={product}
+      product={item}
       addToCard={addToCardFn}
     />
+  );
+
+  const title = (
+    <Paragraph
+      ellipsis={META_TITLE_PARAMS}
+    >
+      {item.alias}
+    </Paragraph>
   );
 
   return (
@@ -49,13 +62,19 @@ const ProductCard = (props: IProductCard) => {
       loading={pending}
       hoverable
       cover={
-        <LazyImage alt={product.alias} src={getPreviewPhotoSrc(product)} />
+        <LazyImage alt={item.alias} src={item.photoUrl} />
       }
       onClick={() => {
-        push(product.link);
+        if (onCardClick) {
+          onCardClick();
+        }
+        push(item.link);
       }}
     >
-      <Card.Meta title={product.alias} description={description} />
+      <Card.Meta
+        title={title}
+        description={description}
+      />
     </Card>
   );
 };

@@ -4,6 +4,7 @@ import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
+import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { TState } from "../TState";
 
@@ -24,10 +25,16 @@ export class Category extends React.PureComponent<TState, {}> {
   render() {
     const { categoryList, push } = this.props;
 
+    const dataList = categoryList.map((x) => ({
+      ...x,
+      link: `/Catalog/${x.categoryId}`,
+      photoUrl: getPreviewPhotoSrc(x)
+    }));
+
     return (
       <>
         <HeaderHelmet {...getSEOMetaData("category")} />
-        <CatalogCardList dataList={categoryList} push={push} />
+        <CatalogCardList dataList={dataList} push={push} />
       </>
     );
   }

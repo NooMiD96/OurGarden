@@ -7,9 +7,7 @@ import { actionCreators as userCardActions } from "@components/UserCard/actions"
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {
-  itemCount: string;
-};
+export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IProductState

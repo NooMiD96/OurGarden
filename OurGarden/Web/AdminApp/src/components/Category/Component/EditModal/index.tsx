@@ -10,7 +10,7 @@ interface IEditModalProps {
   isShow: boolean;
   item: ICategory | null;
   handleCreateSubmit: (data: ICategoryDTO) => void;
-  handleClose: Function;
+  handleClose: () => void;
 }
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {

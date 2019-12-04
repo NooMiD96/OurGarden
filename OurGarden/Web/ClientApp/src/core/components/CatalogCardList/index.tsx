@@ -2,64 +2,73 @@ import React from "react";
 
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
-import Card from "@core/antd/Card";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
-import LazyImage from "@core/components/LazyImage";
+import ItemCard from "./ItemCard";
 
-import { cardStyle } from "./CardStyle";
+import { PAGING_DEFAULT_PARAMS, CARD_GRID_STYLE } from "@core/utils/CardList";
 
-import { getPreviewPhotoSrc } from "@core/utils/photo";
-
-import { ICatalogProps, ICatalogState, IDisplayItem } from "./ICatalogCard";
-import { ISubcategory } from "@src/components/Subcategory/State";
-import { ICategory } from "@src/components/Category/State";
+import {
+  ICatalogProps, ICatalogState, TDataItem, ICardComponent
+} from "./ICatalogCard";
 
 import "./style/CatalogCard.style.scss";
 
-export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
-  constructor(props: ICatalogProps) {
+export class Catalog<T> extends React.PureComponent<ICatalogProps<T>, ICatalogState<T>> {
+  constructor(props: ICatalogProps<T>) {
     super(props);
 
-    let displayList: IDisplayItem[] = [];
-    if (props.dataList.length) {
-      const item = props.dataList[0];
-
-      if ((item as ISubcategory).subcategoryId) {
-        displayList = (props.dataList as ISubcategory[]).map<IDisplayItem>(
-          (x: ISubcategory) => ({
-            link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
-            alias: x.alias,
-            photoUrl: getPreviewPhotoSrc(x)
-          })
-        );
-      } else {
-        displayList = (props.dataList as ICategory[]).map<IDisplayItem>(
-          (x: ICategory) => ({
-            link: `/Catalog/${x.categoryId}`,
-            alias: x.alias,
-            photoUrl: getPreviewPhotoSrc(x)
-          })
-        );
-      }
-    }
-
     this.state = {
-      page: 1,
-      pageSize: 6,
-      displayList
+      ...(props.paginationParams || PAGING_DEFAULT_PARAMS),
     };
   }
 
-  onChange = (page: number, pageSize: number = this.state.pageSize) => {
+  onPageChange = (page: number, pageSize: number = this.state.pageSize) => {
     this.setState({
       page,
       pageSize
     });
   };
 
+  getItemToDisplay = (item: TDataItem<T>) => {
+    const {
+      push,
+      useCardGrid = true,
+      colClassName,
+      cardComponent = ((props: ICardComponent<T>) => (
+        <ItemCard
+          item={props.item}
+          push={props.push}
+          onCardClick={props.onCardClick}
+        />
+      ))
+    } = this.props;
+
+    const cardGrid = useCardGrid ? CARD_GRID_STYLE : {};
+
+    return (
+      <Col
+        key={item.link}
+        className={`card-wrapper ${colClassName || ""}`}
+        title={item.alias}
+        {...cardGrid}
+      >
+        {cardComponent({
+          item,
+          push,
+          onCardClick: () => this.onPageChange(1)
+        })}
+      </Col>
+    );
+  }
+
   render() {
-    const { page, pageSize, displayList } = this.state;
+    const { dataList, rowGutter = 16 } = this.props;
+    const { page, pageSize } = this.state;
+
+    const itemsToDisplay = dataList
+      .slice((page - 1) * pageSize, page * pageSize)
+      .map(this.getItemToDisplay);
 
     return (
       <div className="catalog-card-list content">
@@ -69,29 +78,12 @@ export class Catalog extends React.PureComponent<ICatalogProps, ICatalogState> {
           defaultCurrent={page}
           defaultPageSize={pageSize}
           hideOnSinglePage
-          total={displayList.length}
-          onChange={this.onChange}
+          total={dataList.length}
+          onChange={this.onPageChange}
           showLessItems
         />
-        <Row type="flex" gutter={16}>
-          {displayList
-            .slice((page - 1) * pageSize, page * pageSize)
-            .map((x: IDisplayItem) => (
-              <Col {...cardStyle} key={x.link} className="card-wrapper">
-                <Card
-                  hoverable
-                  cover={<LazyImage alt={x.alias} src={x.photoUrl} />}
-                  onClick={() => {
-                    this.setState({
-                      page: 1
-                    });
-                    this.props.push(x.link);
-                  }}
-                >
-                  <Card.Meta title={x.alias} />
-                </Card>
-              </Col>
-            ))}
+        <Row type="flex" gutter={rowGutter}>
+          {itemsToDisplay}
         </Row>
       </div>
     );

@@ -1,20 +1,28 @@
 import { push } from "connected-react-router";
 
-import { ISubcategory } from "@src/components/Subcategory/State";
-import { ICategory } from "@src/components/Category/State";
-
-export interface ICatalogProps {
-  dataList: (ICategory | ISubcategory)[];
-  push: typeof push;
-}
-
-export interface IDisplayItem {
+export type TDataItem<T> = T & {
   link: string;
   alias: string;
   photoUrl: string;
 }
-export interface ICatalogState {
+
+export interface ICardComponent<T> {
+  item: TDataItem<T>;
+  push: typeof push;
+  onCardClick?: () => void;
+}
+
+export interface ICatalogProps<T> {
+  dataList: TDataItem<T>[];
+  push: typeof push;
+  cardComponent?: (props: ICardComponent<T>) => JSX.Element;
+  useCardGrid?: boolean;
+  colClassName?: string;
+  paginationParams?: { page: number, pageSize: number };
+  rowGutter?: number;
+}
+
+export interface ICatalogState<T> {
   page: number;
   pageSize: number;
-  displayList: IDisplayItem[];
 }

@@ -6,10 +6,7 @@ import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {
-  page: number;
-  pageSize: number;
-};
+export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IProductListState

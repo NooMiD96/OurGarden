@@ -194,7 +194,7 @@ export const EditModalContent = (props: IProps) => {
         {getFieldDecorator("isVisible", {
           initialValue: isVisible,
           valuePropName: "checked"
-        })(<Checkbox>Категория видна пользователю</Checkbox>)}
+        })(<Checkbox>Продукт виден пользователю</Checkbox>)}
       </FormItem>
 
       <FormItem>

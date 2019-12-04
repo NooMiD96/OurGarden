@@ -1,22 +1,17 @@
 import React from "react";
 
-import Row from "@core/antd/Row";
-import Col from "@core/antd/Col";
-import Loading from "@core/components/Loading";
-import Pagination from "@core/antd/Pagination";
-import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
-import HeaderHelmet from "@src/core/components/Helmet";
+import LoadingHOC from "@core/HOC/LoadingHOC";
+import HeaderHelmet from "@core/components/Helmet";
+import CatalogCardList from "@core/components/CatalogCardList";
 
 import ProductCard from "./ProductCard";
 
 import { getSEOMetaData } from "@src/core/utils/seoInformation";
-import { cardStyle } from "@core/components/CatalogCardList/CardStyle";
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
 
-import "@core/components/CatalogCardList/style/CatalogCard.style.scss";
+import { TState } from "../TState";
 
-import { TState, TComponentState } from "../TState";
-
-export class ProductList extends React.PureComponent<TState, TComponentState> {
+export class ProductList extends React.PureComponent<TState, {}> {
   constructor(props: TState) {
     super(props);
 
@@ -37,11 +32,6 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
       categoryId: params.categoryId,
       subcategoryId: params.subcategoryId
     });
-
-    this.state = {
-      page: 1,
-      pageSize: 6
-    };
   }
 
   componentDidUpdate(prevProps: TState) {
@@ -60,66 +50,43 @@ export class ProductList extends React.PureComponent<TState, TComponentState> {
     }
   }
 
-  onChange = (page: number, pageSize: number = this.state.pageSize) => {
-    this.setState({
-      page,
-      pageSize
-    });
-  };
-
   render() {
-    const { productList, pending, push } = this.props;
-    const { page, pageSize } = this.state;
+    const {
+      subcategory, productList, pending, push
+    } = this.props;
 
     const dataList = productList.map((product) => ({
       ...product,
-      link: `/Catalog/${product.categoryId}/${product.subcategoryId}/${product.productId}`
+      link: `/Catalog/${product.categoryId}/${product.subcategoryId}/${product.productId}`,
+      photoUrl: getPreviewPhotoSrc(product)
     }));
 
     const seoSection = getSEOMetaData("productList");
 
     return (
-      <div className="product-list-wrapper catalog-card-list content">
-        {pending ? (
-          <>
-            <Loading />
-          </>
-        ) : (
-          <>
-            {this.props.subcategory && (
-              <HeaderHelmet
-                title={
-                  seoSection.title
-                  && seoSection.title.replace(
-                    "{{value}}",
-                    this.props.subcategory.alias
-                  )
-                }
-                metaDescription={seoSection.meta}
-              />
-            )}
-            <Pagination
-              current={page}
-              itemRender={PaginationItemRenderer}
-              defaultCurrent={page}
-              defaultPageSize={pageSize}
-              showTitle={false}
-              hideOnSinglePage
-              total={dataList.length}
-              onChange={this.onChange}
-            />
-            <Row type="flex" gutter={16}>
-              {dataList
-                .slice((page - 1) * pageSize, page * pageSize)
-                .map((item) => (
-                  <Col {...cardStyle} key={item.link} className="card-wrapper">
-                    <ProductCard pending={pending} product={item} push={push} />
-                  </Col>
-                ))}
-            </Row>
-          </>
+      <LoadingHOC
+        pending={pending}
+      >
+        {subcategory && (
+          <HeaderHelmet
+            title={
+              seoSection.title
+              && seoSection.title.replace(
+                "{{value}}",
+                subcategory.alias
+              )
+            }
+            metaDescription={seoSection.meta}
+          />
         )}
-      </div>
+        <CatalogCardList
+          dataList={dataList}
+          push={push}
+          cardComponent={(props) => (
+            <ProductCard pending={pending} item={props.item} push={props.push} onCardClick={props.onCardClick} />
+          )}
+        />
+      </LoadingHOC>
     );
   }
 }

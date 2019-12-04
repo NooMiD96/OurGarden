@@ -102,7 +102,11 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
     const additionalClassName = this.getAdditionalClassName();
 
     return (
-      <div className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}>
+      <div
+        className={`user-card-wrapper content white-background grey-border ${
+          additionalClassName
+        }`}
+      >
         <HeaderHelmet
           {...getSEOMetaData("userCard")}
         />

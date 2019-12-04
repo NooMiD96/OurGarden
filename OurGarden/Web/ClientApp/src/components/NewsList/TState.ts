@@ -7,10 +7,7 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {
-  page: number;
-  pageSize: number;
-};
+export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = INewsListState;

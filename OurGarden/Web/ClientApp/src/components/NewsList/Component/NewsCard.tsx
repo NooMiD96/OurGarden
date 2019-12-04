@@ -11,14 +11,20 @@ interface INewsCard {
   item: INew & { link: string };
   pending: boolean;
   push: typeof pushAction;
+  onCardClick?: () => void;
 }
 
-export const NewsCard = ({ item, pending, push }: INewsCard) => (
+export const NewsCard = ({
+  item, pending, push, onCardClick
+}: INewsCard) => (
   <Card
     loading={pending}
     hoverable
     cover={<LazyImage alt={item.title} src={item.photo && item.photo.url} />}
     onClick={() => {
+      if (onCardClick) {
+        onCardClick();
+      }
       push(item.link);
     }}
   >

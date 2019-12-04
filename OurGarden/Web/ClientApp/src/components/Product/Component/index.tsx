@@ -1,16 +1,12 @@
 import React from "react";
 
-import Loading from "@src/core/components/Loading";
-import Row from "@src/core/antd/Row";
-import { Title } from "@src/core/antd/Typography";
-import AddToCardButton from "@src/core/components/AddToCardButton";
-import HeaderHelmet from "@src/core/components/Helmet";
+import LoadingHOC from "@core/HOC/LoadingHOC";
+import HeaderHelmet from "@core/components/Helmet";
+import ProductContent from "./ProductContent";
 
-import { getPhotoSrc } from "@src/core/utils/photo";
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
+import { getSEOMetaData } from "@core/utils/seoInformation";
 
 import { TState, TComponentState } from "../TState";
-import { IMouseClickEvent } from "@src/core/IEvents";
 
 import "./style/Product.style.scss";
 
@@ -39,10 +35,6 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       subcategoryId,
       productId
     });
-
-    this.state = {
-      itemCount: "1"
-    };
   }
 
   componentDidUpdate(prevProps: TState) {
@@ -65,80 +57,32 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     }
   }
 
-  setItemCount = (newCount: string) => {
-    this.setState({
-      itemCount: newCount
-    });
-  };
-
-  addToCard = (e: IMouseClickEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.setState({
-      itemCount: "1"
-    });
-
-    this.props.addProductToCard({
-      count: Number.parseInt(this.state.itemCount, 10),
-      product: this.props.product!
-    });
-  };
-
   render() {
-    const { product, pending } = this.props;
-    const { itemCount } = this.state;
+    const { product, addProductToCard, pending } = this.props;
 
-    const productPhoto = product && getPhotoSrc(product);
     const seoSection = getSEOMetaData("product");
 
     return (
       <div className="product-wrapper content white-background grey-border">
-        {pending || !product ? (
-          <>
-            <Loading />
-          </>
-        ) : (
-          <Row>
-            <HeaderHelmet
-              title={
-                seoSection.title
-                && seoSection.title.replace("{{value}}", product.alias)
-              }
-              metaDescription={seoSection.meta}
-            />
-            {productPhoto && (
-              <img
-                src={productPhoto}
-                alt={product.alias}
-                className="product-photo"
+        <LoadingHOC
+          pending={pending || !product}
+        >
+          {product && (
+            <>
+              <HeaderHelmet
+                title={
+                  seoSection.title
+                  && seoSection.title.replace("{{value}}", product.alias)
+                }
+                metaDescription={seoSection.meta}
               />
-            )}
-
-            <div className="product-info">
-              <Title>{product.alias}</Title>
-              <span className="product-cost">
-                {product.price
-                  ? `${product.price.toLocaleString()}р.`
-                  : "Под заказ"}
-              </span>
-              <span className="product-description">Описание</span>
-            </div>
-
-            <div
-              className="product-description-wysiwyg"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
-
-            {product.price ? (
-              <AddToCardButton
-                itemCount={itemCount}
-                setItemCount={this.setItemCount}
-                addToCard={this.addToCard}
+              <ProductContent
+                product={product}
+                addProductToCard={addProductToCard}
               />
-            ) : null}
-          </Row>
-        )}
+            </>
+          )}
+        </LoadingHOC>
       </div>
     );
   }

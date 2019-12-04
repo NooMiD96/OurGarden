@@ -12,9 +12,14 @@
       min-height: 186px;
     }
 
+    .ant-typography {
+      color: inherit;
+      margin-bottom: 0;
+    }
+
     .ant-card-meta-title {
-      white-space: unset;
-      text-overflow: unset;
+      white-space: normal;
+      text-overflow: clip;
     }
 
     .ant-card-meta-description {
