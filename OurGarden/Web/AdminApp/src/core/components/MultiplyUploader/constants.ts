@@ -6,7 +6,7 @@ import {
 export const UPLOAD_LIST: ShowUploadListInterface = {
   showPreviewIcon: true,
   showRemoveIcon: true,
-  showDownloadIcon: false
+  showDownloadIcon: true
 };
 
 export const customRequest = ({ onSuccess, file }: RcCustomRequestOptions) => {

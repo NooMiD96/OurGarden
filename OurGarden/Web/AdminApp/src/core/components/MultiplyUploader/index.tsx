@@ -1,16 +1,22 @@
 import React from "react";
 
 import Upload, { UploadFile, UploadChangeParam } from "@core/antd/Upload";
-import Modal from "@core/antd/Modal";
+import Modal, { confirm } from "@core/antd/Modal";
 import UploadButton from "@core/components/UploadButton";
 import { CropImage } from "@core/components/CropImage";
+import message from "@core/antd/message";
 
 import { UPLOAD_LIST, customRequest } from "./constants";
 import { getBase64 } from "@core/helpers/files/index";
+import { copyToClipboard } from "@core/utils";
 
 import { IProps, IState } from "./IMultiplyUploader";
 
 import "react-image-crop/dist/ReactCrop.css";
+
+const COPY_IMAGE_URL_ERROR = `Для того, чтобы использовать изображение в описании, необходимо сначала его сохранить.
+Сохраните данные изменения и затем отредактируйте их.
+После этого ссылка на данную картинку будет скопирована.`;
 
 export class MultiplyUploader extends React.Component<IProps, IState> {
   state: IState = {
@@ -52,6 +58,26 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
     }
   };
 
+  downloadhandler = (file: UploadFile) => {
+    if (file.originFileObj) {
+      confirm({
+        title: "Предупреждение!",
+        className: "ant-modal-confirm-warning",
+        content: COPY_IMAGE_URL_ERROR,
+        cancelButtonProps: { style: { display: "none" } }
+      });
+    } else if (document !== undefined) {
+      const success = copyToClipboard(
+        `${document.location.origin}/${file.url}`
+      );
+      if (success) {
+        message.success("Ссылка на картинку успешно скопирована!");
+      } else {
+        message.error("Не удалось скопировать ссылку на картинку!");
+      }
+    }
+  };
+
   setPreviewImage = (croppedImageUrl: string) => {
     if (this.state.previewImage) {
       if (this.state.previewImage.originFileObj) {
@@ -78,10 +104,11 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
           multiple
           onChange={this.successHandler}
           onRemove={this.removeHandler}
+          onDownload={this.downloadhandler}
           onPreview={this.previewHandler}
           showUploadList={UPLOAD_LIST}
           customRequest={customRequest}
-          accept="image/png, image/jpeg"
+          accept="image/*"
         >
           <UploadButton />
         </Upload>
