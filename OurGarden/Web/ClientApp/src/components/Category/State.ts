@@ -10,13 +10,9 @@ export interface ICategory {
 
 export interface ICategoryState {
   categoryList: ICategory[];
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: ICategoryState = {
-  categoryList: [],
-  pending: false,
-  errorInner: "",
+  categoryList: []
 };
 // #endregion

@@ -34,6 +34,7 @@ export const Breadcrumb = ({
     </React.Fragment>
   ];
 
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < breadcrumbList.length; i++) {
     const breadcrumb = breadcrumbList[i];
     const active = i !== breadcrumbList.length - 1;
@@ -54,7 +55,7 @@ export const Breadcrumb = ({
     <Header>
       <div className="breadcrumb">{locations}</div>
     </Header>
-  )
+  );
 };
 
 export default Breadcrumb;

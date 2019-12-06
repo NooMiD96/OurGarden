@@ -1,14 +1,13 @@
 import * as React from "react";
 
-import LoadingHOC from "@core/HOC/LoadingHOC";
 import HeaderHelmet from "@core/components/Helmet";
-import { NewsCard } from "./NewsCard";
 import CatalogCardList from "@core/components/CatalogCardList";
+import { NewsCard } from "@core/components/CatalogCardList/Cards/NewsCard";
 
 import { getSEOMetaData } from "@core/utils/seoInformation";
 
 import { TState } from "../TState";
-import { INew } from "@src/components/News/State";
+import { INew } from "@components/News/State";
 
 import "./style/NewsList.style.scss";
 
@@ -33,7 +32,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    const { newsList, pending, push } = this.props;
+    const { newsList, push } = this.props;
 
     const dataList = newsList.map((news: INew) => ({
       ...news,
@@ -44,32 +43,27 @@ export class NewsList extends React.PureComponent<TState, {}> {
     return (
       <div className="news-list-wrapper content">
         <HeaderHelmet {...getSEOMetaData("newsList")} />
-        <LoadingHOC
-          pending={pending}
-        >
-          {dataList.length === 0 ? (
-            <div className="content white-background grey-border p25">
-              На данный момент никаких активных акций нет.
-            </div>
-          ) : (
-            <CatalogCardList
-              dataList={dataList}
-              push={push}
-              colClassName="grey-border"
-              useCardGrid={false}
-              paginationParams={{ page: 1, pageSize: 4 }}
-              rowGutter={0}
-              cardComponent={(props) => (
-                <NewsCard
-                  pending={pending}
-                  item={props.item}
-                  push={props.push}
-                  onCardClick={props.onCardClick}
-                />
-              )}
-            />
-          )}
-        </LoadingHOC>
+        {dataList.length === 0 ? (
+          <div className="content white-background grey-border p25">
+            На данный момент никаких активных акций нет.
+          </div>
+        ) : (
+          <CatalogCardList
+            dataList={dataList}
+            push={push}
+            colClassName="grey-border"
+            useCardGrid={false}
+            paginationParams={{ page: 1, pageSize: 4 }}
+            rowGutter={0}
+            cardComponent={(props) => (
+              <NewsCard
+                item={props.item}
+                push={props.push}
+                onCardClick={props.onCardClick}
+              />
+            )}
+          />
+        )}
       </div>
     );
   }

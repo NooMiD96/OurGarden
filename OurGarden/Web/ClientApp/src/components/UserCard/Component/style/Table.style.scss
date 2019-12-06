@@ -2,6 +2,15 @@
   overflow: hidden;
   flex: 1 1 auto;
 
+  .ant-table {
+    .ant-table-thead > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+    .ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+    .ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td,
+    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+      background-color: $tableHoverColor;
+    }
+  }
+
   .ant-table-wrapper,
   .ant-spin-nested-loading,
   .ant-spin-container,

@@ -1,7 +1,7 @@
 import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface IProduct {
   productId: string;
   subcategoryId: string;
@@ -14,13 +14,9 @@ export interface IProduct {
 
 export interface IProductState {
   product: null | IProduct;
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: IProductState = {
-  product: null,
-  pending: false,
-  errorInner: "",
+  product: null
 };
-//#endregion
+// #endregion

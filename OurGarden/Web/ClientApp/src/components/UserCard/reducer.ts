@@ -6,71 +6,37 @@ import _omit from "lodash.omit";
 import { IUserCardState, unloadedState, IUserCardProduct } from "./State";
 import KnownAction, * as t from "./actionsType";
 import { saveItemToLS, getItemFromLS } from "@src/core/utils/localStorage";
+import {
+  getTotalCount,
+  addNewProduct,
+  changeCountOfProduct
+} from "@src/core/utils/UserCardReducer";
 
-const findProduct = (
-  origin: IUserCardProduct,
-  target: IUserCardProduct
+export const reducer: Reducer<IUserCardState> = (
+  state: IUserCardState = unloadedState,
+  action: KnownAction
 ) => {
-  const { product: originProduct } = origin;
-  const { product: targetProduct } = target;
-
-  return (
-    originProduct.categoryId === targetProduct.categoryId
-    && originProduct.subcategoryId === targetProduct.subcategoryId
-    && originProduct.productId === targetProduct.productId
-  );
-};
-
-const getTotalCount = (productList: IUserCardProduct[]) => productList
-  .map((x) => x.count)
-  .reduce((count, acc) => count + acc, 0);
-
-export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloadedState, action: KnownAction) => {
   let newState: IUserCardState = state;
   let saveState = true;
 
   switch (action.type) {
-    case t.SEND_ORDER_REQUEST:
-      return {
-        ...state,
-        pending: true
-      } as IUserCardState;
+    case t.SEND_ORDER_ERROR:
+    case t.SEND_ORDER_REQUEST: {
+      return state;
+    }
 
-    case t.SEND_ORDER_SUCCESS:
+    case t.SEND_ORDER_SUCCESS: {
       newState = {
         ...state,
-        pending: false,
         productList: [],
-        totalCount: 0,
+        totalCount: 0
       };
-      break;
 
-    case t.SEND_ORDER_ERROR:
-      return {
-        ...state,
-        pending: false,
-        errorInner: action.errorMessage
-      } as IUserCardState;
+      break;
+    }
 
     case t.ADD_PRODUCT_TO_CARD: {
-      const newProductList: IUserCardProduct[] = [];
-      let find = false;
-
-      state.productList.forEach((product) => {
-        if (findProduct(product, action.payload)) {
-          newProductList.push({
-            ...product,
-            count: product.count + action.payload.count
-          });
-          find = true;
-        } else {
-          newProductList.push(product);
-        }
-      });
-
-      if (!find) {
-        newProductList.push(action.payload);
-      }
+      const newProductList = addNewProduct(state.productList, action.payload);
 
       newState = {
         ...state,
@@ -81,18 +47,10 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
     }
 
     case t.CHANGE_COUNT_OF_PRODUCT: {
-      const newProductList: IUserCardProduct[] = [];
-
-      state.productList.forEach((product) => {
-        if (findProduct(product, action.payload)) {
-          newProductList.push({
-            ...product,
-            count: action.payload.count
-          });
-        } else {
-          newProductList.push(product);
-        }
-      });
+      const newProductList: IUserCardProduct[] = changeCountOfProduct(
+        state.productList,
+        action.payload
+      );
 
       newState = {
         ...state,
@@ -103,7 +61,9 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
     }
 
     case t.REMOVE_PRODUCT_FROM_CARD: {
-      const newProductList = state.productList.filter((item) => action.payload !== item.product);
+      const newProductList = state.productList.filter(
+        (item) => item.product !== action.payload
+      );
 
       newState = {
         ...state,
@@ -113,26 +73,24 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
       break;
     }
 
-    case t.CLEAN_PRODUCT_CARD:
+    case t.CLEAN_PRODUCT_CARD: {
       newState = {
         ...state,
         productList: [],
         totalCount: 0
       };
-      break;
 
-    case t.CLEAN_ERROR_INNER:
+      break;
+    }
+
+    case t.LOAD_CARD_FROM_LOCALSTATE: {
       newState = {
         ...state,
-        errorInner: "",
+        ...getItemFromLS("UserCard")
       };
-      break;
 
-    case t.LOAD_CARD_FROM_LOCALSTATE:
-      return {
-        ...state,
-        ...getItemFromLS("UserCard"),
-      } as IUserCardState;
+      return newState;
+    }
 
     default:
       // eslint-disable-next-line
@@ -141,10 +99,7 @@ export const reducer: Reducer<IUserCardState> = (state: IUserCardState = unloade
   }
 
   if (saveState) {
-    saveItemToLS(
-      "UserCard",
-      _omit(newState, ["pending", "errorInner"])
-    );
+    saveItemToLS("UserCard", _omit(newState));
   }
 
   return newState;

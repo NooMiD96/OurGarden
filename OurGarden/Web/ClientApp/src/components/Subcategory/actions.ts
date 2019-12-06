@@ -1,17 +1,12 @@
-import { fetch, addTask } from "domain-task";
+import * as t from "./actionsType";
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
+import { actionCreators as appActions } from "@components/Main/State/actions";
 
 import { IAppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponse";
-
-import * as t from "./actionsType";
-import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 import { ISubcategory } from "./State";
 import { ICategory } from "../Category/State";
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getSubcategoryListRequest: (): t.IGetSubcategoryListRequest => ({
     type: t.GET_SUBCATEGORY_LIST_REQUEST
@@ -22,80 +17,63 @@ export const actionsList = {
     type: t.GET_SUBCATEGORY_LIST_SUCCESS,
     payload
   }),
-  getSubcategoryListError: (
-    errorMessage: string
-  ): t.IGetSubcategoryListError => ({
-    type: t.GET_SUBCATEGORY_LIST_ERROR,
-    errorMessage
+  getSubcategoryListError: (): t.IGetSubcategoryListError => ({
+    type: t.GET_SUBCATEGORY_LIST_ERROR
   }),
 
   saveCategory: (payload: ICategory): t.ISaveCategory => ({
     type: t.SAVE_CATEGORY,
     payload
-  }),
-  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER
   })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const controllerName = "Subcategory";
 export const actionCreators = {
   getSubcategoryList: (
     categoryId: string
-  ): IAppThunkAction<
-    t.TGetSubcategoryList | t.ISaveCategory | t.ICleanErrorInnerAction
-  > => (dispatch, _getState) => {
+  ): IAppThunkAction<t.TGetSubcategoryList | t.ISaveCategory> => (
+    dispatch,
+    getState
+  ) => {
     const apiUrl = "GetSubcategories";
-
-    dispatch(actionCreators.cleanErrorInner());
-
     const encodedCategoryId = encodeURIComponent(categoryId);
 
-    const fetchTask = fetch(
-      `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}`,
-      {
-        credentials: "same-origin",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8"
-        }
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}`;
+    const fetchProps = {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
       }
-    )
-      .then(responseCatcher)
-      .then(
-        (value: IResponse<ICategory & { subcategories: ISubcategory[] }>) => {
-          if (value && value.error) {
-            return errorCreater(value.error);
-          }
+    };
 
-          dispatch(
-            actionsList.saveCategory({
-              alias: value.data.alias,
-              categoryId: value.data.categoryId,
-              photos: value.data.photos
-            })
-          );
-          dispatch(
-            actionsList.getSubcategoryListSuccess(value.data.subcategories)
-          );
+    // prettier-ignore
+    const requestStart = () => dispatch(actionsList.getSubcategoryListRequest());
 
-          return Promise.resolve();
-        }
-      )
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getSubcategoryListError,
-          dispatch
-        )
+    const requestSuccess = (
+      data: ICategory & { subcategories: ISubcategory[] }
+    ) => {
+      dispatch(
+        actionsList.saveCategory({
+          alias: data.alias,
+          categoryId: data.categoryId,
+          photos: data.photos
+        })
       );
+      dispatch(actionsList.getSubcategoryListSuccess(data.subcategories));
+    };
 
-    addTask(fetchTask);
-    dispatch(actionsList.getSubcategoryListRequest());
+    appActions.wrapRequest({
+      apiUrl,
+      controllerName,
+      fetchProps,
+      fetchUrl,
+      requestErrorAction: actionsList.getSubcategoryListError,
+      requestStart,
+      requestSuccess
+    })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
     dispatch,
@@ -105,7 +83,6 @@ export const actionCreators = {
       controllerName,
       params
     })(dispatch, getState);
-  },
-  cleanErrorInner: actionsList.cleanErrorInner
+  }
 };
-//#endregion
+// #endregion

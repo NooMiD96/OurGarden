@@ -90,7 +90,7 @@ namespace Web.Controllers.AdminApi
                         return LogBadRequest(
                             _logger,
                             API_LOCATE,
-                            $"Что-то пошло не так, не удалось найти новость.\n\tНовость: {newsDTO.NewsId}"
+                            customeError: $"Что-то пошло не так, не удалось найти новость.\n\tНовость: {newsDTO.NewsId}"
                         );
                     }
 
@@ -130,8 +130,8 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    ex,
-                    error
+                    exception: ex,
+                    customeError: error
                 );
             }
         }

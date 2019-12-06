@@ -4,22 +4,28 @@ import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
-import ItemCard from "./ItemCard";
+import ItemCard from "./Cards/ItemCard";
 
 import { PAGING_DEFAULT_PARAMS, CARD_GRID_STYLE } from "@core/utils/CardList";
 
 import {
-  ICatalogProps, ICatalogState, TDataItem, ICardComponent
+  ICatalogProps,
+  ICatalogState,
+  TDataItem,
+  ICardComponent
 } from "./ICatalogCard";
 
 import "./style/CatalogCard.style.scss";
 
-export class Catalog<T> extends React.PureComponent<ICatalogProps<T>, ICatalogState<T>> {
+export class Catalog<T> extends React.PureComponent<
+  ICatalogProps<T>,
+  ICatalogState<T>
+> {
   constructor(props: ICatalogProps<T>) {
     super(props);
 
     this.state = {
-      ...(props.paginationParams || PAGING_DEFAULT_PARAMS),
+      ...(props.paginationParams || PAGING_DEFAULT_PARAMS)
     };
   }
 
@@ -35,13 +41,13 @@ export class Catalog<T> extends React.PureComponent<ICatalogProps<T>, ICatalogSt
       push,
       useCardGrid = true,
       colClassName,
-      cardComponent = ((props: ICardComponent<T>) => (
+      cardComponent = (props: ICardComponent<T>) => (
         <ItemCard
           item={props.item}
           push={props.push}
           onCardClick={props.onCardClick}
         />
-      ))
+      )
     } = this.props;
 
     const cardGrid = useCardGrid ? CARD_GRID_STYLE : {};
@@ -60,7 +66,7 @@ export class Catalog<T> extends React.PureComponent<ICatalogProps<T>, ICatalogSt
         })}
       </Col>
     );
-  }
+  };
 
   render() {
     const { dataList, rowGutter = 16 } = this.props;

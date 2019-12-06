@@ -76,8 +76,10 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
         placeholder="Поиск..."
         dataSource={dataSource}
         onSearch={debounceOnSearch}
+        // prettier-ignore
         getPopupContainer={() => document.getElementById("product-popup-container")!}
         optionLabelProp="title"
+        defaultActiveFirstOption={false}
         onSelect={onSelect}
       >
         <Search

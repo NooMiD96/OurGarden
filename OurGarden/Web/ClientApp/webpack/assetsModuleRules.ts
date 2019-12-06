@@ -8,7 +8,7 @@ import { RuleSetRule } from "webpack";
 const getAssetsModuleRules = (
   env: { [key: string]: string },
   fileNameTemplate: string
-): RuleSetRule[] => ([
+): RuleSetRule[] => [
   // remove depence on icon which size >500Kb
   {
     test: /\.js$/,
@@ -16,15 +16,15 @@ const getAssetsModuleRules = (
     use: StringReplacePlugin.replace({
       replacements: [
         {
-          pattern: /import Icon from '\.\.\/icon';/ig,
+          pattern: /import Icon from '\.\.\/icon';/gi,
           replacement: () => "import Icon from '@core/antd/Icon';"
         },
         {
-          pattern: /componentWillMount/ig,
+          pattern: /componentWillMount/gi,
           replacement: () => "UNSAFE_componentWillMount"
         },
         {
-          pattern: /componentWillReceiveProps/ig,
+          pattern: /componentWillReceiveProps/gi,
           replacement: () => "UNSAFE_componentWillReceiveProps"
         }
       ]
@@ -36,8 +36,8 @@ const getAssetsModuleRules = (
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
-          hmr: !env || !env.prod,
-        },
+          hmr: !env || !env.prod
+        }
       },
       "css-loader",
       {
@@ -54,8 +54,8 @@ const getAssetsModuleRules = (
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
-          hmr: !env || !env.prod,
-        },
+          hmr: !env || !env.prod
+        }
       },
       require.resolve("css-loader")
     ]
@@ -73,8 +73,8 @@ const getAssetsModuleRules = (
       limit: 10000,
       name: `${fileNameTemplate}.[ext]`,
       outputPath: "img",
-      publicPath: "img/",
-    },
+      publicPath: "img/"
+    }
   },
   {
     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -83,9 +83,9 @@ const getAssetsModuleRules = (
       limit: 10000,
       name: `${fileNameTemplate}.[ext]`,
       outputPath: "fonts",
-      publicPath: "fonts/",
+      publicPath: "fonts/"
     }
   }
-]);
+];
 
 export default getAssetsModuleRules;

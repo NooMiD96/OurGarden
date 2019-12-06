@@ -41,13 +41,14 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, не удалось получить Breadcrumb."
+                    customeError: $"Что-то пошло не так, не удалось получить Breadcrumb."
                 );
             }
 
             var breadcrumb = String.IsNullOrEmpty(productId)
                 ? await _repository.GetProductBreadcrumb(categoryId, subcategoryId)
                 : await _repository.GetProductBreadcrumb(categoryId, subcategoryId, productId);
+
             var order = 1;
 
             var breadcrumbList = new List<Breadcrumb>()
@@ -81,21 +82,23 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    "Что-то пошло не так, необходимо выбрать категорию с подкатегорией."
+                    customeError: "Что-то пошло не так, необходимо выбрать категорию с подкатегорией."
                 );
             }
 
             var subcategory = (await _repository.GetSubcategory(categoryId, subcategoryId)).DeepClone();
-            var products = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
 
             if (subcategory is null)
             {
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, не удалось найти выбранную подкатегорию.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}"
+                    customeError: $"Что-то пошло не так, не удалось найти выбранную подкатегорию.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}",
+                    returnStatusCode: 404
                 );
             }
+
+            var products = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
 
             subcategory.Products = products
                 .OrderBy(x => x.ProductId)
@@ -121,7 +124,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    "Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар."
+                    customeError: "Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар."
                 );
             }
 
@@ -132,7 +135,8 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, не удалось найти выбранный товар.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}\n\tТовар: {productId}"
+                    customeError: $"Что-то пошло не так, не удалось найти выбранный товар.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}\n\tТовар: {productId}",
+                    returnStatusCode: 404
                 );
             }
 

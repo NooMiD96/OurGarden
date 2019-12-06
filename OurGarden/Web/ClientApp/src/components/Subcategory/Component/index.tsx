@@ -1,6 +1,5 @@
 import React from "react";
 
-import LoadingHOC from "@core/HOC/LoadingHOC";
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
@@ -41,9 +40,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const {
-      category, subcategoryList, push, pending
-    } = this.props;
+    const { category, subcategoryList, push } = this.props;
 
     const seoSection = getSEOMetaData("subcategory");
 
@@ -54,23 +51,19 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     }));
 
     return (
-      <LoadingHOC
-        pending={pending}
-      >
+      <>
         {category && (
           <HeaderHelmet
+            // prettier-ignore
             title={
               seoSection.title
-              && seoSection.title.replace(
-                "{{value}}",
-                category.alias
-              )
+              && seoSection.title.replace("{{value}}", category.alias)
             }
             metaDescription={seoSection.meta}
           />
         )}
         <CatalogCardList dataList={dataList} push={push} />
-      </LoadingHOC>
+      </>
     );
   }
 }

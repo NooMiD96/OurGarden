@@ -1,15 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import AutoComplete from "@core/antd/AutoComplete";
+import LazyImage from "@core/components/LazyImage";
 
-import LazyImage from "@src/core/components/LazyImage";
-
-import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { IProductOption } from "./IProductOption";
-import { ICategory } from "@src/components/Category/State";
-import { ISubcategory } from "@src/components/Subcategory/State";
-import { IProduct } from "@src/components/Product/State";
+import { ICategory } from "@components/Category/State";
+import { ISubcategory } from "@components/Subcategory/State";
+import { IProduct } from "@components/Product/State";
 
 const { Option } = AutoComplete;
 
@@ -24,7 +24,9 @@ const ProductOption = (item: IProductOption) => {
     link += `/${item.productId}`;
   }
 
-  const imgSrc = getPreviewPhotoSrc(item as ICategory | ISubcategory | IProduct);
+  const imgSrc = getPreviewPhotoSrc(
+    item as ICategory | ISubcategory | IProduct
+  );
 
   return (
     <Option className="search-menu-item" title={item.alias} key={link}>
@@ -33,7 +35,9 @@ const ProductOption = (item: IProductOption) => {
         src={imgSrc}
         alt={item.alias}
       />
-      <span className="search-menu-item-text">{item.alias}</span>
+      <Link to={link} className="search-menu-item-text">
+        {item.alias}
+      </Link>
     </Option>
   );
 };

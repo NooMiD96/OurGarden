@@ -17,9 +17,11 @@
       margin-bottom: 0;
     }
 
-    .ant-card-meta-title {
+    .ant-card-meta-title a {
+      color: rgba(0, 0, 0, 0.85);
       white-space: normal;
       text-overflow: clip;
+      transition: color 0.3s;
     }
 
     .ant-card-meta-description {
@@ -27,7 +29,7 @@
     }
 
     &:hover {
-      .ant-card-meta-title {
+      .ant-card-meta-title a {
         color: $darkGreenColor;
         text-decoration: underline;
       }

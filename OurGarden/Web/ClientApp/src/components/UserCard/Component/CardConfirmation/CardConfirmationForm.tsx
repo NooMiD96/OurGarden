@@ -11,7 +11,10 @@ import "../style/Form.style.scss";
 import "../style/ButtonWrapper.style.scss";
 
 const CardConfirmationForm = (props: ICardConfirmationForm) => {
-  const { form, totalPrice, cancel, submit } = props;
+  // prettier-ignore
+  const {
+    form, totalPrice, cancel, submit
+  } = props;
   const { getFieldsError } = form;
 
   const onSubmit = () => {

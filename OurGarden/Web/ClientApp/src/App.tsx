@@ -3,11 +3,12 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import { Layout } from "@components/Layout";
 import { AsyncComponent } from "@core/HOC/AsyncComponent";
+import PageNotFound from "@core/components/PageNotFound";
 
 export const AppRoutes = (
   <Layout>
     <Switch>
-      <Redirect from="/Home" to="/" />
+      <Redirect exact from="/Home" to="/" />
       <Route
         exact
         path="/"
@@ -17,9 +18,7 @@ export const AppRoutes = (
           () => [require.resolveWeak("@components/Home")]
         )}
       />
-    </Switch>
 
-    <Switch>
       <Route
         path="/Catalog/:categoryId/:subcategoryId/:productId"
         component={AsyncComponent(
@@ -31,16 +30,22 @@ export const AppRoutes = (
 
       <Route
         path="/Catalog/:categoryId/:subcategoryId"
+        // prettier-ignore
         component={AsyncComponent(
-          () => import(/* webpackChunkName: "ProductList" */ "@components/ProductList"),
+          () => import(
+            /* webpackChunkName: "ProductList" */ "@components/ProductList"
+          ),
           ["@components/ProductList"],
           () => [require.resolveWeak("@components/ProductList")]
         )}
       />
       <Route
         path="/Catalog/:categoryId"
+        // prettier-ignore
         component={AsyncComponent(
-          () => import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory"),
+          () => import(
+            /* webpackChunkName: "Subcategory" */ "@components/Subcategory"
+          ),
           ["@components/Subcategory"],
           () => [require.resolveWeak("@components/Subcategory")]
         )}
@@ -48,24 +53,24 @@ export const AppRoutes = (
 
       <Route
         path="/Catalog"
+        // prettier-ignore
         component={AsyncComponent(
           () => import(/* webpackChunkName: "Category" */ "@components/Category"),
           ["@components/Category"],
           () => [require.resolveWeak("@components/Category")]
         )}
       />
-    </Switch>
 
-    <Route
-      path="/Card"
-      component={AsyncComponent(
-        () => import(/* webpackChunkName: "UserCard" */ "@components/UserCard"),
-        ["@components/UserCard"],
-        () => [require.resolveWeak("@components/UserCard")]
-      )}
-    />
+      <Route
+        path="/Card"
+        // prettier-ignore
+        component={AsyncComponent(
+          () => import(/* webpackChunkName: "UserCard" */ "@components/UserCard"),
+          ["@components/UserCard"],
+          () => [require.resolveWeak("@components/UserCard")]
+        )}
+      />
 
-    <Switch>
       <Route
         path="/News/:newsId"
         component={AsyncComponent(
@@ -77,48 +82,55 @@ export const AppRoutes = (
 
       <Route
         path="/News"
+        // prettier-ignore
         component={AsyncComponent(
           () => import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
           ["@components/NewsList"],
           () => [require.resolveWeak("@components/NewsList")]
         )}
       />
+
+      <Route
+        path="/Payment"
+        component={AsyncComponent(
+          () => import(/* webpackChunkName: "Payment" */ "@components/Payment"),
+          ["@components/Payment"],
+          () => [require.resolveWeak("@components/Payment")]
+        )}
+      />
+
+      <Route
+        path="/Design"
+        component={AsyncComponent(
+          () => import(/* webpackChunkName: "Design" */ "@components/Design"),
+          ["@components/Design"],
+          () => [require.resolveWeak("@components/Design")]
+        )}
+      />
+
+      <Route
+        path="/Videogalery"
+        // prettier-ignore
+        component={AsyncComponent(
+          () => import(
+          /* webpackChunkName: "Videogalery" */ "@components/Videogalery"
+          ),
+          ["@components/Videogalery"],
+          () => [require.resolveWeak("@components/Videogalery")]
+        )}
+      />
+
+      <Route
+        path="/About"
+        // prettier-ignore
+        component={AsyncComponent(
+          () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
+          ["@components/Contacts"],
+          () => [require.resolveWeak("@components/Contacts")]
+        )}
+      />
+
+      <Route component={PageNotFound} />
     </Switch>
-
-    <Route
-      path="/Payment"
-      component={AsyncComponent(
-        () => import(/* webpackChunkName: "Payment" */ "@components/Payment"),
-        ["@components/Payment"],
-        () => [require.resolveWeak("@components/Payment")]
-      )}
-    />
-
-    <Route
-      path="/Design"
-      component={AsyncComponent(
-        () => import(/* webpackChunkName: "Design" */ "@components/Design"),
-        ["@components/Design"],
-        () => [require.resolveWeak("@components/Design")]
-      )}
-    />
-
-    <Route
-      path="/Videogalery"
-      component={AsyncComponent(
-        () => import(/* webpackChunkName: "Videogalery" */ "@components/Videogalery"),
-        ["@components/Videogalery"],
-        () => [require.resolveWeak("@components/Videogalery")]
-      )}
-    />
-
-    <Route
-      path="/About"
-      component={AsyncComponent(
-        () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
-        ["@components/Contacts"],
-        () => [require.resolveWeak("@components/Contacts")]
-      )}
-    />
   </Layout>
 );

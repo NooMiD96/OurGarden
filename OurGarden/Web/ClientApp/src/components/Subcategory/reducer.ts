@@ -1,5 +1,5 @@
 // ----------------
-//#region REDUCER
+// #region REDUCER
 import { Reducer } from "redux";
 
 import { ISubcategoryState, unloadedState } from "./State";
@@ -10,42 +10,32 @@ export const reducer: Reducer<ISubcategoryState> = (
   action: KnownAction
 ) => {
   switch (action.type) {
-    case t.GET_SUBCATEGORY_LIST_REQUEST:
-      return {
-        ...state,
-        pending: true
-      } as ISubcategoryState;
-
-    case t.GET_SUBCATEGORY_LIST_SUCCESS:
-      return {
-        ...state,
-        pending: false,
-        subcategoryList: action.payload
-      } as ISubcategoryState;
-
     case t.GET_SUBCATEGORY_LIST_ERROR:
-      return {
-        ...state,
-        pending: false,
-        errorInner: action.errorMessage
-      } as ISubcategoryState;
+    case t.GET_SUBCATEGORY_LIST_REQUEST: {
+      return state;
+    }
 
-    case t.SAVE_CATEGORY:
-      return {
+    case t.GET_SUBCATEGORY_LIST_SUCCESS: {
+      const newState: ISubcategoryState = {
+        ...state,
+        subcategoryList: action.payload
+      };
+      return newState;
+    }
+
+    case t.SAVE_CATEGORY: {
+      const newState: ISubcategoryState = {
         ...state,
         category: action.payload
-      } as ISubcategoryState;
+      };
 
-    case t.CLEAN_ERROR_INNER:
-      return {
-        ...state,
-        errorInner: ""
-      } as ISubcategoryState;
+      return newState;
+    }
 
     default:
       // eslint-disable-next-line
       const exhaustiveCheck: never = action;
   }
 
-  return state || unloadedState;
+  return state;
 };

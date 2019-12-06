@@ -12,14 +12,14 @@ const GenerateLink = ({
 }) => {
   const toLink = link.replace(/\s/g, "-");
 
-  return (
-    active ? (
-      <Link to={`/${toLink}`} className="nav-link active">
-        {title}
-      </Link>
-    ) : (
-      <span className="nav-link disabled">{title}</span>
-    )
+  return active ? (
+    <Link title={title} to={`/${toLink}`} className="nav-link active">
+      {title}
+    </Link>
+  ) : (
+    <span title={title} className="nav-link disabled">
+      {title}
+    </span>
   );
 };
 

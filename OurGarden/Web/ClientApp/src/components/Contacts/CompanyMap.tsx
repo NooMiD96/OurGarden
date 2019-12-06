@@ -13,7 +13,7 @@ export const CompanyMap = () => (
   <div className="company-map">
     <YMaps>
       <Map defaultState={mapData} width="100%" height="100%" className="y-map">
-        {coordinates.map(coordinate => (
+        {coordinates.map((coordinate) => (
           <Placemark
             key={`${coordinate[0]}-${coordinate[1]}`}
             geometry={coordinate}

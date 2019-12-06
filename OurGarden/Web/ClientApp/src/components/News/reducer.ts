@@ -1,37 +1,28 @@
 // ----------------
-//#region REDUCER
+// #region REDUCER
 import { Reducer } from "redux";
 
 import { INewsState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<INewsState> = (state: INewsState = unloadedState, action: KnownAction) => {
+export const reducer: Reducer<INewsState> = (
+  state: INewsState = unloadedState,
+  action: KnownAction
+) => {
   switch (action.type) {
-    case t.GET_NEWS_REQUEST:
-      return {
-        ...state,
-        pending: true
-      } as INewsState;
-
-    case t.GET_NEWS_SUCCESS:
-      return {
-        ...state,
-        pending: false,
-        selectedNew: action.payload
-      } as INewsState;
-
     case t.GET_NEWS_ERROR:
-      return {
-        ...state,
-        pending: false,
-        errorInner: action.errorMessage
-      } as INewsState;
+    case t.GET_NEWS_REQUEST: {
+      return state;
+    }
 
-    case t.CLEAN_ERROR_INNER:
-      return {
+    case t.GET_NEWS_SUCCESS: {
+      const newState: INewsState = {
         ...state,
-        errorInner: "",
-      } as INewsState;
+        selectedNew: action.payload
+      };
+
+      return newState;
+    }
 
     default:
       // eslint-disable-next-line

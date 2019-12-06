@@ -10,18 +10,23 @@ import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
-const ReactLoadableSSRAddon = require('react-loadable-ssr-addon');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
 
-const pathToPublic = `${path.join(__dirname, "../../../", "./wwwroot/client/client")}`;
+const pathToPublic = `${path.join(
+  __dirname,
+  "../../../",
+  "./wwwroot/client/client"
+)}`;
 
 const clientPlugins = (
   isShowInBrowser: boolean,
   fileNameTemplate: string
-): Plugin[] => ([
+): Plugin[] => [
   // https://github.com/webpack-contrib/mini-css-extract-plugin
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
-    filename: `${fileNameTemplate}.css`,
+    filename: `${fileNameTemplate}.css`
   }),
 
   // https://github.com/webpack-contrib/webpack-bundle-analyzer
@@ -29,16 +34,16 @@ const clientPlugins = (
     analyzerMode: "static",
     openAnalyzer: isShowInBrowser,
     analyzerHost: "0.0.0.0",
-    analyzerPort: 5500,
+    analyzerPort: 5500
   }),
 
   new ReactLoadablePlugin({
-    filename: `${pathToPublic}/react-loadable.json`,
+    filename: `${pathToPublic}/react-loadable.json`
   }),
   new ReactLoadableSSRAddon({
-    filename: `${pathToPublic}/assets-manifest.json`,
-  }),
-]);
+    filename: `${pathToPublic}/assets-manifest.json`
+  })
+];
 
 // Configuration for client-side bundle suitable for running in browsers
 const getClientBundleConfig = (
@@ -46,9 +51,9 @@ const getClientBundleConfig = (
   fileNameTemplate: string,
   isShowInBrowser: boolean,
   isDevBuild: boolean,
-  sharedConfig: () => Configuration
+  sharedConfig: Configuration
 ): Configuration => {
-  const clientBundleConfig = merge(sharedConfig(), {
+  const clientBundleConfig = merge(sharedConfig, {
     entry: {
       [AppSettings.SpaClientFileName]: "./src/boot-client/boot-client.tsx"
     },
@@ -84,21 +89,18 @@ const getClientBundleConfig = (
           antd: {
             chunks: "all",
             test: /[\\/]node_modules[\\/][^\\/]*(antd|ant-design)[^\\/]*[\\/]/,
-            priority: 1,
+            priority: 1
           },
           rc: {
             chunks: "all",
             // rc-[componentName] - used in the antd etc. components
             test: /[\\/]node_modules[\\/][^\\/]*rc-[^\\/]*[\\/]/,
-            priority: 1,
+            priority: 1
           }
         }
       }
     },
-    plugins: clientPlugins(
-      isShowInBrowser,
-      fileNameTemplate
-    ),
+    plugins: clientPlugins(isShowInBrowser, fileNameTemplate)
   });
 
   if (isDevBuild) {
@@ -108,7 +110,7 @@ const getClientBundleConfig = (
       //   from: "src/sw.ts",
       //   to: "service-worker.js",
       // }])
-      new CaseSensitivePathsPlugin(),
+      new CaseSensitivePathsPlugin()
     );
   } else {
     // clientBundleConfig.entry["service-worker"] = "./src/sw.ts";

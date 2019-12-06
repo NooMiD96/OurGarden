@@ -1,5 +1,6 @@
 import React from "react";
 import { push as pushAction } from "connected-react-router";
+import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import LazyImage from "@core/components/LazyImage";
@@ -7,7 +8,7 @@ import { Paragraph } from "@core/antd/Typography";
 
 import { META_TITLE_PARAMS } from "@src/core/utils/CardList";
 
-import { TDataItem } from "./ICatalogCard";
+import { TDataItem } from "../ICatalogCard";
 
 export interface IItemCardProps<T> {
   item: TDataItem<T>;
@@ -32,11 +33,10 @@ export const ItemCard: TItemCard = ({ item, onCardClick, push }) => (
     }}
   >
     <Card.Meta
+      // prettier-ignore
       title={(
-        <Paragraph
-          ellipsis={META_TITLE_PARAMS}
-        >
-          {item.alias}
+        <Paragraph ellipsis={META_TITLE_PARAMS}>
+          <Link to={item.link}>{item.alias}</Link>
         </Paragraph>
       )}
     />

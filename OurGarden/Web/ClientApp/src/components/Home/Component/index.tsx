@@ -1,8 +1,6 @@
 import * as React from "react";
 
-import LoadingHOC from "@core/HOC/LoadingHOC";
 import HeaderHelmet from "@core/components/Helmet";
-
 import NewsCarousel from "./NewsCarousel";
 
 import { getSEOMetaData } from "@core/utils/seoInformation";
@@ -26,20 +24,14 @@ export class Home extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { newsList, push, pending } = this.props;
+    const { newsList, push } = this.props;
 
     const displayList = newsList.slice(0, 3);
 
     return (
       <div className="home-wrapper content">
-        <HeaderHelmet
-          {...getSEOMetaData("home")}
-        />
-        <LoadingHOC
-          pending={pending}
-        >
-          <NewsCarousel push={push} displayList={displayList} />
-        </LoadingHOC>
+        <HeaderHelmet {...getSEOMetaData("home")} />
+        <NewsCarousel push={push} displayList={displayList} />
       </div>
     );
   }

@@ -19,7 +19,7 @@ const CategoryList = ({
 
   return (
     <Menu selectedKeys={[activeKey]} mode="inline">
-      {categoryList.map(x => (
+      {categoryList.map((x) => (
         <Menu.Item key={x.categoryId}>
           <GenerateLink link={`Catalog/${x.categoryId}`} title={x.alias} />
         </Menu.Item>

@@ -1,13 +1,11 @@
 import React from "react";
 
-import LoadingHOC from "@core/HOC/LoadingHOC";
 import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
+import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
 
-import ProductCard from "./ProductCard";
-
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
-import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+import { getSEOMetaData } from "@core/utils/seoInformation";
+import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { TState } from "../TState";
 
@@ -20,6 +18,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
       productList
     } = this.props;
 
+    // prettier-ignore
     if (
       !productList.length
       || params.categoryId !== productList[0].categoryId
@@ -51,9 +50,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    const {
-      subcategory, productList, pending, push
-    } = this.props;
+    const { subcategory, productList, push } = this.props;
 
     const dataList = productList.map((product) => ({
       ...product,
@@ -64,17 +61,13 @@ export class ProductList extends React.PureComponent<TState, {}> {
     const seoSection = getSEOMetaData("productList");
 
     return (
-      <LoadingHOC
-        pending={pending}
-      >
+      <>
         {subcategory && (
           <HeaderHelmet
+            // prettier-ignore
             title={
               seoSection.title
-              && seoSection.title.replace(
-                "{{value}}",
-                subcategory.alias
-              )
+              && seoSection.title.replace("{{value}}", subcategory.alias)
             }
             metaDescription={seoSection.meta}
           />
@@ -83,10 +76,14 @@ export class ProductList extends React.PureComponent<TState, {}> {
           dataList={dataList}
           push={push}
           cardComponent={(props) => (
-            <ProductCard pending={pending} item={props.item} push={props.push} onCardClick={props.onCardClick} />
+            <ProductCard
+              item={props.item}
+              push={props.push}
+              onCardClick={props.onCardClick}
+            />
           )}
         />
-      </LoadingHOC>
+      </>
     );
   }
 }

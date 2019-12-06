@@ -1,5 +1,5 @@
 // ----------------
-//#region REDUCER
+// #region REDUCER
 import { Reducer } from "redux";
 
 import { IProductListState, unloadedState } from "./State";
@@ -10,48 +10,42 @@ export const reducer: Reducer<IProductListState> = (
   action: KnownAction
 ) => {
   switch (action.type) {
-    case t.GET_PRODUCT_LIST_REQUEST:
-      return {
-        ...state,
-        pending: true
-      } as IProductListState;
-
-    case t.GET_PRODUCT_LIST_SUCCESS:
-      return {
-        ...state,
-        pending: false,
-        productList: action.payload
-      } as IProductListState;
-
     case t.GET_PRODUCT_LIST_ERROR:
-      return {
-        ...state,
-        pending: false,
-        errorInner: action.errorMessage
-      } as IProductListState;
+    case t.GET_PRODUCT_LIST_REQUEST: {
+      return state;
+    }
 
-    case t.CLEAN_PRODUCT_LIST:
-      return {
+    case t.GET_PRODUCT_LIST_SUCCESS: {
+      const newState: IProductListState = {
+        ...state,
+        productList: action.payload
+      };
+
+      return newState;
+    }
+
+    case t.CLEAN_PRODUCT_LIST: {
+      const newState: IProductListState = {
         ...state,
         productList: []
-      } as IProductListState;
+      };
 
-    case t.SAVE_SUBCATEGORY:
-      return {
+      return newState;
+    }
+
+    case t.SAVE_SUBCATEGORY: {
+      const newState: IProductListState = {
         ...state,
         subcategory: action.payload
-      } as IProductListState;
+      };
 
-    case t.CLEAN_ERROR_INNER:
-      return {
-        ...state,
-        errorInner: ""
-      } as IProductListState;
+      return newState;
+    }
 
     default:
       // eslint-disable-next-line
       const exhaustiveCheck: never = action;
   }
 
-  return state || unloadedState;
+  return state;
 };

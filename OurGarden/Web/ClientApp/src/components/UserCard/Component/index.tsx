@@ -23,7 +23,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
   componentDidMount() {
     this.props.setBreadcrumb({
       breadcrumb: [],
-      key: "",
+      key: ""
     });
     this.setState({
       mounted: true
@@ -48,20 +48,21 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       return "card-confirm";
     }
 
-    return displayType === DisplayTypeEnum.CardConfirmation ? "card-confirmation flex-grow-0" : "card-info flex-grow-1";
+    return displayType === DisplayTypeEnum.CardConfirmation
+      ? "card-confirmation flex-grow-0"
+      : "card-info flex-grow-1";
   };
 
   sendOrder = (userInfo: IOrderUserInformation) => {
     this.setState({
-      orderCreated: true,
+      orderCreated: true
     });
     this.props.sendOrder(userInfo);
-  }
+  };
 
   render() {
     const {
       productList,
-      pending,
       changeCountOfProduct,
       removeProductFromCard,
       сleanProductCard
@@ -76,40 +77,34 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
     let renderComponent = null;
 
     if (orderCreated) {
-      renderComponent = (
-        <CardConfirm
-          pending={pending}
-        />
-      );
+      renderComponent = <CardConfirm />;
     } else {
-      renderComponent = displayType === DisplayTypeEnum.CardInfo ? (
-        <CardInfo
-          productList={productList}
-          removeProductFromCard={removeProductFromCard}
-          changeCountOfProduct={changeCountOfProduct}
-          сleanProductCard={сleanProductCard}
-          onChangeOrderStep={this.onChangeOrderStep}
-        />
-      ) : (
-        <CardConfirmation
-          productList={productList}
-          sendOrder={this.sendOrder}
-          onChangeOrderStep={this.onChangeOrderStep}
-        />
-      );
+      // prettier-ignore
+      renderComponent
+        = displayType === DisplayTypeEnum.CardInfo ? (
+          <CardInfo
+            productList={productList}
+            removeProductFromCard={removeProductFromCard}
+            changeCountOfProduct={changeCountOfProduct}
+            сleanProductCard={сleanProductCard}
+            onChangeOrderStep={this.onChangeOrderStep}
+          />
+        ) : (
+          <CardConfirmation
+            productList={productList}
+            sendOrder={this.sendOrder}
+            onChangeOrderStep={this.onChangeOrderStep}
+          />
+        );
     }
 
     const additionalClassName = this.getAdditionalClassName();
 
     return (
       <div
-        className={`user-card-wrapper content white-background grey-border ${
-          additionalClassName
-        }`}
+        className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}
       >
-        <HeaderHelmet
-          {...getSEOMetaData("userCard")}
-        />
+        <HeaderHelmet {...getSEOMetaData("userCard")} />
         {renderComponent}
       </div>
     );

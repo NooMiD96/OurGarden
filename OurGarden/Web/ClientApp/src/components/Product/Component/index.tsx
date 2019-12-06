@@ -1,6 +1,5 @@
 import React from "react";
 
-import LoadingHOC from "@core/HOC/LoadingHOC";
 import HeaderHelmet from "@core/components/Helmet";
 import ProductContent from "./ProductContent";
 
@@ -21,6 +20,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       }
     } = props;
 
+    // prettier-ignore
     if (
       !product
       || categoryId !== product.categoryId
@@ -58,31 +58,28 @@ export class Product extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { product, addProductToCard, pending } = this.props;
+    const { product, addProductToCard } = this.props;
 
     const seoSection = getSEOMetaData("product");
 
     return (
       <div className="product-wrapper content white-background grey-border">
-        <LoadingHOC
-          pending={pending || !product}
-        >
-          {product && (
-            <>
-              <HeaderHelmet
-                title={
-                  seoSection.title
-                  && seoSection.title.replace("{{value}}", product.alias)
-                }
-                metaDescription={seoSection.meta}
-              />
-              <ProductContent
-                product={product}
-                addProductToCard={addProductToCard}
-              />
-            </>
-          )}
-        </LoadingHOC>
+        {product && (
+          <>
+            <HeaderHelmet
+              // prettier-ignore
+              title={
+                seoSection.title
+                && seoSection.title.replace("{{value}}", product.alias)
+              }
+              metaDescription={seoSection.meta}
+            />
+            <ProductContent
+              product={product}
+              addProductToCard={addProductToCard}
+            />
+          </>
+        )}
       </div>
     );
   }

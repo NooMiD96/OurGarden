@@ -1,18 +1,12 @@
-import { fetch, addTask } from "domain-task";
+import * as t from "./actionsType";
+import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
+import { actionCreators as appActions } from "@components/Main/State/actions";
 
 import { IAppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponse";
-
-import * as t from "./actionsType";
-import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
-
 import { IProduct } from "@components/Product/State";
 import { ISubcategory } from "../Subcategory/State";
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getProductListRequest: (): t.IGetProductListRequest => ({
     type: t.GET_PRODUCT_LIST_REQUEST
@@ -21,9 +15,8 @@ export const actionsList = {
     type: t.GET_PRODUCT_LIST_SUCCESS,
     payload
   }),
-  getProductListError: (errorMessage: string): t.IGetProductListError => ({
-    type: t.GET_PRODUCT_LIST_ERROR,
-    errorMessage
+  getProductListError: (): t.IGetProductListError => ({
+    type: t.GET_PRODUCT_LIST_ERROR
   }),
 
   cleanProductList: (): t.ICleanProductList => ({
@@ -33,69 +26,55 @@ export const actionsList = {
   saveSubcategory: (payload: ISubcategory): t.ISaveSubcategory => ({
     type: t.SAVE_SUBCATEGORY,
     payload
-  }),
-  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER
   })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const controllerName = "Product";
 export const actionCreators = {
   getProductList: (
     categoryId: string,
     subcategoryId: string
-  ): IAppThunkAction<
-    t.TGetProductList | t.ISaveSubcategory | t.ICleanErrorInnerAction
-  > => (dispatch, _getState) => {
+  ): IAppThunkAction<t.TGetProductList | t.ISaveSubcategory> => (
+    dispatch,
+    getState
+  ) => {
     const apiUrl = "GetProducts";
-
-    dispatch(actionCreators.cleanErrorInner());
-
     const encodedCategoryId = encodeURIComponent(categoryId);
     const encodedSubcategoryId = encodeURIComponent(subcategoryId);
 
-    const fetchTask = fetch(
-      `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}&subcategoryId=${encodedSubcategoryId}`,
-      {
-        credentials: "same-origin",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8"
-        }
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}&subcategoryId=${encodedSubcategoryId}`;
+    const fetchProps = {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
       }
-    )
-      .then(responseCatcher)
-      .then((value: IResponse<ISubcategory & { products: IProduct[] }>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
+    };
+    const requestStart = () => dispatch(actionsList.getProductListRequest());
 
-        dispatch(
-          actionsList.saveSubcategory({
-            alias: value.data.alias,
-            categoryId: value.data.categoryId,
-            photos: value.data.photos,
-            subcategoryId: value.data.subcategoryId
-          })
-        );
-        dispatch(actionsList.getProductListSuccess(value.data.products));
-
-        return Promise.resolve();
-      })
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getProductListError,
-          dispatch
-        )
+    const requestSuccess = (data: ISubcategory & { products: IProduct[] }) => {
+      dispatch(
+        actionsList.saveSubcategory({
+          alias: data.alias,
+          categoryId: data.categoryId,
+          photos: data.photos,
+          subcategoryId: data.subcategoryId
+        })
       );
+      dispatch(actionsList.getProductListSuccess(data.products));
+    };
 
-    addTask(fetchTask);
-    dispatch(actionsList.getProductListRequest());
+    appActions.wrapRequest({
+      apiUrl,
+      controllerName,
+      fetchProps,
+      fetchUrl,
+      requestErrorAction: actionsList.getProductListError,
+      requestStart,
+      requestSuccess
+    })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
     dispatch,
@@ -106,7 +85,6 @@ export const actionCreators = {
       params
     })(dispatch, getState);
   },
-  cleanProductList: actionsList.cleanProductList,
-  cleanErrorInner: actionsList.cleanErrorInner
+  cleanProductList: actionsList.cleanProductList
 };
-//#endregion
+// #endregion

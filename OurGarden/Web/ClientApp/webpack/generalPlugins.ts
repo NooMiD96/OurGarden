@@ -18,7 +18,6 @@ const getGeneralPlugins = (): Plugin[] => [
 
   // an instance of the plugin must be present
   new StringReplacePlugin(),
-
   // hide warning in the webpack
   new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, "node-noop"),
 
@@ -27,9 +26,9 @@ const getGeneralPlugins = (): Plugin[] => [
 
   // https://webpack.js.org/plugins/environment-plugin
   new webpack.EnvironmentPlugin({
-    "PUBLIC_URL": AppSettings.SpaPublicPath,
-    "seoInformation": JSON.stringify(AppSettings.SEOInformation),
-  }),
+    PUBLIC_URL: AppSettings.SpaPublicPath,
+    seoInformation: JSON.stringify(AppSettings.SEOInformation)
+  })
 ];
 
 export default getGeneralPlugins;

@@ -1,16 +1,12 @@
 import { INew } from "@components/News/State";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface INewsListState {
   newsList: INew[];
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: INewsListState = {
-  newsList: [],
-  pending: false,
-  errorInner: "",
+  newsList: []
 };
-//#endregion
+// #endregion

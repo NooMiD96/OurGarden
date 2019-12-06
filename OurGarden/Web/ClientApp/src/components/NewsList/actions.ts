@@ -1,74 +1,59 @@
-import { fetch, addTask } from "domain-task";
+import * as t from "./actionsType";
+import { actionCreators as appActions } from "@components/Main/State/actions";
 
 import { IAppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponse";
-
-import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import * as t from "./actionsType";
 import { INew } from "@components/News/State";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getNewsListRequest: (): t.IGetNewsListRequest => ({
-    type: t.GET_NEWS_LIST_REQUEST,
+    type: t.GET_NEWS_LIST_REQUEST
   }),
   getNewsListSuccess: (payload: INew[]): t.IGetNewsListSuccess => ({
     type: t.GET_NEWS_LIST_SUCCESS,
     payload
   }),
-  getNewsListError: (errorMessage: string): t.IGetNewsListError => ({
-    type: t.GET_NEWS_LIST_ERROR,
-    errorMessage,
-  }),
-
-  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
-    type: t.CLEAN_ERROR_INNER,
-  }),
+  getNewsListError: (): t.IGetNewsListError => ({
+    type: t.GET_NEWS_LIST_ERROR
+  })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const controllerName = "News";
 export const actionCreators = {
-  getNewsList: (): IAppThunkAction<t.TGetNewsList | t.ICleanErrorInnerAction> => (dispatch, _getState) => {
+  getNewsList: (): IAppThunkAction<t.TGetNewsList> => (dispatch, getState) => {
     const apiUrl = "GetAllNews";
 
-    dispatch(actionCreators.cleanErrorInner());
-
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchUrl = `/api/${controllerName}/${apiUrl}`;
+    const fetchProps = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    })
-      .then(responseCatcher)
-      .then((value: IResponse<INew[]>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
+        "Content-Type": "application/json; charset=UTF-8"
+      }
+    };
 
-        value.data.forEach(x => {
-          x.date = new Date(x.date);
-        });
+    const requestStart = () => dispatch(actionsList.getNewsListRequest());
 
-        dispatch(actionsList.getNewsListSuccess(value.data));
+    const requestSuccess = (data: INew[]) => {
+      data.forEach((x) => {
+        x.date = new Date(x.date);
+      });
 
-        return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        apiUrl,
-        err,
-        actionsList.getNewsListError,
-        dispatch
-      ));
+      dispatch(actionsList.getNewsListSuccess(data));
+    };
 
-    addTask(fetchTask);
-    dispatch(actionsList.getNewsListRequest());
-  },
-  cleanErrorInner: actionsList.cleanErrorInner,
+    appActions.wrapRequest({
+      apiUrl,
+      controllerName,
+      fetchProps,
+      fetchUrl,
+      requestErrorAction: actionsList.getNewsListError,
+      requestStart,
+      requestSuccess
+    })(dispatch, getState);
+  }
 };
-//#endregion
+// #endregion

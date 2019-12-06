@@ -34,7 +34,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    "Что-то пошло не так, строка поиска отсутствует."
+                    customeError: "Что-то пошло не так, строка поиска отсутствует."
                 );
             }
 

@@ -11,9 +11,11 @@ const getActiveRoute = (
   let defaultActiveKey;
 
   if (location && location.pathname) {
-    const routeSplit = location.pathname.split("/");
-    if (routeSplit.length > 1) {
-      const mainRoute = routeSplit[1].toLowerCase();
+    // "/asd".split("/") ==> ["", "asd"];
+    const routeSplit = location.pathname.split("/").filter(Boolean);
+
+    if (routeSplit.length) {
+      const mainRoute = routeSplit[0].toLowerCase();
 
       for (let i = 0; i < tabList.length; i++) {
         const tab = tabList[i];
@@ -22,16 +24,19 @@ const getActiveRoute = (
           break;
         }
       }
+    } else {
+      defaultActiveKey = "Home";
     }
   }
 
   return defaultActiveKey;
-}
+};
 
 const getActiveCategory = (
   categoryList: ICategory[],
   location: Location<any>
 ) => {
+  // prettier-ignore
   if (
     !categoryList
     || !categoryList.length
@@ -43,10 +48,11 @@ const getActiveCategory = (
 
   const routeSplit = location.pathname.split("/").filter(Boolean);
 
+  // prettier-ignore
   if (
     routeSplit.length
     // Если мы находимся в разделе "Catalog"
-    && routeSplit.some(x => x.toLowerCase() === "catalog")
+    && routeSplit.some((x) => x.toLowerCase() === "catalog")
     // Если выбрана категория
     && routeSplit[1]
   ) {
@@ -61,10 +67,6 @@ const getActiveCategory = (
   }
 
   return "";
-}
-
-export {
-  getActiveRoute,
-
-  getActiveCategory
 };
+
+export { getActiveRoute, getActiveCategory };

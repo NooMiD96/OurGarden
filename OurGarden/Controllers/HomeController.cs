@@ -27,6 +27,11 @@ namespace Web.Controllers
         {
             var (title, metaDescription) = await GetSEOInfo();
 
+            if (title == default && metaDescription == default)
+            {
+                Response.StatusCode = 404;
+            }
+
             ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
             ViewData["title"] = title;
             ViewData["metaDescription"] = metaDescription;
@@ -42,16 +47,8 @@ namespace Web.Controllers
             var seoInformation = _configuration.GetSection("SEOInformation");
 
             var url = HttpContext.Request.Path.Value.Substring(1).ToLower();
-            if (String.IsNullOrEmpty(url) || url == "home")
-            {
-                var home = seoInformation.GetSection("home");
-
-                return (
-                    home.GetValue<string>("title"),
-                    home.GetValue<string>("meta")
-                );
-            }
-            else if (url.Contains("/", StringComparison.InvariantCultureIgnoreCase))
+            
+            if (url.Contains("/", StringComparison.InvariantCultureIgnoreCase))
             {
                 var urlSplit = url.Split("/");
 
@@ -170,9 +167,14 @@ namespace Web.Controllers
                         sectionName = "userCard";
                         break;
 
-                    default:
+                    case "home":
+                    case "":
+                    case null:
                         sectionName = "home";
                         break;
+
+                    default:
+                        return default;
                 }
 
                 var section = seoInformation.GetSection(sectionName);

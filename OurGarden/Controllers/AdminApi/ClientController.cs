@@ -44,8 +44,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    ex,
-                    "Что-то пошло не так, повторите попытку."
+                    exception: ex
                 );
             }
         }
@@ -90,8 +89,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    ex,
-                    "Что-то пошло не так, повторите попытку."
+                    exception: ex
                 );
             }
         }

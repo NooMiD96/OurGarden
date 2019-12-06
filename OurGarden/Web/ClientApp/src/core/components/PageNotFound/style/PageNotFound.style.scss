@@ -1,0 +1,35 @@
+.page-not-found {
+  .title {
+    display: flex;
+    flex-flow: row wrap;
+
+    > * {
+      flex: 1 1 100%;
+      text-align: center;
+    }
+
+    &-404 {
+      font-size: 110px;
+      margin-bottom: 0.1em;
+    }
+
+    & > .title-not-found {
+      margin-top: 0.1em;
+      font-size: 50px;
+    }
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 18px;
+
+    a {
+      color: $darkGreenColor;
+
+      &:focus,
+      &:hover {
+        color: $greenColor;
+      }
+    }
+  }
+}

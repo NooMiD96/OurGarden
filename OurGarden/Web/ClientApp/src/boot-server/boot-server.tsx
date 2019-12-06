@@ -24,6 +24,7 @@ import "@src/assets/scss/main.scss";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getBundles } = require("react-loadable-ssr-addon");
 
+// prettier-ignore
 // eslint-disable-next-line no-async-promise-executor
 const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult>(async (resolve, reject) => {
   // Prepare Redux store with in-memory history, and dispatch a navigation event
@@ -93,6 +94,12 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
   params.domainTasks.then(() => {
     const stringApp = renderToString(app);
     const initialReduxState = store.getState();
+
+    // If there's a redirection, just send this information back to the host application
+    if (routerContext.url) {
+      resolve({ redirectUrl: routerContext.url });
+      return;
+    }
 
     resolve({
       html: `<div class="styles">${

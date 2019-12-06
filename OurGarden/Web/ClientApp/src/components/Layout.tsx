@@ -6,46 +6,36 @@ import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 
+import AppHOC from "@core/HOC/AppHOC";
 import ErrorHandler from "@core/HOC/ErrorHandler";
 import TopBar from "@components/Main/TopBar";
 import Sider from "@components/Main/Sider";
 import Breadcrumb from "@components/Breadcrumb";
 
-const { Header, Content } = AntdLayout;
+import { MAIN_LAYOUT_GRID_COL_STYLE } from "@core/constants";
 
-const colStyle = {
-  // xs <576px
-  xs: { offset: 0, span: 24 },
-  // sm ≥576px
-  sm: { offset: 0, span: 24 },
-  // md ≥768px
-  md: { offset: 1, span: 22 },
-  // lg ≥992px
-  lg: { offset: 2, span: 20 },
-  // xl ≥1200px
-  xl: { offset: 4, span: 16 },
-  // xxl ≥1600px
-  xxl: { offset: 5, span: 14 }
-};
+const { Header, Content } = AntdLayout;
 
 export const Layout = ({ children }: { children?: React.ReactNode }) => (
   <ErrorHandler>
     <Header className="antd-header">
       <Row type="flex">
-        <Col {...colStyle}>
+        <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
           <TopBar />
         </Col>
       </Row>
     </Header>
     <AntdLayout className="antd-layout" hasSider>
       <Row type="flex">
-        <Col {...colStyle}>
+        <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
           <Sider />
           <AntdLayout>
             <Content className="main-content-wrapper">
               <ConfigProvider renderEmpty={RenderEmptyProvider}>
-                <Breadcrumb />
-                {children}
+                <AppHOC>
+                  <Breadcrumb />
+                  {children}
+                </AppHOC>
               </ConfigProvider>
             </Content>
           </AntdLayout>

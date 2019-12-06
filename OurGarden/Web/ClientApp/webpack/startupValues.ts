@@ -5,10 +5,7 @@ import TerserPlugin from "terser-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import { Options } from "webpack";
 
-const getStartupValues = (
-  env: { [key: string]: string },
-  dirname: string
-) => {
+const getStartupValues = (env: { [key: string]: string }, dirname: string) => {
   const projectFolder = path.join(dirname, "../../../");
   let isDevBuild = true;
   let isShowInBrowser = false;
@@ -18,20 +15,18 @@ const getStartupValues = (
     isShowInBrowser = !!env.show;
   }
 
-  const fileNameTemplate = isDevBuild
-    ? "[name]"
-    : "[name].[contenthash]";
+  const fileNameTemplate = isDevBuild ? "[name]" : "[name].[contenthash]";
 
   let buildModeString: "development" | "production" = "development";
-  let optimizationConfiguration: Options.Optimization = {
+  const optimizationConfiguration: Options.Optimization = {
     minimize: !isDevBuild,
     splitChunks: {
       automaticNameDelimiter: ".",
       maxInitialRequests: Infinity,
       minSize: 0,
-      name: true,
-    },
-  }
+      name: true
+    }
+  };
   if (!isDevBuild) {
     buildModeString = "production";
     optimizationConfiguration.minimizer = [
@@ -47,7 +42,7 @@ const getStartupValues = (
     isShowInBrowser,
     fileNameTemplate,
     buildModeString,
-    optimizationConfiguration,
+    optimizationConfiguration
   };
 };
 

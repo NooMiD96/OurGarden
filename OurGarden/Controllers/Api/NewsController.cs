@@ -72,7 +72,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    "Что-то пошло не так, необходимо выбрать новость."
+                    customeError: "Что-то пошло не так, необходимо выбрать новость."
                 );
             }
 
@@ -83,7 +83,8 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {alias}"
+                    customeError: $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {alias}",
+                    returnStatusCode: 404
                 );
             }
 

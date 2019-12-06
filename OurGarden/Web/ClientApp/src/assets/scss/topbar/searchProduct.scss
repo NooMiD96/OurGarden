@@ -60,6 +60,10 @@
 
 #product-popup-container {
   .ant-select-dropdown {
+    .ant-select-dropdown-menu {
+      max-height: 500px;
+    }
+
     .loading-auto-select {
       display: flex;
       justify-content: center;
@@ -96,6 +100,19 @@
           min-width: auto;
           min-height: auto;
         }
+      }
+
+      &.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled),
+      &.ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
+        background-color: $tableHoverColor;
+
+        .search-menu-item-text {
+          color: $greenColor;
+        }
+      }
+
+      .search-menu-item-text {
+        color: rgba(0, 0, 0, 0.65);
       }
 
       &-image {

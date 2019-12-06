@@ -4,7 +4,7 @@ import { Manifest } from "react-loadable/webpack";
 
 import { BootFuncParams } from "aspnet-prerendering";
 
-//#region Bundle Stat
+// #region Bundle Stat
 let fileStatPath: string | null = null;
 
 export const getFileStatPath = () => {
@@ -18,34 +18,35 @@ export const getFileStatPath = () => {
   }
 
   return fileStatPath;
-}
+};
 
 let fileStat: Manifest | null = null;
 
 export const getFileStat = async () => {
-  const path = getFileStatPath();
+  const statePath = getFileStatPath();
 
   if (fileStat === null) {
-    fileStat = (await readJson(path)) as Manifest;
+    // eslint-disable-next-line require-atomic-updates
+    fileStat = (await readJson(statePath)) as Manifest;
   }
 
   return fileStat;
-}
-//#endregion
+};
+// #endregion
 
-//#region Visited Pages
-const visitedPages: {[key: string]: boolean} = {};
+// #region Visited Pages
+const visitedPages: { [key: string]: boolean } = {};
 
-export const isPageVisited = (url: string = "") => {
+export const isPageVisited = (url = "") => {
   const urlSplit = url
     .toLowerCase()
     .slice(1)
-    .split('/');
+    .split("/");
 
   switch (urlSplit.length) {
     case 0:
-      if (!visitedPages['/']) {
-        visitedPages['/'] = true;
+      if (!visitedPages["/"]) {
+        visitedPages["/"] = true;
         return false;
       }
       break;
@@ -55,11 +56,11 @@ export const isPageVisited = (url: string = "") => {
         visitedPages[urlSplit[0]] = true;
         return false;
       }
-    break;
+      break;
 
     default:
       const mainUrl = urlSplit[0];
-      if (['catalog', 'news'].includes(mainUrl)) {
+      if (["catalog", "news"].includes(mainUrl)) {
         const pageKey = `${mainUrl}/deep=${urlSplit.length - 1}`;
         if (!visitedPages[pageKey]) {
           visitedPages[pageKey] = true;
@@ -73,15 +74,15 @@ export const isPageVisited = (url: string = "") => {
   }
 
   return true;
-}
-//#endregion
+};
+// #endregion
 
 export const getParamsData = (params: BootFuncParams, field: string) => {
-  const { data } = params
-  
+  const { data } = params;
+
   if (!data || data[field] === undefined) {
     return null;
   }
 
   return data[field];
-}
+};

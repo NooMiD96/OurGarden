@@ -1,7 +1,7 @@
 import { IPhoto } from "@src/core/IPhoto";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface INew {
   newsId: number;
   title: string;
@@ -13,13 +13,9 @@ export interface INew {
 
 export interface INewsState {
   selectedNew: INew | null;
-  pending: boolean;
-  errorInner: string;
 }
 
 export const unloadedState: INewsState = {
-  selectedNew: null,
-  pending: false,
-  errorInner: "",
+  selectedNew: null
 };
-//#endregion
+// #endregion
