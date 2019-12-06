@@ -7,7 +7,7 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 
 export enum DisplayTypeEnum {
   CardInfo,
-  CardConfirmation,
+  CardConfirmation
 }
 // -----------------------------
 // STATE OF COMPONENT
@@ -18,18 +18,15 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IUserCardState
-  & RouterState;
+export type TStateToProps = IUserCardState & RouterState;
 export type TOwnProps = {};
-export type TMapStateToProps = TStateToProps
-  & TOwnProps;
+export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators & {
-  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb,
+  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 };
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps
-  & TMapDispatchToProps;
+export type TState = TMapStateToProps & TMapDispatchToProps;

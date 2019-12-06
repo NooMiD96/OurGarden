@@ -1,7 +1,11 @@
-import * as t from "./actionsType";
-import { actionCreators as appActions } from "@components/Main/State/actions";
+import { fetch, addTask } from "domain-task";
 
 import { IAppThunkAction } from "@src/Store";
+import { IResponse } from "@core/fetchHelper/IResponse";
+
+import * as t from "./actionsType";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import { IOrderModel, IOrderPosition, IOrderUserInformation } from "./IModel";
 import { IUserCardProduct } from "./State";
 import { IProduct } from "@components/Product/State";
@@ -15,8 +19,9 @@ export const actionsList = {
   sendOrderSuccess: (): t.ISendOrderSuccess => ({
     type: t.SEND_ORDER_SUCCESS
   }),
-  sendOrderError: (): t.ISendOrderError => ({
-    type: t.SEND_ORDER_ERROR
+  sendOrderError: (errorMessage: string): t.ISendOrderError => ({
+    type: t.SEND_ORDER_ERROR,
+    errorMessage
   }),
 
   addProductToCard: (payload: IUserCardProduct): t.IAddProductToCard => ({
@@ -50,8 +55,8 @@ export const actionCreators = {
     userInfo: IOrderUserInformation
   ): IAppThunkAction<t.TSendOrder> => (dispatch, getState) => {
     const apiUrl = "AddOrder";
-
     const { productList } = getState().userCard;
+
     const bodyModel: IOrderModel = {
       ...userInfo,
       orderPositions: productList.map(
@@ -62,31 +67,35 @@ export const actionCreators = {
       )
     };
 
-    const fetchUrl = `/api/${controllerName}/${apiUrl}`;
-    const fetchProps = {
+    // prettier-ignore
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "POST",
       body: JSON.stringify(bodyModel),
       headers: {
         "Content-Type": "application/json; charset=UTF-8"
       }
-    };
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<void>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
 
-    const requestStart = () => dispatch(actionsList.sendOrderRequest());
+        dispatch(actionsList.sendOrderSuccess());
 
-    const requestSuccess = (_: void) => {
-      dispatch(actionsList.sendOrderSuccess());
-    };
+        return Promise.resolve();
+      })
+      .catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.sendOrderError,
+        dispatch
+      ));
 
-    appActions.wrapRequest({
-      apiUrl,
-      controllerName,
-      fetchProps,
-      fetchUrl,
-      requestErrorAction: actionsList.sendOrderError,
-      requestStart,
-      requestSuccess
-    })(dispatch, getState);
+    addTask(fetchTask);
+    dispatch(actionsList.sendOrderRequest());
   },
 
   addProductToCard: actionsList.addProductToCard,

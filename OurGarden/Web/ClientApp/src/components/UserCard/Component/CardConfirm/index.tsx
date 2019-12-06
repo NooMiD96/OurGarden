@@ -1,19 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import CardConfirmSuccess from "./CardConfirmSuccess";
 import Loading from "@src/core/components/Loading";
 
-import { IApplicationState } from "@src/Store";
+import { ICardConfirm } from "./ICardConfirm";
 
-export const CardConfirmation = ({ pending }: { pending: boolean }) => {
+export const CardConfirmation = ({ pending, errorInner }: ICardConfirm) => {
   if (pending) {
     return <Loading />;
+  }
+
+  if (errorInner) {
+    return <CardConfirmSuccess />;
   }
 
   return <CardConfirmSuccess />;
 };
 
-export default connect((state: IApplicationState) => ({
-  pending: !!state.app.pending.length
-}))(CardConfirmation);
+export default CardConfirmation;

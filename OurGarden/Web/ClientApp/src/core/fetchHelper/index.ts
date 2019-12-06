@@ -8,6 +8,7 @@ export const responseCatcher = async (res: Response) => {
   }
   switch (res.status) {
     case 400:
+      // eslint-disable-next-line no-return-await
       return await errorCreater.createValidationError(res);
 
     case 401:
@@ -22,7 +23,7 @@ export const errorCatcher = (
   componentName: string,
   methodName = "",
   error: Error,
-  action: () => void,
+  action: (error: string) => void,
   dispatch: (action: any) => void
 ) => {
   console.warn(
@@ -30,5 +31,5 @@ export const errorCatcher = (
       error.stack ? `\r\n${error.stack}` : ` ${error.message}`
     }`
   );
-  dispatch(action());
+  dispatch(action(error.message));
 };

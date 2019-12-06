@@ -20,19 +20,34 @@ export const reducer: Reducer<IUserCardState> = (
   let saveState = true;
 
   switch (action.type) {
-    case t.SEND_ORDER_ERROR:
     case t.SEND_ORDER_REQUEST: {
-      return state;
+      newState = {
+        ...state,
+        pending: true,
+        errorInner: ""
+      };
+      return newState;
     }
 
     case t.SEND_ORDER_SUCCESS: {
       newState = {
         ...state,
         productList: [],
+        pending: false,
         totalCount: 0
       };
 
       break;
+    }
+
+    case t.SEND_ORDER_ERROR: {
+      newState = {
+        ...state,
+        pending: false,
+        errorInner: action.errorMessage
+      };
+
+      return newState;
     }
 
     case t.ADD_PRODUCT_TO_CARD: {

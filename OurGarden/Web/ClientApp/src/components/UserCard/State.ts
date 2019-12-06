@@ -10,10 +10,14 @@ export interface IUserCardProduct {
 export interface IUserCardState {
   productList: IUserCardProduct[];
   totalCount: number;
+  pending: boolean;
+  errorInner: string;
 }
 
 export const unloadedState: IUserCardState = {
   productList: [],
-  totalCount: 0
+  totalCount: 0,
+  pending: false,
+  errorInner: ""
 };
 // #endregion

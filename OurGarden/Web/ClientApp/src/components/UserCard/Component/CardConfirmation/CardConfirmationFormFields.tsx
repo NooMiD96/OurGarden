@@ -5,7 +5,9 @@ import Icon from "@core/antd/Icon";
 import Input from "@src/core/antd/Input";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
-import PhoneNumberInput, { CISPhoneNumberRegExp } from "@src/core/components/PhoneNumberInput";
+import PhoneNumberInput, {
+  CISPhoneNumberRegExp
+} from "@src/core/components/PhoneNumberInput";
 
 import { ICardConfirmationFormFields } from "./ICardConfirmation";
 
@@ -28,17 +30,13 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
   const { form, onSubmit } = props;
   const { getFieldDecorator, isFieldTouched, getFieldError } = form;
 
-  const secondNameError
-    = isFieldTouched("secondName") && getFieldError("secondName");
-  const firstNameError
-    = isFieldTouched("firstName") && getFieldError("firstName");
   const phoneError
     = isFieldTouched("phoneNumber") && getFieldError("phoneNumber");
 
   return (
     <Row type="flex" gutter={24}>
       <Col {...colStyle}>
-        <FormItem validateStatus={secondNameError ? "error" : undefined}>
+        <FormItem>
           {getFieldDecorator("secondName", {
             rules: [{ required: true, message: "Введите вашу фамилию" }]
           })(
@@ -52,7 +50,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       </Col>
 
       <Col {...colStyle}>
-        <FormItem validateStatus={firstNameError ? "error" : undefined}>
+        <FormItem>
           {getFieldDecorator("firstName", {
             rules: [{ required: true, message: "Введите ваше имя" }]
           })(
@@ -78,9 +76,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       </Col>
 
       <Col {...colStyle}>
-        <FormItem
-          validateStatus={phoneError ? "error" : undefined}
-        >
+        <FormItem validateStatus={phoneError ? "error" : undefined}>
           {getFieldDecorator("phone", {
             rules: [
               {
@@ -102,7 +98,13 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       <Col {...colStyle}>
         <FormItem>
           {getFieldDecorator("email", {
-            rules: [{ required: true, message: "Введите ваш контактный электронный адрес", type: "email" }]
+            rules: [
+              {
+                required: true,
+                message: "Введите ваш контактный электронный адрес",
+                type: "email"
+              }
+            ]
           })(
             <Input
               placeholder="Почта"

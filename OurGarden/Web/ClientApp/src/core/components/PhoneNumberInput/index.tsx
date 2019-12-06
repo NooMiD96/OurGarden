@@ -1,5 +1,6 @@
 import React from "react";
-import PhoneInput from "react-phone-input-2";
+
+const PhoneInput = require("react-phone-input-2").default;
 
 export const CISPhoneNumberRegExp = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
 
@@ -11,21 +12,24 @@ const inputStyle = {
 class PhoneNumberInput extends React.PureComponent<any, any> {
   render() {
     const { prefix, placeholder, ...props } = this.props;
+
     return (
       <span className="ant-input-affix-wrapper">
-        <span className="ant-input-prefix">
-          {prefix || null}
-        </span>
+        <span className="ant-input-prefix">{prefix || null}</span>
 
         <PhoneInput
           inputClass="ant-input"
           buttonClass="d-none"
           defaultCountry="ru"
+          country="ru"
           placeholder={placeholder || "Телефон"}
           disableSearchIcon
           disableDropdown
-          masks={{ ru: "+. (...) ...-..-.." }}
           inputStyle={inputStyle}
+          autocompleteSearch
+          enableAreaCodes
+          countryCodeEditable={false}
+          jumpCursorToEnd={false}
           {...props}
         />
       </span>

@@ -24,6 +24,7 @@ export interface ISendOrderSuccess {
 }
 export interface ISendOrderError {
   type: typeof SEND_ORDER_ERROR;
+  errorMessage: string;
 }
 export type TSendOrder =
   | ISendOrderRequest

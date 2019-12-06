@@ -48,11 +48,13 @@
     &:focus,
     &:active {
       color: $borderColor;
+      border-color: $borderColor;
     }
 
     &:hover {
       background-color: $borderColor;
       color: #fff;
+      border-color: $borderColor;
 
       &:focus,
       &:active {
@@ -84,6 +86,7 @@
   }
 
   .order-success {
+    padding: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
