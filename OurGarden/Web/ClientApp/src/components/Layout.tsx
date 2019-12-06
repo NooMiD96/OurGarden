@@ -10,7 +10,6 @@ import AppHOC from "@core/HOC/AppHOC";
 import ErrorHandler from "@core/HOC/ErrorHandler";
 import TopBar from "@components/Main/TopBar";
 import Sider from "@components/Main/Sider";
-import Breadcrumb from "@components/Breadcrumb";
 
 import { MAIN_LAYOUT_GRID_COL_STYLE } from "@core/constants";
 
@@ -32,10 +31,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => (
           <AntdLayout>
             <Content className="main-content-wrapper">
               <ConfigProvider renderEmpty={RenderEmptyProvider}>
-                <AppHOC>
-                  <Breadcrumb />
-                  {children}
-                </AppHOC>
+                <AppHOC>{children}</AppHOC>
               </ConfigProvider>
             </Content>
           </AntdLayout>

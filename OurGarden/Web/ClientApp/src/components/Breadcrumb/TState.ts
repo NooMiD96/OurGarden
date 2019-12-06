@@ -1,4 +1,3 @@
-import { Push } from "connected-react-router";
 import { IBreadcrumbState } from "./State";
 
 // -----------------------------
@@ -13,8 +12,7 @@ export type TStateToProps = IBreadcrumbState;
 export type TOwnProps = {};
 // -----------------------------
 // FINAL PROPS
-export type TMapStateToProps = TStateToProps
-  & TOwnProps;
+export type TMapStateToProps = TStateToProps & TOwnProps;
 
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
@@ -23,5 +21,4 @@ export type TMapDispatchToProps = TDispatchToProps;
 
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps
-  & TMapDispatchToProps;
+export type TState = TMapStateToProps & TMapDispatchToProps;

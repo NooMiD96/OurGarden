@@ -13,6 +13,6 @@ export interface IBreadcrumbState {
 
 export const unloadedState: IBreadcrumbState = {
   breadcrumb: [],
-  key: '',
+  key: ""
 };
 // #endregion

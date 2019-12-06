@@ -17,10 +17,13 @@ export const actionsList = {
   getBreadcrumb: (): t.IGetBreadcrumb => ({
     type: t.GET_BREADCRUMB
   }),
-  setBreadcrumb: (payload: { breadcrumb: IBreadcrumb[], key: string }): t.ISetBreadcrumb => ({
+  setBreadcrumb: (payload: {
+    breadcrumb: IBreadcrumb[];
+    key: string;
+  }): t.ISetBreadcrumb => ({
     type: t.SET_BREADCRUMB,
     payload
-  }),
+  })
 };
 // #endregion
 // ----------------
@@ -28,17 +31,21 @@ export const actionsList = {
 export const actionCreators = {
   getBreadcrumb: ({
     controllerName,
-    key = '',
+    key = "",
     params = {}
   }: {
-      controllerName: string,
-      key?: string,
-      params?: any,
-  }): IAppThunkAction<t.IGetBreadcrumb | t.ISetBreadcrumb> => (dispatch, getState) => {
+    controllerName: string;
+    key?: string;
+    params?: any;
+  }): IAppThunkAction<t.IGetBreadcrumb | t.ISetBreadcrumb> => (
+    dispatch,
+    getState
+  ) => {
     const paramString = qs.stringify(params);
     const currentKey = getState().breadcrumb.key;
-    
+
     if (!key) {
+      // eslint-disable-next-line no-param-reassign
       key = paramString;
     }
 
@@ -48,13 +55,17 @@ export const actionCreators = {
 
     dispatch(actionsList.getBreadcrumb());
 
-    const fetchTask = fetch(`/api/${controllerName}/GetBreadcrumb?${paramString}`, {
-      credentials: "same-origin",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    })
+    // prettier-ignore
+    const fetchTask = fetch(
+      `/api/${controllerName}/GetBreadcrumb?${paramString}`,
+      {
+        credentials: "same-origin",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8"
+        }
+      }
+    )
       .then(responseCatcher)
       .then((value: IResponse<IBreadcrumb[]>) => {
         if (value && value.error) {
@@ -69,16 +80,12 @@ export const actionCreators = {
         );
 
         return Promise.resolve();
-      }).catch((err: Error) => errorCatcher(
-        controllerName,
-        "GetBreadcrumb",
-        err,
-        () => {},
-        dispatch
-      ));
+      })
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .catch((err: Error) => errorCatcher(controllerName, "GetBreadcrumb", err, () => {}, dispatch));
 
     addTask(fetchTask);
   },
-  setBreadcrumb: actionsList.setBreadcrumb,
+  setBreadcrumb: actionsList.setBreadcrumb
 };
 // #endregion

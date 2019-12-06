@@ -6,8 +6,13 @@ export const SET_BREADCRUMB = "SET_BREADCRUMB";
 // #endregion
 // -----------------
 // #region ACTIONS INTERFACE
-export interface IGetBreadcrumb { type: typeof GET_BREADCRUMB }
-export interface ISetBreadcrumb { type: typeof SET_BREADCRUMB; payload: { breadcrumb: IBreadcrumb[], key: string } }
+export interface IGetBreadcrumb {
+  type: typeof GET_BREADCRUMB;
+}
+export interface ISetBreadcrumb {
+  type: typeof SET_BREADCRUMB;
+  payload: { breadcrumb: IBreadcrumb[]; key: string };
+}
 
 type KnownAction = ISetBreadcrumb | IGetBreadcrumb;
 
