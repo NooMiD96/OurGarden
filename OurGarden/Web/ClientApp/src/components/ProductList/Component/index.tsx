@@ -4,7 +4,6 @@ import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
 
-import { getSEOMetaData } from "@core/utils/seoInformation";
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { TState } from "../TState";
@@ -58,18 +57,16 @@ export class ProductList extends React.PureComponent<TState, {}> {
       photoUrl: getPreviewPhotoSrc(product)
     }));
 
-    const seoSection = getSEOMetaData("productList");
-
     return (
       <>
         {subcategory && (
           <HeaderHelmet
-            // prettier-ignore
-            title={
-              seoSection.title
-              && seoSection.title.replace("{{value}}", subcategory.alias)
-            }
-            metaDescription={seoSection.meta}
+            seoSectionName="productList"
+            seoTitle={[
+              {
+                replacementValue: subcategory.alias
+              }
+            ]}
           />
         )}
         <CatalogCardList

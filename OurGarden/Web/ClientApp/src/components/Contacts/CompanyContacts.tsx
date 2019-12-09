@@ -6,6 +6,8 @@ import PlaceSvg from "@src/assets/svg/contacts/place.svg";
 import PhoneSvg from "@src/assets/svg/contacts/phone.svg";
 import MailSvg from "@src/assets/svg/contacts/mail.svg";
 
+import { MAIN_MOBILE, HELP_EMAIL, ADDRESS } from "@src/core/constants";
+
 export const CompanyContacts = () => (
   <div className="company-contacts">
     <Title>Контакты</Title>
@@ -14,19 +16,19 @@ export const CompanyContacts = () => (
       <i className="anticon">
         <PlaceSvg />
       </i>
-      <span>г. Тула, ул. 9 мая, 36</span>
+      <span>{ADDRESS}</span>
     </div>
     <div>
       <i className="anticon">
         <PhoneSvg />
       </i>
-      <span>8 950 922 39 19</span>
+      <span>{MAIN_MOBILE}</span>
     </div>
     <div>
       <i className="anticon">
         <MailSvg />
       </i>
-      <span>help@наш-сад.com</span>
+      <span>{HELP_EMAIL}</span>
     </div>
   </div>
 );

@@ -3,7 +3,6 @@ import React from "react";
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { TState, TComponentState } from "../TState";
@@ -42,8 +41,6 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   render() {
     const { category, subcategoryList, push } = this.props;
 
-    const seoSection = getSEOMetaData("subcategory");
-
     const dataList = subcategoryList.map((x) => ({
       ...x,
       link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
@@ -54,12 +51,12 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       <>
         {category && (
           <HeaderHelmet
-            // prettier-ignore
-            title={
-              seoSection.title
-              && seoSection.title.replace("{{value}}", category.alias)
-            }
-            metaDescription={seoSection.meta}
+            seoSectionName="subcategory"
+            seoTitle={[
+              {
+                replacementValue: category.alias
+              }
+            ]}
           />
         )}
         <CatalogCardList dataList={dataList} push={push} />

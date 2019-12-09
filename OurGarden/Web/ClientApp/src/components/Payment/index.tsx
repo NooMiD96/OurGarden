@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 interface IPayment {
@@ -29,7 +28,7 @@ export class Payment extends React.PureComponent<IPayment, {}> {
   render() {
     return (
       <div className="content white-background grey-border p25">
-        <HeaderHelmet {...getSEOMetaData("payment")} />
+        <HeaderHelmet seoSectionName="payment" />
         Данный раздел находится в разработке, приходите позднее!
       </div>
     );

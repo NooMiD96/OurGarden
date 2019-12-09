@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 interface IVideogalery {
@@ -29,7 +28,7 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
   render() {
     return (
       <div className="content white-background grey-border p25">
-        <HeaderHelmet {...getSEOMetaData("videogalery")} />
+        <HeaderHelmet seoSectionName="videogalery" />
         Данный раздел находится в разработке, приходите позднее!
       </div>
     );

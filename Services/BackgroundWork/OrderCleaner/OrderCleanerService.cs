@@ -1,8 +1,11 @@
 ﻿using Database.Contexts;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 using Model.DB;
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +14,7 @@ namespace Services.BackgroundWork.OrderCleaner
 {
     public class OrderCleanerService : IOrderCleanerService
     {
-        const int MonthMaxDiff = 1;
+        const int MonthMaxDiff = 3;
         readonly ILogger _logger;
         private readonly IServiceProvider _services;
 

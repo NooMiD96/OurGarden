@@ -6,7 +6,6 @@ import HeaderHelmet from "@src/core/components/Helmet";
 import CompanyMap from "./CompanyMap";
 import CompanyContacts from "./CompanyContacts";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 import "./style/Contacts.style.scss";
@@ -21,11 +20,13 @@ export class Contacts extends React.PureComponent<IContacts, {}> {
     super(props);
 
     props.setBreadcrumb({
-      breadcrumb: [{
-        displayName: "Контакты",
-        url: "Contacts",
-        order: 1,
-      }],
+      breadcrumb: [
+        {
+          displayName: "Контакты",
+          url: "Contacts",
+          order: 1
+        }
+      ],
       key: "Contacts"
     });
   }
@@ -33,9 +34,7 @@ export class Contacts extends React.PureComponent<IContacts, {}> {
   render() {
     return (
       <div className="contacts-wrapper content">
-        <HeaderHelmet
-          {...getSEOMetaData("contacts")}
-        />
+        <HeaderHelmet seoSectionName="contacts" />
         <CompanyContacts />
         <CompanyMap />
       </div>
@@ -43,9 +42,6 @@ export class Contacts extends React.PureComponent<IContacts, {}> {
   }
 }
 
-export default connect(
-  null,
-  {
-    setBreadcrumb: breadcrumbActions.setBreadcrumb
-  }
-)(Contacts);
+export default connect(null, {
+  setBreadcrumb: breadcrumbActions.setBreadcrumb
+})(Contacts);

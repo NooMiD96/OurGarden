@@ -3,8 +3,6 @@ import * as React from "react";
 import HeaderHelmet from "@core/components/Helmet";
 import NewsCarousel from "./NewsCarousel";
 
-import { getSEOMetaData } from "@core/utils/seoInformation";
-
 import { TState, TComponentState } from "../TState";
 
 import "./style/Home.style.scss";
@@ -30,7 +28,7 @@ export class Home extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="home-wrapper content">
-        <HeaderHelmet {...getSEOMetaData("home")} />
+        <HeaderHelmet seoSectionName="home" />
         <NewsCarousel push={push} displayList={displayList} />
       </div>
     );

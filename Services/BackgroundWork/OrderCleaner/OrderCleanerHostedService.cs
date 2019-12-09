@@ -33,8 +33,11 @@ namespace Services.BackgroundWork.OrderCleaner
         {
             _logger.LogInformation(HostServiceStart);
 
+#if DEBUG
+            var startTimeSpan = TimeSpan.Zero;
+#else
             var startTimeSpan = DateTime.Now.AddDays(1).GetToday() - DateTime.Now;
-            //var startTimeSpan = TimeSpan.Zero;
+#endif
 
             _timer = new Timer(DoWork, null, startTimeSpan, TimeSpan.FromDays(1));
 

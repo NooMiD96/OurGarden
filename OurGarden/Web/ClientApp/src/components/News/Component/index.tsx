@@ -3,8 +3,6 @@ import React from "react";
 import HeaderHelmet from "@src/core/components/Helmet";
 import NewsContent from "./NewsContent";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
-
 import { TState, TComponentState } from "../TState";
 
 import "./style/News.style.scss";
@@ -45,19 +43,17 @@ export class News extends React.PureComponent<TState, TComponentState> {
   render() {
     const { selectedNew } = this.props;
 
-    const seoSection = getSEOMetaData("news");
-
     return (
       <div className="news-wrapper content white-background grey-border">
         {selectedNew && (
           <>
             <HeaderHelmet
-              // prettier-ignore
-              title={
-                seoSection.title
-                && seoSection.title.replace("{{value}}", selectedNew.title)
-              }
-              metaDescription={seoSection.meta}
+              seoSectionName="news"
+              seoTitle={[
+                {
+                  replacementValue: selectedNew.title
+                }
+              ]}
             />
             <NewsContent selectedNew={selectedNew} />
           </>

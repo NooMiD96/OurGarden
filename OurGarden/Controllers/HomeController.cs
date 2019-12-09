@@ -35,6 +35,7 @@ namespace Web.Controllers
             ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
             ViewData["title"] = title;
             ViewData["metaDescription"] = metaDescription;
+            ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
 
             return View();
         }

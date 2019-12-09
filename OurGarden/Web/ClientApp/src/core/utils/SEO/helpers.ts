@@ -1,6 +1,9 @@
+import { ISEOMetaData } from "./ISEO";
+
 // #region Private
+
 // prettier-ignore
-const seoInformation: any
+export const seoInformation: any
   = process.env.seoInformation && JSON.parse(process.env.seoInformation);
 
 if (!seoInformation) {
@@ -8,12 +11,12 @@ if (!seoInformation) {
 }
 
 // prettier-ignore
-const simpleGetSEOMetaData = () => ({
-  title: "",
-  meta: ""
+export const simpleGetSEOMetaData = () => ({
+  title: null,
+  meta: null
 } as ISEOMetaData);
 
-const normalGetSEOMetaData = (section: string) => {
+export const normalGetSEOMetaData = (section: string) => {
   if (seoInformation[section]) {
     return { ...seoInformation[section] } as ISEOMetaData;
   }
@@ -21,18 +24,9 @@ const normalGetSEOMetaData = (section: string) => {
   console.warn("Не удалось найти СЕО информации для секции: ", section);
 
   return {
-    title: "",
-    meta: ""
+    title: null,
+    meta: null
   } as ISEOMetaData;
 };
 
 // #endregion
-
-export interface ISEOMetaData {
-  title: string;
-  meta: string;
-}
-
-export const getSEOMetaData = !seoInformation
-  ? simpleGetSEOMetaData
-  : normalGetSEOMetaData;

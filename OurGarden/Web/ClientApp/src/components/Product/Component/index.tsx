@@ -3,8 +3,6 @@ import React from "react";
 import HeaderHelmet from "@core/components/Helmet";
 import ProductContent from "./ProductContent";
 
-import { getSEOMetaData } from "@core/utils/seoInformation";
-
 import { TState, TComponentState } from "../TState";
 
 import "./style/Product.style.scss";
@@ -60,19 +58,17 @@ export class Product extends React.PureComponent<TState, TComponentState> {
   render() {
     const { product, addProductToCard } = this.props;
 
-    const seoSection = getSEOMetaData("product");
-
     return (
       <div className="product-wrapper content white-background grey-border">
         {product && (
           <>
             <HeaderHelmet
-              // prettier-ignore
-              title={
-                seoSection.title
-                && seoSection.title.replace("{{value}}", product.alias)
-              }
-              metaDescription={seoSection.meta}
+              seoSectionName="product"
+              seoTitle={[
+                {
+                  replacementValue: product.alias
+                }
+              ]}
             />
             <ProductContent
               product={product}

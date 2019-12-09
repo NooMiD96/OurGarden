@@ -3,7 +3,6 @@ import React from "react";
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { TState } from "../TState";
@@ -13,11 +12,13 @@ export class Category extends React.PureComponent<TState, {}> {
     super(props);
 
     props.setBreadcrumb({
-      breadcrumb: [{
-        displayName: "Каталог",
-        url: "Catalog",
-        order: 1,
-      }],
+      breadcrumb: [
+        {
+          displayName: "Каталог",
+          url: "Catalog",
+          order: 1
+        }
+      ],
       key: "Catalog"
     });
   }
@@ -33,7 +34,7 @@ export class Category extends React.PureComponent<TState, {}> {
 
     return (
       <>
-        <HeaderHelmet {...getSEOMetaData("category")} />
+        <HeaderHelmet seoSectionName="category" />
         <CatalogCardList dataList={dataList} push={push} />
       </>
     );

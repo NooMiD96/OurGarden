@@ -6,8 +6,6 @@ import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
 import CardConfirm from "./CardConfirm";
 
-import { getSEOMetaData } from "@src/core/utils/seoInformation";
-
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
 import { IOrderUserInformation } from "../IModel";
 
@@ -108,7 +106,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       <div
         className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}
       >
-        <HeaderHelmet {...getSEOMetaData("userCard")} />
+        <HeaderHelmet seoSectionName="userCard" />
         {renderComponent}
       </div>
     );
