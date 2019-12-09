@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
 import Checkbox from "@core/antd/Checkbox";
-import MultiplyUploader from "@src/core/components/MultiplyUploader";
+import MultiplyUploaderForm, {
+  useMultiplyUploaderForm
+} from "@src/core/components/MultiplyUploaderForm";
 
 import localeText from "../Text";
 import {
   getAddFilesDTO,
   getUpdateFilesDTO,
-  getDefaultFileList,
-  updatePreview
+  getDefaultFileList
 } from "@core/utils/photo";
 
 import { ICategory, ICategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import { UploadFile } from "@core/antd/Upload";
-import { IUpdateFile } from "@src/core/utils/photo/IPhotoUtils";
 
 interface IProps extends FormComponentProps {
   item: ICategory | null;
@@ -28,9 +27,7 @@ interface IProps extends FormComponentProps {
 }
 
 export const EditModalContent = (props: IProps) => {
-  const [addFiles, setAddFiles] = useState([] as UploadFile[]);
-  const [updateFiles, setUpdateFiles] = useState([] as IUpdateFile[]);
-  const [removeFiles, setRemoveFiles] = useState([] as string[]);
+  const multiplyUploaderParams = useMultiplyUploaderForm();
 
   const { form } = props;
   const { getFieldDecorator } = form;
@@ -44,18 +41,20 @@ export const EditModalContent = (props: IProps) => {
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
 
-    const addFilesDTO = await getAddFilesDTO(addFiles);
-    const updateFilesDTO = await getUpdateFilesDTO(updateFiles);
+    const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(
+      multiplyUploaderParams.updateFiles
+    );
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
         props.handleCreateSubmit({
           categoryId,
-          alias,
+          alias: alias.trim(),
           isVisible,
 
           addFiles: addFilesDTO,
-          removeFiles,
+          removeFiles: multiplyUploaderParams.removeFiles,
           updateFiles: updateFilesDTO
         });
       }
@@ -67,10 +66,6 @@ export const EditModalContent = (props: IProps) => {
     props.handleClose();
   };
 
-  const updatePreviewHandler = (uid: string, url: string) => {
-    updatePreview(updateFiles, setUpdateFiles, { uid, url });
-  };
-
   const defaultFileList = getDefaultFileList(photos);
 
   return (
@@ -78,7 +73,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("alias", {
           initialValue: alias,
-          rules: [{ required: true, message: localeText._rule_require_alias }]
+          rules: [
+            {
+              required: true,
+              message: localeText._rule_require_alias,
+              transform: (val: string) => val && val.trim()
+            }
+          ]
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
@@ -99,14 +100,9 @@ export const EditModalContent = (props: IProps) => {
         {getFieldDecorator("addFiles", {
           rules: [{ required: false, message: localeText._rule_require_photo }]
         })(
-          <MultiplyUploader
+          <MultiplyUploaderForm
             defaultFileList={defaultFileList}
-            updateAddedList={files => setAddFiles(files)}
-            updateRemovedList={file => setRemoveFiles([...removeFiles, file])}
-            removeFile={fileUid =>
-              setAddFiles(addFiles.filter(x => x.uid !== fileUid))
-            }
-            updatePreview={updatePreviewHandler}
+            {...multiplyUploaderParams}
           />
         )}
       </FormItem>

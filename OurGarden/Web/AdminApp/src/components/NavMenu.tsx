@@ -5,25 +5,23 @@ import { RouterState } from "connected-react-router";
 import Menu from "@core/antd/Menu";
 import Sider from "@core/antd/LayoutSider";
 
-import { IApplicationState } from "@src/Store";
 import GenerateLink from "@src/core/components/GenerateLink";
 import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
-export const NavMenu = (props: RouterState) => {
-  const navList = [
-    {
-      key: "Новости и акции",
-      title: "Новости и акции",
-      link: "Новости и акции"
-    },
-    { key: "Заказы", title: "Заказы", link: "Заказы" },
-    { key: "Категории", title: "Категории", link: "Категории" },
-    { key: "Подкатегории", title: "Подкатегории", link: "Подкатегории" },
-    { key: "Товары", title: "Товары", link: "Товары" },
-    { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
-    { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" }
-  ];
+import { IApplicationState } from "@src/Store";
 
+const navList = [
+  { key: "Новости и акции", title: "Новости и акции", link: "Новости и акции" },
+  { key: "Категории", title: "Категории", link: "Категории" },
+  { key: "Подкатегории", title: "Подкатегории", link: "Подкатегории" },
+  { key: "Товары", title: "Товары", link: "Товары" },
+  { key: "Заказы", title: "Заказы", link: "Заказы" },
+  { key: "Клиенты", title: "Клиенты", link: "Клиенты" },
+  { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
+  { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" }
+];
+
+export const NavMenu = (props: RouterState) => {
   const selectedKeys = getActiveRoute(navList, props.location);
 
   return (

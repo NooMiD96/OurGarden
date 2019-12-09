@@ -40,9 +40,9 @@ const onSubmitHandler = (
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
       props.handleCreateSubmit({
-        newsId: newsId,
-        title: title,
-        description: description,
+        newsId,
+        title: title.trim(),
+        description,
         file: image
       });
     }
@@ -76,7 +76,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("title", {
           initialValue: title,
-          rules: [{ required: true, message: localeText._rule_require_title }]
+          rules: [
+            {
+              required: true,
+              message: localeText._rule_require_title,
+              transform: (val: string) => val && val.trim()
+            }
+          ]
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}

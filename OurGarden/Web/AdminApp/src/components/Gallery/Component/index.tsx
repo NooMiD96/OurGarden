@@ -3,9 +3,9 @@ import React, { createRef } from "react";
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import GridButtonsControl from "@core/components/GridButtonsControl";
-import { confirm } from "@src/core/antd/Modal";
-import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { EditModal } from "./EditModal";
 
 import { ColDef } from "ag-grid-community";
 import { TState, TComponentState } from "../TState";
@@ -40,20 +40,8 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  onRemoveClickHandler = () => {
-    confirm({
-      title: "Удалить выбранную галерею?",
-      content:
-        "После удаления востановить их уже не удастся. Вы уверены что хотите удалить выбранные галерею?",
-      okText: "Да",
-      okType: "danger",
-      cancelText: "Отмена",
-      type: "confirm",
-      onOk: () => {
-        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as IGallery[];
-        this.props.removeGallery(data[0].galleryId);
-      }
-    });
+  onRemoveClickHandler = (data: IGallery[]) => {
+    this.props.removeGallery(data[0].galleryId);
   };
 
   onAddNewItemClickHandler = () => {
@@ -96,6 +84,8 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
         )}
         <GridButtonsControl
           onAdd={this.onAddNewItemClickHandler}
+          gridRef={this.gridRef}
+          removeTitle="выбранные галереи"
           onRefresh={this.getGalleryList}
           onRemove={this.onRemoveClickHandler}
         />

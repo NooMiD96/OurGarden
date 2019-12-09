@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
@@ -8,22 +8,21 @@ import Select from "@core/antd/Select";
 import CKEditor from "@core/components/CKEditor";
 import InputNumber from "@core/antd/InputNumber";
 import Checkbox from "@core/antd/Checkbox";
-import MultiplyUploader from "@src/core/components/MultiplyUploader";
+import MultiplyUploaderForm, {
+  useMultiplyUploaderForm
+} from "@src/core/components/MultiplyUploaderForm";
 
 import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
 import {
   getAddFilesDTO,
   getUpdateFilesDTO,
-  getDefaultFileList,
-  updatePreview
+  getDefaultFileList
 } from "@src/core/utils/photo";
 
 import { IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { ICategoryDictionary } from "@components/Category/State";
-import { UploadFile } from "@core/antd/Upload";
-import { IUpdateFile } from "@src/core/utils/photo/IPhotoUtils";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
@@ -47,9 +46,7 @@ const getSubcategoryList = (
 
 export const EditModalContent = (props: IProps) => {
   const ckEditor: React.RefObject<CKEditor> = useRef(null);
-  const [addFiles, setAddFiles] = useState([] as UploadFile[]);
-  const [updateFiles, setUpdateFiles] = useState([] as IUpdateFile[]);
-  const [removeFiles, setRemoveFiles] = useState([] as string[]);
+  const multiplyUploaderParams = useMultiplyUploaderForm();
 
   const { form, categoryList } = props;
   const { getFieldDecorator } = form;
@@ -85,8 +82,10 @@ export const EditModalContent = (props: IProps) => {
       description
     });
 
-    const addFilesDTO = await getAddFilesDTO(addFiles);
-    const updateFilesDTO = await getUpdateFilesDTO(updateFiles);
+    const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(
+      multiplyUploaderParams.updateFiles
+    );
 
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
@@ -98,13 +97,13 @@ export const EditModalContent = (props: IProps) => {
           newCategoryId,
           newSubcategoryId,
 
-          alias,
+          alias: alias.trim(),
           isVisible,
           price,
           description,
 
           addFiles: addFilesDTO,
-          removeFiles,
+          removeFiles: multiplyUploaderParams.removeFiles,
           updateFiles: updateFilesDTO
         });
       }
@@ -114,10 +113,6 @@ export const EditModalContent = (props: IProps) => {
   const onClose = () => {
     form.resetFields();
     props.handleClose();
-  };
-
-  const updatePreviewHandler = (uid: string, url: string) => {
-    updatePreview(updateFiles, setUpdateFiles, { uid, url });
   };
 
   const defaultFileList = getDefaultFileList(photos);
@@ -180,7 +175,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("alias", {
           initialValue: alias,
-          rules: [{ required: true, message: localeText._rule_require_alias }]
+          rules: [
+            {
+              required: true,
+              message: localeText._rule_require_alias,
+              transform: (val: string) => val && val.trim()
+            }
+          ]
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
@@ -214,14 +215,9 @@ export const EditModalContent = (props: IProps) => {
         {getFieldDecorator("addFiles", {
           rules: [{ required: false, message: localeText._rule_require_photo }]
         })(
-          <MultiplyUploader
+          <MultiplyUploaderForm
             defaultFileList={defaultFileList}
-            updateAddedList={files => setAddFiles(files)}
-            updateRemovedList={file => setRemoveFiles([...removeFiles, file])}
-            removeFile={fileUid =>
-              setAddFiles(addFiles.filter(x => x.uid !== fileUid))
-            }
-            updatePreview={updatePreviewHandler}
+            {...multiplyUploaderParams}
           />
         )}
       </FormItem>

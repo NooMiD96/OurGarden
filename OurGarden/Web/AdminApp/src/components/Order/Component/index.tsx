@@ -3,13 +3,11 @@ import React, { createRef } from "react";
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import GridButtonsControl from "@core/components/GridButtonsControl";
-import { confirm } from "@src/core/antd/Modal";
 import Spin from "@core/antd/Spin";
 
 import { EditModal } from "./EditModal";
 
 import { ColDef } from "ag-grid-community";
-
 import { TState, TComponentState } from "../TState";
 import { IOrder, IOrderDTO } from "../State";
 
@@ -70,24 +68,12 @@ export class Order extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  onRemoveClickHandler = () => {
-    confirm({
-      title: "Удалить выбранный заказ?",
-      content:
-        "После удаления востановить его уже не удастся. Вы уверены что хотите удалить выбранный заказ?",
-      okText: "Да",
-      okType: "danger",
-      cancelText: "Отмена",
-      type: "confirm",
-      onOk: () => {
-        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as IOrder[];
-        this.props.RemoveOrder(data[0].orderId);
-      }
-    });
+  onRemoveClickHandler = (data: IOrder[]) => {
+    this.props.removeOrder(data[0].orderId);
   };
 
   handleCreateSubmit = (data: IOrderDTO) => {
-    this.props.UpdateOrder(data);
+    this.props.updateOrder(data);
     this.setState({
       editItem: null,
       showModal: false
@@ -125,6 +111,8 @@ export class Order extends React.PureComponent<TState, TComponentState> {
         )}
         <GridButtonsControl
           onRefresh={this.getOrderList}
+          gridRef={this.gridRef}
+          removeTitle="выбранные заказы"
           onRemove={this.onRemoveClickHandler}
         />
         <AgGrid

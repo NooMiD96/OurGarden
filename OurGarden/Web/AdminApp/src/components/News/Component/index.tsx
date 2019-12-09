@@ -3,7 +3,6 @@ import React, { createRef } from "react";
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import GridButtonsControl from "@core/components/GridButtonsControl";
-import { confirm } from "@src/core/antd/Modal";
 import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
 
@@ -45,22 +44,8 @@ class News extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  onRemoveClickHandler = () => {
-    confirm({
-      title: "Удалить выбранные новости?",
-      content:
-        "После удаления востановить их уже не удастся. Вы уверены, что хотите удалить выбранные новости?",
-      okText: "Да",
-      okType: "danger",
-      cancelText: "Отмена",
-      type: "confirm",
-      onOk: () => {
-        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as INews[];
-        const { newsId } = data[0];
-
-        this.props.removeNews(newsId);
-      }
-    });
+  onRemoveClickHandler = (data: INews[]) => {
+    this.props.removeNews(data[0].newsId);
   };
 
   onAddNewItemClickHandler = () => {
@@ -103,6 +88,8 @@ class News extends React.PureComponent<TState, TComponentState> {
         )}
         <GridButtonsControl
           onAdd={this.onAddNewItemClickHandler}
+          gridRef={this.gridRef}
+          removeTitle="выбранные новости"
           onRefresh={this.getNewsList}
           onRemove={this.onRemoveClickHandler}
         />

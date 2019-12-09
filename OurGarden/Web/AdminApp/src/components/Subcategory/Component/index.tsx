@@ -3,9 +3,9 @@ import React, { createRef } from "react";
 import Alert from "@src/core/components/Alert";
 import AgGrid from "@src/core/components/AgGrid";
 import GridButtonsControl from "@core/components/GridButtonsControl";
-import { confirm } from "@src/core/antd/Modal";
-import { EditModal } from "./EditModal";
 import Spin from "@core/antd/Spin";
+
+import { EditModal } from "./EditModal";
 
 import { ColDef } from "ag-grid-community";
 import { TState, TComponentState } from "../TState";
@@ -50,20 +50,9 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     });
   };
 
-  onRemoveClickHandler = () => {
-    confirm({
-      title: "Удалить выбранные подкатегории?",
-      content:
-        "После удаления востановить их уже не удастся. Вы уверены что хотите удалить выбранные подкатегории?",
-      okText: "Да",
-      okType: "danger",
-      cancelText: "Отмена",
-      type: "confirm",
-      onOk: () => {
-        let data = this.gridRef.current!.state.gridApi.getSelectedRows() as ISubcategory[];
-        this.props.RemoveSubcategory(data[0].categoryId, data[0].subcategoryId);
-      }
-    });
+  onRemoveClickHandler = (data: ISubcategory[]) => {
+    const { categoryId, subcategoryId } = data[0];
+    this.props.removeSubcategory(categoryId, subcategoryId);
   };
 
   onAddNewItemClickHandler = () => {
@@ -74,7 +63,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   };
 
   handleCreateSubmit = (data: ISubcategoryDTO) => {
-    this.props.AddOrUpdateSubcategory(data);
+    this.props.addOrUpdateSubcategory(data);
     this.setState({
       editItem: null,
       showModal: false
@@ -112,6 +101,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
         )}
         <GridButtonsControl
           onAdd={this.onAddNewItemClickHandler}
+          gridRef={this.gridRef}
+          removeTitle="выбранные подкатегории"
           onRefresh={this.getSubcategoryList}
           onRemove={this.onRemoveClickHandler}
         />

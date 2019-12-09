@@ -22,13 +22,6 @@ export const AppRoutes = (
     />
     <Route
       exact
-      path="/заказы"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Order" */ "@components/Order")
-      )}
-    />
-    <Route
-      exact
       path="/категории"
       component={AsyncComponent(() =>
         import(/* webpackChunkName: "Category" */ "@components/Category")
@@ -39,6 +32,31 @@ export const AppRoutes = (
       path="/подкатегории"
       component={AsyncComponent(() =>
         import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
+      )}
+    />
+    <Switch>
+      <Redirect from="/продукты" to="/товары" />
+
+      <Route
+        exact
+        path="/товары"
+        component={AsyncComponent(() =>
+          import(/* webpackChunkName: "Product" */ "@components/Product")
+        )}
+      />
+    </Switch>
+    <Route
+      exact
+      path="/заказы"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Order" */ "@components/Order")
+      )}
+    />
+    <Route
+      exact
+      path="/клиенты"
+      component={AsyncComponent(() =>
+        import(/* webpackChunkName: "Clients" */ "@components/Clients")
       )}
     />
     <Route
@@ -57,16 +75,5 @@ export const AppRoutes = (
         )
       )}
     />
-    <Switch>
-      <Redirect from="/продукты" to="/товары" />
-
-      <Route
-        exact
-        path="/товары"
-        component={AsyncComponent(() =>
-          import(/* webpackChunkName: "Product" */ "@components/Product")
-        )}
-      />
-    </Switch>
   </Layout>
 );

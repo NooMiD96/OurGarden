@@ -112,7 +112,7 @@ export const actionCreators = {
     dispatch(actionsList.getSubcategoryListRequest());
   },
 
-  AddOrUpdateSubcategory: (
+  addOrUpdateSubcategory: (
     data: ISubcategoryDTO
   ): IAppThunkAction<
     t.TAddOrUpdateSubcategory | t.TGetSubcategoryList | t.ICleanErrorInnerAction
@@ -157,7 +157,7 @@ export const actionCreators = {
     dispatch(actionsList.addOrUpdateSubcategoryRequest());
   },
 
-  RemoveSubcategory: (
+  removeSubcategory: (
     categoryId: string,
     subcategoryId: string
   ): IAppThunkAction<
