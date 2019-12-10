@@ -1,9 +1,10 @@
-const storage: Storage = typeof window !== "undefined"
-  ? window.localStorage
-  : {
-    setItem: () => { },
-    getItem: () => { },
-  } as any;
+const storage: Storage =
+  typeof window !== "undefined"
+    ? window.localStorage
+    : ({
+        setItem: () => {},
+        getItem: () => {}
+      } as any);
 
 export const saveItemToLS = (key: string, value: any) => {
   try {

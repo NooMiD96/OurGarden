@@ -19,7 +19,9 @@ if (window !== null && window !== undefined) {
     let routes = App.AppRoutes;
 
     // Create browser history to use in the Redux store
-    const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
+    const baseUrl = document
+      .getElementsByTagName("base")[0]
+      .getAttribute("href")!;
     const history = createBrowserHistory({ basename: baseUrl });
 
     // Get the application-wide store instance, prepopulating with state from the server where available.
@@ -27,7 +29,13 @@ if (window !== null && window !== undefined) {
     const store = ConfigureStore(history, initialState);
 
     function renderApp() {
-      const isMobileBrowser = typeof __isMobileBrowser !== "boolean" ? true : __isMobileBrowser;
+      // prettier-ignore
+      /* eslint-disable no-underscore-dangle */
+      const isMobileBrowser = typeof (window as any).__isMobileBrowser !== "boolean"
+        ? true
+        : (window as any).__isMobileBrowser;
+      /* eslint-enable no-underscore-dangle */
+
       // This code starts up the React app when it runs in a browser. It sets up the routing configuration
       // and injects the app into a DOM element.
       // `hydrate` needed to attach created by server render with DOM
@@ -39,7 +47,7 @@ if (window !== null && window !== undefined) {
             </Provider>
           </MobileContext.Provider>
         </AppContainer>,
-        document.getElementById("react-content")
+        document.getElementById("react-app")
       );
     }
 
@@ -50,7 +58,7 @@ if (window !== null && window !== undefined) {
     // Allow Hot Module Replacement
     if (module.hot) {
       module.hot.accept("@src/App", () => {
-      // eslint-disable-next-line global-require
+        // eslint-disable-next-line global-require
         routes = require<typeof App>("@src/App").AppRoutes;
         renderApp();
       });

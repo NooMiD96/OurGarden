@@ -13,6 +13,7 @@ export const getFileStatPath = () => {
   if (fileStatPath === null) {
     fileStatPath = `${path.join(
       projectDir,
+      "../../",
       "./wwwroot/client/client/assets-manifest.json"
     )}`;
   }
@@ -58,7 +59,7 @@ export const isPageVisited = (url = "") => {
       }
       break;
 
-    default:
+    default: {
       const mainUrl = urlSplit[0];
       if (["catalog", "news"].includes(mainUrl)) {
         const pageKey = `${mainUrl}/deep=${urlSplit.length - 1}`;
@@ -71,6 +72,7 @@ export const isPageVisited = (url = "") => {
       }
 
       break;
+    }
   }
 
   return true;

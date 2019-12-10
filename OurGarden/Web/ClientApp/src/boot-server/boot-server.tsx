@@ -15,14 +15,11 @@ import Loadable from "react-loadable";
 import { AppRoutes } from "@src/App";
 
 import configureStore from "./ConfigureStore";
-import { getFileStat, getParamsData } from "./utils";
+import { getParamsData } from "./utils";
 import { MobileContext } from "@src/core/constants";
 
 import "@src/assets/css/main.css";
 import "@src/assets/scss/main.scss";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { getBundles } = require("react-loadable-ssr-addon");
 
 // prettier-ignore
 // eslint-disable-next-line no-async-promise-executor
@@ -41,22 +38,19 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
 
   // Prepare an instance of the application and perform an inital render that will
   // cause any async tasks (e.g., data access) to begin
-  const modules: string[] = [];
   const routerContext: any = {};
   const app = (
-    <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
-      <MobileContext.Provider value={isMobileBrowser}>
-        <Provider store={store}>
-          <StaticRouter
-            basename={basename}
-            context={routerContext}
-            location={params.location.path}
-          >
-            {AppRoutes}
-          </StaticRouter>
-        </Provider>
-      </MobileContext.Provider>
-    </Loadable.Capture>
+    <MobileContext.Provider value={isMobileBrowser}>
+      <Provider store={store}>
+        <StaticRouter
+          basename={basename}
+          context={routerContext}
+          location={params.location.path}
+        >
+          {AppRoutes}
+        </StaticRouter>
+      </Provider>
+    </MobileContext.Provider>
   );
 
   // This kick off any async tasks started by React components
@@ -68,26 +62,7 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
     return;
   }
 
-  const stats = await getFileStat();
-  const modulesToBeLoaded = [...stats.entrypoints, ...Array.from(modules)];
-  const bundles = getBundles(stats, modulesToBeLoaded);
-
-  const styles = bundles.css || [];
-  const scripts = bundles.js || [];
-
   await Loadable.preloadAll();
-
-  const stylesString = styles
-    .map(
-      (style: any) => `<link href="${style.publicPath}" rel="stylesheet"/>`
-    )
-    .join("\n");
-
-  const scriptString = scripts
-    .map(
-      (bundle: any) => `<script src="${bundle.publicPath}"></script>`
-    )
-    .join("\n");
 
   // Once any async tasks are done, we can perform the final render
   // We also send the redux store state, so the client can continue execution where the server left off
@@ -102,13 +77,7 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
     }
 
     resolve({
-      html: `<div class="styles">${
-        stylesString
-      }</div><div id="react-content">${
-        stringApp
-      }</div><div class="scriptes">${
-        scriptString
-      }</div>`,
+      html: stringApp,
       globals: {
         initialReduxState,
         __isMobileBrowser: isMobileBrowser

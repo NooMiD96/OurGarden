@@ -1,5 +1,5 @@
-import Pagination from "antd/es/pagination/index";
-import "antd/es/pagination/style/index.css";
+import Pagination from "antd/lib/pagination/index";
+import "antd/lib/pagination/style/index.css";
 
 import "./Select";
 

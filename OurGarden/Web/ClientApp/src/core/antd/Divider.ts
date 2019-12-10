@@ -1,4 +1,4 @@
-import Divider from "antd/es/divider";
-import "antd/es/divider/style/index.css";
+import Divider from "antd/lib/divider";
+import "antd/lib/divider/style/index.css";
 
 export default Divider;

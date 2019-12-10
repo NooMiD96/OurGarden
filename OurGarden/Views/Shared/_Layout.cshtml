@@ -25,6 +25,15 @@
     <environment include="Production">
         <script src="//code.jivosite.com/widget.js" data-jv-id="@(ViewData["jivoSiteId"] ?? "")" async></script>
     </environment>
+
+    @foreach (var bundle in (string[])ViewData["jsBundles"])
+    {
+        <script src="@bundle"></script>
+    }
+    @foreach (var bundle in (string[])ViewData["cssBundles"])
+    {
+        <link href="@bundle" rel="stylesheet" />
+    }
 </head>
 <body>
     @RenderBody()

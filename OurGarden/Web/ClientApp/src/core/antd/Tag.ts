@@ -1,4 +1,4 @@
-import Tag from "antd/es/tag";
-import "antd/es/tag/style/index.css";
+import Tag from "antd/lib/tag";
+import "antd/lib/tag/style/index.css";
 
 export default Tag;

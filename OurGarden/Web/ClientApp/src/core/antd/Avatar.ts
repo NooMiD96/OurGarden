@@ -1,4 +1,4 @@
-import Avatar from "antd/es/avatar";
-import "antd/es/avatar/style/index.css";
+import Avatar from "antd/lib/avatar";
+import "antd/lib/avatar/style/index.css";
 
 export default Avatar;

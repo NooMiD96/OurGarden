@@ -6,7 +6,7 @@ import { ISEOMetaData } from "./ISEO";
 export const seoInformation: any
   = process.env.seoInformation && JSON.parse(process.env.seoInformation);
 
-if (!seoInformation) {
+if (!seoInformation && !!process.env.isWebpackBundle) {
   console.warn("Отсутствует СЕО информация в окружении");
 }
 

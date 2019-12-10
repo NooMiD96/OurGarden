@@ -1,5 +1,5 @@
-import Transfer from "antd/es/transfer";
-import "antd/es/transfer/style/index.css";
+import Transfer from "antd/lib/transfer";
+import "antd/lib/transfer/style/index.css";
 
 import "./Checkbox";
 import "./Button";

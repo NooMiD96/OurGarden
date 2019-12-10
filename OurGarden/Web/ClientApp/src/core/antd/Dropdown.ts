@@ -1,5 +1,5 @@
-import Dropdown from "antd/es/dropdown/index";
-import "antd/es/dropdown/style/index.css";
+import Dropdown from "antd/lib/dropdown/index";
+import "antd/lib/dropdown/style/index.css";
 
 import "./Button";
 

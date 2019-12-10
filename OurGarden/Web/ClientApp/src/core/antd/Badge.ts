@@ -1,4 +1,4 @@
-import Badge from "antd/es/badge";
-import "antd/es/badge/style/index.css";
+import Badge from "antd/lib/badge";
+import "antd/lib/badge/style/index.css";
 
 export default Badge;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import NativeButton, { NativeButtonProps, ButtonType } from "antd/es/button/button";
-import "antd/es/button/style/index.css";
+import NativeButton, { NativeButtonProps, ButtonType } from "antd/lib/button/button";
+import "antd/lib/button/style/index.css";
 
 interface IButtonProps extends NativeButtonProps {
   type?: ButtonType;

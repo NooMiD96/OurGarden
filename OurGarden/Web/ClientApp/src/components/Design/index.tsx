@@ -32,7 +32,7 @@ export class Design extends React.PureComponent<IDesign, {}> {
 
   render() {
     return (
-      <Typography className="content ourgarden-design">
+      <Typography className="content ourgarden-design grey-border white-background">
         <HeaderHelmet seoSectionName="design" />
 
         <Title>Ландшафтный дизайн</Title>

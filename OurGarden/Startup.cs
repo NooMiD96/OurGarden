@@ -59,6 +59,11 @@ namespace Web
             services.AddHostedService<OrderCleanerHostedService>();
             services.AddScoped<IOrderCleanerService, OrderCleanerService>();
 
+            services.AddNodeServices(config =>
+            {
+                config.ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "./Web/ClientApp");
+            });
+
             StartUpVendors.Configuration = Configuration;
         }
 

@@ -1,7 +1,6 @@
-import Input from "antd/es/input/Input";
-import TextArea from "antd/es/input/TextArea";
-import { InputProps } from "antd/lib/input/Input";
-import "antd/es/input/style/index.css";
+import Input, { InputProps } from "antd/lib/input/Input";
+import TextArea from "antd/lib/input/TextArea";
+import "antd/lib/input/style/index.css";
 
 export {
   InputProps,

@@ -1,11 +1,14 @@
 ﻿using Database.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.Configuration;
 
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+
+using Web.Services.SSR;
 
 using static Core.Utils.WebUtils;
 
@@ -15,16 +18,27 @@ namespace Web.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IOurGardenRepository _repository;
+        private readonly GetAssets _getAssetsUtils;
 
         public HomeController(IConfiguration configuration,
-                              [FromServices] IOurGardenRepository repository)
+                              [FromServices] IOurGardenRepository repository,
+                              [FromServices] INodeServices nodeServices)
         {
             _configuration = configuration;
             _repository = repository;
+            _getAssetsUtils = new GetAssets(nodeServices);
         }
 
         public async Task<IActionResult> Index()
         {
+            var (js, css) = await _getAssetsUtils.Assets(
+                $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
+                HttpContext.Request.Path.Value
+            );
+
+            ViewData["jsBundles"] = js;
+            ViewData["cssBundles"] = css;
+
             var (title, metaDescription) = await GetSEOInfo();
 
             if (title == default && metaDescription == default)
