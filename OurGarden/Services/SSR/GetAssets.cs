@@ -23,7 +23,7 @@ namespace Web.Services.SSR
         public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path)
         {
 #if DEBUG
-            var pathToScript =./src/boot-bundles/getBundles";
+            var pathToScript = "./src/boot-bundles/getBundles";
 #else
             var pathToScript = "../../wwwroot/bundles/getBundles";
 #endif
