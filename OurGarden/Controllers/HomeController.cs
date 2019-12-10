@@ -31,7 +31,7 @@ namespace Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var (js, css) = await _getAssetsUtils.Assets(
+            var (js, css) = await _getAssetsUtils.Bundles(
                 $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
                 HttpContext.Request.Path.Value
             );

@@ -20,9 +20,14 @@ namespace Web.Services.SSR
             _currentDirectory = Directory.GetCurrentDirectory();
         }
 
-        public async ValueTask<(string[] js, string[] css)> Assets(string host, string path)
+        public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path)
         {
-            var result = await _nodeServices.InvokeAsync<JObject>("./getAssets", host, path, _currentDirectory);
+#if DEBUG
+            var pathToScript =./src/boot-bundles/getBundles";
+#else
+            var pathToScript = "../../wwwroot/bundles/getBundles";
+#endif
+            var result = await _nodeServices.InvokeAsync<JObject>(pathToScript, host, path, _currentDirectory);
 
             return (
                 result.GetValue("js").Select(x => x["publicPath"].Value<string>()).ToArray(),
