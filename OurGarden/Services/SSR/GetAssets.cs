@@ -23,9 +23,9 @@ namespace Web.Services.SSR
         public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path)
         {
 #if DEBUG
-            var pathToScript = "./src/boot-bundles/getBundles";
+            var pathToScript = "./Web/ClientApp/src/boot-bundles/getBundles";
 #else
-            var pathToScript = "../../wwwroot/bundles/getBundles";
+            var pathToScript = "./wwwroot/bundles/getBundles";
 #endif
             var result = await _nodeServices.InvokeAsync<JObject>(pathToScript, host, path, _currentDirectory);
 

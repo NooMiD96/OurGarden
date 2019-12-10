@@ -109,8 +109,8 @@
     <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
   </Target>
 
-  <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' ">
-    <Message Importance="high" Text="Run Stage config. Exec ProdEnsureNodeEnv Before Build" />
+  <Target Name="StageEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' ">
+    <Message Importance="high" Text="Run Stage config. Exec StageEnsureNodeEnv Before Build" />
 
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />

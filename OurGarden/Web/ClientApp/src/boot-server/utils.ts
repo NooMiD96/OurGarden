@@ -13,7 +13,6 @@ export const getFileStatPath = () => {
   if (fileStatPath === null) {
     fileStatPath = `${path.join(
       projectDir,
-      "../../",
       "./wwwroot/client/client/assets-manifest.json"
     )}`;
   }

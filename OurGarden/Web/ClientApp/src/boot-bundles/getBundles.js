@@ -1,15 +1,15 @@
 ﻿/* eslint-disable */
-!process.env.isProdBuild && require("./registerTypeScript");
-
-var renderToString = require("react-dom/server").renderToString;
-var createMemoryHistory = require("history").createMemoryHistory;
-var getBundles = require("react-loadable-ssr-addon").getBundles;
-
-var App = require("./app");
-var configureStore = require("../boot-server/ConfigureStore.ts").default;
-var utils = require("../boot-server/utils");
-
 module.exports = function (callback, host, path, processDir) {
+    !process.env.isProdBuild && require("./registerTypeScript")(processDir);
+
+    var renderToString = require("react-dom/server").renderToString;
+    var createMemoryHistory = require("history").createMemoryHistory;
+    var getBundles = require("react-loadable-ssr-addon").getBundles;
+    
+    var App = require("./app");
+    var configureStore = require("../boot-server/ConfigureStore.ts").default;
+    var utils = require("../boot-server/utils");
+
     const history = createMemoryHistory();
     history.replace(path);
     const store = configureStore(history);
