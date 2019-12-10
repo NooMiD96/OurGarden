@@ -38,7 +38,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       <Col {...colStyle}>
         <FormItem>
           {getFieldDecorator("secondName", {
-            rules: [{ required: true, message: "Введите вашу фамилию" }]
+            rules: [{ required: true, message: "Введите вашу фамилию", transform: (val: string) => val && val.trim() }]
           })(
             <Input
               prefix={<Icon type="user" />}
@@ -52,7 +52,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
       <Col {...colStyle}>
         <FormItem>
           {getFieldDecorator("firstName", {
-            rules: [{ required: true, message: "Введите ваше имя" }]
+            rules: [{ required: true, message: "Введите ваше имя", transform: (val: string) => val && val.trim() }]
           })(
             <Input
               prefix={<Icon type="user" />}
@@ -65,7 +65,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
 
       <Col {...colStyle}>
         <FormItem>
-          {getFieldDecorator("thirdName")(
+          {getFieldDecorator("thirdName", {rules: [{transform: (val: string) => val && val.trim()}]})(
             <Input
               prefix={<Icon type="user" />}
               placeholder="Отчество"
@@ -88,7 +88,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
           })(
             <PhoneNumberInput
               placeholder="Телефон"
-              prefix={<Icon type="mail" className="input-icon" />}
+              prefix={<Icon type="phone" className="input-icon" />}
               onPressEnter={onSubmit}
             />
           )}
@@ -102,7 +102,8 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
               {
                 required: true,
                 message: "Введите ваш контактный электронный адрес",
-                type: "email"
+                type: "email",
+                transform: (val: string) => val && val.trim()
               }
             ]
           })(

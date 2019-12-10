@@ -7,7 +7,7 @@ import { IEditModalProps } from "./IEditModal";
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
-    const { isShow, item, handleCreateSubmit, handleClose } = this.props;
+    const { item, isShow, handleCreateSubmit, handleClose } = this.props;
 
     return (
       <Modal
@@ -16,10 +16,11 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         closable={false}
         destroyOnClose
         footer={null}
+        width="50%"
       >
         <EditModalContent
-          loading={false}
           item={item}
+          loading={false}
           handleCreateSubmit={handleCreateSubmit}
           handleClose={handleClose}
         />

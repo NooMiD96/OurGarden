@@ -1,14 +1,12 @@
 import _isNil from "lodash.isnil";
 
-const generateFormBody = <
-  T extends {
-    file?: File | null;
-    addFiles?: File[] | null;
-    updateFiles?: File[] | null;
-  }
->(
-  data: T
-) => {
+type TBody<T> = T & {
+  file?: File | null;
+  addFiles?: File[] | null;
+  updateFiles?: File[] | null;
+};
+
+const generateFormBody: <T>(data: TBody<T>) => FormData = data => {
   const formData = new FormData();
 
   let key: keyof typeof data;

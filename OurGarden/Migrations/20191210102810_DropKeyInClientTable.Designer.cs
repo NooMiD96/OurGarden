@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20191210102810_DropKeyInClientTable")]
+    partial class DropKeyInClientTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,9 +128,9 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Client", b =>
                 {
-                    b.Property<int>("ClientId")
+                    b.Property<string>("Phone")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasMaxLength(32);
 
                     b.Property<string>("Email")
                         .HasMaxLength(64);
@@ -142,11 +144,7 @@ namespace Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(32);
-
-                    b.HasKey("ClientId");
+                    b.HasKey("Phone");
 
                     b.ToTable("Clients");
                 });

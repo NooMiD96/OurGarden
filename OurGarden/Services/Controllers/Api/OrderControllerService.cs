@@ -57,7 +57,8 @@ namespace Web.Services.Controllers.Api
                     {
                         Email = orderDTO.Email,
                         FIO = orderDTO.FIO,
-                        Phone = orderDTO.Phone
+                        Phone = orderDTO.Phone,
+                        IsIncludeInMailing = true
                     };
 
                     await _repository.AddOrder(order);

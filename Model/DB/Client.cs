@@ -5,7 +5,7 @@ namespace Model.DB
 {
     public class Client
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClientId { get; set; }
 
         [Required]
@@ -20,5 +20,8 @@ namespace Model.DB
         [Required]
         [MaxLength(128)]
         public string FIO { get; set; }
+
+        [Required]
+        public bool? IsIncludeInMailing { get; set; }
     }
 }

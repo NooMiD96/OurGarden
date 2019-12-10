@@ -73,6 +73,10 @@ namespace Database.Contexts
             modelBuilder.Entity<Product>()
                 .Property(x => x.IsVisible)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<Client>()
+                .Property(x => x.IsIncludeInMailing)
+                .HasDefaultValue(true);
         }
     }
 }

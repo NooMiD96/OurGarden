@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers.AdminApi
 {
-    [Route("api/[controller]")]
+    [Route("apiAdmin/[controller]")]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
     [ApiController]
     public class ClientController : BaseController
@@ -50,39 +50,36 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate([FromForm]Client client)
+        public async Task<IActionResult> AddOrUpdate([FromForm]Client clientDTO)
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
 
             try
             {
-                if (client.ClientId <= 0)
+                if (clientDTO.ClientId <= 0)
                 {
                     var newClient = new Client()
                     {
-                        Email = client.Email,
-                        FIO = client.FIO,
-                        Phone = client.Phone,
+                        Email = clientDTO.Email,
+                        FIO = clientDTO.FIO,
+                        Phone = clientDTO.Phone,
+                        IsIncludeInMailing = clientDTO.IsIncludeInMailing,
                     };
                     await _repository.AddClient(newClient);
-                    return Success(newClient);
                 }
                 else
                 {
-                    var oldClient = await _repository.GetClient(client.ClientId);
-                    if (!client.Email.Equals(oldClient.Email)
-                        || !client.FIO.Equals(oldClient.FIO)
-                        || !client.Phone.Equals(oldClient.Phone))
-                    {
-                        oldClient.Email = client.Email;
-                        oldClient.FIO = client.FIO;
-                        oldClient.Phone = client.Phone;
+                    var oldClient = await _repository.GetClient(clientDTO.ClientId);
 
-                        await _repository.UpdateClient(oldClient);
-                        return Success(client);
-                    }
-                    return Success(client);
+                    oldClient.Email = clientDTO.Email;
+                    oldClient.FIO = clientDTO.FIO;
+                    oldClient.Phone = clientDTO.Phone;
+                    oldClient.IsIncludeInMailing = clientDTO.IsIncludeInMailing;
+
+                    await _repository.UpdateClient(oldClient);
                 }
+
+                return Success(true);
             }
             catch (Exception ex)
             {

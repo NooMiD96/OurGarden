@@ -1,6 +1,6 @@
 //#region SVG Icons
 export type TIcons =
-  "loading"
+  | "loading"
   | "question-circle"
   | "user"
   | "lock"
@@ -13,7 +13,8 @@ export type TIcons =
   | "down"
   | "right"
   | "upload"
-  ;
+  | "mail"
+  | "phone";
 
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
@@ -43,6 +44,10 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/RightOutline")).default;
     case "upload":
       return (await import("@antdSvgs/UploadOutline")).default;
+    case "mail":
+      return (await import("@antdSvgs/MailOutline")).default;
+    case "phone":
+      return (await import("@antdSvgs/PhoneOutline")).default;
 
     default: {
       // eslint-disable-next-line

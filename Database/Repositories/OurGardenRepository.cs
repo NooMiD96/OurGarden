@@ -127,14 +127,14 @@ namespace Database.Repositories
         {
             if (!_context.Clients.Any(x => x.Email == client.Email))
             {
-                await _context.Clients.AddAsync(client);
+                _context.Clients.Add(client);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task UpdateClient(Client client)
         {
-            _context.Clients.Update(client);
+            _context.Update(client);
             await _context.SaveChangesAsync();
         }
 
@@ -144,7 +144,7 @@ namespace Database.Repositories
             if (client == null)
                 return;
 
-            _context.Clients.Remove(client);
+            _context.Remove(client);
             await _context.SaveChangesAsync();
         }
 

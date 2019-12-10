@@ -21,11 +21,11 @@ const CardConfirmationForm = (props: ICardConfirmationForm) => {
     form.validateFields((err: any, values: any) => {
       if (!err) {
         submit({
-          FIO: `${values.secondName} ${values.firstName}${
-            values.thirdName ? ` ${values.thirdName}` : ""
+          FIO: `${values.secondName.trim()} ${values.firstName.trim()}${
+            values.thirdName ? ` ${values.thirdName.trim()}` : ""
           }`,
           phone: values.phone,
-          email: values.email
+          email: values.email.trim()
         });
       }
     });

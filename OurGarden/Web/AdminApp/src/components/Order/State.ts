@@ -1,5 +1,3 @@
-import { IProduct } from "../Product/State";
-
 // -----------------
 //#region STATE
 export interface IOrder {

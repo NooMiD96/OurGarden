@@ -1,6 +1,6 @@
 import React from "react";
 
-import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
+import Form, { FormItem } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
@@ -16,17 +16,11 @@ import {
   getDefaultFileList
 } from "@core/utils/photo";
 
-import { ICategory, ICategoryDTO } from "../../State";
+import { ICategory } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
+import { IEditModalContentProps } from "./IEditModal";
 
-interface IProps extends FormComponentProps {
-  item: ICategory | null;
-  loading: boolean;
-  handleCreateSubmit: (data: ICategoryDTO) => void;
-  handleClose: () => void;
-}
-
-export const EditModalContent = (props: IProps) => {
+export const EditModalContent = (props: IEditModalContentProps) => {
   const multiplyUploaderParams = useMultiplyUploaderForm();
 
   const { form } = props;
@@ -112,4 +106,4 @@ export const EditModalContent = (props: IProps) => {
   );
 };
 
-export default Form.create<IProps>()(EditModalContent);
+export default Form.create<IEditModalContentProps>()(EditModalContent);

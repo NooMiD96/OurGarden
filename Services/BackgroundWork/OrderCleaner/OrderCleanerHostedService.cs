@@ -1,4 +1,6 @@
-﻿using Core.Helpers;
+﻿#if !DEBUG
+using Core.Helpers;
+#endif
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
