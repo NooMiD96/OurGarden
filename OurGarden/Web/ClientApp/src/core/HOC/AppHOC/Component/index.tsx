@@ -1,11 +1,11 @@
 import React from "react";
+import { withRouter } from "react-router";
+import { UnregisterCallback } from "history";
 
 import PageNotFound from "@core/components/PageNotFound";
 import LoadingHOC from "@core/HOC/LoadingHOC";
-import { withRouter } from "react-router";
 
 import { TState } from "@components/Main/State/TState";
-import { UnregisterCallback } from "history";
 
 export class AppHOC extends React.Component<TState, {}> {
   unlisten: UnregisterCallback | null = null;

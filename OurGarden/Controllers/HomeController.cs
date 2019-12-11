@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Web.Services.SSR;
 
 using static Core.Utils.WebUtils;
+using static Web.Helpers.LogHelper;
 
 namespace Web.Controllers
 {
@@ -18,38 +19,51 @@ namespace Web.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IOurGardenRepository _repository;
+        private readonly ILogger _logger;
         private readonly GetAssets _getAssetsUtils;
 
         public HomeController(IConfiguration configuration,
                               [FromServices] IOurGardenRepository repository,
-                              [FromServices] INodeServices nodeServices)
+                              [FromServices] INodeServices nodeServices,
+                              ILogger<HomeController> logger)
         {
             _configuration = configuration;
             _repository = repository;
-            _getAssetsUtils = new GetAssets(nodeServices);
+            _logger = logger;
+            _getAssetsUtils = new GetAssets(nodeServices, logger);
         }
 
         public async Task<IActionResult> Index()
         {
-            var (js, css) = await _getAssetsUtils.Bundles(
-                $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
-                HttpContext.Request.Path.Value
-            );
-
-            ViewData["jsBundles"] = js;
-            ViewData["cssBundles"] = css;
-
-            var (title, metaDescription) = await GetSEOInfo();
-
-            if (title == default && metaDescription == default)
+            try
             {
-                Response.StatusCode = 404;
-            }
+                var (js, css) = await _getAssetsUtils.Bundles(
+                    $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
+                    HttpContext.Request.Path.Value
+                );
 
-            ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
-            ViewData["title"] = title;
-            ViewData["metaDescription"] = metaDescription;
-            ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
+                ViewData["jsBundles"] = js ?? new string[0];
+                ViewData["cssBundles"] = css ?? new string[0];
+
+                var (title, metaDescription) = await GetSEOInfo();
+
+                if (title == default && metaDescription == default)
+                {
+                    Response.StatusCode = 404;
+                }
+
+                ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
+                ViewData["title"] = title;
+                ViewData["metaDescription"] = metaDescription;
+                ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
+            }
+            catch (Exception ex)
+            {
+                LogError(_logger, "IndexHomeController", ex);
+                ViewData["jsBundles"] = new string[0];
+                ViewData["cssBundles"] = new string[0];
+                ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
+            }
 
             return View();
         }

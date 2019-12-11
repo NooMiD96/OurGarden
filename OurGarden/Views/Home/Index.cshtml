@@ -1,7 +1,7 @@
 ﻿<div id="react-app"
      asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
      asp-prerender-data="new {
-        isMobileBrowser = @ViewData["isMobileBrowser"],
+        isMobileBrowser = @ViewData["isMobileBrowser"] ?? true,
     }"
 >
 </div>
