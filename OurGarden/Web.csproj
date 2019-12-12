@@ -67,7 +67,7 @@
     <Folder Include="wwwroot\client\" />
   </ItemGroup>
 
-  <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
+  <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And '$(DetectPublishBuild)' != 'true'">
     <Message Importance="high" Text="Run Debug config. Exec DebugClean Before Build" />
 
     <Exec Command="node --version" ContinueOnError="true">
@@ -87,7 +87,7 @@
     <Exec Condition=" !Exists('$(SpaAdminRoot)node_modules') " WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
   </Target>
 
-  <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+  <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' And '$(DetectPublishBuild)' != 'true'">
     <Message Importance="high" Text="Run Release config. Exec ProdEnsureNodeEnv Before Build" />
 
     <Exec Command="node --version" ContinueOnError="true">
@@ -109,8 +109,8 @@
     <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
   </Target>
 
-  <Target Name="StageEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' ">
-    <Message Importance="high" Text="Run Stage config. Exec StageEnsureNodeEnv Before Build" />
+  <Target Name="StageEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' And '$(DetectPublishBuild)' != 'true'">
+    <Message Importance="high" Text="Run Stage config. Exec StageEnsureNodeEnv Before Build. Not Publish" />
 
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
@@ -133,6 +133,24 @@
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <Message Importance="high" Text="Run Publish. Exec PublishRunWebpack After ComputeFilesToPublish" />
+
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+
+    <Exec Command="yarn --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
+
+    <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
+
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
+
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
 
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <!--<Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />

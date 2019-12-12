@@ -64,6 +64,8 @@ const getClientBundleConfig = (
       path: path.join(projectFolder, AppSettings.SpaPhysicalClientPath)
     },
     optimization: {
+      runtimeChunk: "single",
+      moduleIds: "hashed",
       splitChunks: {
         chunks: "all",
         cacheGroups: {
