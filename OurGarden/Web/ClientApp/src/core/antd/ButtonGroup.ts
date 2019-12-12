@@ -1,4 +1,4 @@
-import ButtonGroup from "antd/lib/button/button-group";
-import "antd/lib/button/style/index.css";
+import ButtonGroup from "antd/es/button/button-group";
+import "antd/es/button/style/index.css";
 
 export default ButtonGroup;

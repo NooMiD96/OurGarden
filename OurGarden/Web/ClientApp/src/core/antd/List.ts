@@ -1,6 +1,6 @@
-import List from "antd/lib/list";
-import Item from "antd/lib/list/Item";
-import "antd/lib/list/style/index.css";
+import List from "antd/es/list";
+import Item from "antd/es/list/Item";
+import "antd/es/list/style/index.css";
 
 import "./Spin";
 import "./Pagination";

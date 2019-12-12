@@ -1,4 +1,4 @@
-import Row from "antd/lib/grid/row";
-import "antd/lib/grid/style/index.css";
+import Row from "antd/es/grid/row";
+import "antd/es/grid/style/index.css";
 
 export default Row;

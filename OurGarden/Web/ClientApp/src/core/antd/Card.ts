@@ -1,5 +1,5 @@
-import Card from "antd/lib/card";
-import "antd/lib/card/style/index.css";
+import Card from "antd/es/card";
+import "antd/es/card/style/index.css";
 
 import "./Col";
 import "./Row";

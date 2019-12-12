@@ -1,4 +1,4 @@
-import Modal from "antd/lib/modal/Modal";
-import "antd/lib/modal/style/index.css";
+import Modal from "antd/es/modal/Modal";
+import "antd/es/modal/style/index.css";
 
 export default Modal;

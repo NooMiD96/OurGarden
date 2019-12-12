@@ -67,23 +67,49 @@ const getClientBundleConfig = (
       splitChunks: {
         chunks: "all",
         cacheGroups: {
+          lodash: {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*lodash[^\\/]*[\\/]/,
+            priority: 5
+          },
+          "async-validator": {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*async-validator[^\\/]*[\\/]/,
+            priority: 4
+          },
+          "react-lazy-load": {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*react-lazy-load-image-component[^\\/]*[\\/]/,
+            priority: 3
+          },
+          "react-phone-input": {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*react-phone-input-2[^\\/]*[\\/]/,
+            priority: 3
+          },
+          assets: {
+            chunks: "all",
+            test: /[\\/]src[\\/][^\\/]*assets[^\\/]*[\\/]/,
+            priority: 3
+          },
+          "hot-loader": {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*@hot-loader[^\\/]*[\\/]/,
+            priority: 2
+          },
+          moment: {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*moment[^\\/]*[\\/]/,
+            priority: 2
+          },
           "lottie-web": {
             chunks: "all",
-            // The all *react* and *redux* modules without "react-beautiful-dnd"
-            // 'cause it is used only in TodoList component
             test: /[\\/]node_modules[\\/][^\\/]*lottie-web[^\\/]*[\\/]/,
             priority: 2
           },
           "react.redux": {
             chunks: "all",
-            // The all *react* and *redux* modules without "react-beautiful-dnd"
-            // 'cause it is used only in TodoList component
-            test: /[\\/]node_modules[\\/][^\\/]*(react(?!-beautiful-dnd)|redux)[^\\/]*[\\/]/,
-            priority: 2
-          },
-          "react.dnd": {
-            chunks: "all",
-            test: /[\\/]node_modules[\\/][^\\/]*react-beautiful-dnd[^\\/]*[\\/]/,
+            test: /[\\/]node_modules[\\/][^\\/]*(react|redux)[^\\/]*[\\/]/,
             priority: 2
           },
           antd: {

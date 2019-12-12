@@ -1,4 +1,4 @@
-import Col from "antd/lib/grid/col";
-import "antd/lib/grid/style/index.css";
+import Col from "antd/es/grid/col";
+import "antd/es/grid/style/index.css";
 
 export default Col;

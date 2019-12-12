@@ -1,6 +1,5 @@
 import React from "react";
-
-const PhoneInput = require("react-phone-input-2").default;
+import PhoneInput from "react-phone-input-2";
 
 export const CISPhoneNumberRegExp = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
 

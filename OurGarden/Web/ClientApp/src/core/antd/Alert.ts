@@ -1,5 +1,6 @@
-import Alert, { AlertProps } from "antd/lib/alert";
-import "antd/lib/alert/style/index.css";
+import Alert from "antd/es/alert";
+import { AlertProps } from "antd/lib/alert";
+import "antd/es/alert/style/index.css";
 
 export {
   AlertProps,
