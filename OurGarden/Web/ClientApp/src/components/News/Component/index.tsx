@@ -15,13 +15,15 @@ export class News extends React.PureComponent<TState, TComponentState> {
       match: { params }
     } = props;
 
-    if (!props.selectedNew || props.selectedNew.alias !== params.newsId) {
-      props.getNews(params.newsId);
-    }
+    if (!props.isDataWasGeted) {
+      if (!props.selectedNew || props.selectedNew.alias !== params.newsId) {
+        props.getNews(params.newsId);
+      }
 
-    props.getBreadcrumb({
-      newsId: params.newsId
-    });
+      props.getBreadcrumb({
+        newsId: params.newsId
+      });
+    }
   }
 
   componentDidUpdate(prevProps: TState) {

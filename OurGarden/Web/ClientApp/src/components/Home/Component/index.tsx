@@ -11,14 +11,16 @@ export class Home extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.newsList.length) {
-      props.getNewsList();
-    }
+    if (!props.isDataWasGeted) {
+      if (!props.newsList.length) {
+        props.getNewsList();
+      }
 
-    props.setBreadcrumb({
-      breadcrumb: [],
-      key: ""
-    });
+      props.setBreadcrumb({
+        breadcrumb: [],
+        key: ""
+      });
+    }
   }
 
   render() {

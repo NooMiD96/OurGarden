@@ -69,6 +69,7 @@
     ],
     "max-len": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "import/extensions": "off"
   }
 }

@@ -18,6 +18,7 @@ export function AsyncComponent(
     timeout: 10000,
     render(loaded: any, props: any) {
       const Component = loaded.default;
+
       return (
         <>
           <Breadcrumb />

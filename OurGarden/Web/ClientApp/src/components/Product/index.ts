@@ -1,28 +1,35 @@
 import { connect } from "react-redux";
 
-import { IApplicationState } from "@src/Store";
+import Component from "./Component";
 
 import { actionCreators } from "./actions";
 import { actionCreators as userCardActions } from "@components/UserCard/actions";
-import {
-  TOwnProps,
-  TMapStateToProps,
-  TMapDispatchToProps,
-} from "./TState";
-import Component from "./Component";
 
-const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
+import { IApplicationState } from "@src/Store";
+import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
+
+// prettier-ignore
+const mapStateToProps = (
+  state: IApplicationState,
+  ownProp: TOwnProps
+): TMapStateToProps => ({
   ...state.product,
   ...state.router,
-  ...ownProp,
-}) as TMapStateToProps;
+  isDataWasGeted: state.app.isDataWasGeted,
+  ...ownProp
+} as TMapStateToProps);
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
-  addProductToCard: userCardActions.addProductToCard,
+  addProductToCard: userCardActions.addProductToCard
 };
 
-export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
+export default connect<
+  TMapStateToProps,
+  TMapDispatchToProps,
+  TOwnProps,
+  IApplicationState
+>(
   mapStateToProps,
   mapDispatchToProps
 )(Component as any) as any;

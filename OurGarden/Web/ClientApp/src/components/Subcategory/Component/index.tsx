@@ -16,14 +16,17 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       subcategoryList
     } = props;
 
-    if (
-      !subcategoryList.length
-      || params.categoryId !== subcategoryList[0].categoryId
-    ) {
-      props.getSubcategoryList(params.categoryId);
-    }
+    if (!props.isDataWasGeted) {
+      // prettier-ignore
+      if (
+        !subcategoryList.length
+        || params.categoryId !== subcategoryList[0].categoryId
+      ) {
+        props.getSubcategoryList(params.categoryId);
+      }
 
-    props.getBreadcrumb({ categoryId: params.categoryId });
+      props.getBreadcrumb({ categoryId: params.categoryId });
+    }
   }
 
   componentDidUpdate(prevProps: TState) {

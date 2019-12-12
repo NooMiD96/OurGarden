@@ -12,7 +12,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.categoryList.length) {
+    if (!props.isDataWasGeted && !props.categoryList.length) {
       this.props.getCategoryList();
     }
   }

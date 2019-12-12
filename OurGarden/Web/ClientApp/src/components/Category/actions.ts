@@ -53,7 +53,8 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getCategoryListError,
       requestStart,
-      requestSuccess
+      requestSuccess,
+      saveRequest: false
     })(dispatch, getState);
   }
 };

@@ -13,20 +13,22 @@ export class NewsList extends React.PureComponent<TState, {}> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.newsList.length) {
-      props.getNewsList();
-    }
+    if (!props.isDataWasGeted) {
+      if (!props.newsList.length) {
+        props.getNewsList();
+      }
 
-    props.setBreadcrumb({
-      breadcrumb: [
-        {
-          displayName: "Акции",
-          url: "News",
-          order: 1
-        }
-      ],
-      key: "News"
-    });
+      props.setBreadcrumb({
+        breadcrumb: [
+          {
+            displayName: "Акции",
+            url: "News",
+            order: 1
+          }
+        ],
+        key: "News"
+      });
+    }
   }
 
   render() {

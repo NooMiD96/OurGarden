@@ -3,24 +3,30 @@ import { connect } from "react-redux";
 import { IApplicationState } from "@src/Store";
 
 import { actionCreators } from "@components/Category/actions";
-import {
-  TOwnProps,
-  TMapStateToProps,
-  TMapDispatchToProps,
-} from "./TState";
+import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
 import { Sider } from "./Component";
 
-const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
+// prettier-ignore
+const mapStateToProps = (
+  state: IApplicationState,
+  ownProp: TOwnProps
+): TMapStateToProps => ({
   ...state.category,
   ...state.router,
-  ...ownProp,
-}) as TMapStateToProps;
+  isDataWasGeted: state.app.isDataWasGeted,
+  ...ownProp
+});
 
 const mapDispatchToProps: TMapDispatchToProps = {
-  ...actionCreators,
+  ...actionCreators
 };
 
-export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
+export default connect<
+  TMapStateToProps,
+  TMapDispatchToProps,
+  TOwnProps,
+  IApplicationState
+>(
   mapStateToProps,
   mapDispatchToProps
 )(Sider as any) as any;

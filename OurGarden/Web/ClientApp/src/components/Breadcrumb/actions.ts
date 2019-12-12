@@ -1,12 +1,7 @@
-import { fetch, addTask } from "domain-task";
+import * as t from "./actionsType";
+import { actionCreators as appActions } from "@components/Main/State/actions";
 
 import { IAppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponse";
-
-import { errorCatcher, responseCatcher } from "@core/fetchHelper";
-import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-
-import * as t from "./actionsType";
 import { IBreadcrumb } from "./State";
 
 import qs from "querystring";
@@ -53,38 +48,36 @@ export const actionCreators = {
       return;
     }
 
-    dispatch(actionsList.getBreadcrumb());
+    const apiUrl = "GetBreadcrumb";
 
-    // prettier-ignore
-    const fetchTask = fetch(
-      `/api/${controllerName}/GetBreadcrumb?${paramString}`,
-      {
-        credentials: "same-origin",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8"
-        }
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?${paramString}`;
+    const fetchProps = {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8"
       }
-    )
-      .then(responseCatcher)
-      .then((value: IResponse<IBreadcrumb[]>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
+    };
 
-        dispatch(
-          actionsList.setBreadcrumb({
-            breadcrumb: value.data,
-            key
-          })
-        );
+    const requestStart = () => dispatch(actionsList.getBreadcrumb());
 
-        return Promise.resolve();
-      })
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((err: Error) => errorCatcher(controllerName, "GetBreadcrumb", err, () => {}, dispatch));
+    const requestSuccess = (data: IBreadcrumb[]) => {
+      dispatch(
+        actionsList.setBreadcrumb({
+          breadcrumb: data,
+          key
+        })
+      );
+    };
 
-    addTask(fetchTask);
+    appActions.wrapRequest({
+      apiUrl,
+      controllerName,
+      fetchProps,
+      fetchUrl,
+      requestStart,
+      requestSuccess
+    })(dispatch, getState);
   },
   setBreadcrumb: actionsList.setBreadcrumb
 };

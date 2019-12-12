@@ -19,20 +19,22 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     } = props;
 
     // prettier-ignore
-    if (
-      !product
-      || categoryId !== product.categoryId
-      || subcategoryId !== product.subcategoryId
-      || productId !== product.productId
-    ) {
-      props.getProduct(categoryId, subcategoryId, productId);
-    }
+    if (!props.isDataWasGeted) {
+      if (
+        !product
+        || categoryId !== product.categoryId
+        || subcategoryId !== product.subcategoryId
+        || productId !== product.productId
+      ) {
+        props.getProduct(categoryId, subcategoryId, productId);
+      }
 
-    props.getBreadcrumb({
-      categoryId,
-      subcategoryId,
-      productId
-    });
+      props.getBreadcrumb({
+        categoryId,
+        subcategoryId,
+        productId
+      });
+    }
   }
 
   componentDidUpdate(prevProps: TState) {

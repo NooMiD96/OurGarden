@@ -13,10 +13,8 @@ export class AppHOC extends React.Component<TState, {}> {
   constructor(props: TState) {
     super(props);
 
-    if (props.isPageNotFound) {
-      this.unlisten = props.history.listen(() => {
-        this.props.pageNotFoundError(false);
-      });
+    if (props.isPageNotFound || props.isDataWasGeted) {
+      this.unlisten = props.history.listen(this.resetState);
     }
 
     if (typeof window !== "undefined") {
@@ -25,12 +23,13 @@ export class AppHOC extends React.Component<TState, {}> {
   }
 
   shouldComponentUpdate(nextProps: TState) {
-    const { isPageNotFound, pending } = this.props;
+    const { isPageNotFound, pending, isDataWasGeted } = this.props;
 
     // prettier-ignore
     if (
       isPageNotFound !== nextProps.isPageNotFound
       || pending !== nextProps.pending
+      || isDataWasGeted !== nextProps.isDataWasGeted
     ) {
       return true;
     }
@@ -41,17 +40,24 @@ export class AppHOC extends React.Component<TState, {}> {
   componentDidUpdate(prevProps: TState) {
     const { props } = this;
 
-    if (props.isPageNotFound !== prevProps.isPageNotFound) {
-      if (props.isPageNotFound) {
-        this.unlisten = props.history.listen(() => {
-          this.props.pageNotFoundError(false);
-        });
+    // prettier-ignore
+    if (
+      props.isPageNotFound !== prevProps.isPageNotFound
+      || props.isDataWasGeted !== prevProps.isDataWasGeted
+    ) {
+      if (props.isPageNotFound || props.isDataWasGeted) {
+        this.unlisten = props.history.listen(this.resetState);
       } else if (this.unlisten) {
         this.unlisten();
         this.unlisten = null;
       }
     }
   }
+
+  resetState = () => {
+    this.props.pageNotFoundError(false);
+    this.props.dataWasGeted(false);
+  };
 
   render() {
     const { isPageNotFound, children, pending } = this.props;

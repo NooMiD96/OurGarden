@@ -4,25 +4,31 @@ import { push } from "connected-react-router";
 import { IApplicationState } from "@src/Store";
 
 import { actionCreators } from "./actions";
-import {
-  TOwnProps,
-  TMapStateToProps,
-  TMapDispatchToProps,
-} from "./TState";
+import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
 import Component from "./Component";
 
-const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
+// prettier-ignore
+const mapStateToProps = (
+  state: IApplicationState,
+  ownProp: TOwnProps
+): TMapStateToProps => ({
   ...state.productList,
   ...state.router,
-  ...ownProp,
-}) as TMapStateToProps;
+  isDataWasGeted: state.app.isDataWasGeted,
+  ...ownProp
+} as TMapStateToProps);
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
   push
 };
 
-export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
+export default connect<
+  TMapStateToProps,
+  TMapDispatchToProps,
+  TOwnProps,
+  IApplicationState
+>(
   mapStateToProps,
   mapDispatchToProps
 )(Component as any) as any;

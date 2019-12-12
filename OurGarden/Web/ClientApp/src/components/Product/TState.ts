@@ -10,24 +10,21 @@ import { actionCreators as userCardActions } from "@components/UserCard/actions"
 export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IProductState
-  & RouterState
-  & RouteComponentProps<{
+export type TStateToProps = IProductState &
+  RouterState &
+  RouteComponentProps<{
     categoryId: string;
     subcategoryId: string;
     productId: string;
-  }>;
+  }> & { isDataWasGeted: boolean };
 export type TOwnProps = {};
-export type TMapStateToProps = TStateToProps
-  & TOwnProps;
+export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps
-  & {
-    addProductToCard: typeof userCardActions.addProductToCard;
-  };
+export type TMapDispatchToProps = TDispatchToProps & {
+  addProductToCard: typeof userCardActions.addProductToCard;
+};
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps
-  & TMapDispatchToProps;
+export type TState = TMapStateToProps & TMapDispatchToProps;

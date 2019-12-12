@@ -108,12 +108,10 @@ export class Design extends React.PureComponent<IDesign, {}> {
         </Paragraph>
         <Paragraph>
           Наш сад:
-          {/* prettier-ignore */ " "}
-          {ADDRESS}
+          {` ${ADDRESS}`}
           <br />
           Телефон:
-          {/* prettier-ignore */ " "}
-          {MAIN_MOBILE}
+          {` ${MAIN_MOBILE}`}
         </Paragraph>
       </Typography>
     );

@@ -18,18 +18,20 @@ export class ProductList extends React.PureComponent<TState, {}> {
     } = this.props;
 
     // prettier-ignore
-    if (
-      !productList.length
-      || params.categoryId !== productList[0].categoryId
-      || params.subcategoryId !== productList[0].subcategoryId
-    ) {
-      props.getProductList(params.categoryId, params.subcategoryId);
-    }
+    if (!props.isDataWasGeted) {
+      if (
+        !productList.length
+        || params.categoryId !== productList[0].categoryId
+        || params.subcategoryId !== productList[0].subcategoryId
+      ) {
+        props.getProductList(params.categoryId, params.subcategoryId);
+      }
 
-    props.getBreadcrumb({
-      categoryId: params.categoryId,
-      subcategoryId: params.subcategoryId
-    });
+      props.getBreadcrumb({
+        categoryId: params.categoryId,
+        subcategoryId: params.subcategoryId
+      });
+    }
   }
 
   componentDidUpdate(prevProps: TState) {

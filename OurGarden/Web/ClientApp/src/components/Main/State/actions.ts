@@ -22,6 +22,10 @@ export const actionsList = {
   clearAllRequest: (): t.IClearAllRequest => ({
     type: t.CLEAR_ALL_REQUEST
   }),
+  dataWasGeted: (isDataWasGeted: boolean): t.IDataWasGeted => ({
+    type: t.DATA_WAS_GETED,
+    payload: isDataWasGeted
+  }),
   requestError: (massageError: string): t.IRequestError => ({
     type: t.REQUEST_ERROR,
     massageError
@@ -41,7 +45,19 @@ export const actionCreators = {
   wrapRequest: <T>(params: IWrapRequest<T>): IAppThunkAction<any> => (
     dispatch
   ) => {
-    const fetchTask = fetch(params.fetchUrl, params.fetchProps)
+    const {
+      fetchUrl,
+      fetchProps,
+      requestSuccess,
+      requestError,
+      controllerName,
+      apiUrl,
+      requestErrorAction,
+      requestStart,
+      saveRequest = true
+    } = params;
+
+    const fetchTask = fetch(fetchUrl, fetchProps)
       .then((res: Response) => {
         if (res.status === 404) {
           dispatch(actionsList.pageNotFoundError(true));
@@ -53,33 +69,32 @@ export const actionCreators = {
           return errorCreater(value.error);
         }
 
-        params.requestSuccess(value.data);
+        requestSuccess(value.data);
         dispatch(actionsList.cancelRequest());
 
         return Promise.resolve();
       })
       .catch((err: Error) => {
-        if (params.requestError) {
-          params.requestError();
+        if (requestError) {
+          requestError();
         }
         dispatch(actionsList.requestError(err.message));
-        errorCatcher(
-          params.controllerName,
-          params.apiUrl,
-          err,
-          params.requestErrorAction,
-          dispatch
-        );
+        errorCatcher(controllerName, apiUrl, err, requestErrorAction, dispatch);
       });
 
     addTask(fetchTask);
-    params.requestStart();
+    requestStart();
     dispatch(actionsList.startRequest());
+
+    if (saveRequest) {
+      dispatch(actionsList.dataWasGeted(true));
+    }
   },
 
   startRequest: actionsList.startRequest,
   cancelRequest: actionsList.cancelRequest,
   clearAllRequest: actionsList.clearAllRequest,
+  dataWasGeted: actionsList.dataWasGeted,
   requestError: actionsList.requestError,
   pageNotFoundError: actionsList.pageNotFoundError,
   cleanErrorInner: actionsList.cleanErrorInner

@@ -39,6 +39,15 @@ export const reducer: Reducer<IAppState> = (
       return newState;
     }
 
+    case t.DATA_WAS_GETED: {
+      const newState: IAppState = {
+        ...state,
+        isDataWasGeted: action.payload
+      };
+
+      return newState;
+    }
+
     case t.REQUEST_ERROR: {
       const newState: IAppState = {
         ...state,

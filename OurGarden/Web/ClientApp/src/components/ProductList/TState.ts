@@ -9,21 +9,18 @@ import { actionCreators } from "./actions";
 export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IProductListState
-  & RouterState
-  & RouteComponentProps<{
+export type TStateToProps = IProductListState &
+  RouterState &
+  RouteComponentProps<{
     categoryId: string;
     subcategoryId: string;
-  }>;
+  }> & { isDataWasGeted: boolean };
 export type TOwnProps = {};
-export type TMapStateToProps = TStateToProps
-  & TOwnProps;
+export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps
-  & { push: Push };
+export type TMapDispatchToProps = TDispatchToProps & { push: Push };
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps
-  & TMapDispatchToProps;
+export type TState = TMapStateToProps & TMapDispatchToProps;
