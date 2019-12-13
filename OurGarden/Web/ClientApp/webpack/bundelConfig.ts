@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import path from "path";
 import webpack, { Configuration, optimize } from "webpack";
 import merge from "webpack-merge";
@@ -7,6 +9,7 @@ import getAlias from "./alias";
 
 import AppSettings from "../../../appsettings.json";
 
+// prettier-ignore
 const getBundelConfig = (
   projectFolder: string,
   sharedConfig: Configuration
@@ -47,7 +50,7 @@ const getBundelConfig = (
       isProdBuild: true
     })
   ],
-  mode: "production",
+  mode: "production"
 });
 
 export default getBundelConfig;

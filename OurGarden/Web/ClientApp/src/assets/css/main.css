@@ -1,52 +1,264 @@
-/* ProbaPro */
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-Regular.ttf);
+    font-family: 'Proba Pro ExLt';
+    src: url('subset-ProbaPro-ExtraLightItalic.eot');
+    src: url('subset-ProbaPro-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-ExtraLightItalic.woff2') format('woff2'),
+        url('subset-ProbaPro-ExtraLightItalic.woff') format('woff'),
+        url('subset-ProbaPro-ExtraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-Medium.ttf);
-  font-weight: 500;
+    font-family: 'Proba Pro';
+    src: url('subset-ProbaPro-BoldItalic.eot');
+    src: url('subset-ProbaPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-BoldItalic.woff2') format('woff2'),
+        url('subset-ProbaPro-BoldItalic.woff') format('woff'),
+        url('subset-ProbaPro-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-ExtraLightItalic.ttf);
-  font-weight: 100;
-  font-style: italic;
+    font-family: 'BerlingskeSerif-Blk';
+    src: url('subset-BerlingskeSerif-Blk.eot');
+    src: url('subset-BerlingskeSerif-Blk.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-Blk.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-Blk.woff') format('woff'),
+        url('subset-BerlingskeSerif-Blk.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-Light.ttf);
-  font-weight: 100;
+    font-family: 'Proba Pro Lt';
+    src: url('subset-ProbaPro-Light.eot');
+    src: url('subset-ProbaPro-Light.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-Light.woff2') format('woff2'),
+        url('subset-ProbaPro-Light.woff') format('woff'),
+        url('subset-ProbaPro-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-Italic.ttf);
-  font-style: italic;
+    font-family: 'Proba Pro';
+    src: url('subset-ProbaPro-Italic.eot');
+    src: url('subset-ProbaPro-Italic.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-Italic.woff2') format('woff2'),
+        url('subset-ProbaPro-Italic.woff') format('woff'),
+        url('subset-ProbaPro-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
 }
 
 @font-face {
-  font-family: "ProbaPro";
-  src: url(../fonts/ProbaPro-Bold.ttf);
-  font-weight: 700;
+    font-family: 'BerlingskeSerif-DBd';
+    src: url('subset-BerlingskeSerif-DBd.eot');
+    src: url('subset-BerlingskeSerif-DBd.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-DBd.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-DBd.woff') format('woff'),
+        url('subset-BerlingskeSerif-DBd.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
-/* END ProbaPro */
 
-/* BerlingskeSerif */
 @font-face {
-  font-family: "BerlingskeSerif";
-  src: url(../fonts/BerlingskeSerif-DBd.ttf);
-  font-weight: bolder;
+    font-family: 'BerlingskeSerif-XBd';
+    src: url('subset-BerlingskeSerif-XBd.eot');
+    src: url('subset-BerlingskeSerif-XBd.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-XBd.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-XBd.woff') format('woff'),
+        url('subset-BerlingskeSerif-XBd.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
 }
-/* END BerlingskeSerif */
 
-/* BerlingskeSerif */
 @font-face {
-  font-family: "Gilroy";
-  src: url(../fonts/Gilroy-Light.otf);
+    font-family: 'BerlingskeSerif-BlkItalic';
+    src: url('subset-BerlingskeSerif-BlkItalic.eot');
+    src: url('subset-BerlingskeSerif-BlkItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-BlkItalic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-BlkItalic.woff') format('woff'),
+        url('subset-BerlingskeSerif-BlkItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
 }
-/* END BerlingskeSerif */
+
+@font-face {
+    font-family: 'Proba Pro Lt';
+    src: url('subset-ProbaPro-LightItalic.eot');
+    src: url('subset-ProbaPro-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-LightItalic.woff2') format('woff2'),
+        url('subset-ProbaPro-LightItalic.woff') format('woff'),
+        url('subset-ProbaPro-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-Lt';
+    src: url('subset-BerlingskeSerif-Lt.eot');
+    src: url('subset-BerlingskeSerif-Lt.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-Lt.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-Lt.woff') format('woff'),
+        url('subset-BerlingskeSerif-Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif';
+    src: url('subset-BerlingskeSerif-Italic.eot');
+    src: url('subset-BerlingskeSerif-Italic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-Italic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-Italic.woff') format('woff'),
+        url('subset-BerlingskeSerif-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-DBdItalic';
+    src: url('subset-BerlingskeSerif-DBdItalic.eot');
+    src: url('subset-BerlingskeSerif-DBdItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-DBdItalic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-DBdItalic.woff') format('woff'),
+        url('subset-BerlingskeSerif-DBdItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-Md';
+    src: url('subset-BerlingskeSerif-Md.eot');
+    src: url('subset-BerlingskeSerif-Md.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-Md.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-Md.woff') format('woff'),
+        url('subset-BerlingskeSerif-Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif';
+    src: url('subset-BerlingskeSerif-Bold.eot');
+    src: url('subset-BerlingskeSerif-Bold.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-Bold.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-Bold.woff') format('woff'),
+        url('subset-BerlingskeSerif-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proba Pro ExLt';
+    src: url('subset-ProbaPro-ExtraLight.eot');
+    src: url('subset-ProbaPro-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-ExtraLight.woff2') format('woff2'),
+        url('subset-ProbaPro-ExtraLight.woff') format('woff'),
+        url('subset-ProbaPro-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-XBdItalic';
+    src: url('subset-BerlingskeSerif-XBdItalic.eot');
+    src: url('subset-BerlingskeSerif-XBdItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-XBdItalic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-XBdItalic.woff') format('woff'),
+        url('subset-BerlingskeSerif-XBdItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-MdItalic';
+    src: url('subset-BerlingskeSerif-MdItalic.eot');
+    src: url('subset-BerlingskeSerif-MdItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-MdItalic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-MdItalic.woff') format('woff'),
+        url('subset-BerlingskeSerif-MdItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BerlingskeSerif-LtItalic';
+    src: url('subset-BerlingskeSerif-LtItalic.eot');
+    src: url('subset-BerlingskeSerif-LtItalic.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-LtItalic.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-LtItalic.woff') format('woff'),
+        url('subset-BerlingskeSerif-LtItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Proba Pro Md';
+    src: url('subset-ProbaPro-Medium.eot');
+    src: url('subset-ProbaPro-Medium.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-Medium.woff2') format('woff2'),
+        url('subset-ProbaPro-Medium.woff') format('woff'),
+        url('subset-ProbaPro-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proba Pro';
+    src: url('subset-ProbaPro-Bold.eot');
+    src: url('subset-ProbaPro-Bold.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-Bold.woff2') format('woff2'),
+        url('subset-ProbaPro-Bold.woff') format('woff'),
+        url('subset-ProbaPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proba Pro';
+    src: url('subset-ProbaPro-Regular.eot');
+    src: url('subset-ProbaPro-Regular.eot?#iefix') format('embedded-opentype'),
+        url('subset-ProbaPro-Regular.woff2') format('woff2'),
+        url('subset-ProbaPro-Regular.woff') format('woff'),
+        url('subset-ProbaPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Berlingske Serif';
+    src: url('subset-BerlingskeSerif-DemiBold.eot');
+    src: url('subset-BerlingskeSerif-DemiBold.eot?#iefix') format('embedded-opentype'),
+        url('subset-BerlingskeSerif-DemiBold.woff2') format('woff2'),
+        url('subset-BerlingskeSerif-DemiBold.woff') format('woff'),
+        url('subset-BerlingskeSerif-DemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('subset-Gilroy-Light.eot');
+    src: url('subset-Gilroy-Light.eot?#iefix') format('embedded-opentype'),
+        url('subset-Gilroy-Light.woff2') format('woff2'),
+        url('subset-Gilroy-Light.woff') format('woff'),
+        url('subset-Gilroy-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('subset-Gilroy-ExtraBold.eot');
+    src: url('subset-Gilroy-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('subset-Gilroy-ExtraBold.woff2') format('woff2'),
+        url('subset-Gilroy-ExtraBold.woff') format('woff'),
+        url('subset-Gilroy-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+

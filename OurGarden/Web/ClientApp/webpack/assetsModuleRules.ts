@@ -31,6 +31,18 @@ const getAssetsModuleRules = (
     })
   },
   {
+    test: /\.css$/,
+    use: [
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          hmr: !env || !env.prod
+        }
+      },
+      require.resolve("css-loader")
+    ]
+  },
+  {
     test: /\.scss$/,
     use: [
       {
@@ -49,18 +61,6 @@ const getAssetsModuleRules = (
     ]
   },
   {
-    test: /\.css$/,
-    use: [
-      {
-        loader: MiniCssExtractPlugin.loader,
-        options: {
-          hmr: !env || !env.prod
-        }
-      },
-      require.resolve("css-loader")
-    ]
-  },
-  {
     test: /\.svg$/,
     use: "react-svg-loader"
   },
@@ -70,7 +70,7 @@ const getAssetsModuleRules = (
     test: /\.(png|jpg|jpeg|gif)$/,
     loader: "url-loader",
     options: {
-      limit: 10000,
+      limit: 10 * 1024,
       name: `${fileNameTemplate}.[ext]`,
       outputPath: "img",
       publicPath: "img/"
@@ -80,7 +80,7 @@ const getAssetsModuleRules = (
     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
     loader: "file-loader",
     options: {
-      limit: 10000,
+      limit: 10 * 1024,
       name: `${fileNameTemplate}.[ext]`,
       outputPath: "fonts",
       publicPath: "fonts/"

@@ -18,10 +18,10 @@ const getSharedConfig = (
   const sharedConfig: Configuration = {
     // https://webpack.js.org/configuration/stats/
     // Add built modules information
-    stats: {
-      modules: false
-      // children: false
-    },
+    // stats: {
+    //   modules: false,
+    //   children: false
+    // },
     // https://webpack.js.org/configuration/resolve/#resolve-extensions
     // Can import files without extansions
     resolve: {

@@ -1,12 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { Configuration } from 'webpack';
+import { Configuration } from "webpack";
 
-import getAlias from './alias';
-import getAssetsModuleRules from './assetsModuleRules';
-import getJsModuleRules from './jsModuleRules';
-import getGeneralPlugins from './generalPlugins';
-
+import getAlias from "./alias";
+import getAssetsModuleRules from "./assetsModuleRules";
+import getJsModuleRules from "./jsModuleRules";
+import getGeneralPlugins from "./generalPlugins";
 
 // Configuration in common to both client-side and server-side bundles
 const getSharedConfig = (
@@ -20,24 +19,21 @@ const getSharedConfig = (
     // Add built modules information
     stats: {
       modules: false,
-      // children: false
+      children: false
     },
     // https://webpack.js.org/configuration/resolve/#resolve-extensions
     // Can import files without extansions
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      alias: getAlias(),
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      alias: getAlias()
     },
     // https://webpack.js.org/configuration/module/
     module: {
-      rules: [
-        ...getAssetsModuleRules(fileNameTemplate),
-        ...getJsModuleRules(),
-      ]
+      rules: [...getAssetsModuleRules(fileNameTemplate), ...getJsModuleRules()]
     },
     plugins: getGeneralPlugins(),
     optimization: optimizationConfiguration,
-    mode: buildModeString,
+    mode: buildModeString
   };
 
   if (devtool) {

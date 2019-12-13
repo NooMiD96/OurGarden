@@ -36,6 +36,7 @@
     <None Remove="$(SpaAdminRoot)**" />
     <None Include="$(SpaAdminRoot)**" Exclude="$(SpaAdminRoot)node_modules\**" />
 
+    <!-- Don't publish images 'cause in local using as Testing --> 
     <Content Remove="wwwroot\images\**" />
     <None Remove="wwwroot\images\**" />
   </ItemGroup>
@@ -67,8 +68,9 @@
     <Folder Include="wwwroot\client\" />
   </ItemGroup>
 
-  <Target Name="DebugClean" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And '$(DetectPublishBuild)' != 'true'">
-    <Message Importance="high" Text="Run Debug config. Exec DebugClean Before Build" />
+  <!-- Procedures -->
+  <Target Name="CheckEnvironment">
+    <Message Importance="high" Text="Run Check Environment" />
 
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
@@ -79,91 +81,46 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
-
-    <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
-
-    <Exec Condition=" !Exists('$(SpaClientRoot)node_modules') " WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
-
-    <Exec Condition=" !Exists('$(SpaAdminRoot)node_modules') " WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
   </Target>
-
-  <Target Name="ProdEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' And '$(DetectPublishBuild)' != 'true'">
-    <Message Importance="high" Text="Run Release config. Exec ProdEnsureNodeEnv Before Build" />
-
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-
-    <Exec Command="yarn --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
-
-    <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
-
+  
+  <Target Name="UpdateWebPackages">
+    <Message Importance="high" Text="Run Update Web Packages. Restoring dependencies using 'yarn'." />
+    
     <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
 
     <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
   </Target>
-
-  <Target Name="StageEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' And '$(DetectPublishBuild)' != 'true'">
-    <Message Importance="high" Text="Run Stage config. Exec StageEnsureNodeEnv Before Build. Not Publish" />
-
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-
-    <Exec Command="yarn --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
-
-    <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
-
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+  
+  <Target Name="BuildWebProjects" Condition=" '$(IsPublishExecuted)' != 'true' ">
+    <Message Importance="high" Text="Run Build Web Projects. This may take several minutes..." />
+    
+    <Message Importance="high" Text="Start build Client Web" />
     <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
 
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
+    <Message Importance="high" Text="Start build Admin Web" />
     <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
+  </Target>
+  <!-- END Procedures -->
+
+  <Target Name="DebugBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+    <Message Importance="high" Text="Run Debug config" />
+
+    <CallTarget Targets="CheckEnvironment;UpdateWebPackages" />
+  </Target>
+
+  <Target Name="StageBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' ">
+    <Message Importance="high" Text="Run Stage config" />
+
+    <CallTarget Targets="CheckEnvironment;UpdateWebPackages;BuildWebProjects" />
+  </Target>
+
+  <Target Name="ProdBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+    <Message Importance="high" Text="Run Release config" />
+
+    <CallTarget Targets="CheckEnvironment;UpdateWebPackages;BuildWebProjects" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-    <Message Importance="high" Text="Run Publish. Exec PublishRunWebpack After ComputeFilesToPublish" />
-
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-
-    <Exec Command="yarn --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/lang/en/, and then restart your command prompt or IDE." />
-
-    <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take several minutes..." />
-
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
-
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
-
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <!--<Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />-->
-
-    <!-- Include the newly-built files in the publish output -->
-    <!--<ItemGroup>
-      <DistFiles Include="$(SpaRoot)public\**;" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>%(DistFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </ResolvedFileToPublish>
-    </ItemGroup>-->
+    <Message Importance="high" Text="Run After Compute Files To Publish" />
   </Target>
-
 </Project>
