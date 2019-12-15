@@ -18,9 +18,6 @@ import configureStore from "./ConfigureStore";
 import { getParamsData } from "./utils";
 import { MobileContext } from "@src/core/constants";
 
-import "@src/assets/css/main.css";
-import "@src/assets/scss/main.scss";
-
 // prettier-ignore
 // eslint-disable-next-line no-async-promise-executor
 const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult>(async (resolve, reject) => {

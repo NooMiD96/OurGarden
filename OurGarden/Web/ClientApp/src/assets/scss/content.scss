@@ -15,58 +15,6 @@
         max-width: 100%;
       }
     }
-
-    .main-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      padding-left: 3em;
-      max-width: 100%;
-
-      @media (max-width: 767px) {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-
-      @media (max-width: 991px) {
-        > div,
-        > article {
-          &:not(.ant-layout-header) {
-            margin-bottom: 85px;
-          }
-        }
-      }
-
-      .ant-layout-header {
-        background: unset;
-        line-height: inherit;
-        padding: unset;
-        height: auto;
-
-        .breadcrumb {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          min-height: 67px;
-          font-size: 18px;
-          font-weight: 500;
-
-          .slash {
-            padding: 0 5px;
-          }
-
-          .nav-link {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-      }
-
-      .content {
-        flex: 0 1 auto;
-      }
-    }
   }
 
   .ant-spin-nested-loading {
@@ -82,4 +30,56 @@
   height: 100%;
   background: unset;
   font-family: "ProbaPro";
+}
+
+.main-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3em;
+  max-width: 100%;
+
+  @media (max-width: 767px) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  @media (max-width: 991px) {
+    > div,
+    > article {
+      &:not(.ant-layout-header) {
+        margin-bottom: 85px;
+      }
+    }
+  }
+
+  .ant-layout-header {
+    background: unset;
+    line-height: inherit;
+    padding: unset;
+    height: auto;
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      min-height: 67px;
+      font-size: 18px;
+      font-weight: 500;
+
+      .slash {
+        padding: 0 5px;
+      }
+
+      .nav-link {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .content {
+    flex: 0 1 auto;
+  }
 }

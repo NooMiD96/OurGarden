@@ -1,49 +1,16 @@
-.add-to-card-wrapper {
-  &.card-description {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-flow: row wrap;
+.add-to-card-wrapper.card-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-flow: row wrap;
 
-    .card-cost {
-      font-size: 18px;
-      font-weight: 100;
-      flex: 20 0 auto;
-    }
+  .card-cost {
+    font-size: 18px;
+    font-weight: 300;
+    flex: 20 0 auto;
+  }
 
-    .add-to-card-button-wrapper {
-      flex: 1 0 auto;
-    }
-
-    .ant-input-wrapper.ant-input-group {
-      input.ant-input {
-        width: 45px;
-        padding: 4px 10px;
-        border-radius: 0;
-        border-color: $darkGreenColor;
-        font-weight: 100;
-
-        &:focus {
-          box-shadow: none;
-        }
-      }
-
-      .ant-input-group-addon {
-        padding: 0;
-        width: 100%;
-        border: 0;
-
-        .ant-btn {
-          border-radius: 0;
-          border-color: $darkGreenColor;
-
-          font-weight: 500;
-
-          &:hover {
-            color: #fff;
-          }
-        }
-      }
-    }
+  .add-to-card-button-wrapper {
+    flex: 1 0 auto;
   }
 }

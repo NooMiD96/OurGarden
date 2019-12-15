@@ -1,7 +1,18 @@
 /* eslint-disable */
-module.exports = function(processDir) {
+var path = require("path");
+
+module.exports = function (processDir) {
+    require("@babel/register")({
+        // This will override `node_modules` ignoring - you can alternatively pass
+        // an array of strings to be explicitly matched or a regex / glob
+        // ignore: [],
+        extends: path.join(processDir, "./Web/ClientApp/.babelrc"),
+        extensions: ['.js']
+    });
+    require('@babel/polyfill');
+
     require('ignore-styles');
-    
+
     require("tsconfig-paths").register({
         baseUrl: './',
         "paths": {
@@ -11,16 +22,10 @@ module.exports = function(processDir) {
             "@antdSvgs/*": ["node_modules/@ant-design/icons/lib/outline/*"]
         }
     });
-    
+
     require('ts-node').register({
         "baseUrl": "./",
-        compilerOptions: {
-            "module": "commonjs",
-            "target": "es5",
-            "esModuleInterop": true,
-            "resolveJsonModule": true
-        },
-        project: processDir + "/Web/ClientApp/tsconfig.json",
+        project: path.join(processDir, "./Web/ClientApp/tsconfig.json"),
         transpileOnly: true
     });
 }

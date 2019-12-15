@@ -155,7 +155,7 @@ namespace Web.Controllers
                                 .GetValue<string>("title")
                                 .Replace(
                                     "{{value}}",
-                                    news.Alias,
+                                    news.Title,
                                     StringComparison.InvariantCultureIgnoreCase
                                 ),
                             section.GetValue<string>("meta")

@@ -1,85 +1,90 @@
-.antd-layout.ant-layout.ant-layout-has-sider {
-  .ant-layout-sider {
-    background: #fff;
-    max-height: 600px;
-    font-weight: 500;
+.antd-layout {
+  .ant-layout {
+    &-sider {
+      background: #fff;
+      max-height: 600px;
 
-    .ant-layout-sider-children {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      &-children {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+    }
 
-      .sider-catalog-header {
-        font-family: "BerlingskeSerif";
-        font-weight: bolder;
-        padding: 0.5em 0em;
-        text-align: center;
-
-        background-color: $darkGreenColor;
-
-        > .ant-typography {
-          font-size: 38px;
-          margin: 0 !important;
-          color: white;
-        }
+    @media (max-width: 767px) {
+      &-sider {
+        z-index: 5;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        max-height: unset;
       }
 
-      .ant-menu.ant-menu-root {
-        flex: 1 1 auto;
-        border: 1px solid $borderColor;
-        border-top: unset;
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        color: $darkGreyColor;
-
-        .ant-menu-item {
-          font-size: 16px;
-          width: 100%;
-
-          > a.nav-link {
-            max-height: 600px;
-            font-weight: 500;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            &:hover {
-              color: #fff;
-            }
-          }
-
-          &.ant-menu-item-selected {
-            background-color: $darkGreenColor;
-
-            > a.nav-link {
-              color: #fff;
-            }
-          }
-
-          &::after {
-            border-right-color: $greenColor;
-          }
-
-          &:hover {
-            color: #fff;
-            background-color: $darkGreenColor;
-          }
-        }
+      &-sider-zero-width-trigger {
+        top: 356px;
       }
     }
   }
 
-  @media (max-width: 767px) {
-    .ant-layout-sider {
-      z-index: 5;
-      position: fixed;
-      height: 100%;
-      top: 0;
-      max-height: unset;
+  .sider-catalog-header {
+    font-family: BerlingskeSerif;
+    font-weight: 400;
+
+    padding: 0.5em 0em;
+    text-align: center;
+
+    background-color: $darkGreenColor;
+
+    > h4.ant-typography {
+      font-size: 38px;
+      font-weight: inherit;
+
+      margin: 0px;
+
+      color: white;
+    }
+  }
+
+  .ant-menu {
+    flex: 1 1 auto;
+    border: 1px solid $borderColor;
+    border-top: unset;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    color: $darkGreyColor;
+
+    &-item {
+      font-size: 16px;
+      width: 100%;
+
+      > a.nav-link {
+        max-height: 600px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+
+      &::after {
+        border-right-color: $greenColor;
+      }
+
+      &:hover {
+        color: #fff;
+        background-color: $darkGreenColor;
+      }
     }
 
-    .ant-layout-sider-zero-width-trigger {
-      top: 356px;
+    &:not(.ant-menu-horizontal) .ant-menu-item-selected {
+      background-color: $darkGreenColor;
+
+      > a.nav-link {
+        color: #fff;
+      }
     }
   }
 }

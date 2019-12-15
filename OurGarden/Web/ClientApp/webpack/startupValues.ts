@@ -22,8 +22,9 @@ const getStartupValues = (env: { [key: string]: string }, dirname: string) => {
     minimize: !isDevBuild,
     splitChunks: {
       automaticNameDelimiter: ".",
-      maxInitialRequests: Infinity,
-      minSize: 0,
+      maxAsyncRequests: Number.MAX_VALUE,
+      maxInitialRequests: Number.MAX_VALUE,
+      minSize: 1 * 1024,
       name: true
     }
   };

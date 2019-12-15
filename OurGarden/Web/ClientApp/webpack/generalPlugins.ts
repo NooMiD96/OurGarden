@@ -3,12 +3,12 @@
 import StringReplacePlugin from "string-replace-webpack-plugin";
 import { CheckerPlugin } from "awesome-typescript-loader";
 import webpack, { Plugin } from "webpack";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
+// import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
 const getGeneralPlugins = (): Plugin[] => [
-  new CleanWebpackPlugin(),
+  // new CleanWebpackPlugin(),
   // https://github.com/s-panferov/awesome-typescript-loader
   // awesome-typescript-loader plugin
   // `CheckerPlugin` is optional. Use it if want async error reporting.

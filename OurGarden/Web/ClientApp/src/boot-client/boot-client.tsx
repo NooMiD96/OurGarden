@@ -11,6 +11,7 @@ import * as App from "@src/App";
 import ConfigureStore from "./ConfigureStore";
 
 import "@src/assets/css/main.css";
+import "@src/assets/fonts/main.css";
 import "@src/assets/scss/main.scss";
 import { MobileContext } from "@src/core/constants";
 

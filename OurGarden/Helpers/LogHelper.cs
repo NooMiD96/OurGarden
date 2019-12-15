@@ -12,13 +12,13 @@ namespace Web.Helpers
         public static string LogError(ILogger logger,
                                       string apiLocate,
                                       Exception exception = null,
-                                      string customeError = null,
+                                      string customeError = ERROR,
                                       int returnStatusCode = 200)
         {
             byte[] bytes = Encoding.Default.GetBytes(customeError);
             customeError = Encoding.GetEncoding("windows-1251").GetString(bytes);
 
-            var returnErrorString = customeError ?? ERROR;
+            var returnErrorString = customeError;
             var logErrorString = $"{DateTime.Now}:\n{apiLocate}\n{returnErrorString}\nreturnStatusCode=={returnStatusCode}";
 
             if (exception != null)

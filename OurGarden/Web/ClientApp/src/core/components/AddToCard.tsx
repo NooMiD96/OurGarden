@@ -15,7 +15,10 @@ export interface IAddToCard {
 }
 
 const AddToCard = (props: IAddToCard) => {
-  const { product, itemCount, setItemCount, addToCard } = props;
+  // prettier-ignore
+  const {
+    product, itemCount, setItemCount, addToCard
+  } = props;
 
   return (
     <div className="add-to-card-wrapper card-description">

@@ -10,20 +10,11 @@ import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
-import PurgecssPlugin from "purgecss-webpack-plugin";
-
 /* eslint-disable @typescript-eslint/no-var-requires */
 const ImageminPlugin = require("imagemin-webpack");
 
 const ReactLoadableSSRAddon = require("react-loadable-ssr-addon");
-
-const whitelister = require("purgecss-whitelister");
-const glob = require("glob");
 /* eslint-enable @typescript-eslint/no-var-requires */
-
-const PATHS = {
-  src: path.join(__dirname, "../src")
-};
 
 const pathToPublic = `${path.join(
   __dirname,
@@ -40,21 +31,6 @@ const clientPlugins = (
     // Options similar to the same options in webpackOptions.output
     filename: `${fileNameTemplate}.css`
   }),
-  new PurgecssPlugin({
-    paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
-    rejected: true,
-    whitelist: whitelister("../src/assets/*.*"),
-    extractors: [
-      {
-        extractor: class TailwindExtractor {
-          static extract(content: string) {
-            return content.match(/[A-Za-z0-9_-]+/g) || [];
-          }
-        },
-        extensions: ["js", "ts", "tsx"]
-      }
-    ]
-  }),
 
   // https://github.com/webpack-contrib/webpack-bundle-analyzer
   new BundleAnalyzerPlugin({
@@ -69,18 +45,6 @@ const clientPlugins = (
   }),
   new ReactLoadableSSRAddon({
     filename: `${pathToPublic}/assets-manifest.json`
-  }),
-
-  new ImageminPlugin({
-    bail: false, // Ignore errors on corrupted images
-    cache: true,
-    imageminOptions: {
-      plugins: [
-        ["gifsicle", { interlaced: true }],
-        ["jpegoptim", { progressive: true, max: 90 }],
-        ["optipng", { optimizationLevel: 5 }]
-      ]
-    }
   })
 ];
 
@@ -180,6 +144,19 @@ const getClientBundleConfig = (
       new CaseSensitivePathsPlugin()
     );
   } else {
+    clientBundleConfig!.plugins!.push(
+      new ImageminPlugin({
+        bail: false, // Ignore errors on corrupted images
+        cache: true,
+        imageminOptions: {
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegoptim", { progressive: true, max: 90 }],
+            ["optipng", { optimizationLevel: 5 }]
+          ]
+        }
+      })
+    );
     // clientBundleConfig.entry["service-worker"] = "./src/sw.ts";
   }
 

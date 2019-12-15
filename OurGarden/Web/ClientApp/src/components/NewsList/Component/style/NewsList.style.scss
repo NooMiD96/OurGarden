@@ -4,11 +4,16 @@
 
   .ant-card-meta-title {
     .ant-typography {
-      font-family: "BerlingskeSerif";
+      font-family: BerlingskeSerif;
+      font-weight: 400;
       font-size: 30px;
       margin: 0px;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      a {
+        font-weight: inherit;
+      }
     }
   }
 

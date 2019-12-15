@@ -25,7 +25,7 @@ const AddToCardButton = (props: IAddToCardButton) => {
           <Button block onClick={addToCard}>
             В корзину
           </Button>
-)}
+        )}
       />
     </div>
   );

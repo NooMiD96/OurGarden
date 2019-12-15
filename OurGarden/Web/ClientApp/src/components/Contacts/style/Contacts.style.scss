@@ -10,6 +10,7 @@
     flex-direction: column;
     padding-left: 6rem;
     padding: 2rem 5rem;
+    background-color: #fff;
 
     @media (max-width: 654px) {
       padding: 2rem 2rem;
@@ -24,8 +25,8 @@
     }
 
     h1 {
-      font-family: "BerlingskeSerif";
-      font-weight: bolder;
+      font-family: BerlingskeSerif;
+      font-weight: 400;
       font-size: 30px;
       padding-left: calc(1rem + 24px);
     }
@@ -40,7 +41,7 @@
 
         + span {
           font-size: 24px;
-          font-weight: 100;
+          font-weight: 300;
         }
       }
 
