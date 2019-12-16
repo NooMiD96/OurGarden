@@ -6,6 +6,7 @@ module.exports = function (processDir) {
         // This will override `node_modules` ignoring - you can alternatively pass
         // an array of strings to be explicitly matched or a regex / glob
         // ignore: [],
+        only: [/[\\/]es[\\/]/],
         extends: path.join(processDir, "./Web/ClientApp/.babelrc"),
         extensions: ['.js']
     });
@@ -25,6 +26,11 @@ module.exports = function (processDir) {
 
     require('ts-node').register({
         "baseUrl": "./",
+        compilerOptions: {
+            "module": "commonjs",
+            "esModuleInterop": true,
+            "resolveJsonModule": true
+        },
         project: path.join(processDir, "./Web/ClientApp/tsconfig.json"),
         transpileOnly: true
     });

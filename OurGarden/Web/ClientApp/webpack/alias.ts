@@ -8,8 +8,7 @@ const getAlias = (): { [key: string]: string } => ({
   "@projectFolder": path.resolve("../../../"),
   styles: path.resolve("./src/assets/scss"),
   indexof: "component-indexof/index",
-  "~/component-indexof.js": "component-indexof",
-  "react-dom": "@hot-loader/react-dom"
+  "~/component-indexof.js": "component-indexof"
 });
 
 export default getAlias;

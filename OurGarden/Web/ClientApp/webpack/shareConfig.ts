@@ -42,6 +42,7 @@ const getSharedConfig = (
 
   if (devtool) {
     sharedConfig.devtool = devtool;
+    sharedConfig.resolve!.alias!["react-dom"] = "@hot-loader/react-dom";
   }
 
   return sharedConfig;

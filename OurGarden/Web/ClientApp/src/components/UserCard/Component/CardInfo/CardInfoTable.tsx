@@ -1,12 +1,12 @@
 import React from "react";
 
-import Table, { ColumnProps } from "@src/core/antd/Table";
-import { Title } from "@src/core/antd/Typography";
-import NumberInput from "@src/core/components/NumberInput";
-import Remove from "@src/core/icons/Remove";
-import LazyImage from "@src/core/components/LazyImage";
+import Table, { ColumnProps } from "@core/antd/Table";
+import { Title } from "@core/antd/Typography";
+import NumberInput from "@core/components/NumberInput";
+import LottieWebIcon from "@core/components/LottieWebIcon";
+import LazyImage from "@core/components/LazyImage";
 
-import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+import { getPreviewPhotoSrc } from "@core/utils/photo";
 
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
@@ -22,6 +22,7 @@ export const cardProductToDisplay = (x: IUserCardProduct): IDisplayInfo => ({
   totalCost: x.count * x.product.price
 });
 
+// prettier-ignore
 const getColumns = (
   changeCountOfProduct: (payload: IUserCardProduct) => void,
   removeProductFromCard: (payload: IProduct) => void
@@ -85,7 +86,7 @@ const getColumns = (
     render: (totalCost: number) => (
       <span>
         {totalCost.toLocaleString()}
-          р
+        р
       </span>
     )
   },
@@ -95,19 +96,21 @@ const getColumns = (
     key: "operation",
     width: 90,
     render: (_, record) => (
-      <Remove onClick={() => removeProductFromCard(record.product)} />
+      <LottieWebIcon
+        type="remove"
+        onClick={() => removeProductFromCard(record.product)}
+      />
     )
   }
 ] as ColumnProps<IDisplayInfo>[];
 
-const rowKey = (record: IUserCardProduct) => `${record.product.categoryId}-${record.product.subcategoryId}-${
-  record.product.productId
-}`;
+// prettier-ignore
+const rowKey = (record: IUserCardProduct) => `${record.product.categoryId}-${record.product.subcategoryId}-${record.product.productId}`;
 
 const pagination = {
   defaultCurrent: 1,
   defaultPageSize: 6,
-  hideOnSinglePage: true,
+  hideOnSinglePage: true
 };
 
 const scroll = {

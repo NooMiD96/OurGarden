@@ -1,13 +1,11 @@
 import React from "react";
 
-import LoadingIcon from "@core/icons/Loading";
+import LottieWebIcon from "@core/components/LottieWebIcon";
 
-const Loading = () => {
-  return (
-    <div className="loading-wrapper">
-      <LoadingIcon />
-    </div>
-  );
-};
+const Loading = () => (
+  <div className="loading-wrapper">
+    <LottieWebIcon type="loading" />
+  </div>
+);
 
 export default Loading;

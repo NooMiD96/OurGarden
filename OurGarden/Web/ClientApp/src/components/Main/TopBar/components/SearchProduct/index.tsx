@@ -4,7 +4,7 @@ import { push } from "connected-react-router";
 
 import Search from "@core/antd/Search";
 import AutoComplete from "@core/antd/AutoComplete";
-import SearchIcon from "@src/core/icons/Search";
+import LottieWebIcon from "@core/components/LottieWebIcon";
 import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
 
 import { IProduct } from "@src/components/Product/State";
@@ -83,9 +83,13 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
         onSelect={onSelect}
       >
         <Search
-          prefix={
-            <SearchIcon isActive={searchIsActive} onClick={resetSearchValue} />
-          }
+          prefix={(
+            <LottieWebIcon
+              type="search"
+              isActive={searchIsActive}
+              onClick={resetSearchValue}
+            />
+          )}
           enterButton="Найти"
           onSearch={onSearch}
         />

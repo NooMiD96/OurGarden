@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { push as pushAction } from "connected-react-router";
 import { connect } from "react-redux";
 
-import Archive from "@core/icons/Archive";
 import Badge from "@core/antd/Badge";
+import LottieWebIcon from "@core/components/LottieWebIcon";
 
 import { actionCreators } from "@src/components/UserCard/actions";
-
 import { darkGreenColor } from "@src/core/constants";
 
 import { IApplicationState } from "@src/Store";
@@ -28,7 +27,7 @@ const Card = (props: ICard) => {
         style={{ backgroundColor: darkGreenColor, color: "#fff" }}
         count={props.totalCount}
       >
-        <Archive onClick={() => props.push("/Card")} />
+        <LottieWebIcon type="archive" onClick={() => props.push("/Card")} />
       </Badge>
     </React.Fragment>
   );
