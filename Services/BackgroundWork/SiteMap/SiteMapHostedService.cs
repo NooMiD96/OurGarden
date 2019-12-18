@@ -1,6 +1,4 @@
-﻿#if !DEBUG
-using Core.Helpers;
-#endif
+﻿using Core.Helpers;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,9 +8,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Services.BackgroundWork.OrderCleaner
+namespace Services.BackgroundWork.SiteMap
 {
-    public class OrderCleanerHostedService : IHostedService, IDisposable
+    public class SiteMapHostedService : IHostedService, IDisposable
     {
         // Flag: Has Dispose already been called?
         bool disposed = false;
@@ -21,11 +19,12 @@ namespace Services.BackgroundWork.OrderCleaner
         private readonly IServiceProvider _services;
         private Timer _timer;
 
-        const string HostServiceStart = "OrderCleanerHostedService is starting.";
-        const string HostServiceWork = "OrderCleanerHostedService is working.";
-        const string HostServiceEnd = "OrderCleanerHostedService is stopping.";
+        const string HostServiceName = "SiteMapHostedService";
+        const string HostServiceStart = HostServiceName + " is starting.";
+        const string HostServiceWork = HostServiceName + " is working.";
+        const string HostServiceEnd = HostServiceName + " is stopping.";
 
-        public OrderCleanerHostedService(IServiceProvider services, ILogger<OrderCleanerHostedService> logger)
+        public SiteMapHostedService(IServiceProvider services, ILogger<SiteMapHostedService> logger)
         {
             _services = services;
             _logger = logger;
@@ -38,7 +37,7 @@ namespace Services.BackgroundWork.OrderCleaner
 #if DEBUG
             var startTimeSpan = TimeSpan.Zero;
 #else
-            var startTimeSpan = DateTime.Now.AddDays(1).GetDate() - DateTime.Now;
+            var startTimeSpan = DateTime.Now.AddDays(1).GetDate() - DateTime.Now + TimeSpan.FromHours(2);
 #endif
 
             _timer = new Timer(DoWork, null, startTimeSpan, TimeSpan.FromDays(1));
@@ -52,7 +51,7 @@ namespace Services.BackgroundWork.OrderCleaner
 
             using (var scope = _services.CreateScope())
             {
-                var service = scope.ServiceProvider.GetRequiredService<IOrderCleanerService>();
+                var service = scope.ServiceProvider.GetRequiredService<ISiteMapService>();
 
                 service.DoWork();
             }

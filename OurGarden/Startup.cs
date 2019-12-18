@@ -12,6 +12,7 @@ using Model.EMail;
 
 using Services.BackgroundWork.DummyWorker;
 using Services.BackgroundWork.OrderCleaner;
+using Services.BackgroundWork.SiteMap;
 using Services.EMail;
 
 using System.Collections.Generic;
@@ -58,6 +59,9 @@ namespace Web
 
             services.AddHostedService<OrderCleanerHostedService>();
             services.AddScoped<IOrderCleanerService, OrderCleanerService>();
+
+            services.AddHostedService<SiteMapHostedService>();
+            services.AddScoped<ISiteMapService, SiteMapService>();
 
             services.AddNodeServices();
 

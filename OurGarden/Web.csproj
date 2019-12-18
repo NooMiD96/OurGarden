@@ -39,12 +39,13 @@
     <!-- Don't publish images 'cause in local using as Testing --> 
     <Content Remove="wwwroot\images\**" />
     <None Remove="wwwroot\images\**" />
-  </ItemGroup>
+    
+    <Content Remove="wwwroot\sitemaps\**" />
+    <None Remove="wwwroot\sitemaps\**" />
 
-  <ItemGroup>
-    <Compile Remove="wwwroot\images\**" />
-    <EmbeddedResource Remove="wwwroot\images\**" />
-    <TypeScriptCompile Remove="wwwroot\images\**" />
+
+    <Content Remove="wwwroot\sitemap.xml" />
+    <None Remove="wwwroot\sitemap.xml" />
   </ItemGroup>
 
   <ItemGroup>

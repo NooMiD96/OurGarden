@@ -2,6 +2,7 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Services.BackgroundWork.DummyWorker
 {
@@ -15,7 +16,7 @@ namespace Services.BackgroundWork.DummyWorker
             _logger = logger;
         }
 
-        public void DoWork()
+        public async Task DoWork()
         {
             _logger.LogInformation($"DummyWorkerService is working. {DateTime.UtcNow}");
 
@@ -23,7 +24,7 @@ namespace Services.BackgroundWork.DummyWorker
             {
                 using (var client = new WebClient())
                 {
-                    client.DownloadDataTaskAsync(new Uri(PageUrl)).GetAwaiter().GetResult();
+                    await client.DownloadDataTaskAsync(new Uri(PageUrl));
                 }
             }
             catch (Exception ex)

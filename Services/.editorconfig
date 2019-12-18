@@ -20,3 +20,6 @@ dotnet_diagnostic.CA1307.severity = none
 
 #CA1052: Static holder types should be Static or NotInheritable
 dotnet_diagnostic.CA1052.severity = none
+
+#CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = none
