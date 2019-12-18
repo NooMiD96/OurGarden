@@ -2,11 +2,13 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 using Model.EMail;
 
@@ -71,27 +73,32 @@ namespace Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string cachePeriod;
             if (env.IsDevelopment())
             {
+                cachePeriod = "600";
+
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web/ClientApp"),
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web", "ClientApp"),
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
                 });
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web/AdminApp"),
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web", "AdminApp"),
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
                 });
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                cachePeriod = "604800";
+
+                app.UseStatusCodePagesWithReExecute("/");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -104,9 +111,22 @@ namespace Web
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = provider,
+                
+            });
+            // Не работает, так как, вероятно, ссылается на одну и ту же папку
             app.UseStaticFiles(new StaticFileOptions
             {
-                ContentTypeProvider = provider
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+                                                                     "wwwroot",
+                                                                     "images")),
+                RequestPath = "/images",
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+                }
             });
 
             app.UseAuthentication();

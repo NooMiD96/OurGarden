@@ -255,7 +255,7 @@ namespace Services.BackgroundWork.SiteMap
             var prevSitemap = OpenSitemap(filePath);
             DateTime lastmod = default;
 
-            if (prevSitemap.InnerXml.Equals(xMain.InnerXml))
+            if (prevSitemap != null && items.Any() && prevSitemap.InnerXml.Equals(xMain.InnerXml))
             {
                 lastmod = items.Max(x => x.LastModified);
             }
