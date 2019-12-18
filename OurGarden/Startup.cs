@@ -17,6 +17,7 @@ using Services.BackgroundWork.OrderCleaner;
 using Services.BackgroundWork.SiteMap;
 using Services.EMail;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -66,6 +67,19 @@ namespace Web
             services.AddScoped<ISiteMapService, SiteMapService>();
 
             services.AddNodeServices();
+
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(365);
+            });
+
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
+                options.HttpsPort = 5001;
+            });
 
             StartUpVendors.Configuration = Configuration;
         }
