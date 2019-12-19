@@ -15,8 +15,8 @@ class ErrorHandler extends React.Component<any, IState> {
     // Something happened to one of my children.
     // Add error to state
     this.setState({
-      error: error,
-      info: info
+      error,
+      info
     });
   }
 

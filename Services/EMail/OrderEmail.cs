@@ -2,6 +2,7 @@ using Database.Contexts;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using MimeKit;
 
@@ -548,8 +549,7 @@ namespace Services.EMail
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"err: {ex.Message}");
-                Console.Error.WriteLine(ex.StackTrace);
+                _logger.LogError(ex, $"SendOrderInformation: {ex.Message}");
             }
         }
     }

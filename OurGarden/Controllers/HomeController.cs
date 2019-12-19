@@ -55,14 +55,16 @@ namespace Web.Controllers
                 ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
                 ViewData["title"] = title;
                 ViewData["metaDescription"] = metaDescription;
-                ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
+                ViewData["jivoSiteId"] = _configuration.GetSection("JivoSiteId").Value;
+                ViewData["yandexMetrikaCounterId"] = _configuration.GetSection("YandexMetrikaCounterId").Value;
             }
             catch (Exception ex)
             {
                 LogError(_logger, "IndexHomeController", ex);
                 ViewData["jsBundles"] = new string[0];
                 ViewData["cssBundles"] = new string[0];
-                ViewData["jivoSiteId"] = _configuration.GetSection("jivoSiteId").Value;
+                ViewData["jivoSiteId"] = _configuration.GetSection("JivoSiteId").Value;
+                ViewData["yandexMetrikaCounterId"] = _configuration.GetSection("YandexMetrikaCounterId").Value;
             }
 
             return View();

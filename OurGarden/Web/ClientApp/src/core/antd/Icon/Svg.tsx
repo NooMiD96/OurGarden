@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IconDefinition } from "@antdSvgs/../types";
+import { IconDefinition } from "@ant-design/icons/lib/types";
 
 // TODO: recursive function
 interface ISvgProps {

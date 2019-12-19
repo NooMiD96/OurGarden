@@ -26,7 +26,7 @@ namespace Services.BackgroundWork.OrderCleaner
 
         public async Task DoWork()
         {
-            _logger.LogInformation($"OrderCleanerService is working. {DateTime.UtcNow}");
+            _logger.LogInformation($"OrderCleanerService is working.");
 
             using (var scope = _services.CreateScope())
                 try
@@ -48,10 +48,10 @@ namespace Services.BackgroundWork.OrderCleaner
                 catch (Exception ex)
                 {
                     // TODO: Send email
-                    _logger.LogError($"OrderCleanerService: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
+                    _logger.LogError(ex, $"OrderCleanerService: {ex.Message}");
                 }
 
-            _logger.LogInformation($"OrderCleanerService is worked. {DateTime.UtcNow}");
+            _logger.LogInformation($"OrderCleanerService is worked.");
         }
     }
 }

@@ -47,7 +47,7 @@ const getBundelConfig = (
     }),
     new webpack.EnvironmentPlugin({
       PUBLIC_URL: AppSettings.SpaPublicPath,
-      isProdBuild: true
+      isGetAssetsProdBuild: true
     })
   ],
   mode: "production"

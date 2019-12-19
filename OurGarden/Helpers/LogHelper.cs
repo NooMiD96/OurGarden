@@ -15,15 +15,14 @@ namespace Web.Helpers
                                       string customeError = ERROR,
                                       int returnStatusCode = 200)
         {
-            byte[] bytes = Encoding.Default.GetBytes(customeError);
-            customeError = Encoding.GetEncoding("windows-1251").GetString(bytes);
+            //byte[] bytes = Encoding.Default.GetBytes(customeError);
+            //customeError = Encoding.GetEncoding("windows-1251").GetString(bytes);
 
             var returnErrorString = customeError;
-            var logErrorString = $"{DateTime.Now}:\n{apiLocate}\n{returnErrorString}\nreturnStatusCode=={returnStatusCode}";
+            var logErrorString = $"{apiLocate}\n{returnErrorString}\nreturnStatusCode=={returnStatusCode}";
 
             if (exception != null)
             {
-                logErrorString += $"\nERR: {exception.Message}\n{exception.StackTrace}";
                 returnErrorString += $" Ошибка: {exception.Message}";
                 logger.LogError(exception, logErrorString);
             }

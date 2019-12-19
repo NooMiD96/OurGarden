@@ -17,9 +17,10 @@ namespace Services.BackgroundWork.DummyWorker
         private readonly IServiceProvider _services;
         private Timer _timer;
 
-        const string HostServiceStart = "DummyHostedService is starting.";
-        const string HostServiceWork = "DummyHostedService is working.";
-        const string HostServiceEnd = "DummyHostedService is stopping.";
+        const string HostServiceName = "DummyHostedService";
+        const string HostServiceStart = HostServiceName + " is starting.";
+        const string HostServiceWork = HostServiceName + " is working.";
+        const string HostServiceEnd = HostServiceName + " is stopping.";
 
         public DummyHostedService(IServiceProvider services, ILogger<DummyHostedService> logger)
         {

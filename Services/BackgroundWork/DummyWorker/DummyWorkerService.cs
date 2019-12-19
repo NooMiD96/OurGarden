@@ -18,7 +18,7 @@ namespace Services.BackgroundWork.DummyWorker
 
         public async Task DoWork()
         {
-            _logger.LogInformation($"DummyWorkerService is working. {DateTime.UtcNow}");
+            _logger.LogInformation($"DummyWorkerService is working.");
 
             try
             {
@@ -30,10 +30,10 @@ namespace Services.BackgroundWork.DummyWorker
             catch (Exception ex)
             {
                 // TODO: Send email
-                _logger.LogError($"DummyWorkerService: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
+                _logger.LogError(ex, $"DummyWorkerService: {ex.Message}");
             }
 
-            _logger.LogInformation($"DummyWorkerService is worked. {DateTime.UtcNow}");
+            _logger.LogInformation($"DummyWorkerService is worked.");
         }
     }
 }

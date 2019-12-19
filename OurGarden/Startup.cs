@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -9,8 +10,13 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 
 using Model.EMail;
+
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 using Services.BackgroundWork.DummyWorker;
 using Services.BackgroundWork.OrderCleaner;
@@ -30,6 +36,7 @@ namespace Web
     {
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
             Configuration = configuration;
         }
 
@@ -115,7 +122,13 @@ namespace Web
                 app.UseStatusCodePagesWithReExecute("/");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+
+                var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+                var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
+                logger.LogInformation($"Hosting environment: Production\nContent root path: {Directory.GetCurrentDirectory()}\nNow listening on: {String.Join(", ", serverAddressesFeature.Addresses)}");
             }
+
+            app.UseSerilogRequestLogging();
 
             app.UseResponseCompression();
 

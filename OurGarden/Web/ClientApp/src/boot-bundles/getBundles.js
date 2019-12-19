@@ -1,11 +1,12 @@
 ﻿/* eslint-disable */
 module.exports = function (callback, host, path, processDir) {
-    !process.env.isProdBuild && require("./registerTypeScript")(processDir);
+    !process.env.isGetAssetsProdBuild && require("./registerTypeScript")(processDir);
 
     var renderToString = require("react-dom/server").renderToString;
     var createMemoryHistory = require("history").createMemoryHistory;
     var getBundles = require("react-loadable-ssr-addon").getBundles;
-    
+    var Loadable = require("react-loadable");
+
     var App = require("./app");
     var configureStore = require("../boot-server/ConfigureStore.ts").default;
     var utils = require("../boot-server/utils");
@@ -17,25 +18,27 @@ module.exports = function (callback, host, path, processDir) {
     const modules = [];
     const routerContext = {};
 
-    const app = App(
-        modules,
-        store,
-        host,
-        routerContext,
-        path
-    );
+    Loadable.preloadAll().then(() => {
+        const app = App(
+            modules,
+            store,
+            host,
+            routerContext,
+            path
+        );
 
-    renderToString(app);
+        renderToString(app);
 
-    utils.getFileStat(processDir)
-        .then(stats => {
-            const modulesToBeLoaded = [...stats.entrypoints, ...Array.from(modules)];
-            const bundles = getBundles(stats, modulesToBeLoaded);
+        utils.getFileStat(processDir)
+            .then(stats => {
+                const modulesToBeLoaded = [...stats.entrypoints, ...Array.from(modules)];
+                const bundles = getBundles(stats, modulesToBeLoaded);
 
-            const styles = bundles.css || [];
-            const scripts = bundles.js || [];
+                const styles = bundles.css || [];
+                const scripts = bundles.js || [];
 
-            callback(null, { js: scripts, css: styles });
-        })
-        .catch(callback)
+                callback(null, { js: scripts, css: styles });
+            })
+            .catch(callback)
+    });
 };

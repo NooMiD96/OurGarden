@@ -57,37 +57,46 @@ export const actionCreators = {
       saveRequest = true
     } = params;
 
-    const fetchTask = fetch(fetchUrl, fetchProps)
-      .then((res: Response) => {
-        if (res.status === 404) {
-          dispatch(actionsList.pageNotFoundError(true));
-        }
-        return responseCatcher(res);
-      })
-      .then((value: IResponse<T>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
+    if (process.env.isWebpackBundle) {
+      const fetchTask = fetch(fetchUrl, fetchProps)
+        .then((res: Response) => {
+          if (res.status === 404) {
+            dispatch(actionsList.pageNotFoundError(true));
+          }
+          return responseCatcher(res);
+        })
+        .then((value: IResponse<T>) => {
+          if (value && value.error) {
+            return errorCreater(value.error);
+          }
 
-        requestSuccess(value.data);
-        dispatch(actionsList.cancelRequest());
+          requestSuccess(value.data);
+          dispatch(actionsList.cancelRequest());
 
-        return Promise.resolve();
-      })
-      .catch((err: Error) => {
-        if (requestError) {
-          requestError();
-        }
-        dispatch(actionsList.requestError(err.message));
-        errorCatcher(controllerName, apiUrl, err, requestErrorAction, dispatch);
-      });
+          return Promise.resolve();
+        })
+        .catch((err: Error) => {
+          if (requestError) {
+            requestError();
+          }
+          dispatch(actionsList.requestError(err.message));
+          errorCatcher(
+            controllerName,
+            apiUrl,
+            err,
+            requestErrorAction,
+            dispatch
+          );
+        });
 
-    addTask(fetchTask);
-    requestStart();
-    dispatch(actionsList.startRequest());
+      addTask(fetchTask);
 
-    if (saveRequest) {
-      dispatch(actionsList.dataWasGeted(true));
+      requestStart();
+      dispatch(actionsList.startRequest());
+
+      if (saveRequest) {
+        dispatch(actionsList.dataWasGeted(true));
+      }
     }
   },
 

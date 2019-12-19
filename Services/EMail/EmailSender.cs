@@ -80,7 +80,7 @@ namespace Services.EMail
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+                _logger.LogError(ex, $"{API_LOCATE}\nERR: {ex.Message}");
                 //throw new InvalidOperationException(ex.Message);
             }
         }
