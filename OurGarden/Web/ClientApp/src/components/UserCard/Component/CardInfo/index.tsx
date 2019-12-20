@@ -26,6 +26,7 @@ const CardInfo = (props: ICardInfo) => {
         onChangeOrderStep={props.onChangeOrderStep}
         сleanProductCard={props.сleanProductCard}
         totalPrice={totalPrice}
+        ymId={props.ymId}
       />
     </React.Fragment>
   );

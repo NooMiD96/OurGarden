@@ -15,6 +15,7 @@ const mapStateToProps = (
 ): TMapStateToProps => ({
   ...state.newsList,
   isDataWasGeted: state.app.isDataWasGeted,
+  ymId: state.app.ymId,
   ...ownProp
 });
 

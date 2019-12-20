@@ -18,6 +18,7 @@ const CardConfirmation = (props: ICardConfirmation) => {
         cancel={() => props.onChangeOrderStep(DisplayTypeEnum.CardInfo)}
         submit={props.sendOrder}
         totalPrice={totalPrice}
+        ymId={props.ymId}
       />
     </React.Fragment>
   );

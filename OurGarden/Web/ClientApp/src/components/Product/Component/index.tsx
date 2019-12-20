@@ -58,7 +58,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { product, addProductToCard } = this.props;
+    const { product, addProductToCard, ymId } = this.props;
 
     return (
       <div className="product-wrapper content white-background grey-border">
@@ -75,6 +75,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
             <ProductContent
               product={product}
               addProductToCard={addProductToCard}
+              ymId={ymId}
             />
           </>
         )}

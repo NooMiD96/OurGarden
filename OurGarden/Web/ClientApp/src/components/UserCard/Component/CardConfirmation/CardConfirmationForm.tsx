@@ -13,13 +13,14 @@ import "../style/ButtonWrapper.style.scss";
 const CardConfirmationForm = (props: ICardConfirmationForm) => {
   // prettier-ignore
   const {
-    form, totalPrice, cancel, submit
+    form, totalPrice, cancel, submit, ymId
   } = props;
   const { getFieldsError } = form;
 
   const onSubmit = () => {
     form.validateFields((err: any, values: any) => {
       if (!err) {
+        window.ym(ymId, "reachGoal", "TO_ORDER_2");
         submit({
           FIO: `${values.secondName.trim()} ${values.firstName.trim()}${
             values.thirdName ? ` ${values.thirdName.trim()}` : ""

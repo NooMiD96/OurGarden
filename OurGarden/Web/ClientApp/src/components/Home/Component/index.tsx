@@ -24,14 +24,14 @@ export class Home extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { newsList, push } = this.props;
+    const { newsList, push, ymId } = this.props;
 
     const displayList = newsList.slice(0, 3);
 
     return (
       <div className="home-wrapper content">
         <HeaderHelmet seoSectionName="home" />
-        <NewsCarousel push={push} displayList={displayList} />
+        <NewsCarousel push={push} displayList={displayList} ymId={ymId} />
       </div>
     );
   }

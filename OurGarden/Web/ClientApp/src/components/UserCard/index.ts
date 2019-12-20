@@ -13,6 +13,7 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 
 const mapStateToProps = (state: IApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
   ...state.userCard,
+  ymId: state.app.ymId,
   ...ownProp,
 }) as TMapStateToProps;
 

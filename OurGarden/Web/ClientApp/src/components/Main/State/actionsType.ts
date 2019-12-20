@@ -7,6 +7,7 @@ export const DATA_WAS_GETED = "DATA_WAS_GETED";
 export const REQUEST_ERROR = "REQUEST_ERROR";
 export const PAGE_NOT_FOUND_ERROR = "PAGE_NOT_FOUND_ERROR";
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
+export const SET_YANDEX_METRICA_ID = "SET_YANDEX_METRICA_ID";
 // #endregion
 // -----------------
 // #region ACTIONS INTERFACE
@@ -35,6 +36,11 @@ export interface ICleanErrorInner {
   type: typeof CLEAN_ERROR_INNER;
 }
 
+export interface ISetYandexMetricaId {
+  type: typeof SET_YANDEX_METRICA_ID;
+  id: number;
+}
+
 export type TAppActions =
   | IStartRequest
   | ICancelRequest
@@ -42,7 +48,8 @@ export type TAppActions =
   | IDataWasGeted
   | IRequestError
   | IPageNotFoundError
-  | ICleanErrorInner;
+  | ICleanErrorInner
+  | ISetYandexMetricaId;
 
 type KnownAction = TAppActions;
 

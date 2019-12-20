@@ -5,7 +5,11 @@ import Loading from "@src/core/components/Loading";
 
 import { ICardConfirm } from "./ICardConfirm";
 
-export const CardConfirmation = ({ pending, errorInner }: ICardConfirm) => {
+export const CardConfirmation = ({
+  pending,
+  errorInner,
+  ymId
+}: ICardConfirm) => {
   if (pending) {
     return <Loading />;
   }
@@ -14,7 +18,7 @@ export const CardConfirmation = ({ pending, errorInner }: ICardConfirm) => {
     return <CardConfirmSuccess />;
   }
 
-  return <CardConfirmSuccess />;
+  return <CardConfirmSuccess ymId={ymId} />;
 };
 
 export default CardConfirmation;

@@ -8,7 +8,7 @@ export type IDisplayInfo = {
   cost: number;
   count: number;
   totalCost: number;
-}
+};
 
 export interface ICardInfo {
   productList: IUserCardProduct[];
@@ -16,6 +16,7 @@ export interface ICardInfo {
   removeProductFromCard: (payload: IProduct) => void;
   сleanProductCard: () => void;
   onChangeOrderStep: (payload: DisplayTypeEnum) => void;
+  ymId: number;
 }
 
 export interface ICardInfoTable {
@@ -29,4 +30,5 @@ export interface ICardInfoFooter {
   totalPrice: number;
   сleanProductCard: () => void;
   onChangeOrderStep: (payload: DisplayTypeEnum) => void;
+  ymId: number;
 }

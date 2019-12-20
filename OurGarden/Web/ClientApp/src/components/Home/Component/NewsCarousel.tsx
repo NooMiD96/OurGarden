@@ -9,6 +9,7 @@ import { INew } from "@src/components/News/State";
 export interface INewsCarousel {
   displayList: INew[];
   push: typeof pushAction;
+  ymId: number;
 }
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
@@ -28,7 +29,7 @@ export class NewsCarousel extends React.PureComponent<
   }
 
   render() {
-    const { displayList, push } = this.props;
+    const { displayList, push, ymId } = this.props;
 
     if (!this.state.mount) {
       return <div />;
@@ -41,9 +42,11 @@ export class NewsCarousel extends React.PureComponent<
         src={x.photo && x.photo.url}
         key={x.newsId}
         onClick={() => {
+          window.ym(ymId, "reachGoal", "BANNER_MAIN_CLICK");
           push(`/News/${x.alias}`);
         }}
         onKeyDown={() => {
+          window.ym(ymId, "reachGoal", "BANNER_MAIN_CLICK");
           push(`/News/${x.alias}`);
         }}
         role="link"

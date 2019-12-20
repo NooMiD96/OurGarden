@@ -18,7 +18,7 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IUserCardState & RouterState;
+export type TStateToProps = IUserCardState & RouterState & { ymId: number };
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------

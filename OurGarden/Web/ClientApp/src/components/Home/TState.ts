@@ -9,7 +9,10 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = INewsListState & { isDataWasGeted: boolean };
+export type TStateToProps = INewsListState & {
+  isDataWasGeted: boolean;
+  ymId: number;
+};
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------

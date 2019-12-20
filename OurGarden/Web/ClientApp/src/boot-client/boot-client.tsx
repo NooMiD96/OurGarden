@@ -26,15 +26,15 @@ if (window !== null && window !== undefined) {
     const history = createBrowserHistory({ basename: baseUrl });
 
     // Get the application-wide store instance, prepopulating with state from the server where available.
-    const initialState = (window as any).initialReduxState as IApplicationState;
+    const initialState = window.initialReduxState as IApplicationState;
     const store = ConfigureStore(history, initialState);
 
     function renderApp() {
       // prettier-ignore
       /* eslint-disable no-underscore-dangle */
-      const isMobileBrowser = typeof (window as any).__isMobileBrowser !== "boolean"
+      const isMobileBrowser = typeof window.__isMobileBrowser !== "boolean"
         ? true
-        : (window as any).__isMobileBrowser;
+        : window.__isMobileBrowser;
       /* eslint-enable no-underscore-dangle */
 
       // This code starts up the React app when it runs in a browser. It sets up the routing configuration

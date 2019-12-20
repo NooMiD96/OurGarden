@@ -22,9 +22,7 @@
     <meta name="msapplication-TileImage" content="~/mstile-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <environment include="Production">
-        <script src="//code.jivosite.com/widget.js" data-jv-id="@(ViewData["jivoSiteId"] ?? "")" async></script>
-
+    <environment include="Development,Production">
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript">
             (function (m, e, t, r, i, k, a) {
@@ -41,6 +39,16 @@
             });
         </script>
         <!-- /Yandex.Metrika counter -->
+    </environment>
+
+    <environment include="Production">
+        <script src="//code.jivosite.com/widget.js" data-jv-id="@(ViewData["jivoSiteId"] ?? "")" async></script>
+        <script>
+            function jivo_onOpen() {
+                console.log("JIVO_CLICK")
+                ym(@(ViewData["yandexMetrikaCounterId"] ?? 0), "reachGoal", "JIVO_CLICK")
+            }
+        </script>
     </environment>
 
     @if (ViewData["jsBundles"] != null)

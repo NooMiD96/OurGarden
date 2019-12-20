@@ -51,7 +51,10 @@ export class ProductList extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    const { subcategory, productList, push } = this.props;
+    // prettier-ignore
+    const {
+      subcategory, productList, push, ymId
+    } = this.props;
 
     const dataList = productList.map((product) => ({
       ...product,
@@ -79,6 +82,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
               item={props.item}
               push={props.push}
               onCardClick={props.onCardClick}
+              ymId={ymId}
             />
           )}
         />

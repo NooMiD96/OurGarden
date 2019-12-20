@@ -2,31 +2,44 @@ import React from "react";
 
 import { Title } from "@src/core/antd/Typography";
 
-import PlaceSvg from "@src/assets/svg/contacts/place.svg";
-import PhoneSvg from "@src/assets/svg/contacts/phone.svg";
-import MailSvg from "@src/assets/svg/contacts/mail.svg";
+import Svg from "@core/components/Svg";
 
-import { MAIN_MOBILE, HELP_EMAIL, ADDRESS } from "@src/core/constants";
+import {
+  MAIN_MOBILE,
+  HELP_EMAIL,
+  ADDRESS,
+  MAIN_MOBILE_FORMATTED
+} from "@src/core/constants";
 
-export const CompanyContacts = () => (
+export interface ICompanyContacts {
+  ymId: number;
+}
+
+export const CompanyContacts = ({ ymId }: ICompanyContacts) => (
   <div className="company-contacts">
     <Title>Контакты</Title>
 
     <div>
       <i className="anticon">
-        <PlaceSvg />
+        <Svg type="place-contacts" />
       </i>
       <span>{ADDRESS}</span>
     </div>
     <div>
-      <i className="anticon">
-        <PhoneSvg />
-      </i>
-      <span>{MAIN_MOBILE}</span>
+      <a
+        className="number-wrapper"
+        href={`tel:${MAIN_MOBILE_FORMATTED}`}
+        onClick={() => window.ym(ymId, "reachGoal", "PHONE_CLICK")}
+      >
+        <i className="anticon">
+          <Svg type="phone-contacts" />
+        </i>
+        <span>{MAIN_MOBILE}</span>
+      </a>
     </div>
     <div>
       <i className="anticon">
-        <MailSvg />
+        <Svg type="mail-contacts" />
       </i>
       <span>{HELP_EMAIL}</span>
     </div>

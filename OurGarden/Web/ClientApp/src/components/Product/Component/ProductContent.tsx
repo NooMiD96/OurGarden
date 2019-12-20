@@ -9,7 +9,10 @@ import { getPhotoSrc } from "@core/utils/photo";
 import { IMouseClickEvent } from "@core/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
 
-export class ProductContent extends React.PureComponent<IProductContentProps, IProductContentState> {
+export class ProductContent extends React.PureComponent<
+  IProductContentProps,
+  IProductContentState
+> {
   constructor(props: IProductContentProps) {
     super(props);
 
@@ -27,6 +30,10 @@ export class ProductContent extends React.PureComponent<IProductContentProps, IP
   addToCard = (e: IMouseClickEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const { ymId } = this.props;
+
+    window.ym(ymId, "reachGoal", "CHECKOUT_CLICK");
 
     this.setState({
       itemCount: "1"

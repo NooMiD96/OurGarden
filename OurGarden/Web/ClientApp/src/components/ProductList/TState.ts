@@ -14,7 +14,7 @@ export type TStateToProps = IProductListState &
   RouteComponentProps<{
     categoryId: string;
     subcategoryId: string;
-  }> & { isDataWasGeted: boolean };
+  }> & { isDataWasGeted: boolean; ymId: number };
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------

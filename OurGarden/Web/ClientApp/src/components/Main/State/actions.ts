@@ -36,6 +36,10 @@ export const actionsList = {
   }),
   cleanErrorInner: (): t.ICleanErrorInner => ({
     type: t.CLEAN_ERROR_INNER
+  }),
+  setYandexMetricaId: (id: number): t.ISetYandexMetricaId => ({
+    type: t.SET_YANDEX_METRICA_ID,
+    id
   })
 };
 // #endregion
@@ -106,6 +110,7 @@ export const actionCreators = {
   dataWasGeted: actionsList.dataWasGeted,
   requestError: actionsList.requestError,
   pageNotFoundError: actionsList.pageNotFoundError,
-  cleanErrorInner: actionsList.cleanErrorInner
+  cleanErrorInner: actionsList.cleanErrorInner,
+  setYandexMetricaId: actionsList.setYandexMetricaId
 };
 // #endregion

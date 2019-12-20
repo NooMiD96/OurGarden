@@ -37,6 +37,27 @@ export const getSvg = async (type: TSvgList) => {
         )
       ).default;
 
+    case "place-contacts":
+      return (
+        await import(
+          /* webpackChunkName: "place" */ "@src/assets/svg/contacts/place.svg"
+        )
+      ).default;
+
+    case "phone-contacts":
+      return (
+        await import(
+          /* webpackChunkName: "phone" */ "@src/assets/svg/contacts/phone.svg"
+        )
+      ).default;
+
+    case "mail-contacts":
+      return (
+        await import(
+          /* webpackChunkName: "mail" */ "@src/assets/svg/contacts/mail.svg"
+        )
+      ).default;
+
     default:
       // eslint-disable-next-line
       const exhaustiveCheck: never = type;

@@ -20,15 +20,18 @@ export interface IProductCard {
   push: typeof pushAction;
   addToCard: typeof actionsList.addProductToCard;
   onCardClick?: () => void;
+  ymId: number;
 }
 
 const ProductCard = (props: IProductCard) => {
-  const { item, push, onCardClick } = props;
+  const { item, push, onCardClick, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 
   const addToCardHandler = (e: IMouseClickEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    window.ym(ymId, "reachGoal", "CHECKOUT_CLICK");
 
     setItemCount("1");
 

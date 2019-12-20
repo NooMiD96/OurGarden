@@ -65,7 +65,8 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       removeProductFromCard,
       сleanProductCard,
       pending,
-      errorInner
+      errorInner,
+      ymId
     } = this.props;
 
     const { displayType, orderCreated, mounted } = this.state;
@@ -78,7 +79,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
     if (orderCreated) {
       renderComponent = (
-        <CardConfirm pending={pending} errorInner={errorInner} />
+        <CardConfirm pending={pending} errorInner={errorInner} ymId={ymId} />
       );
     } else {
       // prettier-ignore
@@ -90,12 +91,14 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
             changeCountOfProduct={changeCountOfProduct}
             сleanProductCard={сleanProductCard}
             onChangeOrderStep={this.onChangeOrderStep}
+            ymId={ymId}
           />
         ) : (
           <CardConfirmation
             productList={productList}
             sendOrder={this.sendOrder}
             onChangeOrderStep={this.onChangeOrderStep}
+            ymId={ymId}
           />
         );
     }

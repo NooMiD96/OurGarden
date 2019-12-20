@@ -15,6 +15,7 @@ const mapStateToProps = (
   ...state.productList,
   ...state.router,
   isDataWasGeted: state.app.isDataWasGeted,
+  ymId: state.app.ymId,
   ...ownProp
 } as TMapStateToProps);
 

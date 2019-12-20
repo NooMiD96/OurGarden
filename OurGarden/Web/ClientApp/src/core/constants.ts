@@ -85,6 +85,7 @@ export const MAIN_LAYOUT_GRID_COL_STYLE = {
 export const MobileContext = createContext(true);
 
 export const MAIN_MOBILE = "+7 (950) 922-39-19";
+export const MAIN_MOBILE_FORMATTED = "+79509223919";
 export const HELP_EMAIL = "help@наш-сад.com";
 export const SHORT_ADDRESS = "ул. 9 мая, 36";
 export const ADDRESS = `г. Тула, ${SHORT_ADDRESS}`;

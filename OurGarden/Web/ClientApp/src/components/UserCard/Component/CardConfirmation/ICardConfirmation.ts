@@ -7,6 +7,7 @@ export interface ICardConfirmationForm extends FormComponentProps {
   totalPrice: number;
   submit: (payload: IOrderUserInformation) => void;
   cancel: () => void;
+  ymId: number;
 }
 
 export interface ICardConfirmationFormFields {
@@ -18,4 +19,5 @@ export interface ICardConfirmation {
   productList: IUserCardProduct[];
   sendOrder: (userInfo: IOrderUserInformation) => void;
   onChangeOrderStep: (payload: DisplayTypeEnum) => void;
+  ymId: number;
 }

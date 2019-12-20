@@ -16,7 +16,7 @@ export type TStateToProps = IProductState &
     categoryId: string;
     subcategoryId: string;
     productId: string;
-  }> & { isDataWasGeted: boolean };
+  }> & { isDataWasGeted: boolean; ymId: number };
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------

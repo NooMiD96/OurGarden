@@ -77,6 +77,15 @@ export const reducer: Reducer<IAppState> = (
       return newState;
     }
 
+    case t.SET_YANDEX_METRICA_ID: {
+      const newState: IAppState = {
+        ...state,
+        ymId: action.id
+      };
+
+      return newState;
+    }
+
     default:
       // eslint-disable-next-line
       const exhaustiveCheck: never = action;

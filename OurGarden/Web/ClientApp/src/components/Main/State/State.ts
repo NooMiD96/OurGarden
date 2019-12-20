@@ -17,12 +17,14 @@ export interface IAppState {
   isDataWasGeted: boolean;
   errorInner: string;
   isPageNotFound: boolean;
+  ymId: number;
 }
 
 export const unloadedState: IAppState = {
   pending: [],
   isDataWasGeted: false,
   errorInner: "",
-  isPageNotFound: false
+  isPageNotFound: false,
+  ymId: 0
 };
 // #endregion

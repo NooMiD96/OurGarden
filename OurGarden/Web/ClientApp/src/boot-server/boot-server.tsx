@@ -40,6 +40,11 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
 
   store.dispatch(mainActions.pageNotFoundError(isPageNotFound));
 
+  let yandexMetrikaCounterId = getParamsData(params, "yandexMetrikaCounterId");
+  yandexMetrikaCounterId = yandexMetrikaCounterId === null ? 0 : yandexMetrikaCounterId;
+
+  store.dispatch(mainActions.setYandexMetricaId(yandexMetrikaCounterId));
+
   // Prepare an instance of the application and perform an inital render that will
   // cause any async tasks (e.g., data access) to begin
   const routerContext: any = {};

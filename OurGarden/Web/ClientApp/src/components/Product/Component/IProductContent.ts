@@ -4,6 +4,7 @@ import { IProduct } from "../State";
 export interface IProductContentProps {
   addProductToCard: typeof userCardActions.addProductToCard;
   product: IProduct;
+  ymId: number;
 }
 
 export interface IProductContentState {

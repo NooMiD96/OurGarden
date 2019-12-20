@@ -28,6 +28,10 @@ a {
   }
 }
 
+a.number-wrapper {
+  color: inherit;
+}
+
 .ant-select-auto-complete.ant-select .ant-input,
 .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled),
 .ant-input {
