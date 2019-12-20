@@ -32,7 +32,13 @@ namespace Services.BackgroundWork.DummyWorker
         {
             _logger.LogInformation(HostServiceStart);
 
-            _timer = new Timer(DoWork, null, TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3));
+#if DEBUG
+            var startTimeSpan = TimeSpan.FromDays(31);
+#else
+            var startTimeSpan = TimeSpan.FromMinutes(3);
+#endif
+
+            _timer = new Timer(DoWork, null, startTimeSpan, TimeSpan.FromMinutes(3));
 
             return Task.CompletedTask;
         }

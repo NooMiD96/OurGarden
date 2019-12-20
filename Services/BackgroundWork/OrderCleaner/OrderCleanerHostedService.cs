@@ -21,9 +21,10 @@ namespace Services.BackgroundWork.OrderCleaner
         private readonly IServiceProvider _services;
         private Timer _timer;
 
-        const string HostServiceStart = "OrderCleanerHostedService is starting.";
-        const string HostServiceWork = "OrderCleanerHostedService is working.";
-        const string HostServiceEnd = "OrderCleanerHostedService is stopping.";
+        const string HostServiceName = "OrderCleanerHostedService";
+        const string HostServiceStart = HostServiceName + " is starting.";
+        const string HostServiceWork = HostServiceName + " is working.";
+        const string HostServiceEnd = HostServiceName + " is stopping.";
 
         public OrderCleanerHostedService(IServiceProvider services, ILogger<OrderCleanerHostedService> logger)
         {
@@ -36,7 +37,7 @@ namespace Services.BackgroundWork.OrderCleaner
             _logger.LogInformation(HostServiceStart);
 
 #if DEBUG
-            var startTimeSpan = TimeSpan.Zero;
+            var startTimeSpan = TimeSpan.FromMinutes(10);
 #else
             var startTimeSpan = DateTime.Now.AddDays(1).GetDate() - DateTime.Now;
 #endif

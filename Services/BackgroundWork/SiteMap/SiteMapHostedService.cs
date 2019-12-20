@@ -35,7 +35,7 @@ namespace Services.BackgroundWork.SiteMap
             _logger.LogInformation(HostServiceStart);
 
 #if DEBUG
-            var startTimeSpan = TimeSpan.Zero;
+            var startTimeSpan = TimeSpan.FromMinutes(10);
 #else
             var startTimeSpan = DateTime.Now.AddDays(1).GetDate() - DateTime.Now + TimeSpan.FromHours(2);
 #endif

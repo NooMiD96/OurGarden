@@ -25,7 +25,7 @@ namespace Services.BackgroundWork.SiteMap
 
         public async Task DoWork()
         {
-            _logger.LogInformation($"{HostServiceStart} {DateTime.UtcNow}");
+            _logger.LogInformation(HostServiceStart);
 
             using (var scope = _services.CreateScope())
                 try
@@ -38,10 +38,10 @@ namespace Services.BackgroundWork.SiteMap
                 catch (Exception ex)
                 {
                     // TODO: Send email
-                    _logger.LogError($"{HostServiceName}: {ex.Message}\n{ex.StackTrace}\n{ex.InnerException}");
+                    _logger.LogError(ex, $"{HostServiceName}: {ex.Message}");
                 }
 
-            _logger.LogInformation($"{HostServiceEnd} {DateTime.UtcNow}");
+            _logger.LogInformation(HostServiceEnd);
         }
     }
 }

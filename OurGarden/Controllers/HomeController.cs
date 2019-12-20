@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -37,22 +38,26 @@ namespace Web.Controllers
         {
             try
             {
+                var isPageNotFound = false;
+                var (title, metaDescription) = await GetSEOInfo();
+
+                if (title == default && metaDescription == default)
+                {
+                    isPageNotFound = true;
+                    Response.StatusCode = 404;
+                }
+
                 var (js, css) = await _getAssetsUtils.Bundles(
                     $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
-                    HttpContext.Request.Path.Value
+                    HttpContext.Request.Path.Value,
+                    isPageNotFound
                 );
 
                 ViewData["jsBundles"] = js ?? new string[0];
                 ViewData["cssBundles"] = css ?? new string[0];
 
-                var (title, metaDescription) = await GetSEOInfo();
-
-                if (title == default && metaDescription == default)
-                {
-                    Response.StatusCode = 404;
-                }
-
                 ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
+                ViewData["isPageNotFound"] = isPageNotFound;
                 ViewData["title"] = title;
                 ViewData["metaDescription"] = metaDescription;
                 ViewData["jivoSiteId"] = _configuration.GetSection("JivoSiteId").Value;
@@ -61,6 +66,7 @@ namespace Web.Controllers
             catch (Exception ex)
             {
                 LogError(_logger, "IndexHomeController", ex);
+
                 ViewData["jsBundles"] = new string[0];
                 ViewData["cssBundles"] = new string[0];
                 ViewData["jivoSiteId"] = _configuration.GetSection("JivoSiteId").Value;

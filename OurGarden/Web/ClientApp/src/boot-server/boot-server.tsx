@@ -18,6 +18,8 @@ import configureStore from "./ConfigureStore";
 import { getParamsData } from "./utils";
 import { MobileContext } from "@src/core/constants";
 
+import { actionCreators as mainActions } from "@src/components/Main/State/actions";
+
 // prettier-ignore
 // eslint-disable-next-line no-async-promise-executor
 const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult>(async (resolve, reject) => {
@@ -32,6 +34,11 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
 
   let isMobileBrowser = getParamsData(params, "isMobileBrowser");
   isMobileBrowser = isMobileBrowser === null ? true : isMobileBrowser;
+
+  let isPageNotFound = getParamsData(params, "isPageNotFound");
+  isPageNotFound = isPageNotFound === null ? false : isPageNotFound;
+
+  store.dispatch(mainActions.pageNotFoundError(isPageNotFound));
 
   // Prepare an instance of the application and perform an inital render that will
   // cause any async tasks (e.g., data access) to begin

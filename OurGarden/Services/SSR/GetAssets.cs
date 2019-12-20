@@ -25,7 +25,7 @@ namespace Web.Services.SSR
             _logger = logger;
         }
 
-        public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path)
+        public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path, bool isPageNotFound)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Web.Services.SSR
 #else
                 var pathToScript = "./wwwroot/bundles/getBundles";
 #endif
-                var result = await _nodeServices.InvokeAsync<JObject>(pathToScript, host, path, _currentDirectory);
+                var result = await _nodeServices.InvokeAsync<JObject>(pathToScript, host, path, _currentDirectory, isPageNotFound);
 
                 if (result.TryGetValue("js", out var jsJson) && result.TryGetValue("css", out var cssJson))
                 {

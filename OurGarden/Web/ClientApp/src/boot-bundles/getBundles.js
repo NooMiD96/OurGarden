@@ -1,5 +1,5 @@
 ﻿/* eslint-disable */
-module.exports = function (callback, host, path, processDir) {
+module.exports = function (callback, host, path, processDir, isPageNotFound) {
     !process.env.isGetAssetsProdBuild && require("./registerTypeScript")(processDir);
 
     var renderToString = require("react-dom/server").renderToString;
@@ -10,6 +10,7 @@ module.exports = function (callback, host, path, processDir) {
     var App = require("./app");
     var configureStore = require("../boot-server/ConfigureStore.ts").default;
     var utils = require("../boot-server/utils");
+    var mainActions = require("@src/components/Main/State/actions").actionCreators;
 
     const history = createMemoryHistory();
     history.replace(path);
@@ -17,6 +18,8 @@ module.exports = function (callback, host, path, processDir) {
 
     const modules = [];
     const routerContext = {};
+
+    store.dispatch(mainActions.pageNotFoundError(isPageNotFound));
 
     Loadable.preloadAll().then(() => {
         const app = App(

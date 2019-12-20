@@ -2,6 +2,7 @@
      asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
      asp-prerender-data="new {
         isMobileBrowser = @ViewData["isMobileBrowser"] ?? true,
+        isPageNotFound = @ViewData["isPageNotFound"] ?? false,
     }"
 >
 </div>
