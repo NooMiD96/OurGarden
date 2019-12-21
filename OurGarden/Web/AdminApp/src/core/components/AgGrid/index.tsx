@@ -73,6 +73,7 @@ export class AgGrid<T> extends React.PureComponent<
           context={{
             parentComponent: this
           }}
+          suppressScrollOnNewData
         />
       </div>
     );
