@@ -6,7 +6,8 @@ namespace Model.SiteMap
     {
         Category,
         Subcategory,
-        Product
+        Product,
+        News
     }
 
     public class SiteMapSimpleItem

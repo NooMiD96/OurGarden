@@ -16,26 +16,11 @@ export interface INewsCarousel {
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 
-export class NewsCarousel extends React.PureComponent<
-  INewsCarousel,
-  { mount: boolean }
-> {
+export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
   caruselRef: Carousel | null = null;
-
-  state = {
-    mount: false
-  };
-
-  componentDidMount() {
-    this.setState({ mount: true });
-  }
 
   render() {
     const { displayList, push, ymId } = this.props;
-
-    if (!this.state.mount) {
-      return <div />;
-    }
 
     const carouselSource = displayList.map((x: INew) => (
       <img

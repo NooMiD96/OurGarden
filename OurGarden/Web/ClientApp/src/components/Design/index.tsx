@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import HeaderHelmet from "@src/core/components/Helmet";
+import HeaderHelmet from "@core/components/Helmet";
 import Typography from "@core/antd/Typography";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
-import { ADDRESS, MAIN_MOBILE } from "@src/core/constants";
+import { ADDRESS, MAIN_MOBILE } from "@core/constants";
 
 const { Paragraph, Title } = Typography;
 

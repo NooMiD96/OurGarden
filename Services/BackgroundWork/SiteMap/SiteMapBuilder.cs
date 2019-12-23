@@ -37,12 +37,14 @@ namespace Services.BackgroundWork.SiteMap
             var categoryItems = await GetCategoryItems();
             var subcategoryItems = await GetSubcategoryItems();
             var productItems = await GetProductItems();
+            var newsItems = await GetNewsItems();
 
             var filePaths = new List<(string filePath, string lastMod)>();
 
             filePaths.AddRange(UpdateCategoryItems(categoryItems));
             filePaths.AddRange(UpdateSubategoryItems(subcategoryItems));
             filePaths.AddRange(UpdateProductItems(productItems));
+            filePaths.AddRange(UpdateNewsItems(newsItems));
 
             CreateSiteMap(filePaths);
         }
@@ -83,6 +85,18 @@ namespace Services.BackgroundWork.SiteMap
                 {
                     ItemType = ItemType.Subcategory,
                     Url = $"{BASE_URL}/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}",
+                    LastModified = DateTime.Now
+                })
+                .ToListAsync();
+        }
+        private async Task<IEnumerable<SiteMapSimpleItem>> GetNewsItems()
+        {
+            return await _context
+                .News
+                .Select(x => new SiteMapSimpleItem()
+                {
+                    ItemType = ItemType.News,
+                    Url = $"{BASE_URL}/News/{x.Alias}",
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -167,25 +181,32 @@ namespace Services.BackgroundWork.SiteMap
         #endregion
 
         #region UpdateSiteMap
-        private IEnumerable<(string filePath, string lastMod)> UpdateCategoryItems(IEnumerable<SiteMapSimpleItem> categoryItems)
+        private IEnumerable<(string filePath, string lastMod)> UpdateCategoryItems(IEnumerable<SiteMapSimpleItem> items)
         {
             const string identifier = "category";
 
-            return UpdateItems(identifier, categoryItems);
+            return UpdateItems(identifier, items);
         }
 
-        private IEnumerable<(string filePath, string lastMod)> UpdateSubategoryItems(IEnumerable<SiteMapSimpleItem> subcategoryItems)
+        private IEnumerable<(string filePath, string lastMod)> UpdateSubategoryItems(IEnumerable<SiteMapSimpleItem> items)
         {
             const string identifier = "subcategory";
 
-            return UpdateItems(identifier, subcategoryItems);
+            return UpdateItems(identifier, items);
         }
 
-        private IEnumerable<(string filePath, string lastMod)> UpdateProductItems(IEnumerable<SiteMapSimpleItem> productItems)
+        private IEnumerable<(string filePath, string lastMod)> UpdateProductItems(IEnumerable<SiteMapSimpleItem> items)
         {
             const string identifier = "product";
 
-            return UpdateItems(identifier, productItems);
+            return UpdateItems(identifier, items);
+        }
+
+        private IEnumerable<(string filePath, string lastMod)> UpdateNewsItems(IEnumerable<SiteMapSimpleItem> items)
+        {
+            const string identifier = "news";
+
+            return UpdateItems(identifier, items);
         }
 
         private IEnumerable<(string filePath, string lastMod)> UpdateItems(string filePrefix, IEnumerable<SiteMapSimpleItem> items)
