@@ -2,6 +2,8 @@ import React from "react";
 
 import { Title } from "@src/core/antd/Typography";
 
+import { getPhotoSrc } from "@src/core/utils/photo";
+
 import { INewsContentProps } from "./INewsContent";
 
 export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
@@ -11,7 +13,7 @@ export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
     return (
       <>
         <img
-          src={selectedNew.photo && selectedNew.photo.url}
+          src={getPhotoSrc(selectedNew)}
           alt={selectedNew.title}
           className="news-photo"
         />

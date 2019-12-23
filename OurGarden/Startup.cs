@@ -85,7 +85,6 @@ namespace Web
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
-                options.HttpsPort = 5001;
             });
 
             StartUpVendors.Configuration = Configuration;

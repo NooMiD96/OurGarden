@@ -27,7 +27,13 @@ export const EditModalContent = (props: IEditModalContentProps) => {
   const { getFieldDecorator } = form;
 
   const item = props.item || ({ isVisible: true } as ICategory);
-  const { categoryId, alias, photos, isVisible } = item;
+  // prettier-ignore
+  const {
+    categoryId,
+    alias,
+    photos,
+    isVisible
+  } = item;
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();

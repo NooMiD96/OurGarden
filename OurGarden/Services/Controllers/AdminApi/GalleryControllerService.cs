@@ -22,15 +22,11 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
         private readonly PhotoHelper _photoHelper;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.GalleryController.Service";
 
-        public GalleryControllerService(IOurGardenRepository repository,
-                                        ILogger logger)
+        public GalleryControllerService(IOurGardenRepository repository, ILogger logger)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
-            _logger = logger;
             _fileHelper = new FileHelper(repository);
             _photoHelper = new PhotoHelper(repository, logger);
         }

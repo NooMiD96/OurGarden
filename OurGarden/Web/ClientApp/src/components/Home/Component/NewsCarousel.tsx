@@ -4,6 +4,8 @@ import { push as pushAction } from "connected-react-router";
 import Carousel from "@core/antd/Carousel";
 import { NextArrow, PrevArrow } from "./Arrows";
 
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+
 import { INew } from "@src/components/News/State";
 
 export interface INewsCarousel {
@@ -39,7 +41,8 @@ export class NewsCarousel extends React.PureComponent<
       <img
         className="slick-slide-content-image"
         alt={x.title}
-        src={x.photo && x.photo.url}
+        title={x.title}
+        src={getPreviewPhotoSrc(x)}
         key={x.newsId}
         onClick={() => {
           window.ym(ymId, "reachGoal", "BANNER_MAIN_CLICK");

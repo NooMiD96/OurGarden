@@ -8,7 +8,7 @@ export interface INew {
   date: Date;
   alias: string;
   description: string;
-  photo: IPhoto;
+  photos: IPhoto[];
 }
 
 export interface INewsState {

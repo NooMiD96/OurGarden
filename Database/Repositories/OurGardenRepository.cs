@@ -404,6 +404,8 @@ namespace Database.Repositories
         #endregion
 
         #region News
+        private const string __news_alredy_exist = "Не удалось {0} новость с заданным заголовком \"{1}\" поскольку уже существует новость с наименованием \"{2}\".";
+
         public async Task<IEnumerable<News>> GetNews(bool includeDescriptions = true) =>
             await GetNewsImpl(includeDescriptions: includeDescriptions);
 
@@ -448,21 +450,41 @@ namespace Database.Repositories
         public async Task<bool> CheckNewsAlias(string alias) =>
             await _context.News.AnyAsync(x => x.Alias == alias);
 
-        public async Task AddNews(News news)
+        public async ValueTask<(bool isSuccess, string error)> AddNews(News news)
         {
-            var chek = await _context.News.FirstOrDefaultAsync(x => x.NewsId == news.NewsId);
-            if (chek != null)
+            const string crudName = "добавить";
+
+            (bool isSuccess, string error, News findedEntity) = (true, default, default);
+
+            findedEntity = await _context.News.FirstOrDefaultAsync(x => x.Alias == news.Alias);
+            if (findedEntity != null)
             {
-                throw new Exception();
+                isSuccess = false;
+                error = __entity_alredy_exists;
             }
-            await _context.News.AddAsync(news);
-            await _context.SaveChangesAsync();
+
+            if (isSuccess)
+            {
+                (isSuccess, error, findedEntity) = await AddNewEntityImpl(news);
+            }
+
+            if (!isSuccess && error == __entity_alredy_exists)
+            {
+                error = String.Format(
+                    __news_alredy_exist,
+                    crudName,
+                    news.Title,
+                    findedEntity.Title
+                );
+            }
+
+            return (isSuccess, error);
         }
 
-        public async Task UpdateNews(News news)
+        public async ValueTask<(bool isSuccess, string error)> UpdateNews(News news)
         {
-            _context.News.Update(news);
-            await _context.SaveChangesAsync();
+            var result = await UpdateEntityImpl(news);
+            return result;
         }
 
         public async Task DeleteNews(int newsId)

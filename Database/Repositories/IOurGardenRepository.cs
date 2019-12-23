@@ -58,8 +58,8 @@ namespace Database.Repositories
         Task<News> GetNews(string alias, bool includeDescriptions = true);
         Task<List<Breadcrumb>> GetNewsBreadcrumb(string alias);
         Task<bool> CheckNewsAlias(string alias);
-        Task AddNews(News news);
-        Task UpdateNews(News news);
+        ValueTask<(bool isSuccess, string error)> AddNews(News news);
+        ValueTask<(bool isSuccess, string error)> UpdateNews(News news);
         Task DeleteNews(int newsId);
         ValueTask<bool> DeleteNews(News news);
         #endregion News

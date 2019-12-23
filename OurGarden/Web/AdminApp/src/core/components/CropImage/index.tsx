@@ -9,10 +9,24 @@ import { IProps, IState } from "./ICropImage";
 
 export class CropImage extends React.Component<IProps, IState> {
   imageRef?: HTMLImageElement;
-  state: IState = {
-    crop: { ...CROP_CONFIG },
-    croppedImageUrl: this.props.previewImage.preview
-  };
+
+  constructor(props: IProps) {
+    super(props);
+
+    // prettier-ignore
+    const crop = {
+      ...CROP_CONFIG,
+      width: props.minWidth || CROP_CONFIG.width,
+      height: props.minHeight || CROP_CONFIG.height,
+      aspect:
+        (props.minWidth || CROP_CONFIG.width)! / (props.minHeight || CROP_CONFIG.height)!
+    };
+
+    this.state = {
+      crop,
+      croppedImageUrl: props.previewImage.preview
+    };
+  }
 
   onImageLoaded = (image: HTMLImageElement) => {
     this.imageRef = image;
@@ -32,7 +46,10 @@ export class CropImage extends React.Component<IProps, IState> {
     image: HTMLImageElement,
     crop: ReactCrop.Crop
   ): Promise<string> {
-    const { x = 0, y = 0, width = 0, height = 0 } = crop;
+    // prettier-ignore
+    const {
+      x = 0, y = 0, width = 0, height = 0
+    } = crop;
 
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
@@ -55,7 +72,7 @@ export class CropImage extends React.Component<IProps, IState> {
     );
 
     return new Promise((resolve, _reject) => {
-      canvas.toBlob(blob => {
+      canvas.toBlob((blob) => {
         if (!blob) {
           console.error("Canvas is empty");
           return;
@@ -80,7 +97,10 @@ export class CropImage extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { previewImage, onClose } = this.props;
+    // prettier-ignore
+    const {
+      previewImage, onClose, minHeight = CROP_CONFIG.height, minWidth = CROP_CONFIG.width
+    } = this.props;
     const { crop, croppedImageUrl } = this.state;
 
     return (
@@ -96,21 +116,25 @@ export class CropImage extends React.Component<IProps, IState> {
                 onImageLoaded={this.onImageLoaded}
                 onComplete={this.onCropComplete}
                 onChange={this.onCropChange}
-                minWidth={400}
-                minHeight={350}
+                minWidth={minWidth}
+                minHeight={minHeight}
               />
             )}
           </div>
         </div>
         <div>
-          <span title="Изображение которое пользователь будет видеть">
+          <span
+            title={`Изображение, которое пользователь будет видеть: ${minWidth}x${minHeight}`}
+          >
             Предпросмотр
           </span>
           {croppedImageUrl && (
             <div
               style={{
-                width: 400,
-                height: 350,
+                width: minWidth,
+                height: minHeight,
+                maxWidth: "100%",
+                maxHeight: "100%",
                 background: `no-repeat center / contain url(${croppedImageUrl})`
               }}
             />

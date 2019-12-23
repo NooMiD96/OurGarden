@@ -30,11 +30,10 @@ export class MultiplyUploaderForm extends React.PureComponent<
     return (
       <MultiplyUploader
         defaultFileList={defaultFileList}
-        updateAddedList={files => setAddFiles(files)}
-        updateRemovedList={file => setRemoveFiles([...removeFiles, file])}
-        removeFile={fileUid =>
-          setAddFiles(addFiles.filter(x => x.uid !== fileUid))
-        }
+        updateAddedList={(files) => setAddFiles(files)}
+        updateRemovedList={(file) => setRemoveFiles([...removeFiles, file])}
+        // prettier-ignore
+        removeFile={(fileUid) => setAddFiles(addFiles.filter((x) => x.uid !== fileUid))}
         updatePreview={this.updatePreviewHandler}
         {...props}
       />

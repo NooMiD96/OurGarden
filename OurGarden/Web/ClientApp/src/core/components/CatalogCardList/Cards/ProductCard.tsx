@@ -24,6 +24,7 @@ export interface IProductCard {
 }
 
 const ProductCard = (props: IProductCard) => {
+  // prettier-ignore
   const { item, push, onCardClick, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 

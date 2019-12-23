@@ -45,7 +45,6 @@
         <script src="//code.jivosite.com/widget.js" data-jv-id="@(ViewData["jivoSiteId"] ?? "")" async></script>
         <script>
             function jivo_onOpen() {
-                console.log("JIVO_CLICK")
                 ym(@(ViewData["yandexMetrikaCounterId"] ?? 0), "reachGoal", "JIVO_CLICK")
             }
         </script>

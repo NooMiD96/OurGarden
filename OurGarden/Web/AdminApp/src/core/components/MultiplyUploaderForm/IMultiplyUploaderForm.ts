@@ -9,4 +9,6 @@ export interface IMultiplyUploaderForm {
   setUpdateFiles: React.Dispatch<React.SetStateAction<IUpdateFile[]>>;
   removeFiles: string[];
   setRemoveFiles: React.Dispatch<React.SetStateAction<string[]>>;
+  minWidth?: number;
+  minHeight?: number;
 }

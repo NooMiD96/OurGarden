@@ -6,6 +6,8 @@ export interface IProps {
   previewImage: UploadFile;
   setPreviewImage: (croppedImageUrl: string) => void;
   onClose: () => void;
+  minWidth?: number;
+  minHeight?: number;
 }
 
 export interface IState {

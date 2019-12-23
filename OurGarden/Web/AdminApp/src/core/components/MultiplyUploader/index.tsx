@@ -42,7 +42,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
           this.props.updateAddedList(info.fileList);
         }
         this.previewHandler(
-          info.fileList.find(fl => fl.uid === info.file.uid)!
+          info.fileList.find((fl) => fl.uid === info.file.uid)!
         );
         break;
       default:
@@ -89,12 +89,12 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
     }
   };
 
-  cancelHandler = () =>
-    this.setState({ isPreviewVisible: false, previewImage: undefined });
+  // prettier-ignore
+  cancelHandler = () => this.setState({ isPreviewVisible: false, previewImage: undefined });
 
   render() {
     const { isPreviewVisible, previewImage } = this.state;
-    const { defaultFileList } = this.props;
+    const { defaultFileList, minWidth, minHeight } = this.props;
 
     return (
       <>
@@ -124,6 +124,8 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
               previewImage={previewImage}
               setPreviewImage={this.setPreviewImage}
               onClose={this.cancelHandler}
+              minWidth={minWidth}
+              minHeight={minHeight}
             />
           )}
         </Modal>

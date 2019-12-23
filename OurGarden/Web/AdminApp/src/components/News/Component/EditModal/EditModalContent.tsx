@@ -1,75 +1,77 @@
 import React, { useRef } from "react";
 
-import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
+import Form, { FormItem } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
-import Button from "@core/antd/Button";
+import EditModalFooter from "@src/core/components/EditModalFooter";
 import CKEditor from "@core/components/CKEditor";
+import MultiplyUploaderForm, {
+  useMultiplyUploaderForm
+} from "@core/components/MultiplyUploaderForm";
+
 import localeText from "../Text";
+import {
+  getAddFilesDTO,
+  getUpdateFilesDTO,
+  getDefaultFileList
+} from "@src/core/utils/photo";
 
-import { FileUploader } from "@src/core/components/Uploader/File";
-
-import { INews, INewsDTO } from "../../State";
+import { INews } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
+import { IEditModalContentProps } from "./IEditModal";
 
-interface IProps extends FormComponentProps {
-  item: INews | null;
-  loading: boolean;
-  handleCreateSubmit: (data: INewsDTO) => void;
-  handleClose: () => void;
-}
-
-const onSubmitHandler = (
-  props: IProps,
-  ckEditor: React.RefObject<CKEditor>,
-  e?: IPressEnterEvent | React.FormEvent
-) => {
-  e && e.preventDefault();
-
-  const { form, item } = props;
-
-  const newsId = item ? item.newsId : 0;
-  const description: string = ckEditor.current!.state.editor.getData();
-  const title = form.getFieldValue("title");
-  const image = form.getFieldValue("image");
-
-  props.form.setFieldsValue({
-    description
-  });
-
-  props.form.validateFields((err: any, _values: any) => {
-    if (!err) {
-      props.handleCreateSubmit({
-        newsId,
-        title: title.trim(),
-        description,
-        file: image
-      });
-    }
-  });
-};
-
-const onClose = (props: IProps, e?: IPressEnterEvent | React.FormEvent) => {
-  e && e.preventDefault();
-
-  props.handleClose();
-};
-
-export const EditModalContent = (props: IProps) => {
+export const EditModalContent = (props: IEditModalContentProps) => {
   const ckEditor: React.RefObject<CKEditor> = useRef(null);
+  const multiplyUploaderParams = useMultiplyUploaderForm();
 
-  const { form, item } = props;
+  const { form } = props;
   const { getFieldDecorator } = form;
-  const { title, description, photo } = item || ({} as INews);
 
-  const onUploadImage = (image?: File) => {
-    form.setFieldsValue({
-      image
+  const item = props.item || ({} as INews);
+  // prettier-ignore
+  const {
+    newsId,
+    title,
+    description,
+    photos
+  } = item;
+
+  const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
+    e && e.preventDefault();
+
+    const description: string = ckEditor.current!.state.editor.getData();
+    const title = form.getFieldValue("title");
+
+    props.form.setFieldsValue({
+      description
+    });
+
+    const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
+    const updateFilesDTO = await getUpdateFilesDTO(
+      multiplyUploaderParams.updateFiles
+    );
+
+    props.form.validateFields((err: any, _values: any) => {
+      if (!err) {
+        props.handleCreateSubmit({
+          newsId,
+          title: title.trim(),
+          description,
+
+          addFiles: addFilesDTO,
+          removeFiles: multiplyUploaderParams.removeFiles,
+          updateFiles: updateFilesDTO
+        });
+      }
     });
   };
 
-  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
-    onSubmitHandler(props, ckEditor, e);
+  const onClose = () => {
+    form.resetFields();
+    props.handleClose();
+  };
+
+  const defaultFileList = getDefaultFileList(photos);
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -93,13 +95,14 @@ export const EditModalContent = (props: IProps) => {
       </FormItem>
 
       <FormItem>
-        {getFieldDecorator("image", {
-          initialValue: photo && photo.url,
-          rules: [{ required: true, message: localeText._rule_require_photo }]
+        {getFieldDecorator("addFiles", {
+          rules: [{ required: false, message: localeText._rule_require_photo }]
         })(
-          <FileUploader
-            onUpload={onUploadImage}
-            oldImageUrl={photo && photo.url}
+          <MultiplyUploaderForm
+            defaultFileList={defaultFileList}
+            {...multiplyUploaderParams}
+            minWidth={800}
+            minHeight={450}
           />
         )}
       </FormItem>
@@ -112,16 +115,9 @@ export const EditModalContent = (props: IProps) => {
         })(<CKEditor ref={ckEditor} data={description} />)}
       </FormItem>
 
-      <div className="ant-modal-footer">
-        <Button type="primary" onClick={onSubmit}>
-          Сохранить
-        </Button>
-        <Button type="danger" onClick={e => onClose(props, e)}>
-          Отмена
-        </Button>
-      </div>
+      <EditModalFooter onSubmit={onSubmit} onClose={onClose} />
     </Form>
   );
 };
 
-export default Form.create<IProps>()(EditModalContent);
+export default Form.create<IEditModalContentProps>()(EditModalContent);

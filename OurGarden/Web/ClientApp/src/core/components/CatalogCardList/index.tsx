@@ -41,6 +41,7 @@ export class Catalog<T> extends React.PureComponent<
       push,
       useCardGrid = true,
       colClassName,
+      cardTitleField = "alias",
       cardComponent = (props: ICardComponent<T>) => (
         <ItemCard
           item={props.item}
@@ -56,7 +57,7 @@ export class Catalog<T> extends React.PureComponent<
       <Col
         key={item.link}
         className={`card-wrapper ${colClassName || ""}`}
-        title={item.alias}
+        title={(item as any)[cardTitleField]}
         {...cardGrid}
       >
         {cardComponent({

@@ -6,6 +6,8 @@ export interface IProps {
   updateRemovedList: (removedList: string) => void;
   removeFile: (fileUid: string) => void;
   updatePreview: (fileUid: string, fileUrl: string) => void;
+  minWidth?: number;
+  minHeight?: number;
 }
 
 export interface IState {

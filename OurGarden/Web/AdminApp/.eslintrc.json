@@ -55,6 +55,26 @@
     "import/order": "off",
     "react/jsx-fragments": "off",
     "react/prop-types": "off",
-    "no-var": "error"
+    "no-var": "error",
+    "react/no-danger": "off",
+    "react/display-name": "off",
+    "linebreak-style": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "functions": "never",
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline"
+      }
+    ],
+    "max-len": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/state-in-constructor": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-expressions": "off",
+    "no-shadow": "off"
   }
 }

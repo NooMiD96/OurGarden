@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-using Model.DB;
+using Model.Interfaces.DTO;
 
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO
 {
-    public class NewsDTO
+    public class NewsDTO : IPhotoDTO
     {
         public int NewsId { get; set; }
 
@@ -19,6 +19,10 @@ namespace Model.DTO
         [Required]
         public string Description { get; set; }
 
-        public IFormFile File { get; set; }
+        public IFormFileCollection AddFiles { get; set; }
+
+        public IFormFileCollection UpdateFiles { get; set; }
+
+        public string RemoveFiles { get; set; }
     }
 }

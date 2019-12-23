@@ -145,12 +145,12 @@ namespace Database.Repositories
                     Alias = x.Alias,
                     Date = x.Date,
                     Description = null,
-                    Photo = x.Photo,
+                    Photos = x.Photos,
                 });
             }
             else
             {
-                query = query.Include(x => x.Photo);
+                query = query.Include(x => x.Photos);
             }
 
             return await query.ToListAsync();

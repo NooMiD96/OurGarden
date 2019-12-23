@@ -34,8 +34,9 @@ namespace Web.Helpers
         public async Task LoadPhotosToEntity<TType, TTypeDTO>(TType entity,
                                                               TTypeDTO entityDTO,
                                                               List<Photo> scheduleAddedPhotoList = null,
-                                                              List<Photo> scheduleDeletePhotoList = null)    where TType : IPhoto
-                                                                                                            where TTypeDTO : IPhotoDTO
+                                                              List<Photo> scheduleDeletePhotoList = null,
+                                                              int maxPixel = FileHelper.MAX_PIXEL) where TType : IPhoto
+                                                                                                   where TTypeDTO : IPhotoDTO
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".LoadFilesToEntity";
 
@@ -46,7 +47,7 @@ namespace Web.Helpers
                     var photoFile = entityDTO.AddFiles.ElementAt(i);
                     var previewFile = entityDTO.AddFiles.ElementAt(i + 1);
 
-                    var photo = await _fileHelper.AddFileToRepository(photoFile, previewFile, updateDB: false);
+                    var photo = await _fileHelper.AddFileToRepository(photoFile, previewFile, updateDB: false, maxPixel: maxPixel);
 
                     entity.Photos.Add(photo);
 
@@ -98,7 +99,7 @@ namespace Web.Helpers
                     var file = entity.Photos.FirstOrDefault(x => x.PhotoId == fileGuid);
                     if (file != null)
                     {
-                        _fileHelper.UpdateFilePreview(file, newPreview);
+                        _fileHelper.UpdateFilePreview(file, newPreview, maxPixel: maxPixel);
                     }
                 }
             }

@@ -9,7 +9,7 @@ import LazyImage from "@core/components/LazyImage";
 import { INew } from "@components/News/State";
 
 interface INewsCard {
-  item: INew & { link: string };
+  item: INew & { link: string; photoUrl: string };
   push: typeof pushAction;
   onCardClick?: () => void;
 }
@@ -17,7 +17,7 @@ interface INewsCard {
 export const NewsCard = ({ item, push, onCardClick }: INewsCard) => (
   <Card
     hoverable
-    cover={<LazyImage alt={item.title} src={item.photo && item.photo.url} />}
+    cover={<LazyImage alt={item.title} src={item.photoUrl} />}
     onClick={() => {
       if (onCardClick) {
         onCardClick();

@@ -9,9 +9,11 @@ using Model.DB;
 using Model.DTO;
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Web.Controllers.AdminApi;
+using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -20,63 +22,89 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly FileHelper _fileHelper;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.NewsController.Service";
+        private readonly PhotoHelper _photoHelper;
 
         public NewsControllerService(IOurGardenRepository repository, ILogger logger)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository._context;
-            _fileHelper = new FileHelper(_repository);
-            _logger = logger;
+            _fileHelper = new FileHelper(repository);
+            _photoHelper = new PhotoHelper(repository, logger);
         }
 
-        public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO newsDTO, News oldNews)
+        private async ValueTask<(News entity, string error)> CreateNews(NewsDTO entityDTO,
+                                                                        ICollection<Photo> defaultPhotoList = null,
+                                                                        List<Photo> scheduleAddedPhotoList = null,
+                                                                        List<Photo> scheduleDeletePhotoList = null)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateNews";
+            var entity = new News()
+            {
+                Title = entityDTO.Title,
+                Alias = entityDTO.Title.TransformToId(),
+                Date = DateTime.Now,
+                Description = entityDTO.Description,
 
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-                try
-                {
-                    // Создаём новую категорию
-                    var file = default(Photo);
-                    if (newsDTO.File == null)
-                    {
-                        file = _fileHelper.ClonePhoto(oldNews.Photo);
-                        _context.Remove(oldNews.Photo);
-                    }
-                    else
-                    {
-                        file = await _fileHelper.AddFileToRepository(newsDTO.File);
-                        await _fileHelper.RemoveFileFromRepository(oldNews.Photo, false);
-                    }
+                Photos = new List<Photo>()
+            };
 
-                    var newNews = new News()
-                    {
-                        Title = newsDTO.Title,
-                        Alias = newsDTO.Title.TransformToId(),
-                        Date = DateTime.Now,
-                        Description = newsDTO.Description,
+            //Добавляем и проверяем можем ли мы добавить данную категорию
+            var (isSuccess, error) = await _repository.AddNews(entity);
+            if (!isSuccess)
+            {
+                return (null, error);
+            }
 
-                        Photo = file
-                    };
-                    _context.Add(newNews);
+            _photoHelper.MovePhotosToEntity(entity, defaultPhotoList);
 
-                    _context.Remove(oldNews);
+            await _photoHelper.LoadPhotosToEntity(entity,
+                                                  entityDTO,
+                                                  scheduleAddedPhotoList,
+                                                  scheduleDeletePhotoList,
+                                                  maxPixel: 1600);
 
-                    await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                    transaction.Commit();
-                    return (true, null);
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
+            return (entity, null);
+        }
 
-                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+        public async ValueTask<(bool isSuccess, string error)> AddNews(NewsDTO entityDTO)
+        {
+            var (entity, error) = await CreateNews(entityDTO);
 
-                    return (false, "Ошибка при обнавлении товара. Возможно данный товара уже существуют в данной категории-подкатегории");
-                }
+            return (entity != null, error);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO entityDTO, News oldEntity)
+        {
+            await _photoHelper.LoadPhotosToEntity(oldEntity, entityDTO);
+
+            oldEntity.Alias = entityDTO.Title.TransformToId();
+            oldEntity.Title = entityDTO.Title;
+            oldEntity.Description = entityDTO.Description;
+
+            return await _repository.UpdateNews(oldEntity);
+        }
+
+        public async ValueTask<(bool isSuccess, string error)> DeleteNews(int newsId)
+        {
+            var entity = await _repository.GetNews(newsId);
+
+            if (entity is null)
+            {
+                return (
+                    false,
+                    $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsId}"
+                );
+            }
+
+            foreach (var photo in entity.Photos)
+            {
+                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+            }
+
+            await _repository.DeleteNews(entity);
+
+            return (true, null);
         }
     }
 }

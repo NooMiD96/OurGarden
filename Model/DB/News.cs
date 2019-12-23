@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Model.Interfaces.DB;
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
-    public class News
+    public class News : IPhoto
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NewsId { get; set; }
@@ -23,6 +26,6 @@ namespace Model.DB
         [Required]
         public string Description { get; set; }
 
-        public Photo Photo { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }

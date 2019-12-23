@@ -16,7 +16,7 @@ namespace Web.Controllers.AdminApi
     {
         readonly string STATIC_FOLDER;
         readonly string FILE_FOLDER = "images";
-        const int MAX_PIXEL = 400;
+        public const int MAX_PIXEL = 400;
 
         readonly IOurGardenRepository _repository;
 
@@ -58,28 +58,7 @@ namespace Web.Controllers.AdminApi
             return file;
         }
 
-        public async Task<Photo> AddFileWithPreviewToRepository(IFormFile photo)
-        {
-            var guid = Guid.NewGuid();
-            var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
-            var previewPath = $"{FILE_FOLDER}/{guid.ToString()}-preview.{GetFileExtension(photo.FileName)}";
-
-            using (var previewImage = GetPreview(photo))
-            {
-                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, path), FileMode.Create))
-                {
-                    await photo.CopyToAsync(fileStream);
-                }
-                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
-                {
-                   previewImage.Save(fileStream, ImageFormat.Jpeg);
-                }
-            }
-
-            return await AddFile(path, guid, previewPath);
-        }
-
-        public async Task<Photo> AddFileToRepository(IFormFile photo, IFormFile previewPhoto = null, bool updateDB = true)
+        public async Task<Photo> AddFileToRepository(IFormFile photo, IFormFile previewPhoto = null, bool updateDB = true, int maxPixel = MAX_PIXEL)
         {
             var guid = Guid.NewGuid();
             var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
@@ -94,7 +73,7 @@ namespace Web.Controllers.AdminApi
 
             if (previewPath != null)
             {
-                using (var previewImage = GetPreview(previewPhoto))
+                using (var previewImage = GetPreview(previewPhoto, maxPixel))
                 using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
                 {
                     previewImage.Save(fileStream, ImageFormat.Jpeg);
@@ -104,7 +83,7 @@ namespace Web.Controllers.AdminApi
             return await AddFile(path, guid, previewPath, updateDB: updateDB);
         }
 
-        public void UpdateFilePreview(Photo file, IFormFile newPreviewPhoto)
+        public void UpdateFilePreview(Photo file, IFormFile newPreviewPhoto, int maxPixel = MAX_PIXEL)
         {
             if (String.IsNullOrEmpty(file.PreviewUrl))
             {
@@ -117,7 +96,7 @@ namespace Web.Controllers.AdminApi
                 File.Delete(previewPath);
             }
 
-            using (var previewImage = GetPreview(newPreviewPhoto))
+            using (var previewImage = GetPreview(newPreviewPhoto, maxPixel))
             using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
             {
                 previewImage.Save(fileStream, ImageFormat.Jpeg);
@@ -143,7 +122,7 @@ namespace Web.Controllers.AdminApi
             return true;
         }
 
-        static private Bitmap GetPreview(IFormFile photo)
+        static private Bitmap GetPreview(IFormFile photo, int maxPixel = MAX_PIXEL)
         {
             var image = Image.FromStream(photo.OpenReadStream(), true, true);
 
@@ -153,11 +132,11 @@ namespace Web.Controllers.AdminApi
             double factor;
             if (originalWidth > originalHeight)
             {
-                factor = (double)MAX_PIXEL / originalWidth;
+                factor = (double)maxPixel / originalWidth;
             }
             else
             {
-                factor = (double)MAX_PIXEL / originalHeight;
+                factor = (double)maxPixel / originalHeight;
             }
 
             var size = new Size((int)(originalWidth * factor), (int)(originalHeight * factor));

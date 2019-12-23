@@ -4,6 +4,8 @@ import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import { NewsCard } from "@core/components/CatalogCardList/Cards/NewsCard";
 
+import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+
 import { TState } from "../TState";
 import { INew } from "@components/News/State";
 
@@ -37,7 +39,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
     const dataList = newsList.map((news: INew) => ({
       ...news,
       link: `/News/${news.alias}`,
-      photoUrl: news.photo && news.photo.url
+      photoUrl: getPreviewPhotoSrc(news)
     }));
 
     return (
@@ -55,6 +57,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
             useCardGrid={false}
             paginationParams={{ page: 1, pageSize: 4 }}
             rowGutter={0}
+            cardTitleField="title"
             cardComponent={(props) => (
               <NewsCard
                 item={props.item}

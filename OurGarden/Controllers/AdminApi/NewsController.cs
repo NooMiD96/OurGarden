@@ -26,7 +26,6 @@ namespace Web.Controllers.AdminApi
     {
         private readonly IOurGardenRepository _repository;
         private readonly NewsControllerService _service;
-        private readonly FileHelper _fileHelper;
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "AdminApi.NewsController";
 
@@ -34,9 +33,8 @@ namespace Web.Controllers.AdminApi
                               ILogger<NewsController> logger)
         {
             _repository = repository;
-            _service = new NewsControllerService(_repository, _logger);
-            _fileHelper = new FileHelper(_repository);
             _logger = logger;
+            _service = new NewsControllerService(_repository, _logger);
         }
 
         [HttpGet("[action]")]
@@ -59,27 +57,7 @@ namespace Web.Controllers.AdminApi
 
                 if (newsDTO.NewsId <= 0)
                 {
-                    var alias = newsDTO.Title.TransformToId();
-                    var isExist = await _repository.CheckNewsAlias(alias);
-
-                    if (isExist)
-                    {
-                        return BadRequest("Новость c данным заголовоком существует. Измените заголовок.");
-                    }
-
-                    var file = await _fileHelper.AddFileToRepository(newsDTO.File);
-
-                    var news = new News()
-                    {
-                        Title = newsDTO.Title,
-                        Alias = alias,
-                        Date = DateTime.Now,
-                        Description = newsDTO.Description,
-                        Photo = file
-                    };
-                    await _repository.AddNews(news);
-
-                    isSuccess = true;
+                    (isSuccess, error) = await _service.AddNews(newsDTO);
                 }
                 else
                 {
@@ -90,38 +68,19 @@ namespace Web.Controllers.AdminApi
                         return LogBadRequest(
                             _logger,
                             API_LOCATE,
-                            customeError: $"Что-то пошло не так, не удалось найти новость.\n\tНовость: {newsDTO.NewsId}"
+                            customeError: $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsDTO.NewsId} --- {newsDTO.Title}"
                         );
                     }
 
-                    if (oldNews.Title.TransformToId() != newsDTO.Title.TransformToId())
-                    {
-                        (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
-                    }
-                    else
-                    {
-                        if (newsDTO.File != null)
-                        {
-                            var file = await _fileHelper.AddFileToRepository(newsDTO.File);
-
-                            await _fileHelper.RemoveFileFromRepository(oldNews.Photo, updateDB: false);
-
-                            oldNews.Photo = file;
-                        }
-
-                        oldNews.Title = newsDTO.Title;
-                        oldNews.Description = newsDTO.Description;
-
-                        await _repository.UpdateNews(oldNews);
-
-                        isSuccess = true;
-                    }
+                    (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
                 }
 
                 if (!isSuccess)
-                {
-                    return BadRequest(error);
-                }
+                    return LogBadRequest(
+                        _logger,
+                        API_LOCATE,
+                        customeError: error
+                    );
 
                 return Success(isSuccess);
             }
@@ -139,13 +98,18 @@ namespace Web.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> Delete([FromQuery]int newsId)
         {
-            var oldNews = await _repository.GetNews(newsId);
+            const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
 
-            await _fileHelper.RemoveFileFromRepository(oldNews.Photo, updateDB: false);
+            var (isSuccess, error) = await _service.DeleteNews(newsId);
 
-            await _repository.DeleteNews(oldNews);
-
-            return Success(true);
+            if (isSuccess)
+                return Success(isSuccess);
+            else
+                return LogBadRequest(
+                    _logger,
+                    API_LOCATE,
+                    customeError: error
+                );
         }
     }
 }

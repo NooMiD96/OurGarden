@@ -2,7 +2,7 @@ import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
 import { IDefaultState } from "@src/core/IDefaultState";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface ICategoryDictionary {
   categoryId: string;
   alias: string;
@@ -34,4 +34,4 @@ export const unloadedState: ICategoryState = {
   pending: false,
   errorInner: ""
 };
-//#endregion
+// #endregion
