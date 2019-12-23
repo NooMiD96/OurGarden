@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 
-import GenerateLink from "@src/core/components/GenerateLink";
-import Tabs from "@core/antd/Tabs";
+import GenerateLink from "@core/components/GenerateLink";
+import Tabs, { Tab } from "@core/materialUI/tabs";
 
 import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
@@ -20,13 +20,35 @@ const tabList = [
 ];
 
 const NavMenu = (props: RouterState) => {
-  const activeKey = getActiveRoute(tabList, props.location);
+  const [tab, setTab] = useState<number>(0);
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTab(newValue);
+  };
+
+  useEffect(() => {
+    const activeKey = getActiveRoute(tabList, props.location);
+    const index = tabList.findIndex((x) => x.link === activeKey);
+    setTab(index || 0);
+  }, [props.location]);
 
   return (
     <React.Fragment>
-      <Tabs className="navigation" activeKey={activeKey}>
+      <Tabs
+        value={tab}
+        onChange={handleChange}
+        className="navigation"
+        variant="scrollable"
+        scrollButtons="auto"
+        classes={{ indicator: "d-none" }}
+      >
         {tabList.map((x) => (
-          <Tabs.TabPane key={x.link} tab={<GenerateLink {...x} />} />
+          <Tab
+            key={x.link}
+            label={<GenerateLink {...x} />}
+            disableFocusRipple
+            disableRipple
+          />
         ))}
       </Tabs>
     </React.Fragment>

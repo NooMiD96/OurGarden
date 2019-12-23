@@ -47,7 +47,7 @@ namespace Web.Controllers
                     Response.StatusCode = 404;
                 }
 
-                var (js, css) = await _getAssetsUtils.Bundles(
+                var (js, css, stringCss) = await _getAssetsUtils.Bundles(
                     $"{Request.Scheme}://{Request.Host}{Request.PathBase}",
                     HttpContext.Request.Path.Value,
                     isPageNotFound
@@ -55,6 +55,7 @@ namespace Web.Controllers
 
                 ViewData["jsBundles"] = js ?? new string[0];
                 ViewData["cssBundles"] = css ?? new string[0];
+                ViewData["stringCss"] = stringCss ?? "";
 
                 ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
                 ViewData["isPageNotFound"] = isPageNotFound;

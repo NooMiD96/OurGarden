@@ -122,6 +122,11 @@ const getClientBundleConfig = (
             test: /[\\/]node_modules[\\/][^\\/]*(antd|ant-design)[^\\/]*[\\/]/,
             priority: 1
           },
+          "material-ui": {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*@material-ui[^\\/]*[\\/]/,
+            priority: 1
+          },
           rc: {
             chunks: "all",
             // rc-[componentName] - used in the antd etc. components

@@ -25,7 +25,7 @@ namespace Web.Services.SSR
             _logger = logger;
         }
 
-        public async ValueTask<(string[] js, string[] css)> Bundles(string host, string path, bool isPageNotFound)
+        public async ValueTask<(string[] js, string[] css, string stringCss)> Bundles(string host, string path, bool isPageNotFound)
         {
             try
             {
@@ -36,11 +36,12 @@ namespace Web.Services.SSR
 #endif
                 var result = await _nodeServices.InvokeAsync<JObject>(pathToScript, host, path, _currentDirectory, isPageNotFound);
 
-                if (result.TryGetValue("js", out var jsJson) && result.TryGetValue("css", out var cssJson))
+                if (result.TryGetValue("js", out var jsJson) && result.TryGetValue("css", out var cssJson) && result.TryGetValue("stringCss", out var stringCssJson))
                 {
                     return (
                         jsJson.Select(x => x["publicPath"].Value<string>()).ToArray(),
-                        cssJson.Select(x => x["publicPath"].Value<string>()).ToArray()
+                        cssJson.Select(x => x["publicPath"].Value<string>()).ToArray(),
+                        stringCssJson.ToString()
                     );
                 }
                 else

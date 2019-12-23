@@ -7,7 +7,7 @@ var AppRoutes = require("../App.tsx").AppRoutes;
 
 var { baseUrl } = require("domain-task/fetch");
 
-module.exports = function(modules, store, host, routerContext, path) {
+module.exports = function (modules, store, host, routerContext, path) {
     baseUrl(host);
 
     return React.createElement(

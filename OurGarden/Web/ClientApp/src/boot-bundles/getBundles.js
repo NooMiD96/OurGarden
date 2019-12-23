@@ -12,6 +12,8 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
     var utils = require("../boot-server/utils");
     var mainActions = require("@src/components/Main/State/actions").actionCreators;
 
+    var ServerStyleSheets = require("@material-ui/core/styles").ServerStyleSheets;
+
     const history = createMemoryHistory();
     history.replace(path);
     const store = configureStore(history);
@@ -30,7 +32,9 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
             path
         );
 
-        renderToString(app);
+        const sheets = new ServerStyleSheets();
+
+        renderToString(sheets.collect(app));
 
         utils.getFileStat(processDir)
             .then(stats => {
@@ -40,7 +44,7 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
                 const styles = bundles.css || [];
                 const scripts = bundles.js || [];
 
-                callback(null, { js: scripts, css: styles });
+                callback(null, { js: scripts, css: styles, stringCss: sheets.toString() });
             })
             .catch(callback)
     });

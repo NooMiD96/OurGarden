@@ -1,4 +1,4 @@
-﻿<div id="react-app"
+﻿<app id="react-app"
      asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
      asp-prerender-data="new {
         isMobileBrowser = @ViewData["isMobileBrowser"] ?? true,
@@ -6,4 +6,4 @@
         yandexMetrikaCounterId = @ViewData["yandexMetrikaCounterId"] ?? 0,
     }"
 >
-</div>
+</app>

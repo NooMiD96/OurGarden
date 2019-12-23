@@ -15,29 +15,38 @@ import { MAIN_LAYOUT_GRID_COL_STYLE } from "@core/constants";
 
 const { Header, Content } = AntdLayout;
 
-export const Layout = ({ children }: { children?: React.ReactNode }) => (
-  <ErrorHandler>
-    <Header className="antd-header">
-      <Row type="flex">
-        <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
-          <TopBar />
-        </Col>
-      </Row>
-    </Header>
-    <AntdLayout className="antd-layout" hasSider>
-      <Row type="flex">
-        <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
-          <Sider />
-          <AntdLayout>
-            <Content className="main-content-wrapper">
-              <ConfigProvider renderEmpty={RenderEmptyProvider}>
-                <AppHOC>{children}</AppHOC>
-              </ConfigProvider>
-            </Content>
-          </AntdLayout>
-        </Col>
-      </Row>
-    </AntdLayout>
-    <div id="global-modals-container" />
-  </ErrorHandler>
-);
+export const Layout = ({ children }: { children?: React.ReactNode }) => {
+  React.useEffect(() => {
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles.parentElement!.removeChild(jssStyles);
+    }
+  }, []);
+
+  return (
+    <ErrorHandler>
+      <Header className="antd-header">
+        <Row type="flex">
+          <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
+            <TopBar />
+          </Col>
+        </Row>
+      </Header>
+      <AntdLayout className="antd-layout" hasSider>
+        <Row type="flex">
+          <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
+            <Sider />
+            <AntdLayout>
+              <Content className="main-content-wrapper">
+                <ConfigProvider renderEmpty={RenderEmptyProvider}>
+                  <AppHOC>{children}</AppHOC>
+                </ConfigProvider>
+              </Content>
+            </AntdLayout>
+          </Col>
+        </Row>
+      </AntdLayout>
+      <div id="global-modals-container" />
+    </ErrorHandler>
+  );
+};
