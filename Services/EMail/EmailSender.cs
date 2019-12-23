@@ -1,4 +1,6 @@
-﻿using MailKit.Net.Smtp;
+﻿using Core.Helpers;
+
+using MailKit.Net.Smtp;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -80,7 +82,7 @@ namespace Services.EMail
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{API_LOCATE}\nERR: {ex.Message}");
+                _logger.LogError(ex, $"{API_LOCATE}\nSettings:\n{JsonHelper.Serialize(_emailSettings)}");
                 //throw new InvalidOperationException(ex.Message);
             }
         }
