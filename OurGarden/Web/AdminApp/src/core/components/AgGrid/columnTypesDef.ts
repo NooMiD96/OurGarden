@@ -49,7 +49,8 @@ const columnTypesDef: { [key: string]: ColDef } = {
       return moment(value).format("DD.MM.YYYY HH:mm:ss");
     },
     filterParams: {
-      browserDatePicker: true
+      browserDatePicker: true,
+      newRowsAction: "keep"
     },
     comparator: dateComparator
   },
@@ -114,7 +115,8 @@ const columnTypesDef: { [key: string]: ColDef } = {
 const defaultColDef: ColDef = {
   sortable: true,
   resizable: true,
-  filter: true
+  filter: true,
+  filterParams: { newRowsAction: "keep" }
 };
 
 export { columnTypesDef, defaultColDef };
