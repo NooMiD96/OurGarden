@@ -30,9 +30,9 @@ namespace Database.Repositories
         public async Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false) =>
             await GetCategoryImpl(isGetOnlyVisible: isGetOnlyVisible);
 
-        public async Task<Category> GetCategory(string categoryId) =>
+        public async Task<Category> GetCategory(string categoryId, bool includeSubcategory = false) =>
             (
-                await GetCategoryImpl(categoryId: categoryId)
+                await GetCategoryImpl(categoryId: categoryId, includeSubcategory: includeSubcategory)
             )
             .FirstOrDefault();
 
@@ -159,9 +159,9 @@ namespace Database.Repositories
         public async Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false) =>
             await GetSubcategoriesImpl(categoryId: categoryId, isGetOnlyVisible: isGetOnlyVisible);
 
-        public async Task<Subcategory> GetSubcategory(string categoryId, string subcategoryId) =>
+        public async Task<Subcategory> GetSubcategory(string categoryId, string subcategoryId, bool includeProducts = false) =>
             (
-                await GetSubcategoriesImpl(categoryId: categoryId, subcategoryId: subcategoryId)
+                await GetSubcategoriesImpl(categoryId: categoryId, subcategoryId: subcategoryId, includeProducts: includeProducts)
             )
             .FirstOrDefault();
 

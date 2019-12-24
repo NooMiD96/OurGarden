@@ -46,7 +46,10 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   };
 
   const resetSearchValue = async () => {
-    autoCompleteEl.current!.select.rcSelect.setInputValue("");
+    const select = (autoCompleteEl.current as any).select.rcSelect;
+    select.setInputValue("");
+    select.fireChange([]);
+
     await onSearch("");
   };
 
@@ -83,6 +86,7 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
         onSelect={onSelect}
       >
         <Search
+          // prettier-ignore
           prefix={(
             <LottieWebIcon
               type="search"

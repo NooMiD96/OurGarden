@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
+import { Location } from "history";
 
 import GenerateLink from "@core/components/GenerateLink";
 import Tabs, { Tab } from "@core/materialUI/tabs";
 
-import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
+import { getActiveRoute } from "@core/helpers/route/getActiveRoute";
 
 import { IApplicationState } from "@src/Store";
 
@@ -19,41 +20,65 @@ const tabList = [
   { title: "Контакты", link: "About" }
 ];
 
-const NavMenu = (props: RouterState) => {
-  const [tab, setTab] = useState<number>(0);
+export class NavMenu extends React.PureComponent<
+  RouterState,
+  { tabIndex: number | false }
+> {
+  constructor(props: RouterState) {
+    super(props);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setTab(newValue);
+    this.state = {
+      tabIndex: this.getActiveTabIndex(props.location)
+    };
+  }
+
+  componentDidUpdate(prevProps: RouterState) {
+    if (prevProps.location !== this.props.location) {
+      this.setState({
+        tabIndex: this.getActiveTabIndex(this.props.location)
+      });
+    }
+  }
+
+  getActiveTabIndex = (location: Location<any>) => {
+    const activeKey = getActiveRoute(tabList, location);
+    const index = activeKey && tabList.findIndex((x) => x.link === activeKey);
+
+    return typeof index === "number" ? index : false;
   };
 
-  useEffect(() => {
-    const activeKey = getActiveRoute(tabList, props.location);
-    const index = tabList.findIndex((x) => x.link === activeKey);
-    setTab(index || 0);
-  }, [props.location]);
+  handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    this.setState({
+      tabIndex: newValue
+    });
+  };
 
-  return (
-    <React.Fragment>
-      <Tabs
-        value={tab}
-        onChange={handleChange}
-        className="navigation"
-        variant="scrollable"
-        scrollButtons="auto"
-        classes={{ indicator: "d-none" }}
-      >
-        {tabList.map((x) => (
-          <Tab
-            key={x.link}
-            label={<GenerateLink {...x} />}
-            disableFocusRipple
-            disableRipple
-          />
-        ))}
-      </Tabs>
-    </React.Fragment>
-  );
-};
+  render() {
+    const { tabIndex } = this.state;
+
+    return (
+      <React.Fragment>
+        <Tabs
+          value={tabIndex}
+          onChange={this.handleChange}
+          className="navigation"
+          variant="scrollable"
+          scrollButtons="auto"
+          classes={{ indicator: "d-none" }}
+        >
+          {tabList.map((x) => (
+            <Tab
+              key={x.link}
+              label={<GenerateLink {...x} />}
+              disableFocusRipple
+              disableRipple
+            />
+          ))}
+        </Tabs>
+      </React.Fragment>
+    );
+  }
+}
 
 export default connect(
   (state: IApplicationState): RouterState => ({

@@ -14,7 +14,7 @@ namespace Database.Repositories
         #region Category
         Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false);
         Task<IEnumerable<CategoryDictionaryDTO>> GetSimpleCategories(bool includeSubcategory = false);
-        Task<Category> GetCategory(string categoryId);
+        Task<Category> GetCategory(string categoryId, bool includeSubcategory = false);
         ValueTask<(bool isSuccess, string error)> AddCategory(Category category);
         ValueTask<(bool isSuccess, string error)> UpdateCategory(Category category);
         Task DeleteCategory(string categoryId);
@@ -24,7 +24,7 @@ namespace Database.Repositories
         #region Subcategory
         Task<IEnumerable<Subcategory>> GetSubcategories(bool isGetOnlyVisible = false);
         Task<IEnumerable<Subcategory>> GetSubcategories(string categoryId, bool isGetOnlyVisible = false);
-        Task<Subcategory> GetSubcategory(string categoryId, string subcategoryId);
+        Task<Subcategory> GetSubcategory(string categoryId, string subcategoryId, bool includeProducts = false);
         Task<List<Breadcrumb>> GetSubcategoryBreadcrumb(string categoryId);
         ValueTask<(bool isSuccess, string error)> AddSubcategory(Subcategory subcategory);
         ValueTask<(bool isSuccess, string error)> UpdateSubcategory(Subcategory subcategory);

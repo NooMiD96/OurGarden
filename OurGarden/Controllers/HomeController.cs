@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Web.Services.SSR;
@@ -95,34 +96,58 @@ namespace Web.Controllers
                     case "catalog":
                     {
                         string sectionName;
-                        string value;
+                        string titleValue;
+                        string metaValue = "";
 
                         switch (urlSplit.Length)
                         {
                             default:
                             case 2:
+                            {
                                 sectionName = "subcategory";
-                                var category = await _repository.GetCategory(urlSplit[1]);
+                                var category = await _repository.GetCategory(urlSplit[1], includeSubcategory: true);
 
                                 if (category is null)
                                 {
                                     return default;
                                 }
 
-                                value = category.Alias;
+                                titleValue = category.Alias;
+                                var aliasList = category.Subcategories.Select(x => x.Alias);
+                                if (aliasList.Any())
+                                {
+                                    metaValue = aliasList.Aggregate((acc, val) => $"{acc}, {val}");
+                                }
+                                else
+                                {
+                                    metaValue = titleValue;
+                                }
                                 break;
+                            }
                             case 3:
+                            {
                                 sectionName = "productList";
-                                var subcategory = await _repository.GetSubcategory(urlSplit[1], urlSplit[2]);
+                                var subcategory = await _repository.GetSubcategory(urlSplit[1], urlSplit[2], includeProducts: true);
 
                                 if (subcategory is null)
                                 {
                                     return default;
                                 }
 
-                                value = subcategory.Alias;
+                                titleValue = subcategory.Alias;
+                                var aliasList = subcategory.Products.Select(x => x.Alias);
+                                if (aliasList.Any())
+                                {
+                                    metaValue = aliasList.Aggregate((acc, val) => $"{acc}, {val}");
+                                }
+                                else
+                                {
+                                    metaValue = titleValue;
+                                }
                                 break;
+                            }
                             case 4:
+                            {
                                 sectionName = "product";
                                 var product = await _repository.GetProduct(urlSplit[1], urlSplit[2], urlSplit[3]);
 
@@ -131,23 +156,37 @@ namespace Web.Controllers
                                     return default;
                                 }
 
-                                value = product.Alias;
+                                titleValue = product.Alias;
                                 break;
+                            }
                         }
 
                         var section = seoInformation.GetSection(sectionName);
+
+                        if (metaValue.Length >= 150)
+                        {
+                            metaValue = metaValue.Substring(0, 140);
+
+                            metaValue = $"{metaValue.Substring(0, metaValue.LastIndexOf(","))} и другие товары";
+                        }
 
                         return (
                             section
                                 .GetValue<string>("title")
                                 .Replace(
                                     "{{value}}",
-                                    value,
+                                    titleValue,
                                     StringComparison.InvariantCultureIgnoreCase
                                 ),
                             section.GetValue<string>("meta")
+                                .Replace(
+                                    "{{value}}",
+                                    metaValue,
+                                    StringComparison.InvariantCultureIgnoreCase
+                                )
                         );
                     }
+
                     case "news":
                     {
                         var section = seoInformation.GetSection("news");
@@ -180,11 +219,23 @@ namespace Web.Controllers
             else
             {
                 string sectionName;
+                string metaValue = "";
 
                 switch (url)
                 {
                     case "catalog":
                         sectionName = "category";
+                        var categories = await _repository.GetCategories();
+
+                        var aliasList = categories.Select(x => x.Alias);
+                        if (aliasList.Any())
+                        {
+                            metaValue = aliasList.Aggregate((acc, val) => $"{acc}, {val}");
+                        }
+                        else
+                        {
+                            metaValue = "товары для сада";
+                        }
                         break;
                     case "news":
                         sectionName = "newsList";
@@ -217,9 +268,21 @@ namespace Web.Controllers
 
                 var section = seoInformation.GetSection(sectionName);
 
+                if (metaValue.Length >= 150)
+                {
+                    metaValue = metaValue.Substring(0, 140);
+
+                    metaValue = $"{metaValue.Substring(0, metaValue.LastIndexOf(","))} и другие товары";
+                }
+
                 return (
                     section.GetValue<string>("title"),
                     section.GetValue<string>("meta")
+                        .Replace(
+                            "{{value}}",
+                            metaValue,
+                            StringComparison.InvariantCultureIgnoreCase
+                        )
                 );
             }
         }

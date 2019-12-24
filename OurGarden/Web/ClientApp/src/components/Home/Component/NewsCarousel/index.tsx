@@ -4,9 +4,9 @@ import { push as pushAction } from "connected-react-router";
 import Carousel from "@core/antd/Carousel";
 import { NextArrow, PrevArrow } from "./Arrows";
 
-import { getPreviewPhotoSrc } from "@src/core/utils/photo";
+import { getPreviewPhotoSrc } from "@core/utils/photo";
 
-import { INew } from "@src/components/News/State";
+import { INew } from "@components/News/State";
 
 export interface INewsCarousel {
   displayList: INew[];

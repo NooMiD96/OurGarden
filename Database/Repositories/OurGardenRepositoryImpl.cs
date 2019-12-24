@@ -18,9 +18,15 @@ namespace Database.Repositories
 
         private async Task<IEnumerable<Category>> GetCategoryImpl(string categoryId = null,
                                                                   string search = null,
-                                                                  bool isGetOnlyVisible = false)
+                                                                  bool isGetOnlyVisible = false,
+                                                                  bool includeSubcategory = false)
         {
             var query = _context.Category.Include(x => x.Photos).AsQueryable();
+
+            if (includeSubcategory)
+            {
+                query = query.Include(x => x.Subcategories);
+            }
 
             if (!String.IsNullOrEmpty(categoryId))
             {
@@ -47,11 +53,17 @@ namespace Database.Repositories
         private async Task<IEnumerable<Subcategory>> GetSubcategoriesImpl(string categoryId = null,
                                                                           string subcategoryId = null,
                                                                           string search = null,
-                                                                          bool isGetOnlyVisible = false)
+                                                                          bool isGetOnlyVisible = false,
+                                                                          bool includeProducts = false)
         {
             var query = _context.Subcategory
                 .Include(x => x.Photos)
                 .AsQueryable();
+
+            if (includeProducts)
+            {
+                query = query.Include(x => x.Products);
+            }
 
             if (!String.IsNullOrEmpty(categoryId))
             {

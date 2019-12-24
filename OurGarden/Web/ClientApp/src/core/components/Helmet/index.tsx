@@ -13,12 +13,14 @@ export const HeaderHelmet = ({
   let { title, meta } = getSEOMetaData(seoSectionName);
 
   title = getAdditionalSEOInfo(title, seoTitle);
-  meta = getAdditionalSEOInfo(meta, seoMeta) || "";
+  if (meta && !meta.includes("{{value}}")) {
+    meta = getAdditionalSEOInfo(meta, seoMeta) || "";
+  }
 
   return (
     <Helmet>
       {title ? <title>{`${title} | Наш Сад`}</title> : <title>Наш Сад</title>}
-      <meta name="description" content={meta} />
+      {meta ? <meta name="description" content={meta} /> : null}
     </Helmet>
   );
 };
