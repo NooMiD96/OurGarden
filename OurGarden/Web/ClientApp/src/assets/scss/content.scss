@@ -28,6 +28,7 @@
 
 .ant-layout {
   height: 100%;
+  background: transparent;
   background: unset;
   font-family: "ProbaPro";
 }
@@ -53,6 +54,7 @@
   }
 
   .ant-layout-header {
+    background: transparent;
     background: unset;
     line-height: inherit;
     padding: unset;

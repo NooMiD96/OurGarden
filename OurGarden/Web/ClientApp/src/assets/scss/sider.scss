@@ -1,11 +1,14 @@
 .antd-layout {
   .ant-layout {
     &-sider {
-      background: #fff;
+      display: flex;
+      flex-direction: column;
       max-height: 600px;
+      background: #fff;
 
       &-children {
         display: flex;
+        flex: 1 1 100%;
         flex-direction: column;
         height: 100%;
       }
