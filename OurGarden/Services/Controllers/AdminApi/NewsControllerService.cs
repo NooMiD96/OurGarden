@@ -76,7 +76,7 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO entityDTO, News oldEntity)
         {
-            await _photoHelper.LoadPhotosToEntity(oldEntity, entityDTO);
+            await _photoHelper.LoadPhotosToEntity(oldEntity, entityDTO, maxPixel: 1600);
 
             oldEntity.Alias = entityDTO.Title.TransformToId();
             oldEntity.Title = entityDTO.Title;

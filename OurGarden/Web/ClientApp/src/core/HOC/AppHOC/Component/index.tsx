@@ -22,6 +22,20 @@ export class AppHOC extends React.Component<TState, {}> {
     }
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps: TState) {
+    // prettier-ignore
+    if (
+      nextProps.location !== this.props.location
+      && nextProps.history.action === "POP"
+    ) {
+      if (this.unlisten) {
+        this.unlisten();
+        this.unlisten = null;
+      }
+      this.resetState();
+    }
+  }
+
   shouldComponentUpdate(nextProps: TState) {
     const { isPageNotFound, pending, isDataWasGeted } = this.props;
 
