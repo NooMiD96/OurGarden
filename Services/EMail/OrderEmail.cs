@@ -27,12 +27,12 @@ namespace Services.EMail
           <td style='line-height:0px;font-size:0px;mso-line-height-rule:exactly;'>
       
         <v:rect  style='width:600px;' xmlns:v='urn:schemas-microsoft-com:vml' fill='true' stroke='false'>
-        <v:fill  origin='0.5, 0' position='0.5, 0' src='http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg' type='tile' />
+        <v:fill  origin='0.5, 0' position='0.5, 0' src='https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg' type='tile' />
         <v:textbox style='mso-fit-shape-to-text:true' inset='0,0,0,0'>
       <![endif]-->
-    <div style='background:url(http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg) top center / 100% no-repeat;Margin:0px auto;max-width:600px;'>
+    <div style='background:url(https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg) top center / 100% no-repeat;Margin:0px auto;max-width:600px;'>
       <div style='line-height:0;font-size:0;'>
-        <table align='center' background='http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:url(http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg) top center / 100% no-repeat;width:100%;'>
+        <table align='center' background='https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:url(https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg) top center / 100% no-repeat;width:100%;'>
           <tbody>
             <tr>
               <td style='direction:ltr;font-size:0px;padding:20px 0;padding-top:5px;text-align:center;vertical-align:top;'>
@@ -52,7 +52,7 @@ namespace Services.EMail
                         <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='border-collapse:collapse;border-spacing:0px;'>
                           <tbody>
                             <tr>
-                              <td style='width:100px;'> <img alt='Наш Сад' height='auto' src='http://xn----7sbbq5b0a1c.com/client/client/img/logo.234d4db2eb49f1e60cd52e776463c51d.png' style='border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;' width='100'>                                </td>
+                              <td style='width:100px;'> <img alt='Наш Сад' height='auto' src='https://xn----7sbbq5b0a1c.com/email/logo.png' style='border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;' width='100'>                                </td>
                             </tr>
                           </tbody>
                         </table>
@@ -214,12 +214,12 @@ namespace Services.EMail
           <td style='line-height:0px;font-size:0px;mso-line-height-rule:exactly;'>
       
         <v:rect  style='width:600px;' xmlns:v='urn:schemas-microsoft-com:vml' fill='true' stroke='false'>
-        <v:fill  origin='0.5, 0' position='0.5, 0' src='http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg' type='tile' />
+        <v:fill  origin='0.5, 0' position='0.5, 0' src='https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg' type='tile' />
         <v:textbox style='mso-fit-shape-to-text:true' inset='0,0,0,0'>
       <![endif]-->
-    <div style='background:url(http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg) top center / 100% no-repeat;Margin:0px auto;max-width:600px;'>
+    <div style='background:url(https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg) top center / 100% no-repeat;Margin:0px auto;max-width:600px;'>
       <div style='line-height:0;font-size:0;'>
-        <table align='center' background='http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:url(http://xn----7sbbq5b0a1c.com/client/client/img/mainBackground.226cdcf2da19eda12d16a79899a1099b.jpg) top center / 100% no-repeat;width:100%;'>
+        <table align='center' background='https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:url(https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg) top center / 100% no-repeat;width:100%;'>
           <tbody>
             <tr>
               <td style='direction:ltr;font-size:0px;padding:20px 0;padding-top:5px;text-align:center;vertical-align:top;'>
@@ -239,7 +239,7 @@ namespace Services.EMail
                         <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='border-collapse:collapse;border-spacing:0px;'>
                           <tbody>
                             <tr>
-                              <td style='width:100px;'> <img alt='Наш Сад' height='auto' src='http://xn----7sbbq5b0a1c.com/client/client/img/logo.234d4db2eb49f1e60cd52e776463c51d.png' style='border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;' width='100'>                                </td>
+                              <td style='width:100px;'> <img alt='Наш Сад' height='auto' src='https://xn----7sbbq5b0a1c.com/email/logo.png' style='border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;' width='100'>                                </td>
                             </tr>
                           </tbody>
                         </table>
