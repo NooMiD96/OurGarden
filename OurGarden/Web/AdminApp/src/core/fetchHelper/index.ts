@@ -1,22 +1,29 @@
 import { errorCreater } from "./ErrorCreater";
 
-export const uncatchError =
-  "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+// prettier-ignore
+export const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 
 export const responseCatcher = async (res: Response) => {
   if (res.ok) {
     return res.json();
-  } else {
-    switch (res.status) {
-      case 400:
-        return await errorCreater.createValidationError(res);
+  }
 
-      case 401:
-        return errorCreater.createAuthError();
+  try {
+    console.warn("JSON.stringify(res)");
+    console.warn(JSON.stringify(res));
+  } catch (error) {}
 
-      default:
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-    }
+  switch (res.status) {
+    case 400:
+      return await errorCreater.createValidationError(res);
+
+    case 401:
+      return errorCreater.createAuthError();
+
+    default:
+      return errorCreater(
+        `${uncatchError}. Статус ошибки ${res.status}.\n${res.statusText}\n${res.type}`
+      );
   }
 };
 
