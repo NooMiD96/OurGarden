@@ -11,17 +11,13 @@ import { INew } from "@components/News/State";
 interface INewsCard {
   item: INew & { link: string; photoUrl: string };
   push: typeof pushAction;
-  onCardClick?: () => void;
 }
 
-export const NewsCard = ({ item, push, onCardClick }: INewsCard) => (
+export const NewsCard = ({ item, push }: INewsCard) => (
   <Card
     hoverable
     cover={<LazyImage alt={item.title} src={item.photoUrl} />}
     onClick={() => {
-      if (onCardClick) {
-        onCardClick();
-      }
       push(item.link);
     }}
   >

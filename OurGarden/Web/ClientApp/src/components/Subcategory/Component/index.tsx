@@ -34,7 +34,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       match: { params }
     } = this.props;
 
-    if (prevProps.match.params !== params) {
+    if (prevProps.match.params.categoryId !== params.categoryId) {
       this.props.getSubcategoryList(params.categoryId);
 
       this.props.getBreadcrumb({ categoryId: params.categoryId });
@@ -42,7 +42,13 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { category, subcategoryList, push } = this.props;
+    const {
+      category,
+      subcategoryList,
+      replace,
+      location: { state: locationState },
+      push
+    } = this.props;
 
     const dataList = subcategoryList.map((x) => ({
       ...x,
@@ -62,7 +68,12 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
             ]}
           />
         )}
-        <CatalogCardList dataList={dataList} push={push} />
+        <CatalogCardList
+          replace={replace}
+          locationState={locationState}
+          dataList={dataList}
+          push={push}
+        />
       </>
     );
   }

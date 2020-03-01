@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.LINQ;
+
+using Microsoft.EntityFrameworkCore;
 
 using Model.DB;
+using Model.Interfaces.DB;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Database.Repositories
@@ -35,7 +39,9 @@ namespace Database.Repositories
 
             if (!String.IsNullOrEmpty(search))
             {
-                query = query.Where(x => x.Alias.Contains(search));
+                var expression = GetSearchExpression<Category>(search);
+
+                query = query.Where(expression);
             }
 
             if (isGetOnlyVisible)
@@ -77,7 +83,9 @@ namespace Database.Repositories
 
             if (!String.IsNullOrEmpty(search))
             {
-                query = query.Where(x => x.Alias.Contains(search));
+                var expression = GetSearchExpression<Subcategory>(search);
+
+                query = query.Where(expression);
             }
 
             if (isGetOnlyVisible)
@@ -117,7 +125,9 @@ namespace Database.Repositories
 
             if (!String.IsNullOrEmpty(search))
             {
-                query = query.Where(x => x.Alias.Contains(search));
+                var expression = GetSearchExpression<Product>(search);
+
+                query = query.Where(expression);
             }
 
             if (isGetOnlyVisible)
@@ -171,6 +181,27 @@ namespace Database.Repositories
         #endregion News
 
         #region General
+
+        private Expression<Func<T, bool>> GetSearchExpression<T>(string search) where T : IAlias
+        {
+            var searchStrings = search.Split(" ");
+
+            Expression<Func<T, bool>> combineExpressions = x => x.Alias.Contains(searchStrings[0]);
+
+            for (int i = 0; i < searchStrings.Length; i++)
+            {
+                var str = searchStrings[i];
+                if (String.IsNullOrEmpty(str))
+                {
+                    continue;
+                }
+
+                Expression<Func<T, bool>> expr = x => x.Alias.Contains(str);
+                combineExpressions = combineExpressions.Or(expr);
+            }
+
+            return combineExpressions;
+        }
 
         private async ValueTask<(bool isSuccess, string error, T findedEntity)> AddNewEntityImpl<T>(T entity)
         {

@@ -24,8 +24,22 @@ export class Catalog<T> extends React.PureComponent<
   constructor(props: ICatalogProps<T>) {
     super(props);
 
+    let { page, pageSize } = PAGING_DEFAULT_PARAMS;
+
+    if (props.paginationParams) {
+      page = props.paginationParams.page;
+      pageSize = props.paginationParams.pageSize;
+    }
+
+    if (props.locationState) {
+      setTimeout(() => {
+        this.onPageChange(props.locationState.page);
+      }, 10);
+    }
+
     this.state = {
-      ...(props.paginationParams || PAGING_DEFAULT_PARAMS)
+      page,
+      pageSize
     };
   }
 
@@ -34,6 +48,14 @@ export class Catalog<T> extends React.PureComponent<
       page,
       pageSize
     });
+
+    if (this.props.replace) {
+      this.props.replace({
+        state: {
+          page
+        }
+      });
+    }
   };
 
   getItemToDisplay = (item: TDataItem<T>) => {
@@ -43,11 +65,7 @@ export class Catalog<T> extends React.PureComponent<
       colClassName,
       cardTitleField = "alias",
       cardComponent = (props: ICardComponent<T>) => (
-        <ItemCard
-          item={props.item}
-          push={props.push}
-          onCardClick={props.onCardClick}
-        />
+        <ItemCard item={props.item} push={props.push} />
       )
     } = this.props;
 
@@ -62,8 +80,7 @@ export class Catalog<T> extends React.PureComponent<
       >
         {cardComponent({
           item,
-          push,
-          onCardClick: () => this.onPageChange(1)
+          push
         })}
       </Col>
     );

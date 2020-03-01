@@ -101,7 +101,7 @@ namespace Web.Controllers.Api
             var products = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
 
             subcategory.Products = products
-                .OrderBy(x => x.ProductId)
+                .OrderBy(x => x.Alias)
                 .Select(x =>
                 {
                     x.Subcategory = null;

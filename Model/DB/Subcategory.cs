@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.DB
 {
-    public class Subcategory : IPhoto
+    public class Subcategory : IAlias, IPhoto
     {
         [Required]
         [MaxLength(64)]

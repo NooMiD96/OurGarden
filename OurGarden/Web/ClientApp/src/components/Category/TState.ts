@@ -1,4 +1,4 @@
-import { RouterState, Push } from "connected-react-router";
+import { RouterState, Push, Replace } from "connected-react-router";
 
 import { ICategoryState } from "./State";
 import { actionCreators } from "./actions";
@@ -12,16 +12,15 @@ export type TComponentState = {};
 // REDUX STATE OF COMPONENT
 export type TStateToProps = ICategoryState & RouterState;
 export type TOwnProps = {};
-export type TMapStateToProps = TStateToProps
-  & TOwnProps;
+export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
 export type TMapDispatchToProps = TDispatchToProps & {
-    push: Push;
-    setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
-  };
+  push: Push;
+  replace: Replace;
+  setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
+};
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps
-  & TMapDispatchToProps;
+export type TState = TMapStateToProps & TMapDispatchToProps;

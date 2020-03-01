@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
+import { push, replace } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
@@ -21,7 +21,8 @@ const mapStateToProps = (
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
-  push
+  push,
+  replace
 };
 
 export default connect<

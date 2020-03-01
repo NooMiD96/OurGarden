@@ -5,6 +5,7 @@ import { Title } from "@core/antd/Typography";
 import NumberInput from "@core/components/NumberInput";
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import LazyImage from "@core/components/LazyImage";
+import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
@@ -86,7 +87,7 @@ const getColumns = (
     render: (totalCost: number) => (
       <span>
         {totalCost.toLocaleString()}
-        р
+        <RussianCurrency />
       </span>
     )
   },

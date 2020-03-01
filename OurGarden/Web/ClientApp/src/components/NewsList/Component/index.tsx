@@ -34,7 +34,12 @@ export class NewsList extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    const { newsList, push } = this.props;
+    const {
+      newsList,
+      push,
+      replace,
+      location: { state: locationState }
+    } = this.props;
 
     const dataList = newsList.map((news: INew) => ({
       ...news,
@@ -58,12 +63,10 @@ export class NewsList extends React.PureComponent<TState, {}> {
             paginationParams={{ page: 1, pageSize: 4 }}
             rowGutter={0}
             cardTitleField="title"
+            replace={replace}
+            locationState={locationState}
             cardComponent={(props) => (
-              <NewsCard
-                item={props.item}
-                push={props.push}
-                onCardClick={props.onCardClick}
-              />
+              <NewsCard item={props.item} push={props.push} />
             )}
           />
         )}

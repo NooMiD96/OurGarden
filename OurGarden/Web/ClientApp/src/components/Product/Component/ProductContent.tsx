@@ -3,6 +3,7 @@ import React from "react";
 import Row from "@core/antd/Row";
 import { Title } from "@core/antd/Typography";
 import AddToCardButton from "@core/components/AddToCardButton";
+import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPhotoSrc } from "@core/utils/photo";
 
@@ -64,9 +65,14 @@ export class ProductContent extends React.PureComponent<
         <div className="product-info">
           <Title>{product.alias}</Title>
           <span className="product-cost">
-            {product.price
-              ? `${product.price.toLocaleString()}р.`
-              : "Под заказ"}
+            {product.price ? (
+              <>
+                {`${product.price.toLocaleString()}`}
+                <RussianCurrency />
+              </>
+            ) : (
+              "Под заказ"
+            )}
           </span>
           <span className="product-description">Описание</span>
         </div>

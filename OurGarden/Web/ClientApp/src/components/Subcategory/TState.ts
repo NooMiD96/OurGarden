@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router-dom";
-import { RouterState, Push } from "connected-react-router";
+import { RouterState, Push, Replace } from "connected-react-router";
 
 import { ISubcategoryState } from "./State";
 import { actionCreators } from "./actions";
@@ -19,7 +19,10 @@ export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps & { push: Push };
+export type TMapDispatchToProps = TDispatchToProps & {
+  push: Push;
+  replace: Replace;
+};
 // -----------------------------
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps & TMapDispatchToProps;

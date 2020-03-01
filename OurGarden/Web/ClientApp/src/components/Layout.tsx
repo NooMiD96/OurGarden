@@ -1,4 +1,5 @@
 import * as React from "react";
+import ruRU from "antd/es/locale/ru_RU";
 
 import AntdLayout from "@core/antd/Layout";
 import ConfigProvider from "@core/antd/ConfigProvider";
@@ -38,7 +39,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
             <Sider />
             <AntdLayout>
               <Content className="main-content-wrapper">
-                <ConfigProvider renderEmpty={RenderEmptyProvider}>
+                <ConfigProvider locale={ruRU} renderEmpty={RenderEmptyProvider}>
                   <AppHOC>{children}</AppHOC>
                 </ConfigProvider>
               </Content>

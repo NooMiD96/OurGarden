@@ -40,7 +40,11 @@ export class ProductList extends React.PureComponent<TState, {}> {
       getBreadcrumb
     } = this.props;
 
-    if (prevProps.match.params !== params) {
+    // prettier-ignore
+    if (
+      prevProps.match.params.categoryId !== params.categoryId
+      || prevProps.match.params.subcategoryId !== params.subcategoryId
+    ) {
       this.props.getProductList(params.categoryId, params.subcategoryId);
 
       getBreadcrumb({
@@ -51,9 +55,13 @@ export class ProductList extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    // prettier-ignore
     const {
-      subcategory, productList, push, ymId
+      subcategory,
+      productList,
+      push,
+      replace,
+      location: { state: locationState },
+      ymId
     } = this.props;
 
     const dataList = productList.map((product) => ({
@@ -77,13 +85,10 @@ export class ProductList extends React.PureComponent<TState, {}> {
         <CatalogCardList
           dataList={dataList}
           push={push}
+          replace={replace}
+          locationState={locationState}
           cardComponent={(props) => (
-            <ProductCard
-              item={props.item}
-              push={props.push}
-              onCardClick={props.onCardClick}
-              ymId={ymId}
-            />
+            <ProductCard item={props.item} push={props.push} ymId={ymId} />
           )}
         />
       </>

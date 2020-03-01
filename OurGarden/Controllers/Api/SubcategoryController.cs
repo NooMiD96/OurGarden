@@ -94,7 +94,7 @@ namespace Web.Controllers.Api
             }
 
             category.Subcategories = (await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true))
-                .OrderBy(x => x.SubcategoryId)
+                .OrderBy(x => x.Alias)
                 .Select(x =>
                 {
                     x.Category = null;

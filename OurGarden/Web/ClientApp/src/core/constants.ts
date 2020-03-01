@@ -84,9 +84,11 @@ export const MAIN_LAYOUT_GRID_COL_STYLE = {
 
 export const MobileContext = createContext(true);
 
-export const MAIN_MOBILE = "+7 (953) 434-35-16";
+export const MAIN_MOBILE = "+7 (953) 43-43-516";
 export const MAIN_MOBILE_FORMATTED = "+79534343516";
 export const HELP_EMAIL = "help@наш-сад.com";
 export const SHORT_ADDRESS = "ул. 9 мая, 36";
 export const ADDRESS = `г. Тула, ${SHORT_ADDRESS}`;
 export const isShowSvgIcon = !!process.env.isWebpackBundle;
+
+export const RUSSIAN_CURRENCY = "₽";

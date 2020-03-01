@@ -2,6 +2,7 @@ import React from "react";
 
 import { IProduct } from "@src/components/Product/State";
 import AddToCardButton from "./AddToCardButton";
+import RussianCurrency from "@core/components/RussianCurrency";
 
 import { IMouseClickEvent } from "../IEvents";
 
@@ -26,7 +27,7 @@ const AddToCard = (props: IAddToCard) => {
         <React.Fragment>
           <span className="card-cost">
             {product.price.toLocaleString()}
-            р.
+            <RussianCurrency />
           </span>
           <AddToCardButton
             itemCount={itemCount}

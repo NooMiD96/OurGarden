@@ -1,5 +1,7 @@
 import React from "react";
 
+import RussianCurrency from "@core/components/RussianCurrency";
+
 import "./style/TotalPrice.style.scss";
 
 interface ITotalPrice {
@@ -11,7 +13,7 @@ const TotalPrice = (props: ITotalPrice) => (
     <span>Сумма: </span>
     <span className="price">
       {props.totalPrice}
-      {" рублей"}
+      <RussianCurrency />
     </span>
   </div>
 );

@@ -24,7 +24,12 @@ export class Category extends React.PureComponent<TState, {}> {
   }
 
   render() {
-    const { categoryList, push } = this.props;
+    const {
+      categoryList,
+      push,
+      replace,
+      location: { state: locationState }
+    } = this.props;
 
     const dataList = categoryList.map((x) => ({
       ...x,
@@ -35,7 +40,12 @@ export class Category extends React.PureComponent<TState, {}> {
     return (
       <>
         <HeaderHelmet seoSectionName="category" />
-        <CatalogCardList dataList={dataList} push={push} />
+        <CatalogCardList
+          replace={replace}
+          locationState={locationState}
+          dataList={dataList}
+          push={push}
+        />
       </>
     );
   }

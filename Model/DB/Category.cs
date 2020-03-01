@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
-    public class Category : IPhoto
+    public class Category : IAlias, IPhoto
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(64)]

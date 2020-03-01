@@ -22,7 +22,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetCategories()
         {
             var result = (await _repository.GetCategories(isGetOnlyVisible: true))
-                .OrderBy(x => x.CategoryId);
+                .OrderBy(x => x.Alias);
 
             foreach (var category in result)
             {

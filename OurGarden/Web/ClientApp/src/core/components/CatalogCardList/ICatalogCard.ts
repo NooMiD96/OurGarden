@@ -1,4 +1,4 @@
-import { push } from "connected-react-router";
+import { push, replace } from "connected-react-router";
 
 export type TDataItem<T> = T & {
   link: string;
@@ -9,12 +9,13 @@ export type TDataItem<T> = T & {
 export interface ICardComponent<T> {
   item: TDataItem<T>;
   push: typeof push;
-  onCardClick?: () => void;
 }
 
 export interface ICatalogProps<T> {
   dataList: TDataItem<T>[];
   push: typeof push;
+  replace?: typeof replace;
+  locationState?: any;
   cardComponent?: (props: ICardComponent<T>) => JSX.Element;
   useCardGrid?: boolean;
   colClassName?: string;

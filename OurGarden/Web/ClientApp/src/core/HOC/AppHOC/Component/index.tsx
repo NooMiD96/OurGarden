@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { UnregisterCallback } from "history";
 
 import PageNotFound from "@core/components/PageNotFound";
 import LoadingHOC from "@core/HOC/LoadingHOC";
@@ -8,14 +7,8 @@ import LoadingHOC from "@core/HOC/LoadingHOC";
 import { TState } from "@components/Main/State/TState";
 
 export class AppHOC extends React.Component<TState, {}> {
-  unlisten: UnregisterCallback | null = null;
-
   constructor(props: TState) {
     super(props);
-
-    if (props.isPageNotFound || props.isDataWasGeted) {
-      this.unlisten = props.history.listen(this.resetState);
-    }
 
     if (typeof window !== "undefined") {
       props.clearAllRequest();
@@ -25,13 +18,8 @@ export class AppHOC extends React.Component<TState, {}> {
   UNSAFE_componentWillReceiveProps(nextProps: TState) {
     // prettier-ignore
     if (
-      nextProps.location !== this.props.location
-      && nextProps.history.action === "POP"
+      nextProps.location.pathname !== this.props.location.pathname
     ) {
-      if (this.unlisten) {
-        this.unlisten();
-        this.unlisten = null;
-      }
       this.resetState();
     }
   }
@@ -42,30 +30,13 @@ export class AppHOC extends React.Component<TState, {}> {
     // prettier-ignore
     if (
       isPageNotFound !== nextProps.isPageNotFound
-      || pending !== nextProps.pending
+      || pending?.length !== nextProps.pending?.length
       || isDataWasGeted !== nextProps.isDataWasGeted
     ) {
       return true;
     }
 
     return false;
-  }
-
-  componentDidUpdate(prevProps: TState) {
-    const { props } = this;
-
-    // prettier-ignore
-    if (
-      props.isPageNotFound !== prevProps.isPageNotFound
-      || props.isDataWasGeted !== prevProps.isDataWasGeted
-    ) {
-      if (props.isPageNotFound || props.isDataWasGeted) {
-        this.unlisten = props.history.listen(this.resetState);
-      } else if (this.unlisten) {
-        this.unlisten();
-        this.unlisten = null;
-      }
-    }
   }
 
   resetState = () => {

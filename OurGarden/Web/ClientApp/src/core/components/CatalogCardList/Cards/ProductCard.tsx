@@ -19,13 +19,12 @@ export interface IProductCard {
   item: TDataItem<IProduct>;
   push: typeof pushAction;
   addToCard: typeof actionsList.addProductToCard;
-  onCardClick?: () => void;
   ymId: number;
 }
 
 const ProductCard = (props: IProductCard) => {
   // prettier-ignore
-  const { item, push, onCardClick, ymId } = props;
+  const { item, push, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 
   const addToCardHandler = (e: IMouseClickEvent) => {
@@ -47,9 +46,6 @@ const ProductCard = (props: IProductCard) => {
       hoverable
       cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
       onClick={() => {
-        if (onCardClick) {
-          onCardClick();
-        }
         push(item.link);
       }}
     >

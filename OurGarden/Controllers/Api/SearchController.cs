@@ -40,12 +40,7 @@ namespace Web.Controllers.Api
 
             var result = await _repository.Search(search);
 
-            return Success(
-                result
-                    .OrderBy(x => x.CategoryId)
-                    .ThenBy(x => x.SubcategoryId)
-                    .ThenBy(x => x.ProductId)
-            );
+            return Success(result.OrderBy(x => x.Alias));
         }
     }
 }

@@ -12,7 +12,6 @@ import { TDataItem } from "../ICatalogCard";
 
 export interface IItemCardProps<T> {
   item: TDataItem<T>;
-  onCardClick?: () => void;
   push: typeof pushAction;
 }
 
@@ -21,14 +20,11 @@ export type TItemCardReturn = JSX.Element;
 export type TItemCard = <T>(props: IItemCardProps<T>) => TItemCardReturn;
 
 /* eslint-disable react/prop-types */
-export const ItemCard: TItemCard = ({ item, onCardClick, push }) => (
+export const ItemCard: TItemCard = ({ item, push }) => (
   <Card
     hoverable
     cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
     onClick={() => {
-      if (onCardClick) {
-        onCardClick();
-      }
       push(item.link);
     }}
   >
@@ -36,7 +32,14 @@ export const ItemCard: TItemCard = ({ item, onCardClick, push }) => (
       // prettier-ignore
       title={(
         <Paragraph ellipsis={META_TITLE_PARAMS}>
-          <Link to={item.link}>{item.alias}</Link>
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            to={item.link}
+          >
+            {item.alias}
+          </Link>
         </Paragraph>
       )}
     />
