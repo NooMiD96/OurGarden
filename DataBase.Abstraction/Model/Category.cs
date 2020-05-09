@@ -17,6 +17,15 @@ namespace DataBase.Abstraction.Model
         [Required]
         public bool? IsVisible { get; set; }
 
+        [MaxLength(70)]
+        public string SeoTitle { get; set; }
+
+        [MaxLength(150)]
+        public string SeoDescription { get; set; }
+
+        [MaxLength(512)]
+        public string SeoKeywords { get; set; }
+
         //Childrens
         public ICollection<Subcategory> Subcategories { get; set; }
         public ICollection<Photo> Photos { get; set; }

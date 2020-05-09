@@ -270,7 +270,7 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("seoKeywords", {
           initialValue: seoKeywords,
-          rules: [{ required: false }]
+          rules: [{ required: false, max: 512, message: "Длина не должна превышать 150 символов" }]
         })(
           <MetaDataForm
             checkboxText="Указать ключевые слова (через запятую)"

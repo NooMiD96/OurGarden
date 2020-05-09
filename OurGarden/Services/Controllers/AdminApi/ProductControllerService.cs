@@ -26,7 +26,6 @@ namespace Web.Services.Controllers.AdminApi
         private readonly FileHelper _fileHelper;
         private readonly PhotoHelper _photoHelper;
         private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.ProductController.Service";
 
         public ProductControllerService(IOurGardenRepository repository,
                                         ILogger logger)
@@ -53,6 +52,10 @@ namespace Web.Services.Controllers.AdminApi
                 Price = entityDTO.Price,
                 Description = entityDTO.Description,
                 IsVisible = entityDTO.IsVisible ?? true,
+
+                SeoTitle = entityDTO.SeoTitle,
+                SeoDescription = entityDTO.SeoDescription,
+                SeoKeywords = entityDTO.SeoKeywords,
 
                 Photos = new List<Photo>()
             };
@@ -85,8 +88,6 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> FullUpdateProduct(ProductDTO productDTO, Product oldProduct)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".UpdateProduct";
-
             // В случае когда нам не удаётся обновить данную модель
             // Мы должны удалить те фото, которые были добавлены
             var scheduleAddedPhotoList = new List<Photo>();
@@ -95,73 +96,74 @@ namespace Web.Services.Controllers.AdminApi
             // То нужно окончательно удалить ненужные фото
             var scheduleDeletePhotoList = new List<Photo>();
 
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
             {
-                (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+                transaction.Rollback();
+                return result;
+            }
+
+            try
+            {
+                #region Create new entity and migrate/update photo list
+
+                var (newProduct, error) = await CreateProduct(productDTO,
+                                                              defaultPhotoList: oldProduct.Photos,
+                                                              scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                              scheduleDeletePhotoList: scheduleDeletePhotoList);
+
+                if (newProduct is null)
                 {
-                    transaction.Rollback();
-                    return result;
+                    return cancelUpdate((false, error));
                 }
 
-                try
+                #endregion
+
+                // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
+                var orderList = _context.OrderPosition
+                        .Where(
+                            order => productDTO.CategoryId == order.Product.CategoryId
+                                        && productDTO.SubcategoryId == order.Product.SubcategoryId
+                                        && productDTO.ProductId == order.Product.ProductId
+                        ).ToList();
+
+                // Обновляем ссылку на продукт
+                orderList.ForEach(order =>
                 {
-                    #region Create new entity and migrate/update photo list
+                    order.Product = newProduct;
 
-                    var (newProduct, error) = await CreateProduct(productDTO,
-                                                                          defaultPhotoList: oldProduct.Photos,
-                                                                          scheduleAddedPhotoList: scheduleAddedPhotoList,
-                                                                          scheduleDeletePhotoList: scheduleDeletePhotoList);
+                    _context.Update(order);
+                });
 
-                    if (newProduct is null)
-                    {
-                        return cancelUpdate((false, error));
-                    }
+                // Теперь старая подкатегория не нужна
+                _context.Remove(oldProduct);
 
-                    #endregion
+                await _context.SaveChangesAsync();
 
-                    // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
-                    var orderList = _context.OrderPosition
-                            .Where(
-                                order => productDTO.CategoryId == order.Product.CategoryId
-                                            && productDTO.SubcategoryId == order.Product.SubcategoryId
-                                            && productDTO.ProductId == order.Product.ProductId
-                            ).ToList();
+                transaction.Commit();
 
-                    // Обновляем ссылку на продукт
-                    orderList.ForEach(order =>
-                    {
-                        order.Product = newProduct;
-
-                        _context.Update(order);
-                    });
-
-                    // Теперь старая подкатегория не нужно
-                    _context.Remove(oldProduct);
-
-                    await _context.SaveChangesAsync();
-
-                    transaction.Commit();
-
-                    foreach (var photo in scheduleDeletePhotoList)
-                    {
-                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
-                    }
-
-                    return (true, null);
-                }
-                catch (Exception ex)
+                foreach (var photo in scheduleDeletePhotoList)
                 {
-                    foreach (var photo in scheduleAddedPhotoList)
-                    {
-                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
-                    }
-
-                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
-                    return cancelUpdate((
-                        false,
-                        $"Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует. Текст ошибки: {ex.Message}"
-                    ));
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
                 }
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                foreach (var photo in scheduleAddedPhotoList)
+                {
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                }
+
+                var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует.";
+
+                _logger.LogError(ex, errMsg);
+                
+                return cancelUpdate((
+                    false,
+                    $"{errMsg} Текст ошибки: {ex.Message}"
+                ));
             }
         }
         
@@ -173,6 +175,10 @@ namespace Web.Services.Controllers.AdminApi
             oldProduct.IsVisible = productDTO.IsVisible ?? true;
             oldProduct.Price = productDTO.Price;
             oldProduct.Description = productDTO.Description;
+
+            oldProduct.SeoTitle = productDTO.SeoTitle;
+            oldProduct.SeoDescription = productDTO.SeoDescription;
+            oldProduct.SeoKeywords = productDTO.SeoKeywords;
 
             return await _repository.UpdateProduct(oldProduct);
         }

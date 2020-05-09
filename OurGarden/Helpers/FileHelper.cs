@@ -60,9 +60,9 @@ namespace Web.Controllers.AdminApi
         public async Task<Photo> AddFileToRepository(IFormFile photo, IFormFile previewPhoto = null, bool updateDB = true, int maxPixel = MAX_PIXEL)
         {
             var guid = Guid.NewGuid();
-            var path = $"{FILE_FOLDER}/{guid.ToString()}.{GetFileExtension(photo.FileName)}";
+            var path = $"{FILE_FOLDER}/{guid}.{GetFileExtension(photo.FileName)}";
             var previewPath = previewPhoto != null
-                ? $"{FILE_FOLDER}/{guid.ToString()}-preview.{GetFileExtension(previewPhoto.FileName)}"
+                ? $"{FILE_FOLDER}/{guid}-preview.{GetFileExtension(previewPhoto.FileName)}"
                 : null;
 
             using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, path), FileMode.Create))
@@ -72,11 +72,9 @@ namespace Web.Controllers.AdminApi
 
             if (previewPath != null)
             {
-                using (var previewImage = GetPreview(previewPhoto, maxPixel))
-                using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
-                {
-                    previewImage.Save(fileStream, ImageFormat.Jpeg);
-                }
+                using var previewImage = GetPreview(previewPhoto, maxPixel);
+                using var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create);
+                previewImage.Save(fileStream, ImageFormat.Jpeg);
             }
 
             return await AddFile(path, guid, previewPath, updateDB: updateDB);
@@ -86,7 +84,7 @@ namespace Web.Controllers.AdminApi
         {
             if (String.IsNullOrEmpty(file.PreviewUrl))
             {
-                file.PreviewUrl = $"{FILE_FOLDER}/{file.PhotoId.ToString()}-preview.{GetFileExtension(newPreviewPhoto.FileName)}";
+                file.PreviewUrl = $"{FILE_FOLDER}/{file.PhotoId}-preview.{GetFileExtension(newPreviewPhoto.FileName)}";
             }
 
             var previewPath = Path.Combine(STATIC_FOLDER, file.PreviewUrl);
@@ -95,11 +93,9 @@ namespace Web.Controllers.AdminApi
                 File.Delete(previewPath);
             }
 
-            using (var previewImage = GetPreview(newPreviewPhoto, maxPixel))
-            using (var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create))
-            {
-                previewImage.Save(fileStream, ImageFormat.Jpeg);
-            }
+            using var previewImage = GetPreview(newPreviewPhoto, maxPixel);
+            using var fileStream = new FileStream(Path.Combine(STATIC_FOLDER, previewPath), FileMode.Create);
+            previewImage.Save(fileStream, ImageFormat.Jpeg);
         }
 
         public async ValueTask<bool> RemoveFileFromRepository(Photo photo, bool updateDB = true)

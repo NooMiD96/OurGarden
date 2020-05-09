@@ -27,7 +27,6 @@ namespace Web.Services.Controllers.AdminApi
         private readonly FileHelper _fileHelper;
         private readonly PhotoHelper _photoHelper;
         private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.CategoryController.Service";
 
         public CategoryControllerService(IOurGardenRepository repository,
                                          ILogger logger)
@@ -50,6 +49,10 @@ namespace Web.Services.Controllers.AdminApi
 
                 Alias = entityDTO.Alias,
                 IsVisible = entityDTO.IsVisible ?? true,
+
+                SeoTitle = entityDTO.SeoTitle,
+                SeoDescription = entityDTO.SeoDescription,
+                SeoKeywords = entityDTO.SeoKeywords,
 
                 Photos = new List<Photo>()
             };
@@ -88,8 +91,6 @@ namespace Web.Services.Controllers.AdminApi
         /// </summary>
         public async ValueTask<(bool isSuccess, string error)> FullUpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".FullUpdateCategory";
-
             // В случае когда нам не удаётся обновить данную модель
             // Мы должны удалить те фото, которые были добавлены
             var scheduleAddedPhotoList = new List<Photo>();
@@ -98,165 +99,174 @@ namespace Web.Services.Controllers.AdminApi
             // То нужно окончательно удалить ненужные фото
             var scheduleDeletePhotoList = new List<Photo>();
 
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
             {
-                (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+                transaction.Rollback();
+                return result;
+            }
+
+            try
+            {
+                #region Create new entity and migrate/update photo list
+
+                var (newCategory, error) = await CreateCategory(categoryDTO,
+                                                                defaultPhotoList: oldCategory.Photos,
+                                                                scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                                scheduleDeletePhotoList: scheduleDeletePhotoList);
+
+                if (newCategory is null)
                 {
-                    transaction.Rollback();
-                    return result;
+                    return cancelUpdate((false, error));
                 }
 
-                try
+                var newCategoryId = newCategory.CategoryId;
+                newCategory = null;
+
+                #endregion
+
+                // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
+                await _context
+                    .Entry(oldCategory)
+                    .Collection(x => x.Subcategories)
+                    .LoadAsync();
+
+                // Поскольку по окончанию цикла мы сохраняем изменения в БД
+                // Список подкатегорий уменьшается, поэтому используется цикл while
+                while (oldCategory.Subcategories.Count != 0)
                 {
-                    #region Create new entity and migrate/update photo list
+                    var oldSubcategory = oldCategory.Subcategories.ElementAt(0);
+                    var newSubcategory = default(Subcategory);
 
-                    var (newCategory, error) = await CreateCategory(categoryDTO,
-                                                                    defaultPhotoList: oldCategory.Photos,
-                                                                    scheduleAddedPhotoList: scheduleAddedPhotoList,
-                                                                    scheduleDeletePhotoList: scheduleDeletePhotoList);
-
-                    if (newCategory is null)
-                    {
-                        return cancelUpdate((false, error));
-                    }
-
-                    var newCategoryId = newCategory.CategoryId;
-                    newCategory = null;
-
-                    #endregion
-
-                    // Для старой Entry (категории) загружаем из базы коллекцию (лист) подкатегорий
+                    // Загружаем для подкатегории фотографию
                     await _context
-                        .Entry(oldCategory)
-                        .Collection(x => x.Subcategories)
+                        .Entry(oldSubcategory)
+                        .Collection(x => x.Photos)
                         .LoadAsync();
 
-                    // Поскольку по окончанию цикла мы сохраняем изменения в БД
-                    // Список подкатегорий уменьшается, поэтому используется цикл while
-                    while (oldCategory.Subcategories.Count != 0)
+                    // Создаём новую подкатегорию
+                    newSubcategory = new Subcategory()
                     {
-                        var oldSubcategory = oldCategory.Subcategories.ElementAt(0);
-                        var newSubcategory = default(Subcategory);
+                        CategoryId = newCategoryId,
+                        SubcategoryId = oldSubcategory.SubcategoryId,
 
-                        // Загружаем для подкатегории фотографию
+                        SeoTitle = oldSubcategory.SeoTitle,
+                        SeoDescription = oldSubcategory.SeoDescription,
+                        SeoKeywords = oldSubcategory.SeoKeywords,
+
+                        Alias = oldSubcategory.Alias,
+                        Products = new List<Product>(),
+                        Photos = new List<Photo>(),
+                    };
+
+                    // Удаляем фотографию для старой
+                    _photoHelper.MovePhotosToEntity(newSubcategory, oldSubcategory.Photos);
+
+                    // Загружаем список продуктов
+                    await _context
+                        .Entry(oldSubcategory)
+                        .Collection(x => x.Products)
+                        .LoadAsync();
+
+                    foreach (var product in oldSubcategory.Products)
+                    {
                         await _context
-                            .Entry(oldSubcategory)
+                            .Entry(product)
                             .Collection(x => x.Photos)
                             .LoadAsync();
 
-                        // Создаём новую подкатегорию
-                        newSubcategory = new Subcategory()
+                        var newProduct = new Product()
                         {
-                            CategoryId = newCategoryId,
-                            SubcategoryId = oldSubcategory.SubcategoryId,
+                            CategoryId = newSubcategory.CategoryId,
+                            SubcategoryId = newSubcategory.SubcategoryId,
+                            ProductId = product.ProductId,
 
-                            Alias = oldSubcategory.Alias,
-                            Products = new List<Product>(),
-                            Photos = new List<Photo>(),
+                            Alias = product.Alias,
+                            Price = product.Price,
+                            Description = product.Description,
+
+                            SeoTitle = product.SeoTitle,
+                            SeoDescription = product.SeoDescription,
+                            SeoKeywords = product.SeoKeywords,
+
+                            Photos = new List<Photo>()
                         };
 
-                        // Удаляем фотографию для старой
-                        _photoHelper.MovePhotosToEntity(newSubcategory, oldSubcategory.Photos);
+                        _photoHelper.MovePhotosToEntity(newProduct, product.Photos);
 
-                        // Загружаем список продуктов
-                        await _context
-                            .Entry(oldSubcategory)
-                            .Collection(x => x.Products)
-                            .LoadAsync();
-
-                        foreach (var product in oldSubcategory.Products)
-                        {
-                            await _context
-                                .Entry(product)
-                                .Collection(x => x.Photos)
-                                .LoadAsync();
-
-                            var newProduct = new Product()
-                            {
-                                CategoryId = newSubcategory.CategoryId,
-                                SubcategoryId = newSubcategory.SubcategoryId,
-                                ProductId = product.ProductId,
-
-                                Alias = product.Alias,
-                                Price = product.Price,
-                                Description = product.Description,
-
-                                Photos = new List<Photo>()
-                            };
-
-                            _photoHelper.MovePhotosToEntity(newProduct, product.Photos);
-
-                            newSubcategory.Products.Add(newProduct);
-                        }
-
-                        // Добовляем новую подкатегорию
-                        _context.Add(newSubcategory);
-
-                        // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
-                        var categoryKeys = oldSubcategory
-                            .Products
-                            .Select(x => x.CategoryId);
-
-                        var subcategoryKeys = oldSubcategory
-                            .Products
-                            .Select(x => x.SubcategoryId);
-
-                        var productKeys = oldSubcategory
-                            .Products
-                            .Select(x => x.ProductId);
-
-                        var orderList = _context.OrderPosition
-                            .Where(
-                                order => categoryKeys.Contains(order.Product.CategoryId)
-                                && subcategoryKeys.Contains(order.Product.SubcategoryId)
-                                && productKeys.Contains(order.Product.ProductId)
-                            )
-                            .ToList();
-
-                        // Обновляем ссылку на продукт
-                        orderList.ForEach(order =>
-                        {
-                            var newProduct = newSubcategory.Products.First(product => oldSubcategory.CategoryId == order.Product.CategoryId
-                                                                                      && product.SubcategoryId == order.Product.SubcategoryId
-                                                                                      && product.ProductId == order.Product.ProductId);
-
-                            order.Product = newProduct;
-
-                            _context.Update(order);
-                        });
-
-                        // Теперь старая подкатегория не нужно
-                        _context.Remove(oldSubcategory);
-
-                        // Сохраняем изменения
-                        await _context.SaveChangesAsync();
+                        newSubcategory.Products.Add(newProduct);
                     }
 
-                    // Если всё прошло удачно, удаляем старую категорию
-                    await _repository.DeleteCategory(oldCategory.CategoryId);
+                    // Добовляем новую подкатегорию
+                    _context.Add(newSubcategory);
 
-                    transaction.Commit();
+                    // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
+                    var categoryKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.CategoryId);
 
-                    foreach (var photo in scheduleDeletePhotoList)
+                    var subcategoryKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.SubcategoryId);
+
+                    var productKeys = oldSubcategory
+                        .Products
+                        .Select(x => x.ProductId);
+
+                    var orderList = _context.OrderPosition
+                        .Where(
+                            order => categoryKeys.Contains(order.Product.CategoryId)
+                            && subcategoryKeys.Contains(order.Product.SubcategoryId)
+                            && productKeys.Contains(order.Product.ProductId)
+                        )
+                        .ToList();
+
+                    // Обновляем ссылку на продукт
+                    orderList.ForEach(order =>
                     {
-                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
-                    }
+                        var newProduct = newSubcategory.Products.First(product => oldSubcategory.CategoryId == order.Product.CategoryId
+                                                                                  && product.SubcategoryId == order.Product.SubcategoryId
+                                                                                  && product.ProductId == order.Product.ProductId);
 
-                    return (true, null);
+                        order.Product = newProduct;
+
+                        _context.Update(order);
+                    });
+
+                    // Теперь старая подкатегория не нужно
+                    _context.Remove(oldSubcategory);
+
+                    // Сохраняем изменения
+                    await _context.SaveChangesAsync();
                 }
-                catch (Exception ex)
+
+                // Если всё прошло удачно, удаляем старую категорию
+                await _repository.DeleteCategory(oldCategory.CategoryId);
+
+                transaction.Commit();
+
+                foreach (var photo in scheduleDeletePhotoList)
                 {
-                    foreach (var photo in scheduleAddedPhotoList)
-                    {
-                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
-                    }
-
-                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
-                    return cancelUpdate((
-                        false,
-                        $"Ошибка при обновлении категории. Возможно подкатегория и товар с такой категорией уже существует. Текст ошибки: {ex.Message}"
-                    ));
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
                 }
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                foreach (var photo in scheduleAddedPhotoList)
+                {
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                }
+
+                var errMsg = "Ошибка при обновлении категории. Возможно подкатегория и товар с такой категорией уже существует.";
+
+                _logger.LogError(ex, errMsg);
+
+                return cancelUpdate((
+                    false,
+                    $"{errMsg} Текст ошибки: {ex.Message}"
+                ));
             }
         }
 
@@ -272,6 +282,10 @@ namespace Web.Services.Controllers.AdminApi
 
             oldCategory.Alias = categoryDTO.Alias;
             oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
+
+            oldCategory.SeoTitle = categoryDTO.SeoTitle;
+            oldCategory.SeoDescription = categoryDTO.SeoDescription;
+            oldCategory.SeoKeywords = categoryDTO.SeoKeywords;
 
             return await _repository.UpdateCategory(oldCategory);
         }

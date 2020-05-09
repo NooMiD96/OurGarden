@@ -17,6 +17,12 @@ namespace ApiService.Abstraction.DTO
         [Required]
         public string Description { get; set; }
 
+        public string SeoTitle { get; set; }
+        
+        public string SeoDescription { get; set; }
+
+        public string SeoKeywords { get; set; }
+
         public IFormFileCollection AddFiles { get; set; }
 
         public IFormFileCollection UpdateFiles { get; set; }

@@ -45,6 +45,10 @@ namespace Web.Services.Controllers.AdminApi
                 Date = DateTime.Now,
                 Description = entityDTO.Description,
 
+                SeoTitle = entityDTO.SeoTitle,
+                SeoDescription = entityDTO.SeoDescription,
+                SeoKeywords = entityDTO.SeoKeywords,
+
                 Photos = new List<Photo>()
             };
 
@@ -82,6 +86,10 @@ namespace Web.Services.Controllers.AdminApi
             oldEntity.Alias = entityDTO.Title.TransformToId();
             oldEntity.Title = entityDTO.Title;
             oldEntity.Description = entityDTO.Description;
+
+            oldEntity.SeoTitle = entityDTO.SeoTitle;
+            oldEntity.SeoDescription = entityDTO.SeoDescription;
+            oldEntity.SeoKeywords = entityDTO.SeoKeywords;
 
             return await _repository.UpdateNews(oldEntity);
         }
