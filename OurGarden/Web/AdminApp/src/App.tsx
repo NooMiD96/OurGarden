@@ -9,30 +9,22 @@ export const AppRoutes = (
     <Route
       exact
       path="/"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Home" */ "@components/Home")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Home" */ "@components/Home"))}
     />
     <Route
       exact
       path="/новости-и-акции"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Order" */ "@components/News")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Order" */ "@components/News"))}
     />
     <Route
       exact
       path="/категории"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Category" */ "@components/Category")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Category" */ "@components/Category"))}
     />
     <Route
       exact
       path="/подкатегории"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Subcategory" */ "@components/Subcategory"))}
     />
     <Switch>
       <Redirect from="/продукты" to="/товары" />
@@ -40,40 +32,30 @@ export const AppRoutes = (
       <Route
         exact
         path="/товары"
-        component={AsyncComponent(() =>
-          import(/* webpackChunkName: "Product" */ "@components/Product")
-        )}
+        component={AsyncComponent(() => import(/* webpackChunkName: "Product" */ "@components/Product"))}
       />
     </Switch>
     <Route
       exact
       path="/заказы"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Order" */ "@components/Order")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Order" */ "@components/Order"))}
     />
     <Route
       exact
       path="/клиенты"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Clients" */ "@components/Clients")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Clients" */ "@components/Clients"))}
     />
     <Route
       exact
       path="/фотогалерея"
-      component={AsyncComponent(() =>
-        import(/* webpackChunkName: "Gallery" */ "@components/Gallery")
-      )}
+      component={AsyncComponent(() => import(/* webpackChunkName: "Gallery" */ "@components/Gallery"))}
     />
     <Route
       exact
       path="/видеогалерея"
-      component={AsyncComponent(() =>
-        import(
-          /* webpackChunkName: "VideoGallery" */ "@components/VideoGallery"
-        )
-      )}
+      component={AsyncComponent(() => import(
+        /* webpackChunkName: "VideoGallery" */ "@components/VideoGallery"
+      ))}
     />
   </Layout>
 );

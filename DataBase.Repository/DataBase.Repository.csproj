@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
+    <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
+    <ProjectReference Include="..\DataBase.Core\DataBase.Core.csproj" />
+  </ItemGroup>
+
+</Project>

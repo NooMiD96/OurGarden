@@ -1,34 +1,34 @@
 #pragma warning disable CA1822 // Mark members as static
 
+using DependencyInjections;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Model.EMail;
 
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-using Services.BackgroundWork.DummyWorker;
-using Services.BackgroundWork.OrderCleaner;
-using Services.BackgroundWork.SiteMap;
+using Serilog;
+
 using Services.EMail;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-using static Database.DatabaseInitialization;
-using static Services.DIServices.DependencyInjections;
+using static DependencyInjections.DataBaseDependencyInjection;
+using static DependencyInjections.SecureDependencyInjection;
 
 namespace Web
 {
@@ -51,27 +51,21 @@ namespace Web
             services.AddResponseCompression();
 
             var serviceProvider = services.BuildServiceProvider();
-            InitDataBase(serviceProvider, Configuration).GetAwaiter().GetResult();
+            ApplyDatabaseMigrations(serviceProvider, Configuration).GetAwaiter().GetResult();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = Configuration.GetValue<string>("SpaPhysicalRootPath");
-            });
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(x =>
+                    {
+                        x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                        x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    });
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddSingleton<IEmailSender, EmailSender>();
 
-            services.AddHostedService<DummyHostedService>();
-            services.AddScoped<IDummyWorkerService, DummyWorkerService>();
-
-            services.AddHostedService<OrderCleanerHostedService>();
-            services.AddScoped<IOrderCleanerService, OrderCleanerService>();
-
-            services.AddHostedService<SiteMapHostedService>();
-            services.AddScoped<ISiteMapService, SiteMapService>();
+            services.AddServices()
+                    .AddHostServices();
 
             services.AddNodeServices();
 
@@ -90,13 +84,14 @@ namespace Web
             StartUpVendors.Configuration = Configuration;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             string cachePeriod;
             if (env.IsDevelopment())
             {
-                cachePeriod = "600";
+                cachePeriod = "10";
 
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
@@ -116,10 +111,11 @@ namespace Web
             }
             else
             {
+                /// Неделя
                 cachePeriod = "604800";
 
                 app.UseStatusCodePagesWithReExecute("/");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                /// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
 
                 var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
@@ -129,52 +125,47 @@ namespace Web
 
             app.UseSerilogRequestLogging();
 
-            app.UseResponseCompression();
-
             app.UseHttpsRedirection();
 
-            app.UseSpaStaticFiles();
+            app.UseResponseCompression();
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                ContentTypeProvider = provider,
-                
-            });
-            // Не работает, так как, вероятно, ссылается на одну и ту же папку
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
-                                                                     "wwwroot",
-                                                                     "images")),
-                RequestPath = "/images",
+                ContentTypeProvider = provider,
                 OnPrepareResponse = ctx =>
                 {
-                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+                    if (ctx.Context.Request.Path.HasValue && ctx.Context.Request.Path.Value.StartsWith("/images"))
+                    {
+                        ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+                    }
                 }
             });
 
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "admin",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "admin/{controller=Admin}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback-admin",
-                    templatePrefix: "admin",
-                    defaults: new { controller = "Admin", action = "Index" });
+                endpoints.MapFallbackToController(
+                    pattern: "admin/{controller=Admin}/{action=Index}/{id?}",
+                    action: "Index",
+                    controller: "Admin");
 
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                endpoints.MapFallbackToController(
+                    action: "Index",
+                    controller: "Home");
             });
         }
     }

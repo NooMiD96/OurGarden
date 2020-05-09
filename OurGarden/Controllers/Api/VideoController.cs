@@ -1,4 +1,4 @@
-﻿using Database.Repositories;
+﻿using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +12,7 @@ namespace Web.Controllers.Api
     {
         private readonly IOurGardenRepository _repository;
 
-        public VideoController([FromServices] IOurGardenRepository repository)
+        public VideoController(IOurGardenRepository repository)
         {
             _repository = repository;
         }

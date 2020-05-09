@@ -1,9 +1,9 @@
-﻿using Database.Repositories;
+﻿using ApiService.Abstraction.DTO.OrderDTO;
+
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Model.DTO.Order;
 
 using Services.EMail;
 
@@ -19,8 +19,8 @@ namespace Web.Controllers.Api
     {
         private readonly OrderControllerService _service;
 
-        public OrderController([FromServices] IOurGardenRepository repository,
-                               [FromServices] IEmailSender emailSender,
+        public OrderController(IOurGardenRepository repository,
+                               IEmailSender emailSender,
                                ILogger<OrderController> logger)
         {
             _service = new OrderControllerService(repository, emailSender, logger);

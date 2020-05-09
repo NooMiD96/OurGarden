@@ -1,4 +1,4 @@
-﻿using Database.Repositories;
+﻿using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.NodeServices;
@@ -25,7 +25,7 @@ namespace Web.Controllers
         private readonly GetAssets _getAssetsUtils;
 
         public HomeController(IConfiguration configuration,
-                              [FromServices] IOurGardenRepository repository,
+                              IOurGardenRepository repository,
                               [FromServices] INodeServices nodeServices,
                               ILogger<HomeController> logger)
         {

@@ -1,8 +1,7 @@
-﻿using Database.Repositories;
+﻿using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Http;
-
-using Model.DB;
 
 using System;
 using System.Drawing;

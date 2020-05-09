@@ -1,10 +1,9 @@
-﻿using Database.Service;
+﻿using DataBase.Abstraction.Identity;
+using DataBase.Core;
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-using Model.Identity;
 
 using System.Threading.Tasks;
 

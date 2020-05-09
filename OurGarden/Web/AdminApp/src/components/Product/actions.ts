@@ -10,10 +10,10 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import * as t from "./actionsType";
 import { IProduct, IProductDTO } from "./State";
 import { generateFormBody } from "@src/core/helpers/request";
-import { ICategoryDictionary } from "@components/Category/State";
+import { IItemDictionary } from "@components/Category/State";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getProductListRequest: (): t.IGetProductListRequest => ({
     type: t.GET_PRODUCT_LIST_REQUEST
@@ -31,7 +31,7 @@ export const actionsList = {
     type: t.GET_CATEGORY_DICTIONARY_LIST_REQUEST
   }),
   getCategoryDictionarySuccess: (
-    payload: ICategoryDictionary[]
+    payload: IItemDictionary[]
   ): t.IGetCategoryDictionarySuccess => ({
     type: t.GET_CATEGORY_DICTIONARY_LIST_SUCCESS,
     payload
@@ -75,9 +75,9 @@ export const actionsList = {
     type: t.CLEAN_ERROR_INNER
   })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const apiPrefix = "apiAdmin";
 const controllerName = "Product";
 export const actionCreators = {
@@ -107,15 +107,13 @@ export const actionCreators = {
 
         return Promise.resolve();
       })
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getProductListError,
-          dispatch
-        )
-      );
+      .catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getProductListError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.getProductListRequest());
@@ -137,7 +135,7 @@ export const actionCreators = {
       }
     })
       .then(responseCatcher)
-      .then((value: IResponse<ICategoryDictionary[]>) => {
+      .then((value: IResponse<IItemDictionary[]>) => {
         if (value && value.error) {
           return errorCreater(value.error);
         }
@@ -146,15 +144,13 @@ export const actionCreators = {
 
         return Promise.resolve();
       })
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getCategoryDictionaryError,
-          dispatch
-        )
-      );
+      .catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getCategoryDictionaryError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.getCategoryDictionaryRequest());
@@ -253,4 +249,4 @@ export const actionCreators = {
 
   cleanErrorInner: actionsList.cleanErrorInner
 };
-//#endregion
+// #endregion

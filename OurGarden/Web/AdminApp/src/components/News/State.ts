@@ -1,9 +1,10 @@
 import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
 import { IDefaultState } from "@src/core/IDefaultState";
+import { ISeoParams } from "@src/core/ISeoParams";
 
 // -----------------
 // #region STATE
-export interface INews {
+export interface INews extends ISeoParams {
   newsId: number;
   title: string;
   date: string;
@@ -12,7 +13,7 @@ export interface INews {
   photos: IPhoto[];
 }
 
-export interface INewsDTO extends IMultiplyPhotoDTO {
+export interface INewsDTO extends IMultiplyPhotoDTO, ISeoParams {
   newsId: number;
   title: string;
   description: string;

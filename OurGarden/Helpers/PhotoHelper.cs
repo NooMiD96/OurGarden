@@ -1,12 +1,12 @@
 ﻿#pragma warning disable CA1822 // Mark members as static
 
-using Database.Repositories;
+using ApiService.Abstraction;
+
+using DataBase.Abstraction;
+using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.Extensions.Logging;
-
-using Model.DB;
-using Model.Interfaces.DB;
-using Model.Interfaces.DTO;
 
 using System;
 using System.Collections.Generic;

@@ -11,6 +11,7 @@ import Checkbox from "@core/antd/Checkbox";
 import MultiplyUploaderForm, {
   useMultiplyUploaderForm
 } from "@src/core/components/MultiplyUploaderForm";
+import MetaDataForm from "@src/core/components/MetaDataForm";
 
 import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
@@ -22,11 +23,11 @@ import {
 
 import { IProduct, IProductDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import { ICategoryDictionary } from "@components/Category/State";
+import { IItemDictionary } from "@components/Category/State";
 
 interface IProps extends FormComponentProps {
   item: IProduct | null;
-  categoryList: ICategoryDictionary[];
+  categoryList: IItemDictionary[];
   loading: boolean;
   handleCreateSubmit: (data: IProductDTO) => void;
   handleClose: () => void;
@@ -34,14 +35,14 @@ interface IProps extends FormComponentProps {
 
 const getSubcategoryList = (
   selectedCategoryId: string,
-  categoryList: ICategoryDictionary[]
+  categoryList: IItemDictionary[]
 ) => {
-  const category = categoryList.find(x => x.categoryId === selectedCategoryId);
+  const category = categoryList.find((x) => x.itemId === selectedCategoryId);
   if (!category) {
     return [];
   }
 
-  return category.subcategories || [];
+  return category.subDictionary || [];
 };
 
 export const EditModalContent = (props: IProps) => {
@@ -52,7 +53,17 @@ export const EditModalContent = (props: IProps) => {
   const { getFieldDecorator } = form;
 
   const item = props.item || ({ isVisible: true } as IProduct);
-  const { categoryId, alias, price, description, photos, isVisible } = item;
+  const {
+    categoryId,
+    alias,
+    price,
+    description,
+    photos,
+    isVisible,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+  } = item;
   let { subcategoryId } = item || ({} as IProduct);
 
   const selectedCategoryId = form.isFieldTouched("newCategoryId")
@@ -78,6 +89,10 @@ export const EditModalContent = (props: IProps) => {
     const isVisible = form.getFieldValue("isVisible");
     const price = form.getFieldValue("price");
 
+    const seoTitle = form.getFieldValue("seoTitle");
+    const seoDescription = form.getFieldValue("seoDescription");
+    const seoKeywords = form.getFieldValue("seoKeywords");
+
     props.form.setFieldsValue({
       description
     });
@@ -101,6 +116,10 @@ export const EditModalContent = (props: IProps) => {
           isVisible,
           price,
           description,
+
+          seoTitle,
+          seoDescription,
+          seoKeywords,
 
           addFiles: addFilesDTO,
           removeFiles: multiplyUploaderParams.removeFiles,
@@ -139,8 +158,8 @@ export const EditModalContent = (props: IProps) => {
             }}
             filterOption={filterOption}
           >
-            {categoryList.map(x => (
-              <Select.Option key={x.categoryId} value={x.categoryId}>
+            {categoryList.map((x) => (
+              <Select.Option key={x.itemId} value={x.itemId}>
                 {x.alias}
               </Select.Option>
             ))}
@@ -163,8 +182,8 @@ export const EditModalContent = (props: IProps) => {
             placeholder={localeText._label_subcategory}
             filterOption={filterOption}
           >
-            {subcategoryList.map(x => (
-              <Select.Option key={x.subcategoryId} value={x.subcategoryId}>
+            {subcategoryList.map((x) => (
+              <Select.Option key={x.itemId} value={x.itemId}>
                 {x.alias}
               </Select.Option>
             ))}
@@ -218,6 +237,45 @@ export const EditModalContent = (props: IProps) => {
           <MultiplyUploaderForm
             defaultFileList={defaultFileList}
             {...multiplyUploaderParams}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoTitle", {
+          initialValue: seoTitle,
+          rules: [{ required: false, max: 70, message: "Длина не должна превышать 70 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать заголовок"
+            minRows={1}
+            maxRows={1}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoDescription", {
+          initialValue: seoDescription,
+          rules: [{ required: false, max: 150, message: "Длина не должна превышать 150 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать описание"
+            minRows={2}
+            maxRows={3}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoKeywords", {
+          initialValue: seoKeywords,
+          rules: [{ required: false }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать ключевые слова (через запятую)"
+            minRows={2}
+            maxRows={4}
           />
         )}
       </FormItem>

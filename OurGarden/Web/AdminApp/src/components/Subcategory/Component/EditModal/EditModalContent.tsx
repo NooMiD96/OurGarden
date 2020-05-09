@@ -9,6 +9,7 @@ import Checkbox from "@core/antd/Checkbox";
 import MultiplyUploaderForm, {
   useMultiplyUploaderForm
 } from "@src/core/components/MultiplyUploaderForm";
+import MetaDataForm from "@src/core/components/MetaDataForm";
 
 import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
@@ -20,12 +21,12 @@ import {
 
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import { ICategoryDictionary } from "@src/components/Category/State";
+import { IItemDictionary } from "@src/components/Category/State";
 
 interface IProps extends FormComponentProps {
   item: ISubcategory | null;
   loading: boolean;
-  dropdownData: ICategoryDictionary[];
+  dropdownData: IItemDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
   handleClose: () => void;
 }
@@ -37,7 +38,16 @@ export const EditModalContent = (props: IProps) => {
   const { getFieldDecorator } = form;
 
   const item = props.item || ({ isVisible: true } as ISubcategory);
-  const { subcategoryId, categoryId, alias, photos, isVisible } = item;
+  const {
+    subcategoryId,
+    categoryId,
+    alias,
+    photos,
+    isVisible,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+  } = item;
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
@@ -46,6 +56,10 @@ export const EditModalContent = (props: IProps) => {
 
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
+
+    const seoTitle = form.getFieldValue("seoTitle");
+    const seoDescription = form.getFieldValue("seoDescription");
+    const seoKeywords = form.getFieldValue("seoKeywords");
 
     const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
     const updateFilesDTO = await getUpdateFilesDTO(
@@ -62,6 +76,11 @@ export const EditModalContent = (props: IProps) => {
 
           alias: alias.trim(),
           isVisible,
+
+          seoTitle,
+          seoDescription,
+          seoKeywords,
+
           addFiles: addFilesDTO,
           removeFiles: multiplyUploaderParams.removeFiles,
           updateFiles: updateFilesDTO
@@ -70,8 +89,8 @@ export const EditModalContent = (props: IProps) => {
     });
   };
 
-  const options = props.dropdownData.map(item => (
-    <Select.Option key={item.categoryId} value={item.categoryId}>
+  const options = props.dropdownData.map((item) => (
+    <Select.Option key={item.itemId} value={item.itemId}>
       {item.alias}
     </Select.Option>
   ));
@@ -139,6 +158,46 @@ export const EditModalContent = (props: IProps) => {
           />
         )}
       </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoTitle", {
+          initialValue: seoTitle,
+          rules: [{ required: false, max: 70, message: "Длина не должна превышать 70 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать заголовок"
+            minRows={1}
+            maxRows={1}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoDescription", {
+          initialValue: seoDescription,
+          rules: [{ required: false, max: 150, message: "Длина не должна превышать 150 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать описание"
+            minRows={2}
+            maxRows={3}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoKeywords", {
+          initialValue: seoKeywords,
+          rules: [{ required: false }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать ключевые слова (через запятую)"
+            minRows={2}
+            maxRows={4}
+          />
+        )}
+      </FormItem>
+
 
       <EditModalFooter onSubmit={onSubmit} onClose={onClose} />
     </Form>

@@ -4,12 +4,12 @@ import Modal from "@core/antd/Modal";
 import { ISubcategory, ISubcategoryDTO } from "../../State";
 
 import EditModalContent from "./EditModalContent";
-import { ICategoryDictionary } from "@src/components/Category/State";
+import { IItemDictionary } from "@src/components/Category/State";
 
 interface IEditModalProps {
   isShow: boolean;
   item: ISubcategory | null;
-  dropdownData: ICategoryDictionary[];
+  dropdownData: IItemDictionary[];
   handleCreateSubmit: (data: ISubcategoryDTO) => void;
   handleClose: () => void;
 }
@@ -20,8 +20,8 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
       isShow,
       item,
       dropdownData,
-      handleCreateSubmit: handleCreateSubmit,
-      handleClose: handleClose
+      handleCreateSubmit,
+      handleClose
     } = this.props;
 
     return (

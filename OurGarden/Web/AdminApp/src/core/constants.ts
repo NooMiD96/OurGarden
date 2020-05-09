@@ -1,4 +1,4 @@
-//#region SVG Icons
+// #region SVG Icons
 export type TIcons =
   | "loading"
   | "question-circle"
@@ -56,4 +56,4 @@ export const getIconAsync = async (type: TIcons) => {
     }
   }
 };
-//#endregion
+// #endregion

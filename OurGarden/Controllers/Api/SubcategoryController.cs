@@ -1,11 +1,12 @@
-﻿using Core;
+﻿using ApiService.Abstraction.DTO;
 
-using Database.Repositories;
+using Core;
+
+using DataBase.Abstraction;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Model.Breadcrumb;
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Web.Controllers.Api
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "Api.SubcategoryController";
 
-        public SubcategoryController([FromServices] IOurGardenRepository repository,
+        public SubcategoryController(IOurGardenRepository repository,
                                      ILogger<SubcategoryController> logger)
         {
             _repository = repository;
@@ -46,9 +47,9 @@ namespace Web.Controllers.Api
             var breadcrumb = await _repository.GetSubcategoryBreadcrumb(categoryId);
             var order = 1;
 
-            var breadcrumbList = new List<Breadcrumb>()
+            var breadcrumbList = new List<IBreadcrumb>()
             {
-                new Breadcrumb()
+                new BreadcrumbDTO()
                 {
                     DisplayName = "Каталог",
                     Url = "Catalog",

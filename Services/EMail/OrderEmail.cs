@@ -1,12 +1,11 @@
-using Database.Contexts;
+using DataBase.Abstraction.Model;
+using DataBase.Context;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using MimeKit;
-
-using Model.DB;
 
 using System;
 using System.Linq;
@@ -441,10 +440,7 @@ namespace Services.EMail
             var endTableMap = "]}";
             var startIndex = _templateAdmin.IndexOf(startTableMap, StringComparison.InvariantCultureIgnoreCase) + startTableMap.Length;
             var endIndex = _templateAdmin.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
-            var tableDataTemplate = _templateAdmin.Substring(
-                startIndex,
-                endIndex - startIndex
-            );
+            var tableDataTemplate = _templateAdmin[startIndex..endIndex];
 
             var body = new BodyBuilder
             {
@@ -478,10 +474,7 @@ namespace Services.EMail
             var endTableMap = "]}";
             var startIndex = _templateClient.IndexOf(startTableMap, StringComparison.InvariantCultureIgnoreCase) + startTableMap.Length;
             var endIndex = _templateClient.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
-            var tableDataTemplate = _templateClient.Substring(
-                startIndex,
-                endIndex - startIndex
-            );
+            var tableDataTemplate = _templateClient[startIndex..endIndex];
 
             var body = new BodyBuilder
             {
@@ -521,19 +514,17 @@ namespace Services.EMail
             // when we exit the using block,
             // the IServiceScope will dispose itself 
             // and dispose all of the services that it resolved.
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
+            using var scope = _scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
 
-                var order = await context.Order
-                    .Include(x => x.OrderPositions)
-                        .ThenInclude(x => x.Product)
-                            .ThenInclude(x => x.Subcategory)
-                                .ThenInclude(x => x.Category)
-                    .FirstAsync(x => x.OrderId == orderId);
+            var order = await context.Order
+                .Include(x => x.OrderPositions)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.Subcategory)
+                            .ThenInclude(x => x.Category)
+                .FirstAsync(x => x.OrderId == orderId);
 
-                return order;
-            }
+            return order;
         }
 
         public async Task SendOrderInformation(int orderId)

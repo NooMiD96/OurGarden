@@ -1,9 +1,10 @@
-﻿using Database.Repositories;
+﻿using ApiService.Abstraction.DTO;
+
+using DataBase.Abstraction;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Model.Breadcrumb;
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Web.Controllers.Api
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "Api.NewsController";
 
-        public NewsController([FromServices] IOurGardenRepository repository,
+        public NewsController(IOurGardenRepository repository,
                               ILogger<SubcategoryController> logger)
         {
             _logger = logger;
@@ -33,9 +34,9 @@ namespace Web.Controllers.Api
             var breadcrumb = await _repository.GetNewsBreadcrumb(newsId);
             var order = 1;
 
-            var breadcrumbList = new List<Breadcrumb>()
+            var breadcrumbList = new List<IBreadcrumb>()
             {
-                new Breadcrumb()
+                new BreadcrumbDTO()
                 {
                     DisplayName = "Акции",
                     Url = "News",

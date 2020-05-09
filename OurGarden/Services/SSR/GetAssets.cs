@@ -48,7 +48,7 @@ namespace Web.Services.SSR
                 {
                     LogError(_logger,
                              "GetBundles",
-                             customeError: $"Error in getting bundles\nReturn obj:\n{result.ToString()}");
+                             customeError: $"Error in getting bundles\nReturn obj:\n{result}");
                 }
             }
             catch (Exception ex)

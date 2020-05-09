@@ -1,4 +1,4 @@
-﻿using Database.Repositories;
+﻿using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,7 +17,7 @@ namespace Web.Controllers.Api
         private readonly ILogger _logger;
         private const string CONTROLLER_LOCATE = "Api.SearchController";
 
-        public SearchController([FromServices] IOurGardenRepository repository,
+        public SearchController(IOurGardenRepository repository,
                                 ILogger<SearchController> logger)
         {
             _repository = repository;

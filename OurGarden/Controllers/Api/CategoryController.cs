@@ -1,4 +1,4 @@
-﻿using Database.Repositories;
+﻿using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +13,7 @@ namespace Web.Controllers.Api
     {
         private readonly IOurGardenRepository _repository;
 
-        public CategoryController([FromServices] IOurGardenRepository repository)
+        public CategoryController(IOurGardenRepository repository)
         {
             _repository = repository;
         }

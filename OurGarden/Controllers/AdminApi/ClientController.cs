@@ -1,12 +1,11 @@
 ﻿using Core.Constants;
 
-using Database.Repositories;
+using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Model.DB;
 
 using System;
 using System.Threading.Tasks;

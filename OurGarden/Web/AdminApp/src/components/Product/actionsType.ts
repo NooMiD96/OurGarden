@@ -1,18 +1,18 @@
 import { IProduct } from "./State";
-import { ICategoryDictionary } from "@components/Category/State";
+import { IItemDictionary } from "@components/Category/State";
 
 // -----------------
-//#region ACTIONS TYPE
+// #region ACTIONS TYPE
 export const GET_PRODUCT_LIST_REQUEST = "GET_PRODUCT_LIST_REQUEST";
 export const GET_PRODUCT_LIST_SUCCESS = "GET_PRODUCT_LIST_SUCCESS";
 export const GET_PRODUCT_LIST_ERROR = "GET_PRODUCT_LIST_ERROR";
 
-export const GET_CATEGORY_DICTIONARY_LIST_REQUEST =
-  "GET_CATEGORY_DICTIONARY_LIST_REQUEST";
-export const GET_CATEGORY_DICTIONARY_LIST_SUCCESS =
-  "GET_CATEGORY_DICTIONARY_LIST_SUCCESS";
-export const GET_CATEGORY_DICTIONARY_LIST_ERROR =
-  "GET_CATEGORY_DICTIONARY_LIST_ERROR";
+export const GET_CATEGORY_DICTIONARY_LIST_REQUEST
+  = "GET_CATEGORY_DICTIONARY_LIST_REQUEST";
+export const GET_CATEGORY_DICTIONARY_LIST_SUCCESS
+  = "GET_CATEGORY_DICTIONARY_LIST_SUCCESS";
+export const GET_CATEGORY_DICTIONARY_LIST_ERROR
+  = "GET_CATEGORY_DICTIONARY_LIST_ERROR";
 
 export const ADD_OR_UPDATE_PRODUCT_REQUEST = "ADD_OR_UPDATE_PRODUCT_REQUEST";
 export const ADD_OR_UPDATE_PRODUCT_SUCCESS = "ADD_OR_UPDATE_PRODUCT_SUCCESS";
@@ -23,9 +23,9 @@ export const DELETE_PRODUCT_SUCCESS = "DELETE_PRODUCT_SUCCESS";
 export const DELETE_PRODUCT_ERROR = "DELETE_PRODUCT_ERROR";
 
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
-//#endregion
+// #endregion
 // -----------------
-//#region ACTIONS INTERFACE
+// #region ACTIONS INTERFACE
 export interface IGetProductListRequest {
   type: typeof GET_PRODUCT_LIST_REQUEST;
 }
@@ -47,7 +47,7 @@ export interface IGetCategoryDictionaryRequest {
 }
 export interface IGetCategoryDictionarySuccess {
   type: typeof GET_CATEGORY_DICTIONARY_LIST_SUCCESS;
-  payload: ICategoryDictionary[];
+  payload: IItemDictionary[];
 }
 export interface IGetCategoryDictionaryError {
   type: typeof GET_CATEGORY_DICTIONARY_LIST_ERROR;
@@ -102,4 +102,4 @@ type KnownAction =
   | ICleanErrorInnerAction;
 
 export default KnownAction;
-//#endregion
+// #endregion

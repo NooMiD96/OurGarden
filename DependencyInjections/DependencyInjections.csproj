@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
+    <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
+    <ProjectReference Include="..\DummyWorkerHostService\PagePingerHostService.csproj" />
+    <ProjectReference Include="..\OrderCleanerHostService\OrderCleanerHostService.csproj" />
+    <ProjectReference Include="..\SiteMapHostService\SiteMapHostService.csproj" />
+  </ItemGroup>
+
+</Project>

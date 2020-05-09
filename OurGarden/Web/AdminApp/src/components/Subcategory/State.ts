@@ -1,15 +1,16 @@
 import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
-import { ICategoryDictionary } from "../Category/State";
+import { IItemDictionary } from "../Category/State";
 import { IDefaultState } from "@src/core/IDefaultState";
+import { ISeoParams } from "@src/core/ISeoParams";
 
 // -----------------
-//#region STATE
+// #region STATE
 export interface IResponseData {
   subcategories: ISubcategory[];
-  categories: ICategoryDictionary[];
+  categories: IItemDictionary[];
 }
 
-export interface ISubcategory {
+export interface ISubcategory extends ISeoParams {
   subcategoryId: string;
   categoryId: string;
   alias: string;
@@ -17,7 +18,7 @@ export interface ISubcategory {
   photos: IPhoto[];
 }
 
-export interface ISubcategoryDTO extends IMultiplyPhotoDTO {
+export interface ISubcategoryDTO extends IMultiplyPhotoDTO, ISeoParams {
   categoryId: string | null;
   subcategoryId: string | null;
 
@@ -29,7 +30,7 @@ export interface ISubcategoryDTO extends IMultiplyPhotoDTO {
 
 export interface ISubcategoryState extends IDefaultState {
   subcategoriesList: ISubcategory[];
-  categoriesList: ICategoryDictionary[];
+  categoriesList: IItemDictionary[];
 }
 
 export const unloadedState: ISubcategoryState = {
@@ -38,4 +39,4 @@ export const unloadedState: ISubcategoryState = {
   pending: false,
   errorInner: ""
 };
-//#endregion
+// #endregion

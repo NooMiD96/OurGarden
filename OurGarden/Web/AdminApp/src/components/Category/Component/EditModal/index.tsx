@@ -7,7 +7,9 @@ import { IEditModalProps } from "./IEditModal";
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
-    const { isShow, item, handleCreateSubmit, handleClose } = this.props;
+    const {
+      isShow, item, handleCreateSubmit, handleClose
+    } = this.props;
 
     return (
       <Modal

@@ -1,7 +1,7 @@
 import { ICategory } from "./State";
 
 // -----------------
-//#region ACTIONS TYPE
+// #region ACTIONS TYPE
 export const GET_CATEGORY_LIST_REQUEST = "GET_CATEGORY_LIST_REQUEST";
 export const GET_CATEGORY_LIST_SUCCESS = "GET_CATEGORY_LIST_SUCCESS";
 export const GET_CATEGORY_LIST_ERROR = "GET_CATEGORY_LIST_ERROR";
@@ -15,9 +15,9 @@ export const DELETE_CATEGORY_SUCCESS = "DELETE_CATEGORY_SUCCESS";
 export const DELETE_CATEGORY_ERROR = "DELETE_CATEGORY_ERROR";
 
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
-//#endregion
+// #endregion
 // -----------------
-//#region ACTIONS INTERFACE
+// #region ACTIONS INTERFACE
 export interface IGetCategoryListRequest { type: typeof GET_CATEGORY_LIST_REQUEST }
 export interface IGetCategoryListSuccess { type: typeof GET_CATEGORY_LIST_SUCCESS; payload: ICategory[] }
 export interface IGetCategoryListError { type: typeof GET_CATEGORY_LIST_ERROR; errorMessage: string }
@@ -39,4 +39,4 @@ type KnownAction = TGetCategoryList | TAddOrUpdateCategory | IDeleteCategory
   | ICleanErrorInnerAction;
 
 export default KnownAction;
-//#endregion
+// #endregion

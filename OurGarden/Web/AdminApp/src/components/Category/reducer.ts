@@ -1,5 +1,5 @@
 // ----------------
-//#region REDUCER
+// #region REDUCER
 import { Reducer } from "redux";
 
 import { ICategoryState, unloadedState } from "./State";

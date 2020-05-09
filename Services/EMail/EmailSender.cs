@@ -55,65 +55,65 @@ namespace Services.EMail
                 mimeMessage.Subject = subject;
                 mimeMessage.Body = message;
 
-                using (var client = new SmtpClient())
+                using var client = new SmtpClient
                 {
                     // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
-                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    ServerCertificateValidationCallback = (s, c, h, e) => true
+                };
 
-                    try
+                try
+                {
+                    if (_env.IsDevelopment())
                     {
-                        if (_env.IsDevelopment())
-                        {
-                            // The third parameter is useSSL (true if the client should make an SSL-wrapped
-                            // connection to the server; otherwise, false).
-                            //await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
-                            await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, useSsl: true);
-                        }
-                        else
-                        {
-                            await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, useSsl: true);
-                        }
+                        // The third parameter is useSSL (true if the client should make an SSL-wrapped
+                        // connection to the server; otherwise, false).
+                        //await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
+                        await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, useSsl: true);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        client.ServerCertificateValidationCallback = null;
-                        _logger.LogError(ex, $"ConnectAsync DROP\n{JsonHelper.Serialize(client)}");
-                        throw new Exception("", ex);
+                        await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, useSsl: true);
                     }
+                }
+                catch (Exception ex)
+                {
+                    client.ServerCertificateValidationCallback = null;
+                    _logger.LogError(ex, $"ConnectAsync DROP\n{JsonHelper.Serialize(client)}");
+                    throw new Exception("", ex);
+                }
 
-                    try
-                    {
-                        // Note: only needed if the SMTP server requires authentication
-                        await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
-                    }
-                    catch (Exception ex)
-                    {
-                        client.ServerCertificateValidationCallback = null;
-                        _logger.LogError(ex, $"AuthenticateAsync DROP\n{JsonHelper.Serialize(client)}");
-                        throw new Exception("", ex);
-                    }
+                try
+                {
+                    // Note: only needed if the SMTP server requires authentication
+                    await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
+                }
+                catch (Exception ex)
+                {
+                    client.ServerCertificateValidationCallback = null;
+                    _logger.LogError(ex, $"AuthenticateAsync DROP\n{JsonHelper.Serialize(client)}");
+                    throw new Exception("", ex);
+                }
 
-                    try
-                    {
-                        await client.SendAsync(mimeMessage);
-                    }
-                    catch (Exception ex)
-                    {
-                        client.ServerCertificateValidationCallback = null;
-                        _logger.LogError(ex, $"SendAsync DROP\n{JsonHelper.Serialize(client)}");
-                        throw new Exception("", ex);
-                    }
+                try
+                {
+                    await client.SendAsync(mimeMessage);
+                }
+                catch (Exception ex)
+                {
+                    client.ServerCertificateValidationCallback = null;
+                    _logger.LogError(ex, $"SendAsync DROP\n{JsonHelper.Serialize(client)}");
+                    throw new Exception("", ex);
+                }
 
-                    try
-                    {
-                        await client.DisconnectAsync(true);
-                    }
-                    catch (Exception ex)
-                    {
-                        client.ServerCertificateValidationCallback = null;
-                        _logger.LogError(ex, $"DisconnectAsync DROP\n{JsonHelper.Serialize(client)}");
-                        throw new Exception("", ex);
-                    }
+                try
+                {
+                    await client.DisconnectAsync(true);
+                }
+                catch (Exception ex)
+                {
+                    client.ServerCertificateValidationCallback = null;
+                    _logger.LogError(ex, $"DisconnectAsync DROP\n{JsonHelper.Serialize(client)}");
+                    throw new Exception("", ex);
                 }
             }
             catch (Exception ex)

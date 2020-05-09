@@ -19,6 +19,7 @@ import {
 import { ICategory } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { IEditModalContentProps } from "./IEditModal";
+import MetaDataForm from "@src/core/components/MetaDataForm";
 
 export const EditModalContent = (props: IEditModalContentProps) => {
   const multiplyUploaderParams = useMultiplyUploaderForm();
@@ -32,7 +33,10 @@ export const EditModalContent = (props: IEditModalContentProps) => {
     categoryId,
     alias,
     photos,
-    isVisible
+    isVisible,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
   } = item;
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
@@ -40,6 +44,10 @@ export const EditModalContent = (props: IEditModalContentProps) => {
 
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
+
+    const seoTitle = form.getFieldValue("seoTitle");
+    const seoDescription = form.getFieldValue("seoDescription");
+    const seoKeywords = form.getFieldValue("seoKeywords");
 
     const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
     const updateFilesDTO = await getUpdateFilesDTO(
@@ -52,6 +60,10 @@ export const EditModalContent = (props: IEditModalContentProps) => {
           categoryId,
           alias: alias.trim(),
           isVisible,
+
+          seoTitle,
+          seoDescription,
+          seoKeywords,
 
           addFiles: addFilesDTO,
           removeFiles: multiplyUploaderParams.removeFiles,
@@ -103,6 +115,45 @@ export const EditModalContent = (props: IEditModalContentProps) => {
           <MultiplyUploaderForm
             defaultFileList={defaultFileList}
             {...multiplyUploaderParams}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoTitle", {
+          initialValue: seoTitle,
+          rules: [{ required: false, max: 70, message: "Длина не должна превышать 70 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать заголовок"
+            minRows={1}
+            maxRows={1}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoDescription", {
+          initialValue: seoDescription,
+          rules: [{ required: false, max: 150, message: "Длина не должна превышать 150 символов" }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать описание"
+            minRows={2}
+            maxRows={3}
+          />
+        )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("seoKeywords", {
+          initialValue: seoKeywords,
+          rules: [{ required: false }]
+        })(
+          <MetaDataForm
+            checkboxText="Указать ключевые слова (через запятую)"
+            minRows={2}
+            maxRows={4}
           />
         )}
       </FormItem>

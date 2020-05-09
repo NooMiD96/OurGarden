@@ -1,13 +1,14 @@
-﻿using Core.Helpers;
+﻿using ApiService.Abstraction.DTO.OrderDTO;
 
-using Database.Contexts;
-using Database.Repositories;
+using Core.Helpers;
+
+using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
+using DataBase.Context;
+using DataBase.Repository;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using Model.DB;
-using Model.DTO.Order;
 
 using Services.EMail;
 
@@ -30,7 +31,7 @@ namespace Web.Services.Controllers.Api
                                       ILogger logger)
         {
             _repository = repository as OurGardenRepository;
-            _context = _repository._context;
+            _context = _repository.Context;
             _emailSender = emailSender;
             _logger = logger;
         }

@@ -2,13 +2,13 @@ import * as React from "react";
 
 import Modal from "@core/antd/Modal";
 import { IProduct, IProductDTO } from "../../State";
-import { ICategoryDictionary } from "@components/Category/State";
+import { IItemDictionary } from "@components/Category/State";
 
 import EditModalContent from "./EditModalContent";
 
 interface IEditModalProps {
   item: IProduct | null;
-  categoryList: ICategoryDictionary[];
+  categoryList: IItemDictionary[];
   isShow: boolean;
   handleCreateSubmit: (data: IProductDTO) => void;
   handleClose: () => void;

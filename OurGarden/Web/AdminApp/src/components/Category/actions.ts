@@ -12,7 +12,7 @@ import { ICategory, ICategoryDTO } from "./State";
 import { generateFormBody } from "@src/core/helpers/request";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getCategoryListRequest: (): t.IGetCategoryListRequest => ({
     type: t.GET_CATEGORY_LIST_REQUEST
@@ -60,9 +60,9 @@ export const actionsList = {
     type: t.CLEAN_ERROR_INNER
   })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const apiPrefix = "apiAdmin";
 const controllerName = "Category";
 export const actionCreators = {
@@ -92,15 +92,13 @@ export const actionCreators = {
 
         return Promise.resolve();
       })
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getCategoryListError,
-          dispatch
-        )
-      );
+      .catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getCategoryListError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.getCategoryListRequest());
@@ -199,4 +197,4 @@ export const actionCreators = {
 
   cleanErrorInner: actionsList.cleanErrorInner
 };
-//#endregion
+// #endregion

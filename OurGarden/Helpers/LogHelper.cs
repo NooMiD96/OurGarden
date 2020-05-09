@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using System;
-using System.Text;
 
 namespace Web.Helpers
 {
@@ -15,9 +14,6 @@ namespace Web.Helpers
                                       string customeError = ERROR,
                                       int returnStatusCode = 200)
         {
-            //byte[] bytes = Encoding.Default.GetBytes(customeError);
-            //customeError = Encoding.GetEncoding("windows-1251").GetString(bytes);
-
             var returnErrorString = customeError;
             var logErrorString = $"{apiLocate}\n{returnErrorString}\nreturnStatusCode=={returnStatusCode}";
 

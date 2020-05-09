@@ -1,14 +1,12 @@
-﻿using Core.Constants;
-using Core.Helpers;
+﻿using ApiService.Abstraction.DTO;
 
-using Database.Repositories;
+using Core.Constants;
+
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Model.DB;
-using Model.DTO;
 
 using System;
 using System.Linq;

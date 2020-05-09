@@ -1,12 +1,12 @@
-﻿using Core.Constants;
+﻿using ApiService.Abstraction.DTO;
 
-using Database.Repositories;
+using Core.Constants;
+
+using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using Model.DB;
-using Model.DTO;
 
 using System;
 using System.Threading.Tasks;
@@ -33,8 +33,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate(
-            [FromForm]VideoDTO video)
+        public async Task<IActionResult> AddOrUpdate([FromForm]VideoDTO video)
         {
             try
             {
@@ -77,8 +76,7 @@ namespace Web.Controllers.AdminApi
         }       
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Delete(
-            [FromQuery]string videoId)
+        public async Task<IActionResult> Delete([FromQuery]string videoId)
         {
             if (Int32.TryParse(videoId, out var id))
                 await _repository.DeleteVideo(id);

@@ -1,25 +1,23 @@
 import { IPhoto, IMultiplyPhotoDTO } from "@src/core/IPhoto";
 import { IDefaultState } from "@src/core/IDefaultState";
+import { ISeoParams } from "@src/core/ISeoParams";
 
 // -----------------
 // #region STATE
-export interface ICategoryDictionary {
-  categoryId: string;
+export interface IItemDictionary {
+  itemId: string;
   alias: string;
-  subcategories: {
-    subcategoryId: string;
-    alias: string;
-  }[];
+  subDictionary: IItemDictionary[];
 }
 
-export interface ICategory {
+export interface ICategory extends ISeoParams {
   categoryId: string;
   alias: string;
   isVisible: boolean;
   photos: IPhoto[];
 }
 
-export interface ICategoryDTO extends IMultiplyPhotoDTO {
+export interface ICategoryDTO extends IMultiplyPhotoDTO, ISeoParams {
   categoryId: string | null;
   alias: string;
   isVisible: boolean;

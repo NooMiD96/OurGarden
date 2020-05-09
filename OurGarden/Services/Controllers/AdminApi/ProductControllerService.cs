@@ -1,12 +1,13 @@
-﻿using Core.Helpers;
+﻿using ApiService.Abstraction.DTO.ProductDTO;
 
-using Database.Contexts;
-using Database.Repositories;
+using Core.Helpers;
+
+using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
+using DataBase.Context;
+using DataBase.Repository;
 
 using Microsoft.Extensions.Logging;
-
-using Model.DB;
-using Model.DTO.ProductDTO;
 
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Web.Services.Controllers.AdminApi
                                         ILogger logger)
         {
             _repository = repository as OurGardenRepository;
-            _context = _repository._context;
+            _context = _repository.Context;
             _logger = logger;
             _fileHelper = new FileHelper(repository);
             _photoHelper = new PhotoHelper(repository, logger);

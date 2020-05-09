@@ -1,13 +1,13 @@
-import { ICategoryDictionary } from "@components/Category/State";
+import { IItemDictionary } from "@components/Category/State";
 
 export const parseCategoryIdField = <T extends any>(
   field: string,
   data: T,
-  categoryList?: ICategoryDictionary[]
+  categoryList?: IItemDictionary[]
 ) => {
   if (categoryList) {
     const idValue = data[field!];
-    const findedCategory = categoryList.find(x => x.categoryId == idValue);
+    const findedCategory = categoryList.find((x) => x.itemId == idValue);
     if (findedCategory) {
       return findedCategory.alias;
     }
@@ -19,16 +19,16 @@ export const parseCategoryIdField = <T extends any>(
 export const parseSubcategoryIdField = <T extends any>(
   field: string,
   data: T,
-  categoryList?: ICategoryDictionary[]
+  categoryList?: IItemDictionary[]
 ) => {
   if (categoryList) {
     const { categoryId } = data;
-    const category = categoryList.find(x => x.categoryId == categoryId);
+    const category = categoryList.find((x) => x.itemId == categoryId);
 
     if (category) {
       const idValue = data[field!];
-      const findedSubategory = category.subcategories.find(
-        x => x.subcategoryId == idValue
+      const findedSubategory = category.subDictionary.find(
+        (x) => x.itemId == idValue
       );
 
       if (findedSubategory) {

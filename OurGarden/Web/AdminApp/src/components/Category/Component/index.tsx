@@ -16,6 +16,7 @@ export class Category extends React.PureComponent<TState, TComponentState> {
     editItem: null,
     showModal: false
   };
+
   gridRef: React.RefObject<AgGrid<ICategory>> = createRef();
 
   columns: ColDef[] = [
@@ -72,7 +73,9 @@ export class Category extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    const {
+      errorInner, cleanErrorInner, listItem, pending
+    } = this.props;
     const { showModal, editItem } = this.state;
 
     return (
