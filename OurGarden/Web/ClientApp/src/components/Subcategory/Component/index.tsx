@@ -61,7 +61,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
         {category && (
           <HeaderHelmet
             seoSectionName="subcategory"
-            seoTitle={[
+            seoTitle={category.seoTitle}
+            seoTitleReplacments={[
               {
                 replacementValue: category.alias
               }

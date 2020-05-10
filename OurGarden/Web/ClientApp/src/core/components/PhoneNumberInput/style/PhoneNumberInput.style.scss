@@ -1,0 +1,15 @@
+.react-tel-input {
+  flex: 1 1 auto;
+  display: flex;
+
+  > .ant-input {
+    padding-right: 0;
+    padding-left: 0;
+    border: none;
+    outline: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

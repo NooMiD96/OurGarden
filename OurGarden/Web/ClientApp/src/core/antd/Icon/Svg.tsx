@@ -1,5 +1,6 @@
 import * as React from "react";
-import { IconDefinition } from "@ant-design/icons/lib/types";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { IconDefinition } from "@ant-design/icons-svg/es/types";
 
 // TODO: recursive function
 interface ISvgProps {
@@ -12,6 +13,7 @@ const Svg = (props: ISvgProps) => {
   if (!props.svgProps || typeof props.svgProps.icon !== "object") {
     return null;
   }
+
   const { icon } = props.svgProps;
   const iProp = { ...props };
   delete iProp.svgProps;

@@ -10,6 +10,6 @@ export interface ISEOAdditionalInfo {
 
 export interface IHeaderHelmet {
   seoSectionName: string;
-  seoTitle?: ISEOAdditionalInfo[];
-  seoMeta?: ISEOAdditionalInfo[];
+  seoTitle?: string;
+  seoTitleReplacments?: ISEOAdditionalInfo[];
 }

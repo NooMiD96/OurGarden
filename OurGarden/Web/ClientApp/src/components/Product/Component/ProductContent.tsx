@@ -53,7 +53,7 @@ export class ProductContent extends React.PureComponent<
     const productPhoto = getPhotoSrc(product);
 
     return (
-      <Row>
+      <React.Fragment>
         {productPhoto && (
           <img
             src={productPhoto}
@@ -89,7 +89,7 @@ export class ProductContent extends React.PureComponent<
             addToCard={this.addToCard}
           />
         ) : null}
-      </Row>
+      </React.Fragment>
     );
   }
 }

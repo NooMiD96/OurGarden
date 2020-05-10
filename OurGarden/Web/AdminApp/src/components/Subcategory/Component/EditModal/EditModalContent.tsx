@@ -175,7 +175,7 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("seoDescription", {
           initialValue: seoDescription,
-          rules: [{ required: false, max: 150, message: "Длина не должна превышать 150 символов" }]
+          rules: [{ required: false, max: 200, message: "Длина не должна превышать 200 символов" }]
         })(
           <MetaDataForm
             checkboxText="Указать описание"

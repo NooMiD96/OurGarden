@@ -4,7 +4,7 @@ const getAlias = (): { [key: string]: string } => ({
   "@src": path.resolve("./src"),
   "@core": path.resolve("./src/core"),
   "@components": path.resolve("./src/components"),
-  "@antdSvgs": path.resolve("./node_modules/@ant-design/icons/lib/outline"),
+  "@antdSvgs": path.resolve("./node_modules/@ant-design/icons-svg/es/asn"),
   "@projectFolder": path.resolve("../../../"),
   styles: path.resolve("./src/assets/scss"),
   indexof: "component-indexof/index",

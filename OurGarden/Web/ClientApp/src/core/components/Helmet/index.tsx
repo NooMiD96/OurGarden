@@ -7,20 +7,22 @@ import { IHeaderHelmet } from "@src/core/utils/SEO/ISEO";
 
 export const HeaderHelmet = ({
   seoSectionName,
-  seoTitle = [],
-  seoMeta = []
+  seoTitle,
+  seoTitleReplacments = [],
 }: IHeaderHelmet) => {
-  let { title, meta } = getSEOMetaData(seoSectionName);
+  let seoTitleValue = null;
 
-  title = getAdditionalSEOInfo(title, seoTitle);
-  if (meta && !meta.includes("{{value}}")) {
-    meta = getAdditionalSEOInfo(meta, seoMeta) || "";
+  if (!seoTitle) {
+    const { title } = getSEOMetaData(seoSectionName);
+
+    seoTitleValue = getAdditionalSEOInfo(title, seoTitleReplacments);
+  } else {
+    seoTitleValue = seoTitle;
   }
 
   return (
     <Helmet>
-      {title ? <title>{`${title} | Наш Сад`}</title> : <title>Наш Сад</title>}
-      {meta ? <meta name="description" content={meta} /> : null}
+      {seoTitleValue ? <title>{`${seoTitleValue} | Наш Сад`}</title> : <title>Наш Сад</title>}
     </Helmet>
   );
 };

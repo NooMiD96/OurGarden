@@ -28,24 +28,45 @@ a {
   }
 }
 
-a.number-wrapper {
-  color: inherit;
+a {
+  &.email-wrapper,
+  &.number-wrapper {
+    color: inherit;
+  }
 }
 
 .ant-select-auto-complete.ant-select .ant-input,
-.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled),
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled),
 .ant-input {
   &:hover {
     border-color: $greyColor;
   }
 
+  &.ant-input-affix-wrapper-focused,
   &:focus {
     border-color: $greyColor;
     box-shadow: $greyShadowStyle;
   }
 }
 
-.ant-pagination + .ant-row-flex {
+.ant-input-affix-wrapper > input.ant-input:focus {
+  box-shadow: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-pagination + .row-type-flex {
   margin-top: 15px;
 }
 

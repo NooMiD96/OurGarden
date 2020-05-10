@@ -59,7 +59,10 @@ export const actionCreators = {
         actionsList.saveCategory({
           alias: data.alias,
           categoryId: data.categoryId,
-          photos: data.photos
+          photos: data.photos,
+          seoTitle: data.seoTitle,
+          seoDescription: data.seoDescription,
+          seoKeywords: data.seoKeywords,
         })
       );
       dispatch(actionsList.getSubcategoryListSuccess(data.subcategories));

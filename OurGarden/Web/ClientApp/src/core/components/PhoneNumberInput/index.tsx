@@ -1,12 +1,9 @@
 import React from "react";
 import PhoneInput from "react-phone-input-2";
 
-export const CISPhoneNumberRegExp = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
+import "./style/PhoneNumberInput.style.scss";
 
-const inputStyle = {
-  paddingLeft: 30,
-  paddingRight: 11
-};
+export const CISPhoneNumberRegExp = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
 
 class PhoneNumberInput extends React.PureComponent<any, any> {
   render() {
@@ -24,7 +21,6 @@ class PhoneNumberInput extends React.PureComponent<any, any> {
           placeholder={placeholder || "Телефон"}
           disableSearchIcon
           disableDropdown
-          inputStyle={inputStyle}
           autocompleteSearch
           enableAreaCodes
           countryCodeEditable={false}

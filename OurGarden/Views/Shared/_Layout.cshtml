@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
         @(
-            String.IsNullOrEmpty(ViewData["title"] as String)
+            String.IsNullOrEmpty(ViewData["seoTitle"] as String)
                 ? "Наш Сад"
-                : $"{ViewData["title"]} | Наш Сад"
+                : $"{ViewData["seoTitle"]} | Наш Сад"
         )
     </title>
-    <meta name="description" content="@(ViewData["metaDescription"] ?? "")" />
+    <meta name="description" content="@(ViewData["seoDescription"] ?? "")" />
+    <meta name="keywords" content="@(ViewData["seoKeywords"] ?? "")" />
     <base href="~/" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">

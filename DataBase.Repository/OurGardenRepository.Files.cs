@@ -9,11 +9,14 @@ namespace DataBase.Repository
 {
     public partial class OurGardenRepository
     {
-        public async Task AddFile(Photo photo)
+        public async Task AddFile(Photo photo, bool updateDB = true)
         {
             Context.Photo.Add(photo);
 
-            await Context.SaveChangesAsync();
+            if (updateDB)
+            {
+                await Context.SaveChangesAsync();
+            }
         }
 
         public async ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true)

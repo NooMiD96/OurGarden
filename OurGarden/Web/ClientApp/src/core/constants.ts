@@ -34,29 +34,29 @@ export type TIcons =
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
     case "loading":
-      return (await import("@antdSvgs/LoadingOutline")).default;
+      return (await import("@antdSvgs/LoadingOutlined")).default;
     case "left":
-      return (await import("@antdSvgs/LeftOutline")).default;
+      return (await import("@antdSvgs/LeftOutlined")).default;
     case "right":
-      return (await import("@antdSvgs/RightOutline")).default;
+      return (await import("@antdSvgs/RightOutlined")).default;
     case "double-left":
-      return (await import("@antdSvgs/DoubleLeftOutline")).default;
+      return (await import("@antdSvgs/DoubleLeftOutlined")).default;
     case "double-right":
-      return (await import("@antdSvgs/DoubleRightOutline")).default;
+      return (await import("@antdSvgs/DoubleRightOutlined")).default;
     case "down":
-      return (await import("@antdSvgs/DownOutline")).default;
+      return (await import("@antdSvgs/DownOutlined")).default;
     case "close-circle":
-      return (await import("@antdSvgs/CloseCircleOutline")).default;
+      return (await import("@antdSvgs/CloseCircleOutlined")).default;
     case "close":
-      return (await import("@antdSvgs/CloseOutline")).default;
+      return (await import("@antdSvgs/CloseOutlined")).default;
     case "user":
-      return (await import("@antdSvgs/UserOutline")).default;
+      return (await import("@antdSvgs/UserOutlined")).default;
     case "phone":
-      return (await import("@antdSvgs/PhoneOutline")).default;
+      return (await import("@antdSvgs/PhoneOutlined")).default;
     case "mail":
-      return (await import("@antdSvgs/MailOutline")).default;
+      return (await import("@antdSvgs/MailOutlined")).default;
     case "bars":
-      return (await import("@antdSvgs/BarsOutline")).default;
+      return (await import("@antdSvgs/BarsOutlined")).default;
 
     default: {
       // eslint-disable-next-line

@@ -5,43 +5,55 @@
   .ant-col.card-wrapper {
     margin-bottom: 28px;
     flex: 0 1 auto;
+    width: 100%;
   }
 
-  .ant-card.ant-card-hoverable {
-    .ant-card-cover {
-      min-height: 186px;
+  .ant-card {
+    > .ant-card-cover {
+      margin-right: 0;
+      margin-left: 0;
     }
 
-    .ant-typography {
-      color: inherit;
-      margin-bottom: 0;
+    &.ant-card-bordered {
+      border-color: #e8e8e8;
     }
 
-    .ant-card-meta-title a {
-      color: $blackColor;
-      white-space: normal;
-      text-overflow: clip;
-      transition: color 0.3s;
-    }
-
-    .ant-card-meta-description {
-      color: black;
-    }
-
-    &:hover {
-      .ant-card-meta-title a {
-        color: $darkGreenColor;
-        text-decoration: underline;
+    &.ant-card-hoverable {
+      .ant-card-cover {
+        min-height: 186px;
       }
 
-      .card-description .ant-input-group-addon .ant-btn {
-        background-color: $darkGreenColor;
-        color: #fff;
+      .ant-typography {
+        color: inherit;
+        margin-bottom: 0;
+      }
 
-        &:focus,
-        &:active {
-          background-color: $greenColor;
+      .ant-card-meta-title a {
+        color: $blackColor;
+        white-space: normal;
+        text-overflow: clip;
+        transition: color 0.3s;
+      }
+
+      .ant-card-meta-description {
+        color: black;
+      }
+
+      &:hover {
+        .ant-card-meta-title a {
+          color: $darkGreenColor;
+          text-decoration: underline;
+        }
+
+        .card-description .ant-input-group-addon .ant-btn {
+          background-color: $darkGreenColor;
           color: #fff;
+
+          &:focus,
+          &:active {
+            background-color: $greenColor;
+            color: #fff;
+          }
         }
       }
     }

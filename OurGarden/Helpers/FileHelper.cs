@@ -35,7 +35,7 @@ namespace Web.Controllers.AdminApi
                 return "jpg";
             }
 
-            return split[split.Length - 1];
+            return split[^1];
         }
 
         private async Task<Photo> AddFile(string url,  Guid? guid = null, string previewUrl = null, bool updateDB = true)
@@ -51,8 +51,7 @@ namespace Web.Controllers.AdminApi
                 PreviewUrl = previewUrl
             };
 
-            if (updateDB)
-                await _repository.AddFile(file);
+            await _repository.AddFile(file, updateDB);
 
             return file;
         }

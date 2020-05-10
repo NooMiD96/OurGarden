@@ -66,7 +66,8 @@ export class Product extends React.PureComponent<TState, TComponentState> {
           <>
             <HeaderHelmet
               seoSectionName="product"
-              seoTitle={[
+              seoTitle={product.seoTitle}
+              seoTitleReplacments={[
                 {
                   replacementValue: product.alias
                 }

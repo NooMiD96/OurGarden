@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 
@@ -20,23 +20,25 @@ const fetchProducts = async (search: string) => {
   return result;
 };
 
-const SearchProduct = (props: { push: (val: string) => void }) => {
-  const autoCompleteEl: React.RefObject<AutoComplete> = useRef(null);
+let debounceOnSearch: any;
 
+const SearchProduct = (props: { push: (val: string) => void }) => {
   const [pending, setLoading] = useState(false as boolean);
   const [productList, setProductList] = useState([] as IProduct[]);
   const [searchIsActive, setSearchActive] = useState(false as boolean);
+  const [searchValue, setSearchValue] = useState("" as string);
 
   const onSearch = async (value: string) => {
+    const formatedValue = value ? value.trim() : null;
     try {
-      setSearchActive(!!value);
-      setLoading(true);
-      if (!value) {
+      setSearchActive(!!formatedValue);
+      if (!formatedValue) {
         setProductList([]);
         return;
       }
 
-      const { data }: { data: IProduct[] } = await fetchProducts(value);
+      setLoading(true);
+      const { data }: { data: IProduct[] } = await fetchProducts(formatedValue);
       setProductList(data);
     } catch (err) {
       console.warn(err);
@@ -46,20 +48,18 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   };
 
   const resetSearchValue = async () => {
-    const select = (autoCompleteEl.current as any).select.rcSelect;
-    select.setInputValue("");
-    select.fireChange([]);
-
+    setSearchValue("");
+    debounceOnSearch("");
     await onSearch("");
   };
 
   const onSelect = (val: any) => {
     props.push(val);
-
-    return "";
   };
 
-  const debounceOnSearch = debounce(onSearch, 350);
+  useEffect(() => {
+    debounceOnSearch = debounce(onSearch, 350);
+  }, []);
 
   let dataSource: any[] = [];
 
@@ -74,18 +74,20 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   return (
     <React.Fragment>
       <AutoComplete
-        ref={autoCompleteEl}
-        enterButton="Найти"
-        placeholder="Поиск..."
-        dataSource={dataSource}
-        onSearch={debounceOnSearch}
+        listHeight={512}
+        options={dataSource}
+        onSearch={(val) => {
+          setSearchValue(val);
+          debounceOnSearch(val);
+        }}
         // prettier-ignore
         getPopupContainer={() => document.getElementById("product-popup-container")!}
-        optionLabelProp="title"
         defaultActiveFirstOption={false}
         onSelect={onSelect}
+        value={searchValue}
       >
         <Search
+          placeholder="Поиск..."
           // prettier-ignore
           prefix={(
             <LottieWebIcon
@@ -96,6 +98,7 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
           )}
           enterButton="Найти"
           onSearch={onSearch}
+          value={searchValue}
         />
       </AutoComplete>
       <span id="product-popup-container" />

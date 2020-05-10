@@ -27,14 +27,14 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <ErrorHandler>
       <Header className="antd-header">
-        <Row type="flex">
+        <Row className="row-type-flex">
           <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
             <TopBar />
           </Col>
         </Row>
       </Header>
       <AntdLayout className="antd-layout" hasSider>
-        <Row type="flex">
+        <Row className="row-type-flex">
           <Col {...MAIN_LAYOUT_GRID_COL_STYLE}>
             <Sider />
             <AntdLayout>

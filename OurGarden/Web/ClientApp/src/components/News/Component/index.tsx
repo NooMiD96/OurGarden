@@ -51,7 +51,8 @@ export class News extends React.PureComponent<TState, TComponentState> {
           <>
             <HeaderHelmet
               seoSectionName="news"
-              seoTitle={[
+              seoTitle={selectedNew.seoTitle}
+              seoTitleReplacments={[
                 {
                   replacementValue: selectedNew.title
                 }

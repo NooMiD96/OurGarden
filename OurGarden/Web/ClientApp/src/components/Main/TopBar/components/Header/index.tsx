@@ -12,7 +12,7 @@ import Card from "./Card";
 export const Header = () => (
   <React.Fragment>
     <CompanyLogo />
-    <Row type="flex" className="header-wrapper">
+    <Row className="row-type-flex" className="header-wrapper">
       <Col>
         <SearchProduct />
 

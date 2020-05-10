@@ -6,6 +6,10 @@ export interface ICategory {
   categoryId: string;
   alias: string;
   photos: IPhoto[];
+
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
 }
 
 export interface ICategoryState {

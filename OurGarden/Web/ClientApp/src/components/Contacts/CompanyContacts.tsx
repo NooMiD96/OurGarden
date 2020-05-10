@@ -8,7 +8,7 @@ import {
   MAIN_MOBILE,
   HELP_EMAIL,
   ADDRESS,
-  MAIN_MOBILE_FORMATTED
+  MAIN_MOBILE_FORMATTED,
 } from "@src/core/constants";
 
 export interface ICompanyContacts {
@@ -38,10 +38,12 @@ export const CompanyContacts = ({ ymId }: ICompanyContacts) => (
       </a>
     </div>
     <div>
-      <i className="anticon">
-        <Svg type="mail-contacts" />
-      </i>
-      <span>{HELP_EMAIL}</span>
+      <a className="email-wrapper" href={`mailto:${HELP_EMAIL}`}>
+        <i className="anticon">
+          <Svg type="mail-contacts" />
+        </i>
+        <span>{HELP_EMAIL}</span>
+      </a>
     </div>
   </div>
 );

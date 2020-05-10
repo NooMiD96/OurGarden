@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import AutoComplete from "@core/antd/AutoComplete";
 import LazyImage from "@core/components/LazyImage";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
@@ -10,8 +9,6 @@ import { IProductOption } from "./IProductOption";
 import { ICategory } from "@components/Category/State";
 import { ISubcategory } from "@components/Subcategory/State";
 import { IProduct } from "@components/Product/State";
-
-const { Option } = AutoComplete;
 
 const ProductOption = (item: IProductOption) => {
   let link = `/Catalog/${item.categoryId}`;
@@ -28,18 +25,22 @@ const ProductOption = (item: IProductOption) => {
     item as ICategory | ISubcategory | IProduct
   );
 
-  return (
-    <Option className="search-menu-item" title={item.alias} key={link}>
-      <LazyImage
-        className="search-menu-item-image"
-        src={imgSrc}
-        alt={item.alias}
-      />
-      <Link to={link} className="search-menu-item-text">
-        {item.alias}
-      </Link>
-    </Option>
-  );
+  return {
+    value: link,
+    label: (
+      <div className="search-menu-item" title={item.alias} key={link}>
+        <LazyImage
+          className="search-menu-item-image"
+          src={imgSrc}
+          alt={item.alias}
+          visibleByDefault
+        />
+        <Link to={link} className="search-menu-item-text">
+          {item.alias}
+        </Link>
+      </div>
+    )
+  };
 };
 
 export default ProductOption;

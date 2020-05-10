@@ -8,5 +8,5 @@ export interface IMetaDataFormProps {
 
 export interface IMetaDataFormState {
     isEditable: boolean;
-    metaValue: string;
+    metaValue?: string;
 }

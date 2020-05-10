@@ -32,7 +32,7 @@ const getColumns = (
     title: <Title>Корзина</Title>,
     dataIndex: "productId",
     key: "productId",
-    render: (_, record) => (
+    render: (_: any, record: any) => (
       <div className="table-product-wrapper">
         <LazyImage
           className="product-img"
@@ -54,8 +54,8 @@ const getColumns = (
     title: "Количество",
     dataIndex: "count",
     key: "count",
-    width: 120,
-    render: (_, record) => {
+    width: 110,
+    render: (_: any, record: any) => {
       const count = record.count.toString();
 
       return (
@@ -96,7 +96,7 @@ const getColumns = (
     dataIndex: "operation",
     key: "operation",
     width: 90,
-    render: (_, record) => (
+    render: (_: any, record: any) => (
       <LottieWebIcon
         type="remove"
         onClick={() => removeProductFromCard(record.product)}
@@ -115,7 +115,7 @@ const pagination = {
 };
 
 const scroll = {
-  x: 809,
+  x: 799,
   y: "calc(100% - 88px)",
   scrollToFirstRowOnChange: true
 };

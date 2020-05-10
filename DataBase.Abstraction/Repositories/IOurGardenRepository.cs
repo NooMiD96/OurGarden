@@ -154,7 +154,7 @@ namespace DataBase.Abstraction.Repositories
 
         #region Files
 
-        Task AddFile(Photo photo);
+        Task AddFile(Photo photo, bool updateDB = true);
         
         ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true);
 

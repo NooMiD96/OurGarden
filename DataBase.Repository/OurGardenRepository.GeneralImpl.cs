@@ -210,9 +210,9 @@ namespace DataBase.Repository
 
                 var contextEntity = await Context.FindAsync(entity.GetType(), values);
 
-                if (contextEntity != null && contextEntity is T)
+                if (contextEntity != null && contextEntity is T foundedEntity)
                 {
-                    return (false, __entity_alredy_exists, (T)contextEntity);
+                    return (false, __entity_alredy_exists, foundedEntity);
                 }
 
                 Context.Add(entity);

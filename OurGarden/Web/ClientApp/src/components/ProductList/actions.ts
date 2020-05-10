@@ -60,7 +60,10 @@ export const actionCreators = {
           alias: data.alias,
           categoryId: data.categoryId,
           photos: data.photos,
-          subcategoryId: data.subcategoryId
+          subcategoryId: data.subcategoryId,
+          seoTitle: data.seoTitle,
+          seoDescription: data.seoDescription,
+          seoKeywords: data.seoKeywords,
         })
       );
       dispatch(actionsList.getProductListSuccess(data.products));

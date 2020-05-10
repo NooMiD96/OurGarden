@@ -10,6 +10,10 @@ export interface IProduct {
   price: number;
   description: string;
   photos: IPhoto[];
+
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
 }
 
 export interface IProductState {

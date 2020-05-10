@@ -9,6 +9,10 @@ export interface INew {
   alias: string;
   description: string;
   photos: IPhoto[];
+
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
 }
 
 export interface INewsState {

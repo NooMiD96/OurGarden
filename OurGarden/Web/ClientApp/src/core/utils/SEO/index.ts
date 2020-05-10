@@ -14,7 +14,7 @@ export const getAdditionalSEOInfo = (
   additionalInfo: ISEOAdditionalInfo[] = []
 ) => {
   if (!info) {
-    return null;
+    return undefined;
   }
 
   let value = info;

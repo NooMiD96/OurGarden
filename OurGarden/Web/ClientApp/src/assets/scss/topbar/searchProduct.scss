@@ -3,134 +3,124 @@
   height: 28px;
   align-self: flex-end;
 
-  .ant-select-selection.ant-select-selection--single {
+  .ant-select-selection-search-input {
     height: 28px;
 
-    .ant-select-selection__placeholder {
-      margin-left: 40px;
+    // Search icon
+    .ant-input-prefix {
       color: $lightGreyColor;
-      font-style: italic;
-      font-weight: 100;
+      align-items: normal;
+
+      .search-icon {
+        .feather.feather-search {
+          width: 100%;
+          height: 100%;
+        }
+
+        path {
+          stroke: $lightGreyColor;
+        }
+      }
     }
 
-    .ant-select-search {
+    .ant-input {
+      flex: 1 1 auto;
+
+      &::placeholder {
+        margin-left: 40px;
+        color: $lightGreyColor;
+        font-style: italic;
+        font-weight: 100;
+      }
+    }
+  }
+
+  .ant-input-group-addon {
+    .ant-btn {
+      font-style: italic;
       height: 28px;
+      font-size: 16px;
+      background-color: $lightGreyColor;
+      border-color: $lightGreyColor;
+      padding: 0px 15px;
 
-      .ant-input-wrapper.ant-input-group {
-        height: 28px;
-
-        .ant-input-prefix {
-          color: $lightGreyColor;
-          top: 58%;
-          left: 10px;
-
-          .search-icon {
-            path {
-              stroke: $lightGreyColor;
-            }
-          }
-        }
-
-        .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
-          border-color: $greyColor;
-        }
-        .ant-input {
-          height: 28px;
-
-          &:not(:first-child) {
-            padding-left: 40px;
-          }
-        }
-
-        .ant-btn {
-          font-style: italic;
-          height: 28px;
-          font-size: 16px;
-          background-color: $lightGreyColor;
-          border-color: $lightGreyColor;
-
-          &:hover {
-            background-color: $greyColor;
-          }
-        }
+      &:hover {
+        background-color: $greyColor;
       }
     }
   }
 }
 
-#product-popup-container {
-  .ant-select-dropdown {
-    .ant-select-dropdown-menu {
-      max-height: 500px;
-    }
-
-    .loading-auto-select {
-      display: flex;
-      justify-content: center;
-      height: 8em;
-      padding: 1.5em 0;
-
-      &.ant-select-dropdown-menu-item-disabled {
-        cursor: wait;
-      }
-
-      .loading-icon {
-        width: 100%;
-
-        path {
-          fill: $mainColor;
-        }
-      }
-    }
-
-    .search-list-is-empty {
-      white-space: unset;
-    }
-
-    .search-menu-item {
-      display: flex;
-      flex-flow: row nowrap;
-
-      .lazy-load-image-background {
-        min-height: 100px;
-        min-width: 100px;
-        flex: 0 1 auto;
-
-        &.lazy-load-image-loaded {
-          min-width: auto;
-          min-height: auto;
-        }
-      }
-
-      &.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled),
-      &.ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
-        background-color: $tableHoverColor;
-
-        .search-menu-item-text {
-          color: $greenColor;
-        }
-      }
+#product-popup-container .ant-select-dropdown {
+  .ant-select-item-option-selected,
+  .ant-select-item-option-active,
+  .ant-select-item-option:hover {
+    &:not(.ant-select-item-option-disabled) {
+      background-color: $tableHoverColor;
 
       .search-menu-item-text {
-        color: rgba(0, 0, 0, 0.65);
+        color: $greenColor;
       }
+    }
+  }
 
-      &-image {
-        max-width: 120px;
+  .loading-auto-select {
+    display: flex;
+    justify-content: center;
+    height: 8em;
+    padding: 1.5em 0;
+
+    &.ant-select-item-option-disabled {
+      cursor: wait;
+    }
+
+    .loading-icon {
+      width: 100%;
+
+      path {
+        fill: $mainColor;
       }
+    }
+  }
 
-      &-text {
-        flex: 0 0 50%;
+  .search-list-is-empty {
+    white-space: unset;
+  }
 
-        font-size: 16px;
-        margin-left: 0.5rem;
-        align-self: center;
+  .search-menu-item {
+    display: flex;
+    flex-flow: row nowrap;
 
-        overflow: hidden;
-        word-break: normal;
-        white-space: normal;
-        text-overflow: ellipsis;
+    .lazy-load-image-background {
+      min-height: 100px;
+      min-width: 100px;
+      flex: 0 1 auto;
+
+      &.lazy-load-image-loaded {
+        min-width: auto;
+        min-height: auto;
       }
+    }
+
+    .search-menu-item-text {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    &-image {
+      max-width: 120px;
+    }
+
+    &-text {
+      flex: 0 0 50%;
+
+      font-size: 16px;
+      margin-left: 0.5rem;
+      align-self: center;
+
+      overflow: hidden;
+      word-break: normal;
+      white-space: normal;
+      text-overflow: ellipsis;
     }
   }
 }

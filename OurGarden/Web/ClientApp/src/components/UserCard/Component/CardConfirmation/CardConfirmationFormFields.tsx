@@ -28,91 +28,102 @@ const colStyle = {
 
 const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
   const { form, onSubmit } = props;
-  const { getFieldDecorator, isFieldTouched, getFieldError } = form;
+  const { isFieldTouched, getFieldError } = form;
 
+  // prettier-ignore
   const phoneError
     = isFieldTouched("phoneNumber") && getFieldError("phoneNumber");
 
   return (
-    <Row type="flex" gutter={24}>
+    <Row className="row-type-flex" gutter={24}>
       <Col {...colStyle}>
-        <FormItem>
-          {getFieldDecorator("secondName", {
-            rules: [{ required: true, message: "Введите вашу фамилию", transform: (val: string) => val && val.trim() }]
-          })(
-            <Input
-              prefix={<Icon type="user" />}
-              placeholder="Фамилия"
-              onPressEnter={onSubmit}
-            />
-          )}
+        <FormItem
+          name="secondName"
+          rules={[
+            {
+              required: true,
+              message: "Введите вашу фамилию",
+              transform: (val: string) => val && val.trim()
+            }
+          ]}
+        >
+          <Input
+            prefix={<Icon type="user" />}
+            placeholder="Фамилия"
+            onPressEnter={onSubmit}
+          />
         </FormItem>
       </Col>
 
       <Col {...colStyle}>
-        <FormItem>
-          {getFieldDecorator("firstName", {
-            rules: [{ required: true, message: "Введите ваше имя", transform: (val: string) => val && val.trim() }]
-          })(
-            <Input
-              prefix={<Icon type="user" />}
-              placeholder="Имя"
-              onPressEnter={onSubmit}
-            />
-          )}
+        <FormItem
+          name="firstName"
+          rules={[
+            {
+              required: true,
+              message: "Введите ваше имя",
+              transform: (val: string) => val && val.trim()
+            }
+          ]}
+        >
+          <Input
+            prefix={<Icon type="user" />}
+            placeholder="Имя"
+            onPressEnter={onSubmit}
+          />
         </FormItem>
       </Col>
 
       <Col {...colStyle}>
-        <FormItem>
-          {getFieldDecorator("thirdName", {rules: [{transform: (val: string) => val && val.trim()}]})(
-            <Input
-              prefix={<Icon type="user" />}
-              placeholder="Отчество"
-              onPressEnter={onSubmit}
-            />
-          )}
+        <FormItem
+          name="thirdName"
+          rules={[{ transform: (val: string) => val && val.trim() }]}
+        >
+          <Input
+            prefix={<Icon type="user" />}
+            placeholder="Отчество"
+            onPressEnter={onSubmit}
+          />
         </FormItem>
       </Col>
 
       <Col {...colStyle}>
-        <FormItem validateStatus={phoneError ? "error" : undefined}>
-          {getFieldDecorator("phone", {
-            rules: [
-              {
-                required: true,
-                message: "Введите ваш контактный телефон",
-                pattern: CISPhoneNumberRegExp
-              }
-            ]
-          })(
-            <PhoneNumberInput
-              placeholder="Телефон"
-              prefix={<Icon type="phone" className="input-icon" />}
-              onPressEnter={onSubmit}
-            />
-          )}
+        <FormItem
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: "Введите ваш контактный телефон",
+              pattern: CISPhoneNumberRegExp
+            }
+          ]}
+          validateStatus={phoneError ? "error" : undefined}
+        >
+          <PhoneNumberInput
+            placeholder="Телефон"
+            prefix={<Icon type="phone" className="input-icon" />}
+            onPressEnter={onSubmit}
+          />
         </FormItem>
       </Col>
 
       <Col {...colStyle}>
-        <FormItem>
-          {getFieldDecorator("email", {
-            rules: [
-              {
-                required: true,
-                message: "Введите ваш контактный электронный адрес",
-                type: "email",
-                transform: (val: string) => val && val.trim()
-              }
-            ]
-          })(
-            <Input
-              placeholder="Почта"
-              prefix={<Icon type="mail" className="input-icon" />}
-              onPressEnter={onSubmit}
-            />
-          )}
+        <FormItem
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Введите ваш контактный электронный адрес",
+              type: "email",
+              transform: (val: string) => val && val.trim()
+            }
+          ]}
+        >
+          <Input
+            placeholder="Почта"
+            prefix={<Icon type="mail" className="input-icon" />}
+            onPressEnter={onSubmit}
+          />
         </FormItem>
       </Col>
     </Row>

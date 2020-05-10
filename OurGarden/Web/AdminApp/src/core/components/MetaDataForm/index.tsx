@@ -8,8 +8,8 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 class MetaDataForm extends React.PureComponent<IMetaDataFormProps, IMetaDataFormState> {
   state: IMetaDataFormState = {
-    isEditable: false,
-    metaValue: "",
+    isEditable: !!this.props.value,
+    metaValue: this.props.value!,
   }
 
   onEditableChange = (e: CheckboxChangeEvent) => {

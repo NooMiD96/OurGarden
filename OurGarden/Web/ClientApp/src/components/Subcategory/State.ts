@@ -8,6 +8,10 @@ export interface ISubcategory {
   categoryId: string;
   alias: string;
   photos: IPhoto[];
+
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
 }
 
 export interface ISubcategoryState {

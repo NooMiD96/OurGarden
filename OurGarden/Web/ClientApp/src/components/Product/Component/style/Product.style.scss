@@ -1,5 +1,6 @@
 .product-wrapper {
   padding: 2rem;
+  position: relative;
 
   .product-photo {
     max-width: 40%;
@@ -19,8 +20,8 @@
     .product-cost {
       font-size: 21px;
       position: absolute;
-      top: -32px;
-      right: 0;
+      top: 0;
+      right: 2rem;
       color: $darkGreenColor;
     }
 
