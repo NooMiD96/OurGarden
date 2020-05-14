@@ -62,7 +62,7 @@ export const EditModalContent = (props: IProps) => {
     isVisible,
     seoTitle,
     seoDescription,
-    seoKeywords,
+    seoKeywords
   } = item;
   let { subcategoryId } = item || ({} as IProduct);
 
@@ -244,7 +244,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("seoTitle", {
           initialValue: seoTitle,
-          rules: [{ required: false, max: 70, message: "Длина не должна превышать 70 символов" }]
+          rules: [
+            {
+              required: false,
+              max: 128,
+              message: "Длина не должна превышать 128 символов"
+            }
+          ]
         })(
           <MetaDataForm
             checkboxText="Указать заголовок"
@@ -257,7 +263,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("seoDescription", {
           initialValue: seoDescription,
-          rules: [{ required: false, max: 200, message: "Длина не должна превышать 200 символов" }]
+          rules: [
+            {
+              required: false,
+              max: 256,
+              message: "Длина не должна превышать 256 символов"
+            }
+          ]
         })(
           <MetaDataForm
             checkboxText="Указать описание"
@@ -270,7 +282,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("seoKeywords", {
           initialValue: seoKeywords,
-          rules: [{ required: false, max: 512, message: "Длина не должна превышать 150 символов" }]
+          rules: [
+            {
+              required: false,
+              max: 512,
+              message: "Длина не должна превышать 512 символов"
+            }
+          ]
         })(
           <MetaDataForm
             checkboxText="Указать ключевые слова (через запятую)"

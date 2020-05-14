@@ -228,7 +228,7 @@ namespace Web.Services.Controllers.AdminApi
 
             oldSubcategory.SeoTitle = subcategoryDTO.SeoTitle;
             oldSubcategory.SeoDescription = subcategoryDTO.SeoDescription;
-            oldSubcategory.SeoDescription = subcategoryDTO.SeoDescription;
+            oldSubcategory.SeoKeywords = subcategoryDTO.SeoKeywords;
 
             return await _repository.UpdateSubcategory(oldSubcategory);
         }
