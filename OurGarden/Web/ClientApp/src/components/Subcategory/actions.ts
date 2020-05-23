@@ -2,6 +2,8 @@ import * as t from "./actionsType";
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 import { actionCreators as appActions } from "@components/Main/State/actions";
 
+import _omit from "lodash.omit";
+
 import { IAppThunkAction } from "@src/Store";
 import { ISubcategory } from "./State";
 import { ICategory } from "../Category/State";
@@ -56,14 +58,9 @@ export const actionCreators = {
       data: ICategory & { subcategories: ISubcategory[] }
     ) => {
       dispatch(
-        actionsList.saveCategory({
-          alias: data.alias,
-          categoryId: data.categoryId,
-          photos: data.photos,
-          seoTitle: data.seoTitle,
-          seoDescription: data.seoDescription,
-          seoKeywords: data.seoKeywords,
-        })
+        actionsList.saveCategory(
+          _omit(data, ["subcategories"])
+        )
       );
       dispatch(actionsList.getSubcategoryListSuccess(data.subcategories));
     };

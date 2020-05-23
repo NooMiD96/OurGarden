@@ -19,10 +19,6 @@
     }
 
     &.ant-card-hoverable {
-      .ant-card-cover {
-        min-height: 186px;
-      }
-
       .ant-typography {
         color: inherit;
         margin-bottom: 0;
@@ -43,6 +39,7 @@
         .ant-card-meta-title a {
           color: $darkGreenColor;
           text-decoration: underline;
+          word-break: break-word;
         }
 
         .card-description .ant-input-group-addon .ant-btn {
@@ -55,6 +52,22 @@
             color: #fff;
           }
         }
+      }
+    }
+  }
+
+  @media (max-width: 512px) {
+    .add-to-card-button-wrapper.card-add-button {
+      input {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 408px) {
+    .ant-card {
+      .ant-card-body {
+        padding: 8px;
       }
     }
   }

@@ -43,7 +43,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
-    const description: string = ckEditor.current!.state.editor.getData();
+    const description: string = ckEditor.current!.state.editorApi.getData();
     const title = form.getFieldValue("title");
 
     const seoTitle = form.getFieldValue("seoTitle");

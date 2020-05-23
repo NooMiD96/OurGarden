@@ -7,26 +7,45 @@ import Input from "@core/antd/Input";
 
 import "@ckeditor/ckeditor5-build-classic/build/translations/ru";
 
+type RenderFunction = () => React.ReactNode;
 interface IProps {
-  data: string;
+  data?: string;
+  tooltip?: React.ReactNode | RenderFunction;
 }
 interface IState {
-  editor: any;
+  editorApi: any;
 }
 export class CKEditorWrapper extends React.PureComponent<IProps, IState> {
   state: IState = {
-    editor: {}
+    editorApi: {},
   };
 
   config = {
-    language: "ru"
+    language: "ru",
+    heading: {
+      options: [
+        { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
+        {
+          model: "heading1", view: "h1", title: "Heading 1", class: "ck-heading_heading1"
+        },
+        {
+          model: "heading2", view: "h2", title: "Heading 2", class: "ck-heading_heading2"
+        },
+        {
+          model: "heading3", view: "h3", title: "Heading 3", class: "ck-heading_heading3"
+        },
+        {
+          model: "heading4", view: "h4", title: "Heading 4", class: "ck-heading_heading4"
+        }
+      ]
+    }
   };
 
   onImageUploadSuccess = (
     inputRef: React.RefObject<Input>,
     modal: IConfirmReturn
   ) => {
-    const { editor } = this.state;
+    const { editorApi: editor } = this.state;
 
     if (inputRef.current) {
       editor.model.change((writer: any) => {
@@ -64,7 +83,7 @@ export class CKEditorWrapper extends React.PureComponent<IProps, IState> {
 
   editorInitHandler = (api: any) => {
     this.setState({
-      editor: api
+      editorApi: api
     });
 
     const { componentFactory, view } = api.ui;
@@ -88,11 +107,15 @@ export class CKEditorWrapper extends React.PureComponent<IProps, IState> {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, tooltip } = this.props;
 
     return (
       <div className="CKEditor">
-        <h2>Содержимое</h2>
+        <h2>
+          Содержимое
+          {tooltip && " "}
+          {tooltip}
+        </h2>
         <CKEditor
           editor={ClassicEditor}
           data={data}

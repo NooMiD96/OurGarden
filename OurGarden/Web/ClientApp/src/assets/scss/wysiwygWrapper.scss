@@ -1,0 +1,17 @@
+.wysiwyg-wrapper {
+  padding: 2rem;
+  position: relative;
+
+  &.wysiwyg-description,
+  .wysiwyg-description {
+    font-size: 16px;
+    font-weight: normal;
+    color: $blackColor;
+
+    figure.image {
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+}

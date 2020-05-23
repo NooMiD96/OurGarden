@@ -54,6 +54,8 @@ namespace Web.Services.Controllers.AdminApi
                 SeoDescription = entityDTO.SeoDescription,
                 SeoKeywords = entityDTO.SeoKeywords,
 
+                Description = entityDTO.Description,
+
                 Photos = new List<Photo>()
             };
 
@@ -153,6 +155,8 @@ namespace Web.Services.Controllers.AdminApi
                         SeoTitle = oldSubcategory.SeoTitle,
                         SeoDescription = oldSubcategory.SeoDescription,
                         SeoKeywords = oldSubcategory.SeoKeywords,
+
+                        Description = oldCategory.Description,
 
                         Alias = oldSubcategory.Alias,
                         Products = new List<Product>(),
@@ -282,6 +286,8 @@ namespace Web.Services.Controllers.AdminApi
 
             oldCategory.Alias = categoryDTO.Alias;
             oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
+
+            oldCategory.Description = categoryDTO.Description;
 
             oldCategory.SeoTitle = categoryDTO.SeoTitle;
             oldCategory.SeoDescription = categoryDTO.SeoDescription;

@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import Form, { FormItem } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
+import CKEditor from "@core/components/CKEditor";
 import Checkbox from "@core/antd/Checkbox";
 import MultiplyUploaderForm, {
   useMultiplyUploaderForm
 } from "@src/core/components/MultiplyUploaderForm";
+import MetaDataForm from "@src/core/components/MetaDataForm";
+import DescriptionTooltip from "@src/core/helpers/Description/DescriptionTooltip";
 
 import localeText from "../Text";
 import {
@@ -19,9 +22,9 @@ import {
 import { ICategory } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
 import { IEditModalContentProps } from "./IEditModal";
-import MetaDataForm from "@src/core/components/MetaDataForm";
 
 export const EditModalContent = (props: IEditModalContentProps) => {
+  const ckEditor: React.RefObject<CKEditor> = useRef(null);
   const multiplyUploaderParams = useMultiplyUploaderForm();
 
   const { form } = props;
@@ -34,6 +37,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
     alias,
     photos,
     isVisible,
+    description,
     seoTitle,
     seoDescription,
     seoKeywords,
@@ -45,9 +49,15 @@ export const EditModalContent = (props: IEditModalContentProps) => {
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
 
+    const description: string = ckEditor.current!.state.editorApi.getData();
+
     const seoTitle = form.getFieldValue("seoTitle");
     const seoDescription = form.getFieldValue("seoDescription");
     const seoKeywords = form.getFieldValue("seoKeywords");
+
+    props.form.setFieldsValue({
+      description
+    });
 
     const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
     const updateFilesDTO = await getUpdateFilesDTO(
@@ -60,6 +70,8 @@ export const EditModalContent = (props: IEditModalContentProps) => {
           categoryId,
           alias: alias.trim(),
           isVisible,
+
+          description,
 
           seoTitle,
           seoDescription,
@@ -174,6 +186,14 @@ export const EditModalContent = (props: IEditModalContentProps) => {
             maxRows={4}
           />
         )}
+      </FormItem>
+
+      <FormItem>
+        {getFieldDecorator("description", {
+          rules: [
+            { required: false }
+          ]
+        })(<CKEditor ref={ckEditor} tooltip={<DescriptionTooltip />} data={description} />)}
       </FormItem>
 
       <EditModalFooter onSubmit={onSubmit} onClose={onClose} />

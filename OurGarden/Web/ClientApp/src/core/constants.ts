@@ -92,3 +92,5 @@ export const ADDRESS = `г. Тула, ${SHORT_ADDRESS}`;
 export const isShowSvgIcon = !!process.env.isWebpackBundle;
 
 export const RUSSIAN_CURRENCY = "₽";
+
+export const PHONE_MACROS = "{{phone}}";

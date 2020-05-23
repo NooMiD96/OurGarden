@@ -27,7 +27,7 @@ const onSubmitHandler = (
   const { form, item } = props;
 
   const videoId = item ? item.videoId : 0;
-  const description: string = ckEditor.current!.state.editor.getData();
+  const description: string = ckEditor.current!.state.editorApi.getData();
   const title = form.getFieldValue("title");
   const url = form.getFieldValue("url");
 
@@ -38,10 +38,10 @@ const onSubmitHandler = (
   props.form.validateFields((err: any, _values: any) => {
     if (!err) {
       props.handleCreateSubmit({
-        videoId: videoId,
-        title: title,
-        description: description,
-        url: url
+        videoId,
+        title,
+        description,
+        url
       });
     }
   });
@@ -61,8 +61,7 @@ export const EditModalContent = (props: IProps) => {
 
   const { title, description, url } = item || ({} as IVideo);
 
-  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) =>
-    onSubmitHandler(props, ckEditor, e);
+  const onSubmit = (e?: IPressEnterEvent | React.FormEvent) => onSubmitHandler(props, ckEditor, e);
 
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
@@ -99,7 +98,7 @@ export const EditModalContent = (props: IProps) => {
         <Button type="primary" onClick={onSubmit}>
           Сохранить
         </Button>
-        <Button type="danger" onClick={e => onClose(props, e)}>
+        <Button type="danger" onClick={(e) => onClose(props, e)}>
           Отмена
         </Button>
       </div>

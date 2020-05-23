@@ -1,11 +1,11 @@
 import React from "react";
 
-import Row from "@core/antd/Row";
 import { Title } from "@core/antd/Typography";
 import AddToCardButton from "@core/components/AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPhotoSrc } from "@core/utils/photo";
+import { replacePhoneMacros } from "@src/core/helpers/description/DescriptionHelper";
 
 import { IMouseClickEvent } from "@core/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
@@ -51,6 +51,7 @@ export class ProductContent extends React.PureComponent<
     const { itemCount } = this.state;
 
     const productPhoto = getPhotoSrc(product);
+    const description = replacePhoneMacros(product.description);
 
     return (
       <React.Fragment>
@@ -78,8 +79,8 @@ export class ProductContent extends React.PureComponent<
         </div>
 
         <div
-          className="product-description-wysiwyg"
-          dangerouslySetInnerHTML={{ __html: product.description }}
+          className="wysiwyg-description"
+          dangerouslySetInnerHTML={{ __html: description }}
         />
 
         {product.price ? (

@@ -25,6 +25,8 @@ namespace ApiService.Abstraction.DTO.Subcategory
 
         public string SeoKeywords { get; set; }
 
+        public string Description { get; set; }
+
         public IFormFileCollection AddFiles { get; set; }
 
         public IFormFileCollection UpdateFiles { get; set; }

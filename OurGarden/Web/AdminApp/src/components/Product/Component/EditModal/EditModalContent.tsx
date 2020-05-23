@@ -12,6 +12,7 @@ import MultiplyUploaderForm, {
   useMultiplyUploaderForm
 } from "@src/core/components/MultiplyUploaderForm";
 import MetaDataForm from "@src/core/components/MetaDataForm";
+import DescriptionTooltip from "@src/core/helpers/Description/DescriptionTooltip";
 
 import localeText from "../Text";
 import { filterOption } from "@core/utils/select";
@@ -83,7 +84,7 @@ export const EditModalContent = (props: IProps) => {
     const newCategoryId = form.getFieldValue("newCategoryId");
     const newSubcategoryId = form.getFieldValue("newSubcategoryId");
 
-    const description: string = ckEditor.current!.state.editor.getData();
+    const description: string = ckEditor.current!.state.editorApi.getData();
 
     const alias = form.getFieldValue("alias");
     const isVisible = form.getFieldValue("isVisible");
@@ -303,7 +304,7 @@ export const EditModalContent = (props: IProps) => {
           rules: [
             { required: true, message: localeText._rule_require_description }
           ]
-        })(<CKEditor ref={ckEditor} data={description} />)}
+        })(<CKEditor ref={ckEditor} tooltip={<DescriptionTooltip showCatalogTooltip={false} />} data={description} />)}
       </FormItem>
 
       <EditModalFooter onSubmit={onSubmit} onClose={onClose} />

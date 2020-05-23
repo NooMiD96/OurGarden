@@ -53,7 +53,14 @@ const ProductCard = (props: IProductCard) => {
         // prettier-ignore
         title={(
           <Paragraph ellipsis={META_TITLE_PARAMS}>
-            <Link to={item.link}>{item.alias}</Link>
+            <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              to={item.link}
+            >
+              {item.alias}
+            </Link>
           </Paragraph>
         )}
         // prettier-ignore

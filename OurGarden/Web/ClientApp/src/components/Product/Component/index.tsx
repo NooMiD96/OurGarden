@@ -61,7 +61,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { product, addProductToCard, ymId } = this.props;
 
     return (
-      <div className="product-wrapper content white-background grey-border">
+      <div className="wysiwyg-wrapper content white-background grey-border">
         {product && (
           <>
             <HeaderHelmet

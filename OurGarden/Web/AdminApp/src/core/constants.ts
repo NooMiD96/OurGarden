@@ -14,7 +14,8 @@ export type TIcons =
   | "right"
   | "upload"
   | "mail"
-  | "phone";
+  | "phone"
+  | "question";
 
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
@@ -48,6 +49,8 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import("@antdSvgs/MailOutline")).default;
     case "phone":
       return (await import("@antdSvgs/PhoneOutline")).default;
+    case "question":
+      return (await import("@antdSvgs/QuestionCircleOutline")).default;
 
     default: {
       // eslint-disable-next-line

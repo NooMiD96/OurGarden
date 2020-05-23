@@ -31,6 +31,7 @@ export class EditModal extends React.PureComponent<IEditModalProps, {}> {
         closable={false}
         destroyOnClose
         footer={null}
+        width="50%"
       >
         <EditModalContent
           loading={false}

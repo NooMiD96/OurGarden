@@ -51,6 +51,8 @@ namespace Web.Services.Controllers.AdminApi
                 Alias = entityDTO.Alias,
                 IsVisible = entityDTO.IsVisible ?? true,
 
+                Description = entityDTO.Description,
+
                 SeoTitle = entityDTO.SeoTitle,
                 SeoDescription = entityDTO.SeoDescription,
                 SeoKeywords = entityDTO.SeoKeywords,
@@ -225,6 +227,8 @@ namespace Web.Services.Controllers.AdminApi
 
             oldSubcategory.Alias = subcategoryDTO.Alias;
             oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
+
+            oldSubcategory.Description = subcategoryDTO.Description;
 
             oldSubcategory.SeoTitle = subcategoryDTO.SeoTitle;
             oldSubcategory.SeoDescription = subcategoryDTO.SeoDescription;

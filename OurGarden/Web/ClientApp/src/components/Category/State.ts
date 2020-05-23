@@ -1,15 +1,13 @@
 import { IPhoto } from "@src/core/IPhoto";
+import { IDescription } from "@src/core/IDescription";
+import { ISeoParams } from "@src/core/ISeoParams";
 
 // -----------------
 // #region STATE
-export interface ICategory {
+export interface ICategory extends ISeoParams, IDescription {
   categoryId: string;
   alias: string;
   photos: IPhoto[];
-
-  seoTitle: string;
-  seoDescription: string;
-  seoKeywords: string;
 }
 
 export interface ICategoryState {

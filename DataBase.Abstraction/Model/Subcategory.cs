@@ -20,6 +20,8 @@ namespace DataBase.Abstraction.Model
         [Required]
         public bool? IsVisible { get; set; }
 
+        public string Description { get; set; }
+
         [MaxLength(128)]
         public string SeoTitle { get; set; }
 

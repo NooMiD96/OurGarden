@@ -4,13 +4,13 @@ export const PAGING_DEFAULT_PARAMS = {
 };
 
 export const META_TITLE_PARAMS = {
-  rows: 2,
+  rows: 3,
   expandable: false
 };
 
 export const CARD_GRID_STYLE = {
   // xs <576px
-  xs: { span: 24 },
+  xs: { span: 12 },
   // sm ≥576px
   sm: { span: 12 },
   // md ≥768px
@@ -18,7 +18,7 @@ export const CARD_GRID_STYLE = {
   // lg ≥992px
   lg: { span: 12 },
   // xl ≥1200px
-  xl: { span: 12 },
+  xl: { span: 8 },
   // xxl ≥1600px
   xxl: { span: 8 }
 };

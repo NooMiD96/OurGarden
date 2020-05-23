@@ -1,19 +1,16 @@
 import { IPhoto } from "@src/core/IPhoto";
+import { ISeoParams } from "@src/core/ISeoParams";
+import { IDescription } from "@src/core/IDescription";
 
 // -----------------
 // #region STATE
-export interface IProduct {
+export interface IProduct extends ISeoParams, IDescription {
   productId: string;
   subcategoryId: string;
   categoryId: string;
   alias: string;
   price: number;
-  description: string;
   photos: IPhoto[];
-
-  seoTitle: string;
-  seoDescription: string;
-  seoKeywords: string;
 }
 
 export interface IProductState {
