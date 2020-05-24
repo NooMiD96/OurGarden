@@ -75,6 +75,7 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
     <React.Fragment>
       <AutoComplete
         listHeight={512}
+        listItemHeight={115}
         options={dataSource}
         onSearch={(val) => {
           setSearchValue(val);

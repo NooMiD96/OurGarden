@@ -35,7 +35,13 @@ const ProductOption = (item: IProductOption) => {
           alt={item.alias}
           visibleByDefault
         />
-        <Link to={link} className="search-menu-item-text">
+        <Link
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          to={link}
+          className="search-menu-item-text"
+        >
           {item.alias}
         </Link>
       </div>

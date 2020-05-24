@@ -25,7 +25,15 @@ export const NewsCard = ({ item, push }: INewsCard) => (
       // prettier-ignore
       title={(
         <Title level={2}>
-          <Link to={item.link}>{item.title}</Link>
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            to={item.link}
+          >
+            {item.title}
+
+          </Link>
         </Title>
       )}
     />

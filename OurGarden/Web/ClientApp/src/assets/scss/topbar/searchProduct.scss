@@ -52,6 +52,8 @@
 }
 
 #product-popup-container .ant-select-dropdown {
+  min-width: 300px !important;
+
   .ant-select-item-option-selected,
   .ant-select-item-option-active,
   .ant-select-item-option:hover {
@@ -107,7 +109,8 @@
     }
 
     &-image {
-      max-width: 120px;
+      width: 120px;
+      height: 105px;
     }
 
     &-text {
