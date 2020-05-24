@@ -5,7 +5,7 @@ import AddToCardButton from "@core/components/AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPhotoSrc } from "@core/utils/photo";
-import { replacePhoneMacros } from "@src/core/helpers/description/DescriptionHelper";
+import { getFormattedDescription } from "@src/core/helpers/description/DescriptionHelper";
 
 import { IMouseClickEvent } from "@core/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
@@ -51,7 +51,7 @@ export class ProductContent extends React.PureComponent<
     const { itemCount } = this.state;
 
     const productPhoto = getPhotoSrc(product);
-    const description = replacePhoneMacros(product.description);
+    const description = getFormattedDescription(product.description);
 
     return (
       <React.Fragment>

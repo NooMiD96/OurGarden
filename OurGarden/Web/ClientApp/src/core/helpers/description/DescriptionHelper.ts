@@ -1,4 +1,6 @@
-import { PHONE_MACROS, MAIN_MOBILE_FORMATTED, MAIN_MOBILE } from "@src/core/constants";
+import {
+  PHONE_MACROS, EMAIL_MACROS, MAIN_MOBILE_FORMATTED, MAIN_MOBILE, HELP_EMAIL
+} from "@src/core/constants";
 
 export const getPartsBetweenCatalog = (description?: string) => {
   if (!description) {
@@ -10,13 +12,18 @@ export const getPartsBetweenCatalog = (description?: string) => {
   return parts;
 };
 
-export const replacePhoneMacros = (description?: string) => {
+export const getFormattedDescription = (description?: string) => {
   if (!description) {
     return "";
   }
 
-  return description.replace(
-    PHONE_MACROS,
-    `<a class="number-wrapper info" href="tel:${MAIN_MOBILE_FORMATTED}"><span class="text">${MAIN_MOBILE}</span></a>`
-  );
+  return description
+    .replace(
+      PHONE_MACROS,
+      `<a class="number-wrapper info" href="tel:${MAIN_MOBILE_FORMATTED}"><span class="text">${MAIN_MOBILE}</span></a>`
+    )
+    .replace(
+      EMAIL_MACROS,
+      `<a class="email-wrapper" href="mailto:${HELP_EMAIL}"><span>${HELP_EMAIL}</span></a>`
+    );
 };

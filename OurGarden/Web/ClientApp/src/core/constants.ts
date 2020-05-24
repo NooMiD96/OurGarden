@@ -94,3 +94,4 @@ export const isShowSvgIcon = !!process.env.isWebpackBundle;
 export const RUSSIAN_CURRENCY = "₽";
 
 export const PHONE_MACROS = "{{phone}}";
+export const EMAIL_MACROS = "{{email}}";

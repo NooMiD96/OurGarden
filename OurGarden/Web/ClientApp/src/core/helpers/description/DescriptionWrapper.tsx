@@ -1,10 +1,10 @@
 import React from "react";
 
 import { IDescriptionWrapperProps } from "./IDescriptionWrapper";
-import { getPartsBetweenCatalog, replacePhoneMacros } from "./DescriptionHelper";
+import { getPartsBetweenCatalog, getFormattedDescription } from "./DescriptionHelper";
 
 const DescriptionWrapper = (props: IDescriptionWrapperProps) => {
-  const description = replacePhoneMacros(props.description);
+  const description = getFormattedDescription(props.description);
   const parts = getPartsBetweenCatalog(description);
   const isPartsExists = parts.some(Boolean);
 

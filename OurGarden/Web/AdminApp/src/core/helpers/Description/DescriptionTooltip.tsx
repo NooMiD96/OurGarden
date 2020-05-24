@@ -8,7 +8,8 @@ const conditionStringHelper = "Если в тексте указан данны�
 
 const TooltipContent = ({
   showCatalogTooltip = true,
-  showPhoneTooltip = true
+  showPhoneTooltip = true,
+  showEmailTooltip = true,
 }: IDescriptionTooltipProps) => {
   const tips: React.ReactNode[] = [];
 
@@ -44,6 +45,22 @@ const TooltipContent = ({
     ));
   }
 
+  if (showEmailTooltip) {
+    tips.push((
+      <p key="email-tip">
+        {"{{"}
+        email
+        {"}}"}
+        {" "}
+        -
+        {" "}
+        {conditionStringHelper}
+        {" "}
+        на его месте будет выводится почта.
+      </p>
+    ));
+  }
+
   return (
     <div>
       {tips}
@@ -53,12 +70,14 @@ const TooltipContent = ({
 
 const DescriptionTooltip = ({
   showCatalogTooltip = true,
-  showPhoneTooltip = true
+  showPhoneTooltip = true,
+  showEmailTooltip = true,
 }: IDescriptionTooltipProps) => (
   <Tooltip title={(
     <TooltipContent
       showCatalogTooltip={showCatalogTooltip}
       showPhoneTooltip={showPhoneTooltip}
+      showEmailTooltip={showEmailTooltip}
     />
   )}
   >
