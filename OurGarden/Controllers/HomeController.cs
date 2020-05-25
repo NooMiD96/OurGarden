@@ -266,6 +266,9 @@ namespace Web.Controllers
                 case "card":
                     sectionName = "userCard";
                     break;
+                case "rulonnyj-gazon":
+                    sectionName = "rulonnyj-gazon";
+                    break;
 
                 case "home":
                 case "":

@@ -109,6 +109,15 @@ export const AppRoutes = (
       />
 
       <Route
+        path="/rulonnyj-gazon"
+        component={AsyncComponent(
+          () => import(/* webpackChunkName: "Gazon" */ "@components/Gazon"),
+          ["@components/Gazon"],
+          () => [require.resolveWeak("@components/Gazon")]
+        )}
+      />
+
+      <Route
         path="/Videogalery"
         // prettier-ignore
         component={AsyncComponent(

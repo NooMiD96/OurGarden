@@ -43,7 +43,7 @@ export const NavMenu = (props: RouterState) => {
             color: "white"
           }}
         >
-          Наш сад
+          Наш Сад
         </span>
       </div>
       <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
