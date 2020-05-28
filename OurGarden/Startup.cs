@@ -79,6 +79,7 @@ namespace Web
             services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
+                options.HttpsPort = 443;
             });
 
             StartUpVendors.Configuration = Configuration;

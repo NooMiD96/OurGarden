@@ -38,7 +38,9 @@
 
     background-color: $darkGreenColor;
 
-    > h4.ant-typography {
+    > .ant-typography {
+      line-height: 1.4;
+
       font-size: 38px;
       font-weight: inherit;
 

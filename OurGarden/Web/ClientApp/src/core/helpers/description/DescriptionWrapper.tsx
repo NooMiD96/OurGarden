@@ -1,7 +1,10 @@
 import React from "react";
 
 import { IDescriptionWrapperProps } from "./IDescriptionWrapper";
-import { getPartsBetweenCatalog, getFormattedDescription } from "./DescriptionHelper";
+import {
+  getPartsBetweenCatalog,
+  getFormattedDescription
+} from "./DescriptionHelper";
 
 const DescriptionWrapper = (props: IDescriptionWrapperProps) => {
   const description = getFormattedDescription(props.description);
@@ -10,15 +13,19 @@ const DescriptionWrapper = (props: IDescriptionWrapperProps) => {
 
   return (
     <div className={isPartsExists ? "white-background grey-border" : ""}>
-      <div
-        className="wysiwyg-wrapper wysiwyg-description pt5 pb0"
-        dangerouslySetInnerHTML={{ __html: parts[0] }}
-      />
+      {parts[0] && (
+        <div
+          className="wysiwyg-wrapper ant-typography wysiwyg-description pt18 pb0"
+          dangerouslySetInnerHTML={{ __html: parts[0] }}
+        />
+      )}
       {props.children}
-      <div
-        className="wysiwyg-wrapper wysiwyg-description pt0 pb5"
-        dangerouslySetInnerHTML={{ __html: parts[1] }}
-      />
+      {parts[1] && (
+        <div
+          className="wysiwyg-wrapper ant-typography wysiwyg-description pt0 pb5 mtn16"
+          dangerouslySetInnerHTML={{ __html: parts[1] }}
+        />
+      )}
     </div>
   );
 };

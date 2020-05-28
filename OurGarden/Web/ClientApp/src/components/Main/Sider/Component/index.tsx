@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import AntdSider from "@core/antd/LayoutSider";
-import { Title } from "@src/core/antd/Typography";
+import { Text } from "@src/core/antd/Typography";
 import CategoryList from "./CategoryList";
 
 import { MobileContext } from "@src/core/constants";
@@ -28,7 +28,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
         defaultCollapsed={this.context}
       >
         <div className="sider-catalog-header">
-          <Title level={4}>Каталог</Title>
+          <Text>Каталог</Text>
         </div>
         <CategoryList categoryList={categoryList} location={location} />
       </AntdSider>
