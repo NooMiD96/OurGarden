@@ -1,13 +1,27 @@
 import {
-  PHONE_MACROS, EMAIL_MACROS, MAIN_MOBILE_FORMATTED, MAIN_MOBILE, HELP_EMAIL
+  PHONE_MACROS,
+  EMAIL_MACROS,
+  MAIN_MOBILE_FORMATTED,
+  MAIN_MOBILE,
+  HELP_EMAIL
 } from "@src/core/constants";
 
-export const getPartsBetweenCatalog = (description?: string) => {
+export const CATALOG_MACROS = "{{catalog}}";
+
+/**
+ *
+ * @param description Строка которая инъекцируется в Html
+ * @param splitMacros Макрос, между частями которого нужно разместить текст. Если пусто то вернётся массив из массива с данным элементом.
+ */
+export const getPartsBetween = (
+  description?: string,
+  splitMacros = CATALOG_MACROS
+) => {
   if (!description) {
     return ["", ""];
   }
 
-  const parts = description.split("{{catalog}}");
+  const parts = description.split(splitMacros);
 
   return parts;
 };

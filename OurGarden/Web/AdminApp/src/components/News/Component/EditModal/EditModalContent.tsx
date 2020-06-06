@@ -9,6 +9,7 @@ import MultiplyUploaderForm, {
   useMultiplyUploaderForm
 } from "@core/components/MultiplyUploaderForm";
 import MetaDataForm from "@src/core/components/MetaDataForm";
+import DescriptionTooltip from "@src/core/helpers/Description/DescriptionTooltip";
 
 import localeText from "../Text";
 import {
@@ -32,7 +33,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
   // prettier-ignore
   const {
     newsId,
-    title,
+    alias,
     description,
     photos,
     seoTitle,
@@ -43,8 +44,8 @@ export const EditModalContent = (props: IEditModalContentProps) => {
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
+    const alias = form.getFieldValue("alias");
     const description: string = ckEditor.current!.state.editorApi.getData();
-    const title = form.getFieldValue("title");
 
     const seoTitle = form.getFieldValue("seoTitle");
     const seoDescription = form.getFieldValue("seoDescription");
@@ -63,7 +64,8 @@ export const EditModalContent = (props: IEditModalContentProps) => {
       if (!err) {
         props.handleCreateSubmit({
           newsId,
-          title: title.trim(),
+
+          alias: alias?.trim(),
           description,
 
           seoTitle,
@@ -88,19 +90,19 @@ export const EditModalContent = (props: IEditModalContentProps) => {
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("title", {
-          initialValue: title,
+        {getFieldDecorator("alias", {
+          initialValue: alias,
           rules: [
             {
               required: true,
-              message: localeText._rule_require_title,
+              message: localeText._rule_require_alias,
               transform: (val: string) => val && val.trim()
             }
           ]
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
-            placeholder={localeText._label_title}
+            placeholder={localeText._label_alias}
             onPressEnter={onSubmit}
           />
         )}
@@ -181,7 +183,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
           rules: [
             { required: true, message: localeText._rule_require_description }
           ]
-        })(<CKEditor ref={ckEditor} data={description} />)}
+        })(<CKEditor ref={ckEditor} tooltip={<DescriptionTooltip showCatalogTooltip={false} />} data={description} />)}
       </FormItem>
 
       <EditModalFooter onSubmit={onSubmit} onClose={onClose} />

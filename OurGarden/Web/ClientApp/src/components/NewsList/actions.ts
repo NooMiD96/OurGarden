@@ -38,11 +38,14 @@ export const actionCreators = {
     const requestStart = () => dispatch(actionsList.getNewsListRequest());
 
     const requestSuccess = (data: INew[]) => {
-      data.forEach((x) => {
-        x.date = new Date(x.date);
-      });
-
-      dispatch(actionsList.getNewsListSuccess(data));
+      dispatch(
+        actionsList.getNewsListSuccess(
+          data.map((x: INew) => ({
+            ...x,
+            date: new Date(x.date)
+          }))
+        )
+      );
     };
 
     appActions.wrapRequest({

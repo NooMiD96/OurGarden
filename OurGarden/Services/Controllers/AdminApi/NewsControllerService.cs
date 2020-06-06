@@ -22,6 +22,7 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
+        private readonly ILogger _logger;
         private readonly FileHelper _fileHelper;
         private readonly PhotoHelper _photoHelper;
 
@@ -29,6 +30,7 @@ namespace Web.Services.Controllers.AdminApi
         {
             _repository = repository as OurGardenRepository;
             _context = _repository.Context;
+            _logger = logger;
             _fileHelper = new FileHelper(repository);
             _photoHelper = new PhotoHelper(repository, logger);
         }
@@ -40,9 +42,9 @@ namespace Web.Services.Controllers.AdminApi
         {
             var entity = new News()
             {
-                Title = entityDTO.Title,
-                Alias = entityDTO.Title.TransformToId(),
-                Date = DateTime.Now,
+                NewsId = entityDTO.Alias.TransformToId(),
+                Alias = entityDTO.Alias,
+                Date = DateTime.UtcNow,
                 Description = entityDTO.Description,
 
                 SeoTitle = entityDTO.SeoTitle,
@@ -79,12 +81,76 @@ namespace Web.Services.Controllers.AdminApi
             return (entity != null, error);
         }
 
+        public async ValueTask<(bool isSuccess, string error)> FullUpdateNews(NewsDTO newsDTO, News oldNews)
+        {
+            /// В случае когда нам не удаётся обновить данную модель
+            /// Мы должны удалить те фото, которые были добавлены
+            var scheduleAddedPhotoList = new List<Photo>();
+
+            /// Если обновление прошло успешно
+            /// То нужно окончательно удалить ненужные фото
+            var scheduleDeletePhotoList = new List<Photo>();
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            (bool isSuccess, string error) cancelUpdate((bool isSuccess, string error) result)
+            {
+                transaction.Rollback();
+                return result;
+            }
+
+            try
+            {
+                #region Create new entity and migrate/update photo list
+
+                var (newNews, error) = await CreateNews(newsDTO,
+                                                        defaultPhotoList: oldNews.Photos,
+                                                        scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                        scheduleDeletePhotoList: scheduleDeletePhotoList);
+
+                if (newNews is null)
+                {
+                    return cancelUpdate((false, error));
+                }
+
+                #endregion
+
+                /// Теперь старая сущность не нужна
+                _context.Remove(oldNews);
+
+                await _context.SaveChangesAsync();
+
+                transaction.Commit();
+
+                foreach (var photo in scheduleDeletePhotoList)
+                {
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                }
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                foreach (var photo in scheduleAddedPhotoList)
+                {
+                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                }
+
+                var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует.";
+
+                _logger.LogError(ex, errMsg);
+
+                return cancelUpdate((
+                    false,
+                    $"{errMsg} Текст ошибки: {ex.Message}"
+                ));
+            }
+        }
+
         public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO entityDTO, News oldEntity)
         {
             await _photoHelper.LoadPhotosToEntity(oldEntity, entityDTO, maxPixel: 1600);
 
-            oldEntity.Alias = entityDTO.Title.TransformToId();
-            oldEntity.Title = entityDTO.Title;
+            oldEntity.Alias = entityDTO.Alias;
             oldEntity.Description = entityDTO.Description;
 
             oldEntity.SeoTitle = entityDTO.SeoTitle;
@@ -94,7 +160,7 @@ namespace Web.Services.Controllers.AdminApi
             return await _repository.UpdateNews(oldEntity);
         }
 
-        public async ValueTask<(bool isSuccess, string error)> DeleteNews(int newsId)
+        public async ValueTask<(bool isSuccess, string error)> DeleteNews(string newsId)
         {
             var entity = await _repository.GetNews(newsId);
 

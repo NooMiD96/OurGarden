@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataBase.Abstraction.Model
 {
-    public class Product : IAlias, IPhoto
+    public class Product : IAlias, IPhoto, ISeoInformation
     {
         [Required]
         [MaxLength(128)]

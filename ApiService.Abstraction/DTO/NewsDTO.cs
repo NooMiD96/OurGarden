@@ -7,10 +7,10 @@ namespace ApiService.Abstraction.DTO
 {
     public class NewsDTO : IPhotoDTO
     {
-        public int NewsId { get; set; }
+        public string NewsId { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public string Alias { get; set; }
 
         public DateTime Date { get; set; }
 

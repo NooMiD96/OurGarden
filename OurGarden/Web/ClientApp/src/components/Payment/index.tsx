@@ -33,7 +33,7 @@ export class Payment extends React.PureComponent<IPayment, {}> {
   render() {
     return (
       <div className="content ourgarden-payment white-background grey-border">
-        <HeaderHelmet seoSectionName="payment" />
+        <HeaderHelmet seoSectionName="Payment" />
 
         <Title>Доставка</Title>
         <Paragraph>

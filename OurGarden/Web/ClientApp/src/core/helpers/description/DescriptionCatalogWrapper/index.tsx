@@ -1,14 +1,11 @@
 import React from "react";
 
-import { IDescriptionWrapperProps } from "./IDescriptionWrapper";
-import {
-  getPartsBetweenCatalog,
-  getFormattedDescription
-} from "./DescriptionHelper";
+import { IDescriptionCatalogWrapperProps } from "./IDescriptionCatalogWrapperProps";
+import { getPartsBetween, getFormattedDescription } from "../DescriptionHelper";
 
-const DescriptionWrapper = (props: IDescriptionWrapperProps) => {
+const DescriptionCatalogWrapper = (props: IDescriptionCatalogWrapperProps) => {
   const description = getFormattedDescription(props.description);
-  const parts = getPartsBetweenCatalog(description);
+  const parts = getPartsBetween(description);
   const isPartsExists = parts.some(Boolean);
 
   return (
@@ -30,4 +27,4 @@ const DescriptionWrapper = (props: IDescriptionWrapperProps) => {
   );
 };
 
-export default DescriptionWrapper;
+export default DescriptionCatalogWrapper;

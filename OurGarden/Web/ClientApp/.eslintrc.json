@@ -70,6 +70,12 @@
     "max-len": "off",
     "react/jsx-props-no-spreading": "off",
     "react/state-in-constructor": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "@typescript-eslint/consistent-type-assertions": [
+      "error",
+      {
+        "assertionStyle": "angle-bracket"
+      }
+    ]
   }
 }

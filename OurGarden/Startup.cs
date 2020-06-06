@@ -10,18 +10,13 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using Model.EMail;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 using Serilog;
-
-using Services.EMail;
 
 using System;
 using System.Collections.Generic;
@@ -32,6 +27,7 @@ using static DependencyInjections.SecureDependencyInjection;
 
 namespace Web
 {
+    [Obsolete]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -42,7 +38,9 @@ namespace Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
             SetupDatabaseSettings(services, Configuration);
@@ -61,10 +59,8 @@ namespace Web
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     });
 
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddSingleton<IEmailSender, EmailSender>();
-
-            services.AddServices()
+            services.AddConfigurations(Configuration)
+                    .AddServices()
                     .AddHostServices();
 
             services.AddNodeServices();
@@ -85,8 +81,9 @@ namespace Web
             StartUpVendors.Configuration = Configuration;
         }
 
+        /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [Obsolete]
+        /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             string cachePeriod;

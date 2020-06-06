@@ -86,19 +86,15 @@ namespace DataBase.Abstraction.Repositories
 
         Task<IEnumerable<News>> GetNews(bool includeDescriptions = true);
         
-        Task<News> GetNews(int newsId);
+        Task<News> GetNews(string newsId, bool includeDescriptions = true);
         
-        Task<News> GetNews(string alias, bool includeDescriptions = true);
-        
-        Task<IEnumerable<IBreadcrumb>> GetNewsBreadcrumb(string alias);
-        
-        Task<bool> CheckNewsAlias(string alias);
+        Task<IEnumerable<IBreadcrumb>> GetNewsBreadcrumb(string newsId);
         
         ValueTask<(bool isSuccess, string error)> AddNews(News news);
         
         ValueTask<(bool isSuccess, string error)> UpdateNews(News news);
         
-        Task DeleteNews(int newsId);
+        Task DeleteNews(string newsId);
         
         ValueTask<bool> DeleteNews(News news);
 

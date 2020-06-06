@@ -64,11 +64,11 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetNews([FromQuery]string alias)
+        public async Task<IActionResult> GetNews([FromQuery]string newsId)
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".GetNews";
 
-            if (String.IsNullOrEmpty(alias))
+            if (String.IsNullOrEmpty(newsId))
             {
                 return LogBadRequest(
                     _logger,
@@ -77,14 +77,14 @@ namespace Web.Controllers.Api
                 );
             }
 
-            var news = await _repository.GetNews(alias);
+            var news = await _repository.GetNews(newsId);
 
             if (news == null)
             {
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {alias}",
+                    customeError: $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {newsId}",
                     returnStatusCode: 404
                 );
             }

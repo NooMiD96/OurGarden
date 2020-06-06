@@ -43,17 +43,19 @@
     </environment>
 
     <environment include="Production">
+        <!-- JivoSite -->
         <script src="//code.jivosite.com/widget.js" data-jv-id="@(ViewData["jivoSiteId"] ?? "")" async></script>
         <script>
             function jivo_onOpen() {
                 ym(@(ViewData["yandexMetrikaCounterId"] ?? 0), "reachGoal", "JIVO_CLICK")
             }
         </script>
+        <!-- /JivoSite -->
     </environment>
 
     @if (ViewData["jsBundles"] != null)
     {
-        @foreach (var bundle in (string[])ViewData["jsBundles"])
+        @foreach (var bundle in (IEnumerable<string>)ViewData["jsBundles"])
         {
             <script src="@bundle"></script>
         }
@@ -61,7 +63,7 @@
 
     @if (ViewData["cssBundles"] != null)
     {
-        @foreach (var bundle in (string[])ViewData["cssBundles"])
+        @foreach (var bundle in (IEnumerable<string>)ViewData["cssBundles"])
         {
             <link href="@bundle" rel="stylesheet" />
         }

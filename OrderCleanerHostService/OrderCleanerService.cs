@@ -4,6 +4,9 @@ using DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+using Model;
 
 using OrderCleanerHostService.Abstraction;
 
@@ -15,22 +18,34 @@ namespace Services.BackgroundWork.OrderCleaner
 {
     public class OrderCleanerService : IOrderCleanerService
     {
-        const int MonthMaxDiff = 3;
-
         #region Fields
 
-        readonly ILogger _logger;
+        /// <summary>
+        /// Логгер
+        /// </summary>
+        private readonly ILogger _logger;
 
+        /// <summary>
+        /// Настройка клеанера
+        /// </summary>
+        private readonly OrderCleanerOptions _cleanerOptions;
+
+        /// <summary>
+        /// Сервис провайдер
+        /// </summary>
         private readonly IServiceProvider _services;
 
         #endregion
 
         #region .ctor
 
-        public OrderCleanerService(IServiceProvider services, ILogger<OrderCleanerService> logger)
+        public OrderCleanerService(ILogger<OrderCleanerService> logger,
+            IOptions<OrderCleanerOptions> orderCleanerOptions,
+            IServiceProvider services)
         {
-            _services = services;
             _logger = logger;
+            _cleanerOptions = orderCleanerOptions.Value;
+            _services = services;
         }
 
         #endregion
@@ -41,28 +56,27 @@ namespace Services.BackgroundWork.OrderCleaner
         {
             _logger.LogInformation($"OrderCleanerService is working.");
 
-            using (var scope = _services.CreateScope())
-                try
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
+            try
+            {
+                using var scope = _services.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
 
-                    var now = DateTime.Now;
+                var now = DateTime.Now;
 
-                    var expiredOrders = context.Order
-                        .Where(
-                            x => EF.Functions.DateDiffMonth(x.Date, now) >= MonthMaxDiff
-                                && (x.StatusId == (int)OrderStatusEnum.Closed || x.StatusId == (int)OrderStatusEnum.Canceled)
-                        );
+                var expiredOrders = context.Order
+                    .Where(
+                        x => EF.Functions.DateDiffMonth(x.Date, now) >= _cleanerOptions.MonthMaxDiff
+                            && (x.StatusId == (int)OrderStatusEnum.Closed || x.StatusId == (int)OrderStatusEnum.Canceled)
+                    );
 
-                    context.RemoveRange(expiredOrders);
+                context.RemoveRange(expiredOrders);
 
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Send email
-                    _logger.LogError(ex, $"OrderCleanerService: {ex.Message}");
-                }
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"OrderCleanerService: {ex.Message}");
+            }
 
             _logger.LogInformation($"OrderCleanerService is worked.");
         }

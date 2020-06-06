@@ -5,8 +5,7 @@ import { ISeoParams } from "@src/core/ISeoParams";
 // -----------------
 // #region STATE
 export interface INews extends ISeoParams {
-  newsId: number;
-  title: string;
+  newsId: string;
   date: string;
   alias: string;
   description: string;
@@ -14,8 +13,8 @@ export interface INews extends ISeoParams {
 }
 
 export interface INewsDTO extends IMultiplyPhotoDTO, ISeoParams {
-  newsId: number;
-  title: string;
+  newsId: string;
+  alias: string;
   description: string;
 }
 

@@ -109,7 +109,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       <div
         className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}
       >
-        <HeaderHelmet seoSectionName="userCard" />
+        <HeaderHelmet seoSectionName="UserCard" />
         {renderComponent}
       </div>
     );

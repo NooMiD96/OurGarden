@@ -27,7 +27,7 @@ const getGeneralPlugins = (): Plugin[] => [
   // https://webpack.js.org/plugins/environment-plugin
   new webpack.EnvironmentPlugin({
     PUBLIC_URL: AppSettings.SpaPublicPath,
-    seoInformation: JSON.stringify(AppSettings.SEOInformation),
+    seoInformation: JSON.stringify(AppSettings.SeoInformation),
     isWebpackBundle: true
   })
 ];

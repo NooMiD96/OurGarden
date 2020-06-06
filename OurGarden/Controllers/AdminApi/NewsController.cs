@@ -1,6 +1,7 @@
 ﻿using ApiService.Abstraction.DTO;
 
 using Core.Constants;
+using Core.Helpers;
 
 using DataBase.Abstraction.Repositories;
 
@@ -53,7 +54,7 @@ namespace Web.Controllers.AdminApi
             {
                 bool isSuccess;
 
-                if (newsDTO.NewsId <= 0)
+                if (String.IsNullOrEmpty(newsDTO?.NewsId))
                 {
                     (isSuccess, error) = await _service.AddNews(newsDTO);
                 }
@@ -66,9 +67,14 @@ namespace Web.Controllers.AdminApi
                         return LogBadRequest(
                             _logger,
                             API_LOCATE,
-                            customeError: $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsDTO.NewsId} --- {newsDTO.Title}"
+                            customeError: $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsDTO.NewsId} --- {newsDTO.Alias}"
                         );
                     }
+
+                    if (newsDTO.Alias.TransformToId() != oldNews.Alias.TransformToId())
+                        (isSuccess, error) = await _service.FullUpdateNews(newsDTO, oldNews);
+                    else
+                        (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
 
                     (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
                 }
@@ -94,7 +100,7 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Delete([FromQuery]int newsId)
+        public async Task<IActionResult> Delete([FromQuery]string newsId)
         {
             const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
 

@@ -8,7 +8,7 @@ import { IHeaderHelmet } from "@src/core/utils/SEO/ISEO";
 export const HeaderHelmet = ({
   seoSectionName,
   seoTitle,
-  seoTitleReplacments = [],
+  seoTitleReplacments = []
 }: IHeaderHelmet) => {
   let seoTitleValue = null;
 
@@ -22,7 +22,11 @@ export const HeaderHelmet = ({
 
   return (
     <Helmet>
-      {seoTitleValue ? <title>{`${seoTitleValue} | Наш Сад`}</title> : <title>Наш Сад</title>}
+      {seoTitleValue ? (
+        <title>{`${seoTitleValue} | Наш Сад`}</title>
+      ) : (
+        <title>Наш Сад</title>
+      )}
     </Helmet>
   );
 };

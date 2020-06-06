@@ -31,15 +31,11 @@ namespace Web.Controllers
                                              customeError,
                                              returnStatusCode);
 
-            switch (returnStatusCode)
+            return returnStatusCode switch
             {
-                case 404:
-                    return NotFound(new { error = returnErrorString });
-
-                case 200:
-                default:
-                    return BadRequest(returnErrorString);
-            }
+                404 => NotFound(new { error = returnErrorString }),
+                _ => BadRequest(returnErrorString),
+            };
         }
     }
 }

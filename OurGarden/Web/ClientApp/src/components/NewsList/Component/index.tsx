@@ -43,13 +43,13 @@ export class NewsList extends React.PureComponent<TState, {}> {
 
     const dataList = newsList.map((news: INew) => ({
       ...news,
-      link: `/News/${news.alias}`,
+      link: `/News/${news.newsId}`,
       photoUrl: getPreviewPhotoSrc(news)
     }));
 
     return (
       <div className="news-list-wrapper content">
-        <HeaderHelmet seoSectionName="newsList" />
+        <HeaderHelmet seoSectionName="NewsList" />
         {dataList.length === 0 ? (
           <div className="content white-background grey-border p25">
             На данный момент никаких активных акций нет.

@@ -2,7 +2,7 @@ import React from "react";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
-import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
+import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
@@ -48,7 +48,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       subcategoryList,
       replace,
       location: { state: locationState },
-      push,
+      push
     } = this.props;
 
     const dataList = subcategoryList.map((x) => ({
@@ -61,7 +61,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       <>
         {category && (
           <HeaderHelmet
-            seoSectionName="subcategory"
+            seoSectionName="Subcategory"
             seoTitle={category.seoTitle}
             seoTitleReplacments={[
               {
@@ -70,14 +70,14 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
             ]}
           />
         )}
-        <DescriptionWrapper description={category?.description}>
+        <DescriptionCatalogWrapper description={category?.description}>
           <CatalogCardList
             replace={replace}
             locationState={locationState}
             dataList={dataList}
             push={push}
           />
-        </DescriptionWrapper>
+        </DescriptionCatalogWrapper>
       </>
     );
   }

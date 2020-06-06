@@ -65,7 +65,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
         {product && (
           <>
             <HeaderHelmet
-              seoSectionName="product"
+              seoSectionName="Product"
               seoTitle={product.seoTitle}
               seoTitleReplacments={[
                 {

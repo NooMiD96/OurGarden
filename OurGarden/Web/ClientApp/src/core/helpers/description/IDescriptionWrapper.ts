@@ -1,4 +1,3 @@
-export interface IDescriptionWrapperProps {
+export interface IDescriptionWrapper {
   description?: string;
-  children: React.ReactNode;
 }

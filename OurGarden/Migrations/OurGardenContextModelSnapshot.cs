@@ -15,7 +15,7 @@ namespace Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -211,10 +211,9 @@ namespace Web.Migrations
 
             modelBuilder.Entity("DataBase.Abstraction.Model.News", b =>
                 {
-                    b.Property<int>("NewsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("NewsId")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -237,11 +236,6 @@ namespace Web.Migrations
                         .HasMaxLength(512);
 
                     b.Property<string>("SeoTitle")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
@@ -404,8 +398,8 @@ namespace Web.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<int?>("NewsId")
-                        .HasColumnType("int");
+                    b.Property<string>("NewsId")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("PreviewUrl")
                         .HasColumnType("nvarchar(128)")

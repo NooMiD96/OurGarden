@@ -25,17 +25,17 @@ export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
     const carouselSource = displayList.map((x: INew) => (
       <img
         className="slick-slide-content-image"
-        alt={x.title}
-        title={x.title}
+        alt={x.alias}
+        title={x.alias}
         src={getPreviewPhotoSrc(x)}
         key={x.newsId}
         onClick={() => {
           window.ym(ymId, "reachGoal", "BANNER_MAIN_CLICK");
-          push(`/News/${x.alias}`);
+          push(`/News/${x.newsId}`);
         }}
         onKeyDown={() => {
           window.ym(ymId, "reachGoal", "BANNER_MAIN_CLICK");
-          push(`/News/${x.alias}`);
+          push(`/News/${x.newsId}`);
         }}
         role="link"
       />

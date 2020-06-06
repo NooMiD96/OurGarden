@@ -3,7 +3,7 @@ import React from "react";
 import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
-import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
+import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
@@ -75,7 +75,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
       <>
         {subcategory && (
           <HeaderHelmet
-            seoSectionName="productList"
+            seoSectionName="ProductList"
             seoTitle={subcategory.seoTitle}
             seoTitleReplacments={[
               {
@@ -84,7 +84,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
             ]}
           />
         )}
-        <DescriptionWrapper description={subcategory?.description}>
+        <DescriptionCatalogWrapper description={subcategory?.description}>
           <CatalogCardList
             dataList={dataList}
             push={push}
@@ -94,7 +94,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
               <ProductCard item={props.item} push={props.push} ymId={ymId} />
             )}
           />
-        </DescriptionWrapper>
+        </DescriptionCatalogWrapper>
       </>
     );
   }

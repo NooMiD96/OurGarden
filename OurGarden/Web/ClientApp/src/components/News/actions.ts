@@ -31,7 +31,7 @@ export const actionCreators = {
     const apiUrl = "GetNews";
     const encodedNewsId = encodeURIComponent(newsId);
 
-    const fetchUrl = `/api/${controllerName}/${apiUrl}?alias=${encodedNewsId}`;
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?newsId=${encodedNewsId}`;
     const fetchProps = {
       credentials: "same-origin",
       method: "GET",
@@ -43,9 +43,12 @@ export const actionCreators = {
     const requestStart = () => dispatch(actionsList.getNewsRequest());
 
     const requestSuccess = (data: INew) => {
-      data.date = new Date(data.date);
-
-      dispatch(actionsList.getNewsSuccess(data));
+      dispatch(
+        actionsList.getNewsSuccess({
+          ...data,
+          date: new Date(data.date)
+        })
+      );
     };
 
     appActions.wrapRequest({

@@ -45,7 +45,7 @@ export class Contacts extends React.PureComponent<IContacts, {}> {
 
     return (
       <div className="contacts-wrapper content">
-        <HeaderHelmet seoSectionName="contacts" />
+        <HeaderHelmet seoSectionName="Contacts" />
         <CompanyContacts ymId={ymId} />
         <CompanyMap />
       </div>

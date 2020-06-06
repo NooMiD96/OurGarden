@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataBase.Abstraction.Model
 {
-    public class Category : IAlias, IPhoto
+    public class Category : IAlias, IPhoto, ISeoInformation
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(64)]

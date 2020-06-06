@@ -5,14 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataBase.Abstraction.Model
 {
-    public class News : IPhoto
+    public class News : IAlias, IPhoto, ISeoInformation
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int NewsId { get; set; }
-
-        [Required]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [MaxLength(128)]
-        public string Title { get; set; }
+        public string NewsId { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

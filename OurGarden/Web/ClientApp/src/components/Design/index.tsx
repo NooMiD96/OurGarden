@@ -37,9 +37,11 @@ export class Design extends React.PureComponent<IDesign, {}> {
 
   render() {
     const { push } = this.props;
+
+    // prettier-ignore
     return (
       <Typography className="content ourgarden-design grey-border white-background">
-        <HeaderHelmet seoSectionName="design" />
+        <HeaderHelmet seoSectionName="Design" />
 
         <Title>Ландшафтный дизайн</Title>
         <Paragraph>

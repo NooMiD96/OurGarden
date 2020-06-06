@@ -16,7 +16,7 @@ interface INewsCard {
 export const NewsCard = ({ item, push }: INewsCard) => (
   <Card
     hoverable
-    cover={<LazyImage alt={item.title} src={item.photoUrl} />}
+    cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
     onClick={() => {
       push(item.link);
     }}
@@ -31,8 +31,7 @@ export const NewsCard = ({ item, push }: INewsCard) => (
             }}
             to={item.link}
           >
-            {item.title}
-
+            {item.alias}
           </Link>
         </Title>
       )}

@@ -12,7 +12,7 @@ import { INews, INewsDTO } from "./State";
 import { generateFormBody } from "@src/core/helpers/request";
 
 // ----------------
-//#region ACTIONS
+// #region ACTIONS
 export const actionsList = {
   getNewsListRequest: (): t.IGetNewsListRequest => ({
     type: t.GET_NEWS_LIST_REQUEST
@@ -54,9 +54,9 @@ export const actionsList = {
     type: t.CLEAN_ERROR_INNER
   })
 };
-//#endregion
+// #endregion
 // ----------------
-//#region ACTIONS CREATORS
+// #region ACTIONS CREATORS
 const apiPrefix = "apiAdmin";
 const controllerName = "News";
 export const actionCreators = {
@@ -68,6 +68,7 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
+    // prettier-ignore
     const fetchTask = fetch(`/${apiPrefix}/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
@@ -86,15 +87,13 @@ export const actionCreators = {
 
         return Promise.resolve();
       })
-      .catch((err: Error) =>
-        errorCatcher(
-          controllerName,
-          apiUrl,
-          err,
-          actionsList.getNewsListError,
-          dispatch
-        )
-      );
+      .catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getNewsListError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.getNewsListRequest());
@@ -191,4 +190,4 @@ export const actionCreators = {
 
   cleanErrorInner: actionsList.cleanErrorInner
 };
-//#endregion
+// #endregion

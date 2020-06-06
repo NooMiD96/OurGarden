@@ -43,9 +43,10 @@ export class Design extends React.PureComponent<IGazon, {}> {
   // }
 
   render() {
+    // prettier-ignore
     return (
       <Typography className="content ourgarden-rulonnyj-gazon grey-border white-background">
-        <HeaderHelmet seoSectionName="rulonnyj-gazon" />
+        <HeaderHelmet seoSectionName="RulonnyjGazon" />
 
         <Title>Рулонный газон</Title>
         <Paragraph>

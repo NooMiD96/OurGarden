@@ -31,7 +31,7 @@ export class Home extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="home-wrapper content">
-        <HeaderHelmet seoSectionName="home" />
+        <HeaderHelmet seoSectionName="Home" />
         <NewsCarousel push={push} displayList={displayList} ymId={ymId} />
         <CompanyInfo />
       </div>

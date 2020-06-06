@@ -15,12 +15,13 @@ class News extends React.PureComponent<TState, TComponentState> {
     editItem: null,
     showModal: false
   };
+
   gridRef: React.RefObject<AgGrid<INews>> = createRef();
 
   columns: ColDef[] = [
     {
       headerName: "Заголовок",
-      field: "title"
+      field: "alias"
     },
     {
       headerName: "Дата",
@@ -71,7 +72,9 @@ class News extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    const {
+      errorInner, cleanErrorInner, listItem, pending
+    } = this.props;
     const { showModal, editItem } = this.state;
 
     return (

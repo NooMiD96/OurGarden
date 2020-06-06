@@ -141,20 +141,14 @@ namespace DataBase.Repository
 
         #region News
 
-        private async Task<IEnumerable<News>> GetNewsImpl(int? newsId = null,
-                                                          string alias = null,
+        private async Task<IEnumerable<News>> GetNewsImpl(string newsId = null,
                                                           bool includeDescriptions = true)
         {
             var query = Context.News.AsQueryable();
 
-            if (newsId.HasValue)
+            if (!String.IsNullOrEmpty(newsId))
             {
                 query = query.Where(x => x.NewsId == newsId);
-            }
-
-            if (!String.IsNullOrEmpty(alias))
-            {
-                query = query.Where(x => x.Alias == alias);
             }
 
             if (!includeDescriptions)
@@ -162,10 +156,12 @@ namespace DataBase.Repository
                 query = query.Select(x => new News()
                 {
                     NewsId = x.NewsId,
-                    Title = x.Title,
                     Alias = x.Alias,
                     Date = x.Date,
                     Description = null,
+                    SeoTitle = x.SeoTitle,
+                    SeoDescription = x.SeoDescription,
+                    SeoKeywords = x.SeoKeywords,
                     Photos = x.Photos,
                 });
             }

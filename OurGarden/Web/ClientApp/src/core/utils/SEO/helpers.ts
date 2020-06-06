@@ -11,22 +11,28 @@ if (!seoInformation && !!process.env.isWebpackBundle) {
 }
 
 // prettier-ignore
-export const simpleGetSEOMetaData = () => ({
+export const simpleGetSEOMetaData = () => (<ISEOMetaData>{
   title: null,
-  meta: null
-} as ISEOMetaData);
+  description: null,
+  keywords: null,
+});
 
 export const normalGetSEOMetaData = (section: string) => {
   if (seoInformation[section]) {
-    return { ...seoInformation[section] } as ISEOMetaData;
+    return <ISEOMetaData>{
+      title: seoInformation[section]?.Title,
+      description: seoInformation[section]?.Description,
+      keywords: seoInformation[section]?.Keywords
+    };
   }
 
   console.warn("Не удалось найти СЕО информации для секции: ", section);
 
-  return {
+  return <ISEOMetaData>{
     title: null,
-    meta: null
-  } as ISEOMetaData;
+    description: null,
+    keywords: null
+  };
 };
 
 // #endregion

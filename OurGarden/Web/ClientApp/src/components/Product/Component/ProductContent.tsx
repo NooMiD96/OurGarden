@@ -3,6 +3,7 @@ import React from "react";
 import { Title } from "@core/antd/Typography";
 import AddToCardButton from "@core/components/AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
+import DescriptionItemWrapper from "@src/core/helpers/description/DescriptionItemWrapper";
 
 import { getPhotoSrc } from "@core/utils/photo";
 import { getFormattedDescription } from "@src/core/helpers/description/DescriptionHelper";
@@ -78,9 +79,9 @@ export class ProductContent extends React.PureComponent<
           <span className="product-description">Описание</span>
         </div>
 
-        <div
-          className="wysiwyg-description"
-          dangerouslySetInnerHTML={{ __html: description }}
+        <DescriptionItemWrapper
+          description={description}
+          wrapperClassName="wysiwyg-description"
         />
 
         {product.price ? (

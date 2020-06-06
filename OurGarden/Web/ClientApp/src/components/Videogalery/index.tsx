@@ -28,7 +28,7 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
   render() {
     return (
       <div className="content white-background grey-border p25">
-        <HeaderHelmet seoSectionName="videogalery" />
+        <HeaderHelmet seoSectionName="Videogalery" />
         Данный раздел находится в разработке, приходите позднее!
       </div>
     );

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Title } from "@src/core/antd/Typography";
+import DescriptionItemWrapper from "@src/core/helpers/description/DescriptionItemWrapper";
 
 import { getPhotoSrc } from "@src/core/utils/photo";
 
@@ -12,18 +13,21 @@ export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
 
     return (
       <>
+
+        <div className="news-info-title">
+          <Title>{selectedNew.alias}</Title>
+        </div>
+
         <img
           src={getPhotoSrc(selectedNew)}
-          alt={selectedNew.title}
+          alt={selectedNew.alias}
           className="news-photo"
         />
 
         <div className="news-info-content">
-          <Title>{selectedNew.title}</Title>
-
-          <div
-            className="news-description-wysiwyg"
-            dangerouslySetInnerHTML={{ __html: selectedNew.description }}
+          <DescriptionItemWrapper
+            description={selectedNew.description}
+            wrapperClassName="news-description-wysiwyg"
           />
         </div>
       </>

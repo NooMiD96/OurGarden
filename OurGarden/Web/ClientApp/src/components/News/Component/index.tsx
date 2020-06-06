@@ -16,7 +16,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
     } = props;
 
     if (!props.isDataWasGeted) {
-      if (!props.selectedNew || props.selectedNew.alias !== params.newsId) {
+      if (!props.selectedNew || props.selectedNew.newsId !== params.newsId) {
         props.getNews(params.newsId);
       }
 
@@ -50,11 +50,11 @@ export class News extends React.PureComponent<TState, TComponentState> {
         {selectedNew && (
           <>
             <HeaderHelmet
-              seoSectionName="news"
+              seoSectionName="News"
               seoTitle={selectedNew.seoTitle}
               seoTitleReplacments={[
                 {
-                  replacementValue: selectedNew.title
+                  replacementValue: selectedNew.alias
                 }
               ]}
             />
