@@ -21,8 +21,14 @@ const AddToCardButton = (props: IAddToCardButton) => {
       <NumberInput
         value={itemCount}
         onValueChange={setItemCount}
+        // prettier-ignore
         addonAfter={(
-          <Button block onClick={addToCard}>
+          <Button
+            block
+            className="custome-styled-btn second"
+            type="primary"
+            onClick={addToCard}
+          >
             В корзину
           </Button>
         )}

@@ -37,9 +37,10 @@ const CardConfirmationForm = (props: ICardConfirmationForm) => {
         <CardConfirmationFormFields form={form} onSubmit={onSubmit} />
         <TotalPrice totalPrice={totalPrice} />
         <div className="button-wrapper order-confirmation-footer">
-          <Button onClick={cancel}>Отмена</Button>
+          <Button className="custome-styled-btn" onClick={cancel}>Отмена</Button>
           <Button
             type="primary"
+            className="custome-styled-btn"
             onClick={onSubmit}
             disabled={hasErrors(getFieldsError())}
           >

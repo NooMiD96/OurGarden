@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 
 import { IApplicationState } from "@src/Store";
 
+import { actionCreators } from "./actions";
 import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
 import Component from "./Component";
 
@@ -9,12 +10,14 @@ import Component from "./Component";
 const mapStateToProps = (
   state: IApplicationState,
   ownProp: TOwnProps
-): TMapStateToProps => (<any>{
-  ...state.breadcrumb,
+): TMapStateToProps => (<TMapStateToProps>{
+  ...state.modalWindow,
   ...ownProp
 });
 
-const mapDispatchToProps: TMapDispatchToProps = {};
+const mapDispatchToProps: TMapDispatchToProps = {
+  ...actionCreators,
+};
 
 export default <any>(
   connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(

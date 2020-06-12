@@ -6,6 +6,7 @@ import ConfigProvider from "@core/antd/ConfigProvider";
 import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
+import ModalWindow from "./ModalWindow";
 
 import AppHOC from "@core/HOC/AppHOC";
 import ErrorHandler from "@core/HOC/ErrorHandler";
@@ -48,6 +49,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
         </Row>
       </AntdLayout>
       <div id="global-modals-container" />
+      <ModalWindow />
     </ErrorHandler>
   );
 };

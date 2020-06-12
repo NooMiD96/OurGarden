@@ -24,6 +24,9 @@ import { reducer as UserCardReducer } from "@components/UserCard/reducer";
 import { IBreadcrumbState } from "@components/Breadcrumb/State";
 import { reducer as BreadcrumbReducer } from "@components/Breadcrumb/reducer";
 
+import { IModalWindowState } from "@components/ModalWindow/State";
+import { reducer as ModalWindowReducer } from "@components/ModalWindow/reducer";
+
 export interface IApplicationState {
   router: RouterState;
 
@@ -40,6 +43,8 @@ export interface IApplicationState {
   userCard: IUserCardState;
 
   breadcrumb: IBreadcrumbState;
+
+  modalWindow: IModalWindowState;
 }
 
 export const reducers = {
@@ -55,7 +60,9 @@ export const reducers = {
 
   userCard: UserCardReducer,
 
-  breadcrumb: BreadcrumbReducer
+  breadcrumb: BreadcrumbReducer,
+
+  modalWindow: ModalWindowReducer,
 };
 
 export interface IAppThunkAction<TAction> {

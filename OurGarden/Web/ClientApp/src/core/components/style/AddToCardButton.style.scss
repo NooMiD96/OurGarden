@@ -14,24 +14,5 @@
   .ant-input-group-addon {
     padding: 0;
     border: 0;
-
-    .ant-btn {
-      color: $darkGreenColor;
-      border-radius: 0;
-      border-color: $darkGreenColor;
-
-      font-weight: 500;
-
-      &:hover {
-        background-color: $darkGreenColor;
-        color: #fff;
-      }
-
-      &:focus,
-      &:active {
-        background-color: $greenColor;
-        color: #fff;
-      }
-    }
   }
 }

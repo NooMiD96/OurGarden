@@ -84,12 +84,90 @@ select:-webkit-autofill:focus {
 .ourgarden-payment,
 .ourgarden-design {
   padding: 2rem;
-  
+
   div.ant-typography {
     font-size: 16px;
   }
 
   .ant-typography {
     color: $blackColor;
+  }
+}
+
+.custome-styled-btn.ant-btn {
+  border-radius: 0;
+  border-color: $borderColor;
+  font-weight: 500;
+
+  &:focus,
+  &:active {
+    color: $borderColor;
+    border-color: $borderColor;
+  }
+
+  &:hover {
+    background-color: $borderColor;
+    color: $whiteColor;
+    border-color: $borderColor;
+
+    &:focus,
+    &:active {
+      color: $whiteColor;
+    }
+  }
+
+  &.ant-btn-primary {
+    border-color: $darkGreenColor;
+    background-color: $darkGreenColor;
+
+    &:focus,
+    &:active {
+      color: $lightGreenColor;
+      background-color: $darkGreenColor;
+    }
+
+    &:hover {
+      color: $lightGreenColor;
+
+      &:focus,
+      &:active {
+        background-color: $greenColor;
+      }
+    }
+  }
+
+  &.second {
+    color: $darkGreenColor;
+    background-color: $whiteColor;
+
+    &:focus,
+    &:active {
+      color: $lightGreenColor;
+      background-color: $greenColor;
+    }
+
+    &:hover {
+      color: $whiteColor;
+      background-color: $darkGreenColor;
+
+      &:focus,
+      &:active {
+        color: $lightGreenColor;
+        background-color: $greenColor;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .new-product-in-card .modal-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px;
+
+    & > :not(:first-child) {
+      margin-left: 0px;
+      margin-top: 8px;
+    }
   }
 }

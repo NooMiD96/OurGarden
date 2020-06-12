@@ -4,7 +4,7 @@
       display: flex;
       flex-direction: column;
       max-height: 600px;
-      background: #fff;
+      background: $whiteColor;
 
       &-children {
         display: flex;
@@ -70,7 +70,7 @@
         text-overflow: ellipsis;
 
         &:hover {
-          color: #fff;
+          color: $whiteColor;
         }
       }
 
@@ -79,7 +79,7 @@
       }
 
       &:hover {
-        color: #fff;
+        color: $whiteColor;
         background-color: $darkGreenColor;
       }
     }
@@ -88,7 +88,7 @@
       background-color: $darkGreenColor;
 
       > a.nav-link {
-        color: #fff;
+        color: $whiteColor;
       }
     }
   }

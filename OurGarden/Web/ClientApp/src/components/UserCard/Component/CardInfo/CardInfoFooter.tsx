@@ -17,7 +17,7 @@ const CardInfoFooter = (props: ICardInfoFooter) => (
         </div>
         <div className="button-wrapper buttons-wrapper-with-padding">
           <Button
-            className="clean-button"
+            className="custome-styled-btn"
             onClick={() => {
               window.ym(props.ymId, "reachGoal", "CLEAN_CHECKOUT");
               props.сleanProductCard();
@@ -26,8 +26,8 @@ const CardInfoFooter = (props: ICardInfoFooter) => (
             Очистить корзину
           </Button>
           <Button
+            className="custome-styled-btn"
             type="primary"
-            className="order-button"
             onClick={() => {
               window.ym(props.ymId, "reachGoal", "TO_ORDER");
               props.onChangeOrderStep(DisplayTypeEnum.CardConfirmation);

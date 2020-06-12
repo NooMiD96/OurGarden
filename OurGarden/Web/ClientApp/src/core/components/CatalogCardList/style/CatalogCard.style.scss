@@ -44,12 +44,12 @@
 
         .card-description .ant-input-group-addon .ant-btn {
           background-color: $darkGreenColor;
-          color: #fff;
+          color: $whiteColor;
 
           &:focus,
           &:active {
             background-color: $greenColor;
-            color: #fff;
+            color: $whiteColor;
           }
         }
       }
