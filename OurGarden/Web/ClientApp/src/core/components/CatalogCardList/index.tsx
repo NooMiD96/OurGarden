@@ -12,7 +12,7 @@ import {
   ICatalogProps,
   ICatalogState,
   TDataItem,
-  ICardComponent
+  ICardComponent,
 } from "./ICatalogCard";
 
 import "./style/CatalogCard.style.scss";
@@ -39,34 +39,33 @@ export class Catalog<T> extends React.PureComponent<
 
     this.state = {
       page,
-      pageSize
+      pageSize,
     };
   }
 
   onPageChange = (page: number, pageSize: number = this.state.pageSize) => {
     this.setState({
       page,
-      pageSize
+      pageSize,
     });
 
     if (this.props.replace) {
       this.props.replace({
         state: {
-          page
-        }
+          page,
+        },
       });
     }
   };
 
   getItemToDisplay = (item: TDataItem<T>) => {
     const {
-      push,
       useCardGrid = true,
       colClassName,
       cardTitleField = "alias",
       cardComponent = (props: ICardComponent<T>) => (
-        <ItemCard item={props.item} push={props.push} />
-      )
+        <ItemCard item={props.item} />
+      ),
     } = this.props;
 
     const cardGrid = useCardGrid ? CARD_GRID_STYLE : {};
@@ -80,7 +79,6 @@ export class Catalog<T> extends React.PureComponent<
       >
         {cardComponent({
           item,
-          push
         })}
       </Col>
     );

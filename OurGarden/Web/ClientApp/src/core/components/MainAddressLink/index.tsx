@@ -1,6 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
-import { push as pushAction } from "connected-react-router";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
 
 import { ADDRESS, SHORT_ADDRESS } from "@src/core/constants";
 import { IMainAddressLink } from "./IMainAddressLink";
@@ -10,8 +11,8 @@ const MainAddressLink = ({
   prefixIcon,
   push,
   showFullAddress = false,
-  linkClassName = ""
-}: IMainAddressLink) => (
+  linkClassName = "",
+}: TWithRouter<IMainAddressLink>) => (
   <a
     className={`email-wrapper ${linkClassName}`}
     onClick={(e) => {
@@ -27,6 +28,4 @@ const MainAddressLink = ({
 );
 /* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/anchor-is-valid */
 
-export default connect(null, {
-  push: pushAction,
-})(MainAddressLink);
+export default WithRouterPush<IMainAddressLink>(MainAddressLink as any);

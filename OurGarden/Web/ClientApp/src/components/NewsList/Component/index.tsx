@@ -25,10 +25,10 @@ export class NewsList extends React.PureComponent<TState, {}> {
           {
             displayName: "Акции",
             url: "News",
-            order: 1
-          }
+            order: 1,
+          },
         ],
-        key: "News"
+        key: "News",
       });
     }
   }
@@ -36,15 +36,14 @@ export class NewsList extends React.PureComponent<TState, {}> {
   render() {
     const {
       newsList,
-      push,
       replace,
-      location: { state: locationState }
+      location: { state: locationState },
     } = this.props;
 
     const dataList = newsList.map((news: INew) => ({
       ...news,
       link: `/News/${news.newsId}`,
-      photoUrl: getPreviewPhotoSrc(news)
+      photoUrl: getPreviewPhotoSrc(news),
     }));
 
     return (
@@ -57,7 +56,6 @@ export class NewsList extends React.PureComponent<TState, {}> {
         ) : (
           <CatalogCardList
             dataList={dataList}
-            push={push}
             colClassName="grey-border"
             useCardGrid={false}
             paginationParams={{ page: 1, pageSize: 4 }}
@@ -65,9 +63,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
             cardTitleField="title"
             replace={replace}
             locationState={locationState}
-            cardComponent={(props) => (
-              <NewsCard item={props.item} push={props.push} />
-            )}
+            cardComponent={(props) => <NewsCard item={props.item} />}
           />
         )}
       </div>

@@ -1,10 +1,12 @@
 import React from "react";
-import { push as pushAction } from "connected-react-router";
 import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import LazyImage from "@core/components/LazyImage";
 import { Paragraph } from "@core/antd/Typography";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
 
 import { META_TITLE_PARAMS } from "@src/core/utils/CardList";
 
@@ -12,15 +14,14 @@ import { TDataItem } from "../ICatalogCard";
 
 export interface IItemCardProps<T> {
   item: TDataItem<T>;
-  push: typeof pushAction;
 }
 
-export type TItemCardReturn = JSX.Element;
-
-export type TItemCard = <T>(props: IItemCardProps<T>) => TItemCardReturn;
+export type TItemCard = <T>(props: IItemCardProps<T>) => JSX.Element;
 
 /* eslint-disable react/prop-types */
-export const ItemCard: TItemCard = ({ item, push }) => (
+export const ItemCard: <T>(
+  props: TWithRouter<IItemCardProps<T>>
+) => JSX.Element = ({ item, push }) => (
   <Card
     hoverable
     cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
@@ -47,4 +48,4 @@ export const ItemCard: TItemCard = ({ item, push }) => (
 );
 /* eslint-enable react/prop-types */
 
-export default ItemCard;
+export default WithRouterPush<IItemCardProps<unknown>>(ItemCard as any);

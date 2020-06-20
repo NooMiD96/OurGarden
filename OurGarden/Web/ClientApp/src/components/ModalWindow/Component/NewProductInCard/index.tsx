@@ -3,16 +3,23 @@ import React from "react";
 import Button from "@core/antd/Button";
 import { DialogContent, DialogContentText } from "@core/materialUI/modal";
 import { StyledModal, StyledDialogActions } from "./StyledModal";
+
+import { CARD_PATH } from "@src/core/constants";
+
 import { INewProductInCard } from "./INewProductInCard";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
 
 export const NewProductInCard = ({
   product,
   closeModal,
   isModalOpen,
   onEnter,
-}: INewProductInCard) => {
-  const linkToCard = "";
+  push,
+}: TWithRouter<INewProductInCard>) => {
   const onToCardClickHanlder = () => {
+    push(CARD_PATH);
     closeModal();
   };
   const onContinueClickHandler = () => {
@@ -36,14 +43,14 @@ export const NewProductInCard = ({
           key="toCard"
           type="primary"
           className="custome-styled-btn flex-grow-1"
-          onClick={onContinueClickHandler}
+          onClick={onToCardClickHanlder}
         >
           Перейти в корзину
         </Button>
         <Button
           className="custome-styled-btn flex-grow-1"
           key="continue"
-          onClick={onToCardClickHanlder}
+          onClick={onContinueClickHandler}
         >
           Продолжить покупки
         </Button>
@@ -52,4 +59,4 @@ export const NewProductInCard = ({
   );
 };
 
-export default NewProductInCard;
+export default WithRouterPush<INewProductInCard>(NewProductInCard as any);

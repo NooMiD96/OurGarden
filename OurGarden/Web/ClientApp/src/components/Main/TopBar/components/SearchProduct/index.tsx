@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { push } from "connected-react-router";
 
 import Search from "@core/antd/Search";
 import AutoComplete from "@core/antd/AutoComplete";
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
+import debounce from "lodash.debounce";
 
 import { IProduct } from "@src/components/Product/State";
-
-import debounce from "lodash.debounce";
 
 const fetchProducts = async (search: string) => {
   const result = await fetch(`/api/Search?search=${search}`, {
     credentials: "same-origin",
-    method: "GET"
+    method: "GET",
   }).then((res: Response) => res.json());
 
   return result;
@@ -22,7 +22,7 @@ const fetchProducts = async (search: string) => {
 
 let debounceOnSearch: any;
 
-const SearchProduct = (props: { push: (val: string) => void }) => {
+const SearchProduct = (props: TWithRouter<any>) => {
   const [pending, setLoading] = useState(false as boolean);
   const [productList, setProductList] = useState([] as IProduct[]);
   const [searchIsActive, setSearchActive] = useState(false as boolean);
@@ -107,6 +107,4 @@ const SearchProduct = (props: { push: (val: string) => void }) => {
   );
 };
 
-export default connect(null, {
-  push
-})(SearchProduct);
+export default WithRouterPush<any>(SearchProduct as any);

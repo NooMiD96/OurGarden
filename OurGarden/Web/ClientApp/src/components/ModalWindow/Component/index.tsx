@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import NewProductInCard from "./NewProductInCard";
+import { MODAL_TIMEOUT } from "@src/core/constants";
 
 import { ModalType } from "../State";
 import { TState } from "../TState";
-
-const MODAL_TIMEOUT = 5_000;
 
 const ModalWindowDump = ({ newProductInCard, closeModalWindow }: TState) => {
   const [isModalOpen, setModalOpen] = useState(false);

@@ -28,10 +28,10 @@ export class Design extends React.PureComponent<IDesign, {}> {
         {
           displayName: "Ландшафтный дизайн",
           url: "Design",
-          order: 1
-        }
+          order: 1,
+        },
       ],
-      key: "Design"
+      key: "Design",
     });
   }
 
@@ -126,7 +126,6 @@ export class Design extends React.PureComponent<IDesign, {}> {
           Также вы можете задать вопросы в чате обратной связи на сайте.
         </Paragraph>
 
-
         <Card
           hoverable
           cover={<div className="gazon" />}
@@ -163,5 +162,5 @@ export class Design extends React.PureComponent<IDesign, {}> {
 
 export default connect(null, {
   push: pushAction,
-  setBreadcrumb: breadcrumbActions.setBreadcrumb
+  setBreadcrumb: breadcrumbActions.setBreadcrumb,
 })(Design);

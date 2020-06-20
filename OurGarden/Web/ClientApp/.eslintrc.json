@@ -71,11 +71,7 @@
     "react/jsx-props-no-spreading": "off",
     "react/state-in-constructor": "off",
     "import/extensions": "off",
-    "@typescript-eslint/consistent-type-assertions": [
-      "error",
-      {
-        "assertionStyle": "angle-bracket"
-      }
-    ]
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "react/prop-types": "off"
   }
 }

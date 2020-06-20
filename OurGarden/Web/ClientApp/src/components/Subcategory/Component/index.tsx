@@ -14,7 +14,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
 
     const {
       match: { params },
-      subcategoryList
+      subcategoryList,
     } = props;
 
     if (!props.isDataWasGeted) {
@@ -32,7 +32,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
 
   componentDidUpdate(prevProps: TState) {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
 
     if (prevProps.match.params.categoryId !== params.categoryId) {
@@ -48,13 +48,12 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
       subcategoryList,
       replace,
       location: { state: locationState },
-      push
     } = this.props;
 
     const dataList = subcategoryList.map((x) => ({
       ...x,
       link: `/Catalog/${x.categoryId}/${x.subcategoryId}`,
-      photoUrl: getPreviewPhotoSrc(x)
+      photoUrl: getPreviewPhotoSrc(x),
     }));
 
     return (
@@ -65,8 +64,8 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
             seoTitle={category.seoTitle}
             seoTitleReplacments={[
               {
-                replacementValue: category.alias
-              }
+                replacementValue: category.alias,
+              },
             ]}
           />
         )}
@@ -75,7 +74,6 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
             replace={replace}
             locationState={locationState}
             dataList={dataList}
-            push={push}
           />
         </DescriptionCatalogWrapper>
       </>

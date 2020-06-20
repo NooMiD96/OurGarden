@@ -15,7 +15,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
 
     const {
       match: { params },
-      productList
+      productList,
     } = this.props;
 
     // prettier-ignore
@@ -38,7 +38,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
   componentDidUpdate(prevProps: TState) {
     const {
       match: { params },
-      getBreadcrumb
+      getBreadcrumb,
     } = this.props;
 
     // prettier-ignore
@@ -59,16 +59,15 @@ export class ProductList extends React.PureComponent<TState, {}> {
     const {
       subcategory,
       productList,
-      push,
       replace,
       location: { state: locationState },
-      ymId
+      ymId,
     } = this.props;
 
     const dataList = productList.map((product) => ({
       ...product,
       link: `/Catalog/${product.categoryId}/${product.subcategoryId}/${product.productId}`,
-      photoUrl: getPreviewPhotoSrc(product)
+      photoUrl: getPreviewPhotoSrc(product),
     }));
 
     return (
@@ -79,19 +78,18 @@ export class ProductList extends React.PureComponent<TState, {}> {
             seoTitle={subcategory.seoTitle}
             seoTitleReplacments={[
               {
-                replacementValue: subcategory.alias
-              }
+                replacementValue: subcategory.alias,
+              },
             ]}
           />
         )}
         <DescriptionCatalogWrapper description={subcategory?.description}>
           <CatalogCardList
             dataList={dataList}
-            push={push}
             replace={replace}
             locationState={locationState}
             cardComponent={(props) => (
-              <ProductCard item={props.item} push={props.push} ymId={ymId} />
+              <ProductCard item={props.item} ymId={ymId} />
             )}
           />
         </DescriptionCatalogWrapper>

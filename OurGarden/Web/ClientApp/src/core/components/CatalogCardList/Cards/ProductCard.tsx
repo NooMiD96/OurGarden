@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { push as pushAction } from "connected-react-router";
 import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
 import LazyImage from "@core/components/LazyImage";
 import { Paragraph } from "@core/antd/Typography";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
 
 import { actionsList } from "@components/UserCard/actions";
 import { META_TITLE_PARAMS } from "@core/utils/CardList";
@@ -15,15 +17,16 @@ import { IProduct } from "@components/Product/State";
 import { IMouseClickEvent } from "@core/IEvents";
 import { TDataItem } from "@core/components/CatalogCardList/ICatalogCard";
 
-export interface IProductCard {
+export interface IProductCardProps {
   item: TDataItem<IProduct>;
-  push: typeof pushAction;
-  addToCard: typeof actionsList.addProductToCard;
   ymId: number;
 }
 
-const ProductCard = (props: IProductCard) => {
-  // prettier-ignore
+export interface IProductCard extends IProductCardProps {
+  addToCard: typeof actionsList.addProductToCard;
+}
+
+const ProductCard = (props: TWithRouter<IProductCard>) => {
   const { item, push, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 
@@ -37,7 +40,7 @@ const ProductCard = (props: IProductCard) => {
 
     props.addToCard({
       count: Number.parseInt(itemCount, 10),
-      product: item
+      product: item,
     });
   };
 
@@ -77,6 +80,8 @@ const ProductCard = (props: IProductCard) => {
   );
 };
 
-export default connect(null, {
-  addToCard: actionsList.addProductToCard
-})(ProductCard);
+export default WithRouterPush<IProductCardProps>(
+  connect(null, {
+    addToCard: actionsList.addProductToCard,
+  })(ProductCard) as any
+);

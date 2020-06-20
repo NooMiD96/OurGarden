@@ -16,25 +16,24 @@ export class Category extends React.PureComponent<TState, {}> {
         {
           displayName: "Каталог",
           url: "Catalog",
-          order: 1
-        }
+          order: 1,
+        },
       ],
-      key: "Catalog"
+      key: "Catalog",
     });
   }
 
   render() {
     const {
       categoryList,
-      push,
       replace,
-      location: { state: locationState }
+      location: { state: locationState },
     } = this.props;
 
     const dataList = categoryList.map((x) => ({
       ...x,
       link: `/Catalog/${x.categoryId}`,
-      photoUrl: getPreviewPhotoSrc(x)
+      photoUrl: getPreviewPhotoSrc(x),
     }));
 
     return (
@@ -44,7 +43,6 @@ export class Category extends React.PureComponent<TState, {}> {
           replace={replace}
           locationState={locationState}
           dataList={dataList}
-          push={push}
         />
       </>
     );

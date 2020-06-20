@@ -79,7 +79,7 @@ export const MAIN_LAYOUT_GRID_COL_STYLE = {
   // xl ≥1200px
   xl: { offset: 4, span: 16 },
   // xxl ≥1600px
-  xxl: { offset: 5, span: 14 }
+  xxl: { offset: 5, span: 14 },
 };
 
 export const MobileContext = createContext(true);
@@ -95,3 +95,7 @@ export const RUSSIAN_CURRENCY = "₽";
 
 export const PHONE_MACROS = "{{phone}}";
 export const EMAIL_MACROS = "{{email}}";
+
+export const MODAL_TIMEOUT = 5_000;
+
+export const CARD_PATH = "/Card";

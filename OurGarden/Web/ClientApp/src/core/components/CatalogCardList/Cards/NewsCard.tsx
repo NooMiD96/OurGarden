@@ -1,19 +1,20 @@
 import * as React from "react";
-import { push as pushAction } from "connected-react-router";
 import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import { Title } from "@core/antd/Typography";
 import LazyImage from "@core/components/LazyImage";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
 
 import { INew } from "@components/News/State";
 
 interface INewsCard {
   item: INew & { link: string; photoUrl: string };
-  push: typeof pushAction;
 }
 
-export const NewsCard = ({ item, push }: INewsCard) => (
+const NewsCardWithoutRouter = ({ item, push }: TWithRouter<INewsCard>) => (
   <Card
     hoverable
     cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
@@ -38,3 +39,5 @@ export const NewsCard = ({ item, push }: INewsCard) => (
     />
   </Card>
 );
+
+export const NewsCard = WithRouterPush<INewsCard>(NewsCardWithoutRouter as any);
