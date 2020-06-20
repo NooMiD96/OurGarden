@@ -51,6 +51,12 @@ const ModalWindowDump = ({ newProductInCard, closeModalWindow }: TState) => {
             if (document?.body?.style?.overflow) {
               document.body.style.overflow = "";
               document.body.style.paddingRight = "";
+              // eslint-disable-next-line no-unused-expressions
+              document
+                .querySelector(
+                  "body > .new-product-in-card > .MuiDialog-container"
+                )
+                ?.removeAttribute("tabindex");
             }
           }}
         />

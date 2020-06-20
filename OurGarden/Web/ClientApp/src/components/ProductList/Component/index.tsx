@@ -6,6 +6,7 @@ import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
 import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
+import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { TState } from "../TState";
 
@@ -66,7 +67,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
 
     const dataList = productList.map((product) => ({
       ...product,
-      link: `/Catalog/${product.categoryId}/${product.subcategoryId}/${product.productId}`,
+      link: GetLinkToProduct(product),
       photoUrl: getPreviewPhotoSrc(product),
     }));
 

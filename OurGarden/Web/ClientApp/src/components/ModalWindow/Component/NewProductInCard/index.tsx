@@ -1,15 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Button from "@core/antd/Button";
-import { DialogContent, DialogContentText } from "@core/materialUI/modal";
-import { StyledModal, StyledDialogActions } from "./StyledModal";
+import { DialogContent } from "@core/materialUI/modal";
+import {
+  StyledModal,
+  StyledDialogActions,
+  StyledDialogContentText,
+} from "./StyledModal";
+import WithRouterPush, {
+  TWithRouter,
+} from "@src/core/components/WithRouterPush";
+
+import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { CARD_PATH } from "@src/core/constants";
 
 import { INewProductInCard } from "./INewProductInCard";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 
 export const NewProductInCard = ({
   product,
@@ -34,9 +41,12 @@ export const NewProductInCard = ({
       onEntering={onEnter}
     >
       <DialogContent dividers>
-        <DialogContentText>
-          {`${product?.alias ?? "Товар был"} добавлен в корзину`}
-        </DialogContentText>
+        <StyledDialogContentText classes={{ root: "modal-content" }}>
+          <Link to={GetLinkToProduct(product || {})}>
+            {product?.alias ?? "Товар был"}
+          </Link>
+          {" добавлен в корзину"}
+        </StyledDialogContentText>
       </DialogContent>
       <StyledDialogActions classes={{ root: "modal-action-buttons" }}>
         <Button

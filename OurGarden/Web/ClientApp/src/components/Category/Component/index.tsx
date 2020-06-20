@@ -4,6 +4,7 @@ import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
+import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { TState } from "../TState";
 
@@ -32,7 +33,7 @@ export class Category extends React.PureComponent<TState, {}> {
 
     const dataList = categoryList.map((x) => ({
       ...x,
-      link: `/Catalog/${x.categoryId}`,
+      link: GetLinkToProduct(x),
       photoUrl: getPreviewPhotoSrc(x),
     }));
 

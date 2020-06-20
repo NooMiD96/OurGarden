@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Table, { ColumnProps } from "@core/antd/Table";
 import { Title } from "@core/antd/Typography";
@@ -8,6 +9,7 @@ import LazyImage from "@core/components/LazyImage";
 import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
+import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
@@ -20,7 +22,7 @@ export const cardProductToDisplay = (x: IUserCardProduct): IDisplayInfo => ({
   productId: x.product.productId,
   cost: x.product.price,
   count: x.count,
-  totalCost: x.count * x.product.price
+  totalCost: x.count * x.product.price,
 });
 
 // prettier-ignore
@@ -40,7 +42,9 @@ const getColumns = (
           alt={record.product.alias}
           visibleByDefault
         />
-        <span className="product-name">{record.product.alias}</span>
+        <Link className="product-name" to={GetLinkToProduct(record.product)}>
+          <span>{record.product.alias}</span>
+        </Link>
       </div>
     )
   },
@@ -111,13 +115,13 @@ const rowKey = (record: IUserCardProduct) => `${record.product.categoryId}-${rec
 const pagination = {
   defaultCurrent: 1,
   defaultPageSize: 6,
-  hideOnSinglePage: true
+  hideOnSinglePage: true,
 };
 
 const scroll = {
   x: 799,
   y: "calc(100% - 88px)",
-  scrollToFirstRowOnChange: true
+  scrollToFirstRowOnChange: true,
 };
 
 const getAdditionalClassName = (dataSource: IDisplayInfo[]) => {

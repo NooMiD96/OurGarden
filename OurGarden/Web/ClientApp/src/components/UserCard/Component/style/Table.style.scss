@@ -54,27 +54,23 @@
     .ant-table-tbody > tr > td {
       font-family: "Gilroy";
       text-align: center;
+      font-size: 16px;
 
       .table-product-wrapper {
         display: flex;
 
+        .product-img,
         .lazy-load-image-background {
           flex: 0 0 auto;
-          min-height: 150px;
-          min-width: 150px;
-          &.lazy-load-image-loaded {
-            min-height: auto;
-          }
-        }
-        .product-img {
-          max-width: 250px;
-          max-height: 150px;
-          width: auto;
+          width: 120px;
+          height: 105px;
         }
 
         .product-name {
           align-self: center;
           margin-left: 1rem;
+          font-family: "ProbaPro";
+          font-weight: 500;
         }
       }
 
