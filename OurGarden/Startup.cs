@@ -47,6 +47,7 @@ namespace Web
                     .SetupSecureSettings(Configuration)
                     .AddResponseCompression()
                     .AddConfigurations(Configuration)
+                    .AddEmailService()
                     .AddServices()
                     .AddHostServices()
                     .AddNodeServices();

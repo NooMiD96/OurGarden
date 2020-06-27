@@ -1,5 +1,7 @@
 using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using MimeKit;
@@ -15,7 +17,7 @@ namespace EmailService
     {
         #region Consts
 
-        const string _templatesFolder = "Templates";
+        const string _templatesFolder = "wwwroot/Templates";
 
         const string _templateClientFileName = "MJML_TemplateClient.html";
 
@@ -76,26 +78,36 @@ namespace EmailService
             var endIndex = templateString.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
             var tableDataTemplate = templateString[startIndex..endIndex];
 
+            var bodyMjmlFormattedString = templateString
+                .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{Phone}}", order.Phone, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{Email}}", order.Email, StringComparison.InvariantCultureIgnoreCase)
+                .Replace(
+                    $"{{tableMap[{tableDataTemplate}]}}",
+                    order.OrderPositions
+                        .Select(
+                            x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                        )
+                        .Aggregate((acc, str) => acc + str),
+                    StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase);
+
+            var mjmlMessage = await _mjmlServices.Render(bodyMjmlFormattedString);
+            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
+            {
+                throw new Exception(
+                    $"Ошибка при отправке письма: {mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}, {val}")}"
+                );
+            }
+
             var body = new BodyBuilder
             {
-                HtmlBody = templateString
-                    .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{Phone}}", order.Phone, StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{Email}}", order.Email, StringComparison.InvariantCultureIgnoreCase)
-                    .Replace(
-                        $"{{tableMap[{tableDataTemplate}]}}",
-                        order.OrderPositions
-                            .Select(
-                                x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                            )
-                            .Aggregate((acc, str) => acc + str),
-                        StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase),
+                HtmlBody = mjmlMessage.Html,
                 TextBody = $@"Здравствуйте! На сайте поступил новый заказ заказ №{order.OrderId}. От {order.FIO}, {order.Phone}"
             };
 
@@ -119,24 +131,34 @@ namespace EmailService
             var endIndex = templateString.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
             var tableDataTemplate = templateString[startIndex..endIndex];
 
+            var bodyMjmlFormattedString = templateString
+                .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                .Replace(
+                    $"{{tableMap[{tableDataTemplate}]}}",
+                    order.OrderPositions
+                        .Select(
+                            x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                    .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                        )
+                        .Aggregate((acc, str) => acc + str),
+                    StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase);
+
+            var mjmlMessage = await _mjmlServices.Render(bodyMjmlFormattedString);
+            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
+            {
+                throw new Exception(
+                    $"Ошибка при отправке письма: {mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}, {val}")}"
+                );
+            }
+
             var body = new BodyBuilder
             {
-                HtmlBody = templateString
-                    .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                    .Replace(
-                        $"{{tableMap[{tableDataTemplate}]}}",
-                        order.OrderPositions
-                            .Select(
-                                x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                      .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                            )
-                            .Aggregate((acc, str) => acc + str),
-                        StringComparison.InvariantCultureIgnoreCase)
-                    .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase),
+                HtmlBody = mjmlMessage.Html,
                 TextBody = $@"Здравствуйте, {order.FIO}! Заказ №{order.OrderId} на сумму {order.TotalPrice} был подтвержден. Чтобы узнать подробности, перейдите по данному письму."
             };
 
@@ -145,7 +167,10 @@ namespace EmailService
 
         private async Task<Order> GetOrderItemsInformation(int orderId)
         {
-            var order = await _dbRepository.GetOrder(orderId, true);
+            using var scope = _scopeFactory.CreateScope();
+            var dbRepository = scope.ServiceProvider.GetRequiredService<IOurGardenRepository>();
+
+            var order = await dbRepository.GetOrder(orderId, true);
 
             return order;
         }

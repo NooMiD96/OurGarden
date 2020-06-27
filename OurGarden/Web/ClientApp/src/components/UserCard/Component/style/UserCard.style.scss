@@ -48,11 +48,16 @@
     text-align: center;
     justify-content: center;
 
-    .text-wrapper {
+    .title-wrapper {
       margin: 0.5rem;
       flex: 1 1 100%;
       font-size: 32px;
     }
+    
+    .info-text {
+      font-size: 18px;
+    }
+
     .btn-wrapper {
       margin: 0.5rem;
       flex: 1 1 100%;

@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
+    <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
+    <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
     <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>

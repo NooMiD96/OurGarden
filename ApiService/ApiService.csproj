@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApiService.Abstraction\ApiService.Abstraction.csproj" />
+    <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
+    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@
       .order-info-table table { word-break: keep-all !important; }
     </mj-style>
   </mj-head>
-  <mj-body>
+  <mj-body background-color="#ffffff">
     <mj-wrapper background-url="https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg" background-size="100%" background-repeat="no-repeat" background-color="#ffffff" padding-top="0px">
       <mj-section>
         <mj-column width="100%">
@@ -15,34 +15,14 @@
 
         <mj-column width="100%">
           <mj-text color="#444444" font-size="14px">
-            Здравствуйте!
+            Здравствуйте, {{FIO}}!
           </mj-text>
           <mj-text color="#444444" font-size="14px">
-            На сайте оформлен новый заказ №{{orderId}}.
+            Ваш заказ {{OrderId}} подтвержден.
           </mj-text>
         </mj-column>
 
-        <mj-column padding-top="20px" width="100%">
-          <mj-text color="#75b726" font-size="18px" font-weight="bold">
-            Информация о покупателе:
-          </mj-text>
-          <mj-table padding="0px" table-layout="inherit" css-class="order-info-table">
-            <tr style="text-align:left;padding:15px 0;">
-              <td style="width: 60%;">ФИО</td>
-              <td style="width: 40%;">{{FIO}}</td>
-            </tr>
-            <tr style="text-align:left;padding:15px 0;">
-              <td style="width: 60%;">Номер</td>
-              <td style="width: 40%;">{{Phone}}</td>
-            </tr>
-            <tr style="text-align:left;padding:15px 0;">
-              <td style="width: 60%;">Почта</td>
-              <td style="width: 40%;">{{Email}}</td>
-            </tr>
-          </mj-table>
-        </mj-column>
-
-        <mj-column padding-top="20px" css-class="order-info-table-wrapper" width="100%">
+        <mj-column css-class="order-info-table-wrapper" width="100%">
           <mj-text color="#75b726" font-size="18px" font-weight="bold">
             Информация о заказе:
           </mj-text>
@@ -64,6 +44,12 @@
         <mj-column padding-top="20px" css-class="order-info-table-wrapper" width="100%">
           <mj-text font-size="16px">
             <span style="color:#75b726;font-weight:bold;font-size:16px">Итоговая сумма заказа:&nbsp;</span>{{TotalPrice}} руб.
+          </mj-text>
+        </mj-column>
+
+        <mj-column width="100%">
+          <mj-text color="#444444" padding-top="25px">
+            Скоро мы с вами свяжемся!
           </mj-text>
         </mj-column>
 

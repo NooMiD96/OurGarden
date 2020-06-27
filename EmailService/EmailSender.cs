@@ -1,15 +1,16 @@
 ﻿using Core.Helpers;
 
-using DataBase.Abstraction.Repositories;
-
 using EmailService.Abstraction;
 
 using MailKit.Net.Smtp;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using MimeKit;
+
+using Mjml.AspNetCore;
 
 using Model;
 
@@ -24,9 +25,11 @@ namespace EmailService
 
         private readonly EmailOption _emailOption;
 
-        private readonly IOurGardenRepository _dbRepository;
-        
+        private readonly IServiceScopeFactory _scopeFactory;
+
         private readonly ILogger _logger;
+
+        private readonly IMjmlServices _mjmlServices;
 
         #endregion
 
@@ -37,11 +40,13 @@ namespace EmailService
         /// </summary>
         public EmailSender(IOptions<EmailOption> emailOption,
                            ILogger<EmailSender> logger,
-                           IOurGardenRepository dbRepository)
+                           IServiceScopeFactory scopeFactory,
+                           IMjmlServices mjmlServices)
         {
             _emailOption = emailOption.Value;
             _logger = logger;
-            _dbRepository = dbRepository;
+            _scopeFactory = scopeFactory;
+            _mjmlServices = mjmlServices;
         }
 
         #endregion

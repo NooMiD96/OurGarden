@@ -11,8 +11,12 @@ namespace DependencyInjections
     {
         public static IServiceCollection AddEmailService(this IServiceCollection services)
         {
-            services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddMjmlServices();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddMjmlServices(o =>
+            {
+                o.DefaultKeepComments = false;
+                o.DefaultMinify = true;
+            });
 
             return services;
         }

@@ -1,15 +1,10 @@
-﻿using ApiService.Abstraction.DTO.OrderDTO;
-
-using DataBase.Abstraction.Repositories;
-
-using EmailService.Abstraction;
+﻿using ApiService.Abstraction.Api;
+using ApiService.Abstraction.DTO.OrderDTO;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
-
-using Web.Services.Controllers.Api;
 
 namespace Web.Controllers.Api
 {
@@ -17,13 +12,14 @@ namespace Web.Controllers.Api
     [ApiController]
     public class OrderController : BaseController
     {
-        private readonly OrderControllerService _service;
+        private readonly ILogger _logger;
+        private readonly IOrderControllerService _service;
 
-        public OrderController(IOurGardenRepository repository,
-                               IEmailSender emailSender,
-                               ILogger<OrderController> logger)
+        public OrderController(ILogger<OrderController> logger,
+                               IOrderControllerService service)
         {
-            _service = new OrderControllerService(repository, emailSender, logger);
+            _logger = logger;
+            _service = service;
         }
 
         [HttpPost("[action]")]

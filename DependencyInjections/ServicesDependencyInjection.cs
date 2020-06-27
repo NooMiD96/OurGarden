@@ -1,5 +1,7 @@
 ﻿using ApiService;
 using ApiService.Abstraction;
+using ApiService.Abstraction.Api;
+using ApiService.Api;
 using ApiService.Core;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -20,13 +22,27 @@ namespace DependencyInjections
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            #region Host Services
+
             services.AddTransient<IPagePingerService, PagePingerService>();
             services.AddTransient<IOrderCleanerService, OrderCleanerService>();
             services.AddTransient<ISiteMapService, SiteMapService>();
             services.AddTransient<ISiteMapBuilder, SiteMapBuilder>();
-            services.AddTransient<ISiteMapBuilder, SiteMapBuilder>();
+
+            #endregion
+
+            #region Home services
+            
             services.AddTransient<IBundlesService, BundlesService>();
             services.AddTransient<IHomeControllerService, HomeControllerService>();
+
+            #endregion
+
+            #region Api
+
+            services.AddTransient<IOrderControllerService, OrderControllerService>();
+
+            #endregion
 
             return services;
         }

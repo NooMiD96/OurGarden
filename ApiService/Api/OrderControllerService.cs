@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO.OrderDTO;
+﻿using ApiService.Abstraction.Api;
+using ApiService.Abstraction.DTO.OrderDTO;
 
 using Core.Helpers;
 
@@ -14,33 +15,49 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Web.Services.Controllers.Api
+namespace ApiService.Api
 {
-    public class OrderControllerService
+    /// <summary>
+    /// Избавиться от <see cref="OurGardenContext"/>
+    /// </summary>
+    [Obsolete]
+    public class OrderControllerService : IOrderControllerService
     {
-        private readonly OurGardenRepository _repository;
+        #region Fields
+
+        private readonly IOurGardenRepository _repository;
+
         private readonly OurGardenContext _context;
+
         private readonly IEmailSender _emailSender;
+
         private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "Api.OrderController.Service";
+
+        #endregion
+
+        #region .ctor
 
         public OrderControllerService(IOurGardenRepository repository,
                                       IEmailSender emailSender,
-                                      ILogger logger)
+                                      ILogger<OrderControllerService> logger)
         {
-            _repository = repository as OurGardenRepository;
-            _context = _repository.Context;
+            _repository = repository;
+            _context = (repository as OurGardenRepository).Context;
             _emailSender = emailSender;
             _logger = logger;
         }
 
+        #endregion
+
+        /// <inheritdoc/>
         public async ValueTask<(bool isSuccess, string error)> AddOrder(OrderCreateDTO orderDTO)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrder";
-
             using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var orderId = -1;
             try
             {
                 var order = new Order()
@@ -66,21 +83,21 @@ namespace Web.Services.Controllers.Api
                 await _repository.AddClient(client);
 
                 order.OrderPositions = orderDTO.OrderPositions.Select(x =>
-                        new OrderPosition()
-                        {
-                            OrderPositionId = 0,
+                    new OrderPosition()
+                    {
+                        OrderPositionId = 0,
 
-                            Number = x.Number,
-                            Price = 0,
-                            Name = "",
+                        Number = x.Number,
+                        Price = 0,
+                        Name = "",
 
-                            OrderId = order.OrderId,
+                        OrderId = order.OrderId,
 
-                            CategoryId = x.Product.CategoryId,
-                            SubcategoryId = x.Product.SubcategoryId,
-                            ProductId = x.Product.ProductId
-                        })
-                        .ToList();
+                        CategoryId = x.Product.CategoryId,
+                        SubcategoryId = x.Product.SubcategoryId,
+                        ProductId = x.Product.ProductId
+                    })
+                    .ToList();
 
                 await _repository.UpdateOrder(order);
 
@@ -100,22 +117,33 @@ namespace Web.Services.Controllers.Api
 
                 await _repository.UpdateOrder(order);
 
-                var task = new Task(async () =>
-                {
-                    await _emailSender.SendOrderInformation(order.OrderId);
-                });
-                task.Start(TaskScheduler.Default);
+                orderId = order.OrderId;
 
                 transaction.Commit();
-                return (true, null);
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
 
-                _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\tmes: Не удалось создать заказ, DTO: {JsonHelper.Serialize(orderDTO)}\n\terr: {ex.Message}\n\t{ex.StackTrace}");
+                _logger.LogError(ex, $"Не удалось создать заказ, DTO: {JsonHelper.Serialize(orderDTO)}");
                 return (false, "Не удалось создать заказ!");
             }
+
+            try
+            {
+                if (orderId <= 0)
+                {
+                    throw new Exception($"Отсутствует номер заказа.");
+                }
+                var task = _emailSender.SendOrderInformation(orderId);
+                task.Start(TaskScheduler.Default);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Не удалось поповестить покупателя.");
+            }
+
+            return (true, null);
         }
     }
 }

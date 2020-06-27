@@ -15,14 +15,14 @@ const CardConfirmSuccess = ({ ymId }: ICardConfirmSuccess) => {
 
   return (
     <div className="order-success">
-      <Title className="text-wrapper">
+      <Title className="title-wrapper">
         Спасибо за заказ! Мы Вам перезвоним!
       </Title>
-      <Paragraph>
+      <Paragraph className="info-text">
         Мы отправили Вам письмо с информацией о заказе на почту.
       </Paragraph>
       <div className="btn-wrapper">
-        <Button type="primary">
+        <Button className="custome-styled-btn" type="primary">
           <NavLink to="/">Вернуться на главную</NavLink>
         </Button>
       </div>
