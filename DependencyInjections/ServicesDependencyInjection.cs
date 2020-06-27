@@ -10,7 +10,6 @@ using PagePingerHostService;
 using PagePingerHostService.Abstraction;
 
 using Services.BackgroundWork.OrderCleaner;
-using Services.EMail;
 
 using SiteMapHostService;
 using SiteMapHostService.Abstraction;
@@ -25,7 +24,6 @@ namespace DependencyInjections
             services.AddTransient<IOrderCleanerService, OrderCleanerService>();
             services.AddTransient<ISiteMapService, SiteMapService>();
             services.AddTransient<ISiteMapBuilder, SiteMapBuilder>();
-            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddTransient<ISiteMapBuilder, SiteMapBuilder>();
             services.AddTransient<IBundlesService, BundlesService>();
             services.AddTransient<IHomeControllerService, HomeControllerService>();

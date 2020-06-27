@@ -29,12 +29,24 @@ namespace DataBase.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<Order> GetOrder(int orderId)
+        public async Task<Order> GetOrder(int orderId, bool includeProductInfo = false)
         {
-            var order = await Context.Order
-            .Include(x => x.OrderPositions)
-            .Include(x => x.Status)
-            .FirstOrDefaultAsync(x => x.OrderId == orderId);
+            var query = Context.Order
+                .Include(x => x.OrderPositions)
+                .Include(x => x.Status)
+                .AsQueryable();
+
+            if (includeProductInfo)
+            {
+                query = query
+                    .Include(x => x.OrderPositions)
+                        .ThenInclude(x => x.Product)
+                            .ThenInclude(x => x.Subcategory)
+                                .ThenInclude(x => x.Category);
+            }
+
+            var order = await query.FirstOrDefaultAsync(x => x.OrderId == orderId);
+
             return order;
         }
 
@@ -59,7 +71,7 @@ namespace DataBase.Repository
             if (order == null)
                 return;
             Context.Order.Remove(order);
-            //_context.OrderPosition.RemoveRange(order.OrderPositions);
+
             await Context.SaveChangesAsync();
         }
 

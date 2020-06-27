@@ -5,13 +5,14 @@ using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using System;
-using System.Threading.Tasks;
 
 namespace DependencyInjections
 {
@@ -23,7 +24,7 @@ namespace DependencyInjections
     {
         public const string ASSEMBLY_PATH = "Web";
 
-        public static void SetupDatabaseSettings(IServiceCollection services, IConfiguration Configuration)
+        public static IServiceCollection SetupDatabaseSettings(this IServiceCollection services, IConfiguration Configuration)
         {
             services
                 .AddDbContext<OurGardenContext>(options =>
@@ -53,28 +54,32 @@ namespace DependencyInjections
                 .AddEntityFrameworkStores<OurGardenContext>();
 
             services.AddTransient<IOurGardenRepository, OurGardenRepository>();
+
+            return services;
         }
 
-        public static async Task ApplyDatabaseMigrations(IServiceProvider serviceProvider, IConfiguration Configuration)
+        public static IApplicationBuilder ApplyDatabaseMigrations(this IApplicationBuilder appBuilder,
+                                                                  IConfiguration Configuration,
+                                                                  ILogger logger)
         {
-            using var scope = serviceProvider.CreateScope();
+            using var scope = appBuilder.ApplicationServices.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<OurGardenContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
             try
             {
-                await dbContext.Database.MigrateAsync();
+                dbContext.Database.Migrate();
 
                 var roleNames = UserRoles.RoleList;
                 IdentityResult roleResult;
 
                 foreach (var roleName in roleNames)
                 {
-                    var roleExist = await roleManager.RoleExistsAsync(roleName);
+                    var roleExist = roleManager.RoleExistsAsync(roleName).Result;
                     if (!roleExist)
                     {
-                        roleResult = await roleManager.CreateAsync(new ApplicationRole(roleName));
+                        roleResult = roleManager.CreateAsync(new ApplicationRole(roleName)).Result;
 
                         if (!roleResult.Succeeded)
                             throw new Exception("Can't add roles in database");
@@ -88,8 +93,8 @@ namespace DependencyInjections
                     var password = admin["Password"];
                     var email = admin["Email"];
 
-                    var _user = await userManager.FindByNameAsync(userName);
-                    if (_user == null)
+                    var userEntity = userManager.FindByNameAsync(userName).Result;
+                    if (userEntity == null)
                     {
                         var poweruser = new ApplicationUser
                         {
@@ -97,17 +102,19 @@ namespace DependencyInjections
                             Email = email
                         };
 
-                        var createPowerUser = await userManager.CreateAsync(poweruser, password);
+                        var createPowerUser = userManager.CreateAsync(poweruser, password).Result;
                         if (createPowerUser.Succeeded)
                         {
-                            await userManager.AddToRoleAsync(poweruser, UserRoles.Admin);
+                            userManager.AddToRoleAsync(poweruser, UserRoles.Admin).GetAwaiter().GetResult();
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\r\n\r\ninfo: Trouble with first connection to identity database:\n{ex.Message}\r\n\r\n");
+                logger.LogError(ex, $"\r\n\r\nОшибка при накате миграций:\r\n\r\n");
+
+                throw new Exception(null, ex);
             }
             finally
             {
@@ -118,6 +125,8 @@ namespace DependencyInjections
                 if (dbContext != null)
                     dbContext.Dispose();
             }
+
+            return appBuilder;
         }
     }
 }

@@ -6,9 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,9 +19,10 @@
     <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
     <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
     <ProjectReference Include="..\DummyWorkerHostService\PagePingerHostService.csproj" />
+    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\OrderCleanerHostService\OrderCleanerHostService.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\SiteMapHostService\SiteMapHostService.csproj" />
   </ItemGroup>
 

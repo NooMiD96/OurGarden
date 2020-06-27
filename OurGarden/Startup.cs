@@ -43,13 +43,13 @@ namespace Web
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            SetupDatabaseSettings(services, Configuration);
-            SetupSecureSettings(services, Configuration);
-
-            services.AddResponseCompression();
-
-            var serviceProvider = services.BuildServiceProvider();
-            ApplyDatabaseMigrations(serviceProvider, Configuration).GetAwaiter().GetResult();
+            services.SetupDatabaseSettings(Configuration)
+                    .SetupSecureSettings(Configuration)
+                    .AddResponseCompression()
+                    .AddConfigurations(Configuration)
+                    .AddServices()
+                    .AddHostServices()
+                    .AddNodeServices();
 
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(x =>
@@ -58,12 +58,6 @@ namespace Web
                         x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     });
-
-            services.AddConfigurations(Configuration)
-                    .AddServices()
-                    .AddHostServices();
-
-            services.AddNodeServices();
 
             services.AddHsts(options =>
             {
@@ -86,6 +80,9 @@ namespace Web
         /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
+
             string cachePeriod;
             if (env.IsDevelopment())
             {
@@ -112,20 +109,17 @@ namespace Web
                 /// Неделя
                 cachePeriod = "604800";
 
-                app.UseStatusCodePagesWithReExecute("/");
-                /// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseStatusCodePagesWithReExecute("/")
+                   .UseHsts();
 
-                var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
-                var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
                 logger.LogInformation($"Hosting environment: Production\nContent root path: {Directory.GetCurrentDirectory()}\nNow listening on: {String.Join(", ", serverAddressesFeature.Addresses)}");
             }
 
-            app.UseSerilogRequestLogging();
+            app.ApplyDatabaseMigrations(Configuration, logger);
 
-            app.UseHttpsRedirection();
-
-            app.UseResponseCompression();
+            app.UseSerilogRequestLogging()
+               .UseHttpsRedirection()
+               .UseResponseCompression();
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
@@ -143,8 +137,8 @@ namespace Web
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication()
+               .UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

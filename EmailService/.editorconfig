@@ -1,0 +1,34 @@
+﻿[*.cs]
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = none
+
+# CA1305: ??
+dotnet_diagnostic.CA1305.severity = none
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = none
+
+#CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+#CA1307: Specify StringComparison
+dotnet_diagnostic.CA1307.severity = none
+
+#CA1052: Static holder types should be Static or NotInheritable
+dotnet_diagnostic.CA1052.severity = none
+
+#CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = none
+
+# IDE0040: Add accessibility modifiers
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:none
+
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = none
+
+# CA5359: Do Not Disable Certificate Validation
+dotnet_diagnostic.CA5359.severity = none

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using Model;
-using Model.EMail;
 
 namespace DependencyInjections
 {
@@ -15,7 +14,7 @@ namespace DependencyInjections
         {
             services.Configure<SeoInformationOption>(configuration.GetSection("SeoInformation"));
             services.Configure<OrderCleanerOptions>(configuration.GetSection("OrderCleanerOptions"));
-            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            services.Configure<EmailOption>(configuration.GetSection("EmailSettings"));
             services.Configure<SeoServicesOptions>(configuration);
             
             return services;

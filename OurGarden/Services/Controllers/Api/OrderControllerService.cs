@@ -7,10 +7,10 @@ using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
 
+using EmailService.Abstraction;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using Services.EMail;
 
 using System;
 using System.Linq;

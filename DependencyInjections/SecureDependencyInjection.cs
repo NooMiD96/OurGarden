@@ -14,7 +14,7 @@ namespace DependencyInjections
 {
     public static class SecureDependencyInjection
     {
-        public static void SetupSecureSettings(IServiceCollection services, IConfiguration Configuration)
+        public static IServiceCollection SetupSecureSettings(this IServiceCollection services, IConfiguration Configuration)
         {
             services
                 .AddAuthentication(IdentityConstants.ApplicationScheme)
@@ -73,6 +73,8 @@ namespace DependencyInjections
                 options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
                 options.Cookie.Name = Configuration.GetValue<string>("XsrfName");
             });
+
+            return services;
         }
     }
 }

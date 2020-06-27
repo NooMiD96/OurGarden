@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.5" />
+    <None Remove=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
+    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

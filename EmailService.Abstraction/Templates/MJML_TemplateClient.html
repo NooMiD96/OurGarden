@@ -1,0 +1,59 @@
+﻿<mjml>
+  <mj-head>
+    <mj-style inline="inline">
+      .order-info-table table { word-break: keep-all !important; }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-wrapper background-url="https://xn----7sbbq5b0a1c.com/email/mainBackground.jpg" background-size="100%" background-repeat="no-repeat" background-color="#ffffff" padding-top="0px">
+      <mj-section>
+        <mj-column width="100%">
+          <mj-image alt="Наш Сад" align="left" padding-left="25%" padding-top="0px" width="90px" src="https://xn----7sbbq5b0a1c.com/email/logo.png"></mj-image>
+          <mj-spacer height="10vw" />
+          <mj-spacer height="0.75vh" />
+        </mj-column>
+
+        <mj-column width="100%">
+          <mj-text color="#444444" font-size="14px">
+            Здравствуйте, {{FIO}}!
+          </mj-text>
+          <mj-text color="#444444" font-size="14px">
+            Ваш заказ {{OrderId}} подтвержден.
+          </mj-text>
+        </mj-column>
+
+        <mj-column css-class="order-info-table-wrapper" width="100%">
+          <mj-text color="#75b726" font-size="18px" font-weight="bold">
+            Информация о заказе:
+          </mj-text>
+        </mj-column>
+
+        <mj-column width="100%">
+          <mj-table padding="0px" table-layout="inherit" css-class="order-info-table">
+            <tr style="text-align:left;padding:15px 0;">
+              <th style="padding: 0 10px;width: 60%;color:#75b726"><span style="font-size: 16px">Продукт</span></th>
+              <th style="padding: 0 0 0 10px;width: 40%;color:#75b726"><span style="font-size: 16px">Цена</span></th>
+            </tr>
+            {tableMap[<tr>
+              <td style="padding: 0 10px 0 0;"><span>{{ProductId}}</span><br/><span style="color:#999999">{{CategoryId}}, {{SubcategoryId}}</span><br/><span style="font-size:12px;color:#999999">Количество: {{Number}}</span></td>
+              <td style="padding: 0 0 0 10px;">{{ProductPrice}} руб.</td>
+            </tr>]}
+          </mj-table>
+        </mj-column>
+
+        <mj-column padding-top="20px" css-class="order-info-table-wrapper" width="100%">
+          <mj-text font-size="16px">
+            <span style="color:#75b726;font-weight:bold;font-size:16px">Итоговая сумма заказа:&nbsp;</span>{{TotalPrice}} руб.
+          </mj-text>
+        </mj-column>
+
+        <mj-column width="100%">
+          <mj-text color="#444444" padding-top="25px">
+            Скоро мы с вами свяжемся!
+          </mj-text>
+        </mj-column>
+
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

@@ -136,7 +136,7 @@ namespace DataBase.Abstraction.Repositories
         
         Task<IEnumerable<OrderStatus>> GetStatusList();
         
-        Task<Order> GetOrder(int orderId);
+        Task<Order> GetOrder(int orderId, bool includeProductInfo = false);
         
         Task AddOrder(Order order);
         

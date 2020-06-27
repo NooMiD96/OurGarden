@@ -2,10 +2,10 @@
 
 using DataBase.Abstraction.Repositories;
 
+using EmailService.Abstraction;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using Services.EMail;
 
 using System.Threading.Tasks;
 
