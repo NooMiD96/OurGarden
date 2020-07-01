@@ -9,7 +9,7 @@ import LazyImage from "@core/components/LazyImage";
 import RussianCurrency from "@core/components/RussianCurrency";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
-import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
+import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { IUserCardProduct } from "../../State";
 import { IProduct } from "@src/components/Product/State";
@@ -42,7 +42,7 @@ const getColumns = (
           alt={record.product.alias}
           visibleByDefault
         />
-        <Link className="product-name" to={GetLinkToProduct(record.product)}>
+        <Link className="product-name" to={getLinkToProduct(record.product)}>
           <span>{record.product.alias}</span>
         </Link>
       </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
@@ -9,6 +8,7 @@ import { Paragraph } from "@core/antd/Typography";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
+import GenerateLink from "../../GenerateLink";
 
 import { actionsList } from "@components/UserCard/actions";
 import { META_TITLE_PARAMS } from "@core/utils/CardList";
@@ -56,14 +56,13 @@ const ProductCard = (props: TWithRouter<IProductCard>) => {
         // prettier-ignore
         title={(
           <Paragraph ellipsis={META_TITLE_PARAMS}>
-            <Link
+            <GenerateLink
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              to={item.link}
-            >
-              {item.alias}
-            </Link>
+              link={item.link}
+              title={item.alias}
+            />
           </Paragraph>
         )}
         // prettier-ignore

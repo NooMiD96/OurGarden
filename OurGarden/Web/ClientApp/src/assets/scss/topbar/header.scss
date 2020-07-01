@@ -66,7 +66,7 @@
 
     .anticon {
       color: $lightGreyColor;
-      width: 18px;
+      width: 20px;
       margin-right: 0.25em;
       padding-bottom: 0.15em;
 
@@ -83,10 +83,10 @@
     .ant-badge {
       display: flex;
       align-items: flex-end;
-      flex: 0 1 52px;
+      flex: 0 1 32px;
 
       .ant-badge-count {
-        right: 20px;
+        right: 5px;
       }
     }
 
@@ -140,7 +140,26 @@
 
       .ant-select.ant-select-auto-complete {
         flex-basis: calc(100% - 80px);
-        margin-right: 23px;
+        margin-right: 0;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ant-col {
+      .archive-icon,
+      .ant-badge {
+        display: flex;
+        align-items: flex-end;
+        flex: 0 1 52px;
+
+        .ant-badge-count {
+          right: 20px;
+        }
+      }
+
+      .ant-select.ant-select-auto-complete {
+        margin-right: 0.3em;
       }
     }
   }
@@ -182,7 +201,7 @@
 
       .ant-select.ant-select-auto-complete {
         margin-right: 0;
-        margin-left: 10px;
+        margin: 0 0.3em;
         flex-basis: calc(100% - 160px);
       }
     }

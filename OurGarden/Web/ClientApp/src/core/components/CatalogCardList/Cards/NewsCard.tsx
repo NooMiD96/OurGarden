@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import { Title } from "@core/antd/Typography";
@@ -7,6 +6,7 @@ import LazyImage from "@core/components/LazyImage";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
+import GenerateLink from "../../GenerateLink";
 
 import { INew } from "@components/News/State";
 
@@ -26,14 +26,13 @@ const NewsCardWithoutRouter = ({ item, push }: TWithRouter<INewsCard>) => (
       // prettier-ignore
       title={(
         <Title level={2}>
-          <Link
+          <GenerateLink
             onClick={(e) => {
               e.stopPropagation();
             }}
-            to={item.link}
-          >
-            {item.alias}
-          </Link>
+            link={item.link}
+            title={item.alias}
+          />
         </Title>
       )}
     />

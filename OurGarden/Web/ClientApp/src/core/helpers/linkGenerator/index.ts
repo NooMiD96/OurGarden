@@ -1,6 +1,6 @@
 import { TProductItem, TNewsItem } from "./ILinkGenerator";
 
-export const GetLinkToProduct = ({
+export const getLinkToProduct = ({
   categoryId = "",
   subcategoryId = "",
   productId = "",
@@ -25,7 +25,7 @@ export const GetLinkToProduct = ({
   return link;
 };
 
-export const GetLinkToNews = ({ newsId }: TNewsItem) => {
+export const getLinkToNews = ({ newsId }: TNewsItem) => {
   let link = "/News";
 
   if (!newsId) {

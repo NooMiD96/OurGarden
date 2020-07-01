@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import Button from "@core/antd/Button";
 import { DialogContent } from "@core/materialUI/modal";
@@ -11,8 +10,9 @@ import {
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
+import GenerateLink from "@src/core/components/GenerateLink";
 
-import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
+import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { CARD_PATH } from "@src/core/constants";
 
@@ -42,9 +42,10 @@ export const NewProductInCard = ({
     >
       <DialogContent dividers>
         <StyledDialogContentText classes={{ root: "modal-content" }}>
-          <Link to={GetLinkToProduct(product || {})}>
-            {product?.alias ?? "Товар был"}
-          </Link>
+          <GenerateLink
+            link={getLinkToProduct(product || {})}
+            title={product?.alias ?? "Товар был"}
+          />
           {" добавлен в корзину"}
         </StyledDialogContentText>
       </DialogContent>

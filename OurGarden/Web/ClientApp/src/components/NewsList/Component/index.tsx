@@ -5,7 +5,7 @@ import CatalogCardList from "@core/components/CatalogCardList";
 import { NewsCard } from "@core/components/CatalogCardList/Cards/NewsCard";
 
 import { getPreviewPhotoSrc } from "@src/core/utils/photo";
-import { GetLinkToNews } from "@src/core/helpers/linkGenerator";
+import { getLinkToNews } from "@src/core/helpers/linkGenerator";
 
 import { TState } from "../TState";
 import { INew } from "@components/News/State";
@@ -43,7 +43,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
 
     const dataList = newsList.map((news: INew) => ({
       ...news,
-      link: GetLinkToNews(news),
+      link: getLinkToNews(news),
       photoUrl: getPreviewPhotoSrc(news),
     }));
 

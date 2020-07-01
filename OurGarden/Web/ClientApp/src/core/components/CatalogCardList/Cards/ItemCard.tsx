@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import LazyImage from "@core/components/LazyImage";
@@ -7,6 +6,7 @@ import { Paragraph } from "@core/antd/Typography";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
+import GenerateLink from "../../GenerateLink";
 
 import { META_TITLE_PARAMS } from "@src/core/utils/CardList";
 
@@ -33,14 +33,13 @@ export const ItemCard: <T>(
       // prettier-ignore
       title={(
         <Paragraph ellipsis={META_TITLE_PARAMS}>
-          <Link
+          <GenerateLink
             onClick={(e) => {
               e.stopPropagation();
             }}
-            to={item.link}
-          >
-            {item.alias}
-          </Link>
+            link={item.link}
+            title={item.alias}
+          />
         </Paragraph>
       )}
     />

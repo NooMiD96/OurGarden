@@ -5,7 +5,10 @@ import { ICategoryState } from "@src/components/Category/State";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = {
+  isCollapsed: boolean;
+  isCollapsible: boolean;
+};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = ICategoryState &

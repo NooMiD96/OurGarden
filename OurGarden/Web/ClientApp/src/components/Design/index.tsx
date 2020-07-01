@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { push as pushAction } from "connected-react-router";
 
 import HeaderHelmet from "@core/components/Helmet";
 import Typography from "@core/antd/Typography";
 import MainMobileLink from "@src/core/components/MainMobileLink";
 import Card from "@core/antd/Card";
+import GenerateLink from "@src/core/components/GenerateLink";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
@@ -143,14 +143,13 @@ export class Design extends React.PureComponent<IDesign, {}> {
               >
                 Устройство рулонного газона под ключ.
                 <br />
-                <Link
+                <GenerateLink
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  to="rulonnyj-gazon"
-                >
-                  Подробнее...
-                </Link>
+                  link="rulonnyj-gazon"
+                  title="Подробнее..."
+                />
               </Paragraph>
             )}
           />

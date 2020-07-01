@@ -5,7 +5,7 @@ import HeaderHelmet from "@src/core/components/Helmet";
 import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
-import { GetLinkToProduct } from "@src/core/helpers/linkGenerator";
+import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { TState, TComponentState } from "../TState";
 
@@ -53,7 +53,7 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
 
     const dataList = subcategoryList.map((x) => ({
       ...x,
-      link: GetLinkToProduct(x),
+      link: getLinkToProduct(x),
       photoUrl: getPreviewPhotoSrc(x),
     }));
 

@@ -50,10 +50,13 @@
       }
     }
   }
+
   .company-map {
+    display: flex;
     flex: 1 1 auto;
 
     .y-map {
+      flex: 1 1 auto;
       min-height: 250px;
     }
   }

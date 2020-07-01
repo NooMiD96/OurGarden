@@ -1,9 +1,9 @@
 import React from "react";
 
 import { Title, Text } from "@core/antd/Typography";
-import { Link } from "react-router-dom";
 
 import "./style/PageNotFound.style.scss";
+import GenerateLink from "../GenerateLink";
 
 export const PageNotFound = () => (
   <div className="page-not-found content white-background grey-border p25">
@@ -19,7 +19,7 @@ export const PageNotFound = () => (
       К сожалению, мы не смогли найти страницу, которую Вы запрашиваете. Вы
       можете воспользоваться нашим поиском или
       {/* prettier-ignore */ " "}
-      <Link to="/">перейти на главную</Link>
+      <GenerateLink link="/" title="перейти на главную" />
     </Text>
   </div>
 );
