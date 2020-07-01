@@ -15,6 +15,10 @@ const ModalWindowDump = ({ newProductInCard, closeModalWindow }: TState) => {
   const [modalType, setModalType] = useState(ModalType.Closed);
 
   useEffect(() => {
+    if ((document.activeElement as any)?.blur) {
+      (document.activeElement as any).blur();
+    }
+
     if (newProductInCard) {
       if (modalCloseTimer !== null) {
         clearTimeout(modalCloseTimer);

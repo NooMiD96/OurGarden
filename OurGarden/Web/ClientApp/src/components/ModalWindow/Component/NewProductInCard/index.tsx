@@ -39,6 +39,7 @@ export const NewProductInCard = ({
       open={isModalOpen}
       hideBackdrop
       onEntering={onEnter}
+      disableEnforceFocus
     >
       <DialogContent dividers>
         <StyledDialogContentText classes={{ root: "modal-content" }}>
