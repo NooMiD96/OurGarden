@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import LazyImage from "@core/components/LazyImage";
+import GenerateLink from "@src/core/components/GenerateLink";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 
@@ -35,17 +35,16 @@ const ProductOption = (item: IProductOption) => {
           alt={item.alias}
           visibleByDefault
         />
-        <Link
+        <GenerateLink
           onClick={(e) => {
-            e.stopPropagation();
+            e.preventDefault();
           }}
-          to={link}
-          className="search-menu-item-text"
-        >
-          {item.alias}
-        </Link>
+          link={link}
+          title={item.alias}
+          linkClassName="search-menu-item-text"
+        />
       </div>
-    )
+    ),
   };
 };
 

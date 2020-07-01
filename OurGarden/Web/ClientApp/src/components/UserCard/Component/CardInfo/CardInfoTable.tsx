@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import Table, { ColumnProps } from "@core/antd/Table";
 import { Title } from "@core/antd/Typography";
@@ -7,6 +6,7 @@ import NumberInput from "@core/components/NumberInput";
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import LazyImage from "@core/components/LazyImage";
 import RussianCurrency from "@core/components/RussianCurrency";
+import GenerateLink from "@src/core/components/GenerateLink";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
@@ -42,9 +42,11 @@ const getColumns = (
           alt={record.product.alias}
           visibleByDefault
         />
-        <Link className="product-name" to={getLinkToProduct(record.product)}>
-          <span>{record.product.alias}</span>
-        </Link>
+        <GenerateLink
+          link={getLinkToProduct(record.product)}
+          title={record.product.alias}
+          linkClassName="product-name"
+        />
       </div>
     )
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Search from "@core/antd/Search";
 import AutoComplete from "@core/antd/AutoComplete";
@@ -7,6 +7,7 @@ import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
+
 import debounce from "lodash.debounce";
 
 import { IProduct } from "@src/components/Product/State";
@@ -23,6 +24,8 @@ const fetchProducts = async (search: string) => {
 let debounceOnSearch: any;
 
 const SearchProduct = (props: TWithRouter<any>) => {
+  const autoCompleteElement: React.RefObject<any> = useRef(null);
+
   const [pending, setLoading] = useState(false as boolean);
   const [productList, setProductList] = useState([] as IProduct[]);
   const [searchIsActive, setSearchActive] = useState(false as boolean);
@@ -55,6 +58,11 @@ const SearchProduct = (props: TWithRouter<any>) => {
 
   const onSelect = (val: any) => {
     props.push(val);
+    process.nextTick(() => {
+      if (autoCompleteElement?.current?.blur) {
+        autoCompleteElement.current.blur();
+      }
+    });
   };
 
   useEffect(() => {
@@ -74,6 +82,7 @@ const SearchProduct = (props: TWithRouter<any>) => {
   return (
     <React.Fragment>
       <AutoComplete
+        ref={autoCompleteElement}
         listHeight={512}
         listItemHeight={115}
         options={dataSource}
