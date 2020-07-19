@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Title } from "@src/core/antd/Typography";
-import DescriptionItemWrapper from "@src/core/helpers/description/DescriptionItemWrapper";
+import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPhotoSrc } from "@src/core/utils/photo";
 
@@ -24,10 +24,10 @@ export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
           className="news-photo"
         />
 
-        <div className="news-info-content">
-          <DescriptionItemWrapper
+        <div className="news-info-content wysiwyg-wrapper">
+          <DescriptionWrapper
             description={selectedNew.description}
-            wrapperClassName="news-description-wysiwyg"
+            wrapperClassName="wysiwyg-description mtn16"
           />
         </div>
       </>

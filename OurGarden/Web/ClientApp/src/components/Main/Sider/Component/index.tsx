@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import AntdSider, { CollapseType } from "@core/antd/LayoutSider";
+import AntdSider from "@core/antd/LayoutSider";
 import { Text } from "@src/core/antd/Typography";
 import CategoryList from "./CategoryList";
 
@@ -22,7 +22,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
     isCollapsible: this.context,
   };
 
-  onCollapse = (isCollapsed: boolean, _: CollapseType) => {
+  onCollapse = (isCollapsed: boolean) => {
     this.setState({
       isCollapsed,
     });

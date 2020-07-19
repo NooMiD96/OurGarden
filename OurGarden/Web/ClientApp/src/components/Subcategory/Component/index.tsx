@@ -2,7 +2,7 @@ import React from "react";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import HeaderHelmet from "@src/core/components/Helmet";
-import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
+import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
@@ -70,13 +70,13 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
             ]}
           />
         )}
-        <DescriptionCatalogWrapper description={category?.description}>
+        <DescriptionWrapper description={category?.description}>
           <CatalogCardList
             replace={replace}
             locationState={locationState}
             dataList={dataList}
           />
-        </DescriptionCatalogWrapper>
+        </DescriptionWrapper>
       </>
     );
   }

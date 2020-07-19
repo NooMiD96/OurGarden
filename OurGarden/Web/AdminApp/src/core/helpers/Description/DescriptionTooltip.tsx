@@ -10,6 +10,7 @@ const TooltipContent = ({
   showCatalogTooltip = true,
   showPhoneTooltip = true,
   showEmailTooltip = true,
+  showGalleryTooltip = true,
 }: IDescriptionTooltipProps) => {
   const tips: React.ReactNode[] = [];
 
@@ -61,6 +62,22 @@ const TooltipContent = ({
     ));
   }
 
+  if (showGalleryTooltip) {
+    tips.push((
+      <p key="gallery-tip">
+        {"{{"}
+        gallery=Имя галереи
+        {"}}"}
+        {" "}
+        -
+        {" "}
+        {conditionStringHelper}
+        {" "}
+        на его месте будет выводится галерея, с указанным именем.
+      </p>
+    ));
+  }
+
   return (
     <div>
       {tips}
@@ -72,12 +89,14 @@ const DescriptionTooltip = ({
   showCatalogTooltip = true,
   showPhoneTooltip = true,
   showEmailTooltip = true,
+  showGalleryTooltip = true,
 }: IDescriptionTooltipProps) => (
   <Tooltip title={(
     <TooltipContent
       showCatalogTooltip={showCatalogTooltip}
       showPhoneTooltip={showPhoneTooltip}
       showEmailTooltip={showEmailTooltip}
+      showGalleryTooltip={showGalleryTooltip}
     />
   )}
   >

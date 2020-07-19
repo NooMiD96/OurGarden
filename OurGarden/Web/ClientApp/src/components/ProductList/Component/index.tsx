@@ -3,7 +3,7 @@ import React from "react";
 import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
-import { DescriptionCatalogWrapper } from "@src/core/helpers/description/DescriptionWrapper";
+import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
@@ -84,7 +84,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
             ]}
           />
         )}
-        <DescriptionCatalogWrapper description={subcategory?.description}>
+        <DescriptionWrapper description={subcategory?.description}>
           <CatalogCardList
             dataList={dataList}
             replace={replace}
@@ -93,7 +93,7 @@ export class ProductList extends React.PureComponent<TState, {}> {
               <ProductCard item={props.item} ymId={ymId} />
             )}
           />
-        </DescriptionCatalogWrapper>
+        </DescriptionWrapper>
       </>
     );
   }

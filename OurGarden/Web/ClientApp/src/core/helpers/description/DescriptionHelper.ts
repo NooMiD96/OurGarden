@@ -3,27 +3,27 @@ import {
   EMAIL_MACROS,
   MAIN_MOBILE_FORMATTED,
   MAIN_MOBILE,
-  HELP_EMAIL
+  HELP_EMAIL,
 } from "@src/core/constants";
-
-export const CATALOG_MACROS = "{{catalog}}";
 
 /**
  *
  * @param description Строка которая инъекцируется в Html
- * @param splitMacros Макрос, между частями которого нужно разместить текст. Если пусто то вернётся массив из массива с данным элементом.
+ * @param splitMacros Макрос, между частями которого нужно разместить текст. Если пусто то вернётся массив из одного данного элемента.
  */
 export const getPartsBetween = (
   description?: string,
-  splitMacros = CATALOG_MACROS
+  splitMacros?: string | RegExp
 ) => {
   if (!description) {
     return ["", ""];
   }
 
-  const parts = description.split(splitMacros);
+  if (!splitMacros) {
+    return [description];
+  }
 
-  return parts;
+  return description.split(splitMacros);
 };
 
 export const getFormattedDescription = (description?: string) => {

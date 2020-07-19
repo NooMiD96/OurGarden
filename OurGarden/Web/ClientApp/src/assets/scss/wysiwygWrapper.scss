@@ -8,6 +8,10 @@
     font-weight: normal;
     color: $blackColor;
 
+    .ant-typography {
+      color: inherit;
+    }
+
     figure.image {
       img {
         max-width: 100%;

@@ -56,20 +56,20 @@ namespace Web.Controllers
             {
                 var pageInfo = await _homeConstollerService.GetPageMainInformation(HttpContext);
 
-                if (!pageInfo.IsPageExists)
+                if (pageInfo is null || !pageInfo.IsPageExists)
                 {
                     Response.StatusCode = 404;
                 }
 
-                ViewData["jsBundles"] = pageInfo.BundlesInformation?.JsBundles ?? new string[0];
-                ViewData["cssBundles"] = pageInfo.BundlesInformation?.CssBundles ?? new string[0];
-                ViewData["stringCss"] = pageInfo.BundlesInformation?.CssInjection ?? "";
+                ViewData["jsBundles"] = pageInfo?.BundlesInformation?.JsBundles ?? new string[0];
+                ViewData["cssBundles"] = pageInfo?.BundlesInformation?.CssBundles ?? new string[0];
+                ViewData["stringCss"] = pageInfo?.BundlesInformation?.CssInjection ?? "";
 
                 ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
-                ViewData["isPageNotFound"] = !pageInfo.IsPageExists;
-                ViewData["seoTitle"] = pageInfo.SeoTitle;
-                ViewData["seoDescription"] = pageInfo.SeoDescription;
-                ViewData["seoKeywords"] = pageInfo.SeoKeywords;
+                ViewData["isPageNotFound"] = !pageInfo?.IsPageExists;
+                ViewData["seoTitle"] = pageInfo?.SeoTitle;
+                ViewData["seoDescription"] = pageInfo?.SeoDescription;
+                ViewData["seoKeywords"] = pageInfo?.SeoKeywords;
 
                 ViewData["jivoSiteId"] = _seoServicesOption.JivoSiteId;
                 ViewData["yandexMetrikaCounterId"] = _seoServicesOption.YandexMetrikaCounterId;
