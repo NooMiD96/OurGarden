@@ -8,15 +8,15 @@ import { INew } from "@components/News/State";
 // #region ACTIONS
 export const actionsList = {
   getNewsListRequest: (): t.IGetNewsListRequest => ({
-    type: t.GET_NEWS_LIST_REQUEST
+    type: t.GET_NEWS_LIST_REQUEST,
   }),
   getNewsListSuccess: (payload: INew[]): t.IGetNewsListSuccess => ({
     type: t.GET_NEWS_LIST_SUCCESS,
-    payload
+    payload,
   }),
   getNewsListError: (): t.IGetNewsListError => ({
-    type: t.GET_NEWS_LIST_ERROR
-  })
+    type: t.GET_NEWS_LIST_ERROR,
+  }),
 };
 // #endregion
 // ----------------
@@ -31,8 +31,8 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     const requestStart = () => dispatch(actionsList.getNewsListRequest());
@@ -42,7 +42,7 @@ export const actionCreators = {
         actionsList.getNewsListSuccess(
           data.map((x: INew) => ({
             ...x,
-            date: new Date(x.date)
+            date: new Date(x.date),
           }))
         )
       );
@@ -55,8 +55,8 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getNewsListError,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
-  }
+  },
 };
 // #endregion

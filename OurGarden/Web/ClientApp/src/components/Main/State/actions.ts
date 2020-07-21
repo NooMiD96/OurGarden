@@ -9,46 +9,59 @@ import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import * as t from "./actionsType";
 
 import { IWrapRequest } from "./State";
+import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 
 // ----------------
 // #region ACTIONS
 export const actionsList = {
   startRequest: (): t.IStartRequest => ({
-    type: t.START_REQUEST
+    type: t.START_REQUEST,
   }),
   cancelRequest: (): t.ICancelRequest => ({
-    type: t.CANCEL_REQUEST
+    type: t.CANCEL_REQUEST,
   }),
   clearAllRequest: (): t.IClearAllRequest => ({
-    type: t.CLEAR_ALL_REQUEST
+    type: t.CLEAR_ALL_REQUEST,
   }),
   dataWasGeted: (isDataWasGeted: boolean): t.IDataWasGeted => ({
     type: t.DATA_WAS_GETED,
-    payload: isDataWasGeted
+    payload: isDataWasGeted,
   }),
   requestError: (massageError: string): t.IRequestError => ({
     type: t.REQUEST_ERROR,
-    massageError
+    massageError,
   }),
   pageNotFoundError: (isNotFound: boolean): t.IPageNotFoundError => ({
     type: t.PAGE_NOT_FOUND_ERROR,
-    isNotFound
+    isNotFound,
   }),
   cleanErrorInner: (): t.ICleanErrorInner => ({
-    type: t.CLEAN_ERROR_INNER
+    type: t.CLEAN_ERROR_INNER,
   }),
   setYandexMetricaId: (id: number): t.ISetYandexMetricaId => ({
     type: t.SET_YANDEX_METRICA_ID,
-    id
-  })
+    id,
+  }),
+  getPageInfoRequest: (pageInfoId: number): t.IGetPageInfoRequest => ({
+    type: t.GET_PAGE_INFO_REQUEST,
+    payload: pageInfoId,
+  }),
+  getPageInfoSuccess: (payload: IPageInfo): t.IGetPageInfoSuccess => ({
+    type: t.GET_PAGE_INFO_SUCCESS,
+    payload,
+  }),
+  getPageInfoError: (error: string): t.IGetPageInfoError => ({
+    type: t.GET_PAGE_INFO_ERROR,
+    payload: error,
+  }),
 };
 // #endregion
 // ----------------
 // #region ACTIONS CREATORS
 export const actionCreators = {
-  wrapRequest: <T>(params: IWrapRequest<T>): IAppThunkAction<any> => (
-    dispatch
-  ) => {
+  wrapRequest: <T>(
+    params: IWrapRequest<T>
+  ): IAppThunkAction<t.TRequestInformation | any> => (dispatch) => {
     const {
       fetchUrl,
       fetchProps,
@@ -58,7 +71,7 @@ export const actionCreators = {
       apiUrl,
       requestErrorAction,
       requestStart,
-      saveRequest = true
+      saveRequest = true,
     } = params;
 
     if (process.env.isWebpackBundle) {
@@ -104,6 +117,56 @@ export const actionCreators = {
     }
   },
 
+  getPageInfo: (
+    pageInfoId: number
+  ): IAppThunkAction<
+    t.TGetPageInfo | t.TRequestInformation | t.IPageNotFoundError
+  > => (dispatch, getState) => {
+    const state = getState();
+    if (state.app.pageInfoId === pageInfoId) {
+      return;
+    }
+
+    dispatch(actionsList.getPageInfoRequest(pageInfoId));
+    const controllerName = "Home";
+    const apiUrl = "GetPageInfo";
+
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?pageInfoId=${pageInfoId}`;
+    const fetchProps = {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    };
+
+    const fetchTask = fetch(fetchUrl, fetchProps as any)
+      .then((res: Response) => {
+        if (res.status === 404) {
+          dispatch(actionsList.pageNotFoundError(true));
+        }
+        return responseCatcher(res);
+      })
+      .then((value: IResponse<IPageInfo>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.getPageInfoSuccess(value.data));
+        dispatch(actionsList.cancelRequest());
+
+        return Promise.resolve();
+      })
+      .catch((err: Error) => {
+        dispatch(actionsList.requestError(err.message));
+        dispatch(actionsList.getPageInfoError(err.message));
+        errorCatcher(controllerName, apiUrl, err);
+      });
+
+    addTask(fetchTask);
+    dispatch(actionsList.startRequest());
+  },
+
   startRequest: actionsList.startRequest,
   cancelRequest: actionsList.cancelRequest,
   clearAllRequest: actionsList.clearAllRequest,
@@ -111,6 +174,6 @@ export const actionCreators = {
   requestError: actionsList.requestError,
   pageNotFoundError: actionsList.pageNotFoundError,
   cleanErrorInner: actionsList.cleanErrorInner,
-  setYandexMetricaId: actionsList.setYandexMetricaId
+  setYandexMetricaId: actionsList.setYandexMetricaId,
 };
 // #endregion

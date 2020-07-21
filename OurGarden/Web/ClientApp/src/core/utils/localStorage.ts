@@ -1,10 +1,12 @@
-const storage: Storage =
-  typeof window !== "undefined"
-    ? window.localStorage
-    : ({
-        setItem: () => {},
-        getItem: () => {}
-      } as any);
+/* eslint-disable @typescript-eslint/no-empty-function */
+// prettier-ignore
+const storage: Storage = typeof window !== "undefined"
+  ? window.localStorage
+  : ({
+    setItem: () => {},
+    getItem: () => {},
+  } as any);
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const saveItemToLS = (key: string, value: any) => {
   try {
@@ -27,7 +29,7 @@ export const getItemFromLS = (key: string) => {
     const value = storage.getItem(key);
 
     try {
-      storageItem = JSON.parse(value);
+      storageItem = JSON.parse(value as any);
     } catch (e) {
       storageItem = value;
     }

@@ -161,5 +161,13 @@ namespace DataBase.Abstraction.Repositories
         Task<IEnumerable<ISearch>> Search(string search, bool isGetOnlyVisible = true);
 
         #endregion Search
+
+        #region PageInfo
+
+        public Task<PageInfo> GetPageInfo(int pageInfoId);
+
+        public Task<IEnumerable<PageInfo>> GetPageInfos();
+
+        #endregion
     }
 }

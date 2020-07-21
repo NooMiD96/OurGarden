@@ -5,6 +5,8 @@ import NewsContent from "./NewsContent";
 
 import { TState, TComponentState } from "../TState";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 import "./style/News.style.scss";
 
 export class News extends React.PureComponent<TState, TComponentState> {
@@ -12,7 +14,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
     super(props);
 
     const {
-      match: { params }
+      match: { params },
     } = props;
 
     if (!props.isDataWasGeted) {
@@ -21,7 +23,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
       }
 
       props.getBreadcrumb({
-        newsId: params.newsId
+        newsId: params.newsId,
       });
     }
   }
@@ -30,14 +32,14 @@ export class News extends React.PureComponent<TState, TComponentState> {
     const {
       getNews,
       match: { params },
-      getBreadcrumb
+      getBreadcrumb,
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
       getNews(params.newsId);
 
       getBreadcrumb({
-        newsId: params.newsId
+        newsId: params.newsId,
       });
     }
   }
@@ -46,7 +48,7 @@ export class News extends React.PureComponent<TState, TComponentState> {
     const { selectedNew } = this.props;
 
     return (
-      <div className="news-wrapper content white-background grey-border">
+      <div className={`news-wrapper content ${WHITE_BLOCK}`}>
         {selectedNew && (
           <>
             <HeaderHelmet
@@ -54,8 +56,8 @@ export class News extends React.PureComponent<TState, TComponentState> {
               seoTitle={selectedNew.seoTitle}
               seoTitleReplacments={[
                 {
-                  replacementValue: selectedNew.alias
-                }
+                  replacementValue: selectedNew.alias,
+                },
               ]}
             />
             <NewsContent selectedNew={selectedNew} />

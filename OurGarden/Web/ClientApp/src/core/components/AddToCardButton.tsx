@@ -3,7 +3,7 @@ import React from "react";
 import Button from "@src/core/antd/Button";
 import NumberInput from "@src/core/components/NumberInput";
 
-import { IMouseClickEvent } from "../IEvents";
+import { IMouseClickEvent } from "@core/interfaces/IEvents";
 
 import "./style/AddToCardButton.style.scss";
 

@@ -7,6 +7,6 @@ export interface INewsListState {
 }
 
 export const unloadedState: INewsListState = {
-  newsList: []
+  newsList: [],
 };
 // #endregion

@@ -8,8 +8,27 @@ import { IHeaderHelmet } from "@src/core/utils/SEO/ISEO";
 export const HeaderHelmet = ({
   seoSectionName,
   seoTitle,
-  seoTitleReplacments = []
+  seoTitleReplacments = [],
+  seoParams,
 }: IHeaderHelmet) => {
+  if (seoParams) {
+    return (
+      <Helmet>
+        <title>{seoParams.seoTitle}</title>
+        <meta name="description" content={seoParams.seoDescription} />
+        <meta name="keywords" content={seoParams.seoKeywords} />
+      </Helmet>
+    );
+  }
+
+  if (!seoSectionName) {
+    return (
+      <Helmet>
+        <title>Наш Сад</title>
+      </Helmet>
+    );
+  }
+
   let seoTitleValue = null;
 
   if (!seoTitle) {

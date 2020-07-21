@@ -10,6 +10,8 @@ import { getLinkToNews } from "@src/core/helpers/linkGenerator";
 import { TState } from "../TState";
 import { INew } from "@components/News/State";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 import "./style/NewsList.style.scss";
 
 export class NewsList extends React.PureComponent<TState, {}> {
@@ -51,7 +53,7 @@ export class NewsList extends React.PureComponent<TState, {}> {
       <div className="news-list-wrapper content">
         <HeaderHelmet seoSectionName="NewsList" />
         {dataList.length === 0 ? (
-          <div className="content white-background grey-border p25">
+          <div className={`content ${WHITE_BLOCK} p25`}>
             На данный момент никаких активных акций нет.
           </div>
         ) : (

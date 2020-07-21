@@ -1,6 +1,7 @@
-﻿using ApiService;
-using ApiService.Abstraction;
+﻿using ApiService.Abstraction;
+using ApiService.Abstraction.AdminApi;
 using ApiService.Abstraction.Api;
+using ApiService.AdminApi;
 using ApiService.Api;
 using ApiService.Core;
 
@@ -34,13 +35,20 @@ namespace DependencyInjections
             #region Home services
             
             services.AddTransient<IBundlesService, BundlesService>();
-            services.AddTransient<IHomeControllerService, HomeControllerService>();
+            services.AddTransient<ApiService.Abstraction.IHomeControllerService, ApiService.HomeControllerService>();
 
             #endregion
 
             #region Api
 
             services.AddTransient<IOrderControllerService, OrderControllerService>();
+            services.AddTransient<ApiService.Abstraction.Api.IHomeControllerService, ApiService.Api.HomeControllerService>();
+
+            #endregion
+
+            #region AdminApi
+
+            services.AddTransient<IPageInfoControllerService, PageInfoControllerService>();
 
             #endregion
 

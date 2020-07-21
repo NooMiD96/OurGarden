@@ -13,7 +13,6 @@ export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
 
     return (
       <>
-
         <div className="news-info-title">
           <Title>{selectedNew.alias}</Title>
         </div>
@@ -27,7 +26,7 @@ export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
         <div className="news-info-content wysiwyg-wrapper">
           <DescriptionWrapper
             description={selectedNew.description}
-            wrapperClassName="wysiwyg-description mtn16"
+            wrapperClassName="wysiwyg-description"
           />
         </div>
       </>

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import HeaderHelmet from "@src/core/components/Helmet";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 interface IVideogalery {
@@ -18,16 +20,16 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
         {
           displayName: "Видеогалерея",
           url: "Videogalery",
-          order: 1
-        }
+          order: 1,
+        },
       ],
-      key: "Videogalery"
+      key: "Videogalery",
     });
   }
 
   render() {
     return (
-      <div className="content white-background grey-border p25">
+      <div className={`content ${WHITE_BLOCK} p25`}>
         <HeaderHelmet seoSectionName="Videogalery" />
         Данный раздел находится в разработке, приходите позднее!
       </div>
@@ -36,5 +38,5 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
 }
 
 export default connect(null, {
-  setBreadcrumb: breadcrumbActions.setBreadcrumb
+  setBreadcrumb: breadcrumbActions.setBreadcrumb,
 })(Videogalery);

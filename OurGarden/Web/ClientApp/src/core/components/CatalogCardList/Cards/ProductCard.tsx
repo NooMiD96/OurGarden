@@ -14,7 +14,7 @@ import { actionsList } from "@components/UserCard/actions";
 import { META_TITLE_PARAMS } from "@core/utils/CardList";
 
 import { IProduct } from "@components/Product/State";
-import { IMouseClickEvent } from "@core/IEvents";
+import { IMouseClickEvent } from "@core/interfaces/IEvents";
 import { TDataItem } from "@core/components/CatalogCardList/ICatalogCard";
 
 export interface IProductCardProps {

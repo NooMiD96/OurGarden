@@ -1,12 +1,14 @@
 import React from "react";
 
 import { Title, Text } from "@core/antd/Typography";
-
-import "./style/PageNotFound.style.scss";
 import GenerateLink from "../GenerateLink";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
+import "./style/PageNotFound.style.scss";
+
 export const PageNotFound = () => (
-  <div className="page-not-found content white-background grey-border p25">
+  <div className={`page-not-found content ${WHITE_BLOCK} p25`}>
     <div className="title">
       <Title level={1} className="title-404">
         404

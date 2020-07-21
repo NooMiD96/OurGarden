@@ -2,6 +2,7 @@
 using ApiService.Abstraction.Model;
 
 using DataBase.Abstraction;
+using DataBase.Abstraction.Model;
 using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Http;
@@ -197,13 +198,24 @@ namespace ApiService
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private async ValueTask<(string title, string metaDescription, string metaKeywords)> GetMainPageSeoInfo(string url)
+        private async ValueTask<(string metaTitle, string metaDescription, string metaKeywords)> GetMainPageSeoInfo(string url)
         {
             SeoInformationSection section;
             string metaValue = "";
+            PageInfo pageInfo;
 
             switch (url)
             {
+                case "home":
+                case "":
+                case null:
+                    pageInfo = await _repository.GetPageInfo(PageInfo.HomePageId);
+                    return (
+                        pageInfo.SeoTitle,
+                        pageInfo.SeoDescription,
+                        pageInfo.SeoKeywords
+                    );
+
                 case "catalog":
                     section = _seoInformation.Category;
                     var categories = await _repository.GetCategories();
@@ -211,15 +223,23 @@ namespace ApiService
                     metaValue = GetDescriptionAggregate(categories, default);
                     break;
 
+                case "design":
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.DesignPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
+
                 case "news":
                     section = _seoInformation.NewsList;
                     break;
                 case "payment":
                     section = _seoInformation.Payment;
                     break;
-                case "design":
-                    section = _seoInformation.Design;
-                    break;
+
                 case "videogalery":
                     section = _seoInformation.Videogalery;
                     break;
@@ -231,12 +251,6 @@ namespace ApiService
                     break;
                 case "rulonnyj-gazon":
                     section = _seoInformation.RulonnyjGazon;
-                    break;
-
-                case "home":
-                case "":
-                case null:
-                    section = _seoInformation.Home;
                     break;
 
                 default:

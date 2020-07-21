@@ -1,6 +1,6 @@
-import { IPhoto } from "@src/core/IPhoto";
-import { ISeoParams } from "@src/core/ISeoParams";
-import { IDescription } from "@src/core/IDescription";
+import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { ISeoParams } from "@src/core/interfaces/ISeoParams";
+import { IDescription } from "@src/core/interfaces/IDescription";
 
 // -----------------
 // #region STATE
@@ -18,6 +18,6 @@ export interface IProductState {
 }
 
 export const unloadedState: IProductState = {
-  product: null
+  product: null,
 };
 // #endregion

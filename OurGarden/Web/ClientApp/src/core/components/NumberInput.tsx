@@ -2,7 +2,7 @@ import React from "react";
 
 import Input, { InputProps } from "@core/antd/Input";
 
-import { IKeyChangeEvent } from "../IEvents";
+import { IKeyChangeEvent } from "@src/core/interfaces/IEvents";
 
 interface INumberInput extends InputProps {
   value: string;
@@ -17,6 +17,7 @@ class NumberInput extends React.Component<INumberInput, {}> {
     // const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
     const reg = /^([1-9][0-9]*)$/;
 
+    // prettier-ignore
     if (
       (!Number.isNaN((value as any) as number) && reg.test(value))
       || value === ""

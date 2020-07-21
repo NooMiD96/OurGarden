@@ -1,3 +1,5 @@
+import { ISeoParams } from "@src/core/interfaces/ISeoParams";
+
 export interface ISEOMetaData {
   title: string | null;
   description: string | null;
@@ -10,7 +12,8 @@ export interface ISEOAdditionalInfo {
 }
 
 export interface IHeaderHelmet {
-  seoSectionName: string;
+  seoSectionName?: string;
   seoTitle?: string;
   seoTitleReplacments?: ISEOAdditionalInfo[];
+  seoParams?: ISeoParams;
 }

@@ -6,7 +6,7 @@ import Typography from "@core/antd/Typography";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
-import { ADDRESS, MAIN_MOBILE } from "@src/core/constants";
+import { ADDRESS, MAIN_MOBILE, WHITE_BLOCK } from "@src/core/constants";
 
 const { Paragraph, Title } = Typography;
 
@@ -23,16 +23,16 @@ export class Payment extends React.PureComponent<IPayment, {}> {
         {
           displayName: "Доставка и оплата",
           url: "Payment",
-          order: 1
-        }
+          order: 1,
+        },
       ],
-      key: "Payment"
+      key: "Payment",
     });
   }
 
   render() {
     return (
-      <div className="content ourgarden-payment white-background grey-border">
+      <div className={`content ourgarden-payment ${WHITE_BLOCK}`}>
         <HeaderHelmet seoSectionName="Payment" />
 
         <Title>Доставка</Title>
@@ -100,5 +100,5 @@ export class Payment extends React.PureComponent<IPayment, {}> {
 }
 
 export default connect(null, {
-  setBreadcrumb: breadcrumbActions.setBreadcrumb
+  setBreadcrumb: breadcrumbActions.setBreadcrumb,
 })(Payment);

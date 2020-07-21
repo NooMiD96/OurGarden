@@ -1,4 +1,4 @@
-import { IPhoto } from "@src/core/IPhoto";
+import { IPhoto } from "@src/core/interfaces/IPhoto";
 
 export interface IProductOption {
   categoryId: string;

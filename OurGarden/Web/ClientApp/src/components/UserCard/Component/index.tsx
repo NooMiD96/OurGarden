@@ -9,28 +9,30 @@ import CardConfirm from "./CardConfirm";
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
 import { IOrderUserInformation } from "../IModel";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 import "./style/UserCard.style.scss";
 
 export class UserCard extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     displayType: DisplayTypeEnum.CardInfo,
     orderCreated: false,
-    mounted: false
+    mounted: false,
   };
 
   componentDidMount() {
     this.props.setBreadcrumb({
       breadcrumb: [],
-      key: ""
+      key: "",
     });
     this.setState({
-      mounted: true
+      mounted: true,
     });
   }
 
   onChangeOrderStep = (newType: DisplayTypeEnum) => {
     this.setState({
-      displayType: newType
+      displayType: newType,
     });
   };
 
@@ -53,7 +55,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
   sendOrder = (userInfo: IOrderUserInformation) => {
     this.setState({
-      orderCreated: true
+      orderCreated: true,
     });
     this.props.sendOrder(userInfo);
   };
@@ -66,7 +68,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       сleanProductCard,
       pending,
       errorInner,
-      ymId
+      ymId,
     } = this.props;
 
     const { displayType, orderCreated, mounted } = this.state;
@@ -107,7 +109,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div
-        className={`user-card-wrapper content white-background grey-border ${additionalClassName}`}
+        className={`user-card-wrapper content ${WHITE_BLOCK} ${additionalClassName}`}
       >
         <HeaderHelmet seoSectionName="UserCard" />
         {renderComponent}

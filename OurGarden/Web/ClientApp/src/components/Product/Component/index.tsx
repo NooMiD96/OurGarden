@@ -5,6 +5,8 @@ import ProductContent from "./ProductContent";
 
 import { TState, TComponentState } from "../TState";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 import "./style/Product.style.scss";
 
 export class Product extends React.PureComponent<TState, TComponentState> {
@@ -14,8 +16,8 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const {
       product,
       match: {
-        params: { categoryId, subcategoryId, productId }
-      }
+        params: { categoryId, subcategoryId, productId },
+      },
     } = props;
 
     // prettier-ignore
@@ -41,9 +43,9 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const {
       getProduct,
       match: {
-        params: { categoryId, subcategoryId, productId }
+        params: { categoryId, subcategoryId, productId },
       },
-      getBreadcrumb
+      getBreadcrumb,
     } = this.props;
 
     if (prevProps.match.params !== this.props.match.params) {
@@ -52,7 +54,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       getBreadcrumb({
         categoryId,
         subcategoryId,
-        productId
+        productId,
       });
     }
   }
@@ -61,7 +63,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     const { product, addProductToCard, ymId } = this.props;
 
     return (
-      <div className="wysiwyg-wrapper content white-background grey-border">
+      <div className={`wysiwyg-wrapper content ${WHITE_BLOCK}`}>
         {product && (
           <>
             <HeaderHelmet
@@ -69,8 +71,8 @@ export class Product extends React.PureComponent<TState, TComponentState> {
               seoTitle={product.seoTitle}
               seoTitleReplacments={[
                 {
-                  replacementValue: product.alias
-                }
+                  replacementValue: product.alias,
+                },
               ]}
             />
             <ProductContent

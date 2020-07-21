@@ -14,6 +14,9 @@ export const lightGreenColor = "#78ff59";
 
 export const borderColor = "#cecece";
 export const arrowBorderColor = "#bad150";
+
+export const WHITE_BLOCK = "white-background grey-border";
+
 // #endregion
 
 // #region SVG Icons
@@ -101,3 +104,6 @@ export const GALLERY_MACROS = /{{gallery=.+?}}/;
 export const MODAL_TIMEOUT = 5_000;
 
 export const CARD_PATH = "/Card";
+
+export const HOME_PAGE_INFO_ID = 1;
+export const DESIGN_PAGE_INFO_ID = 2;

@@ -8,7 +8,7 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 import { getPhotoSrc } from "@core/utils/photo";
 import { getFormattedDescription } from "@src/core/helpers/description/DescriptionHelper";
 
-import { IMouseClickEvent } from "@core/IEvents";
+import { IMouseClickEvent } from "@core/interfaces/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
 
 export class ProductContent extends React.PureComponent<
@@ -19,13 +19,13 @@ export class ProductContent extends React.PureComponent<
     super(props);
 
     this.state = {
-      itemCount: "1"
+      itemCount: "1",
     };
   }
 
   setItemCount = (newCount: string) => {
     this.setState({
-      itemCount: newCount
+      itemCount: newCount,
     });
   };
 
@@ -38,12 +38,12 @@ export class ProductContent extends React.PureComponent<
     window.ym(ymId, "reachGoal", "CHECKOUT_CLICK");
 
     this.setState({
-      itemCount: "1"
+      itemCount: "1",
     });
 
     this.props.addProductToCard({
       count: Number.parseInt(this.state.itemCount, 10),
-      product: this.props.product
+      product: this.props.product,
     });
   };
 
@@ -81,7 +81,7 @@ export class ProductContent extends React.PureComponent<
 
         <DescriptionWrapper
           description={description}
-          wrapperClassName="wysiwyg-description mtn16"
+          wrapperClassName="wysiwyg-description"
         />
 
         {product.price ? (

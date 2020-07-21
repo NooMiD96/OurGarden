@@ -1,6 +1,6 @@
-import { IPhoto } from "@src/core/IPhoto";
-import { ISeoParams } from "@src/core/ISeoParams";
-import { IDescription } from "@src/core/IDescription";
+import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { ISeoParams } from "@src/core/interfaces/ISeoParams";
+import { IDescription } from "@src/core/interfaces/IDescription";
 
 // -----------------
 // #region STATE
@@ -16,6 +16,6 @@ export interface INewsState {
 }
 
 export const unloadedState: INewsState = {
-  selectedNew: null
+  selectedNew: null,
 };
 // #endregion

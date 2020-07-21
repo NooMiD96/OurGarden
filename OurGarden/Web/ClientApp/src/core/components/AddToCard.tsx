@@ -4,7 +4,7 @@ import { IProduct } from "@src/components/Product/State";
 import AddToCardButton from "./AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
 
-import { IMouseClickEvent } from "../IEvents";
+import { IMouseClickEvent } from "@core/interfaces/IEvents";
 
 import "./style/AddToCard.style.scss";
 

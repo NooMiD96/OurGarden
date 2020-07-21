@@ -6,6 +6,8 @@ import CompanyInfo from "./CompanyInfo";
 
 import { TState, TComponentState } from "../TState";
 
+import { HOME_PAGE_INFO_ID } from "@src/core/constants";
+
 import "./style/Home.style.scss";
 
 export class Home extends React.PureComponent<TState, TComponentState> {
@@ -17,23 +19,31 @@ export class Home extends React.PureComponent<TState, TComponentState> {
         props.getNewsList();
       }
 
+      props.getPageInfo(HOME_PAGE_INFO_ID);
+
       props.setBreadcrumb({
         breadcrumb: [],
-        key: ""
+        key: "",
       });
     }
   }
 
   render() {
-    const { newsList, push, ymId } = this.props;
+    // prettier-ignore
+    const {
+      newsList,
+      push,
+      ymId,
+      pageInfo
+    } = this.props;
 
     const displayList = newsList.slice(0, 3);
 
     return (
       <div className="home-wrapper content">
-        <HeaderHelmet seoSectionName="Home" />
+        <HeaderHelmet seoParams={pageInfo} seoSectionName="Home" />
         <NewsCarousel push={push} displayList={displayList} ymId={ymId} />
-        <CompanyInfo />
+        <CompanyInfo pageInfo={pageInfo} />
       </div>
     );
   }

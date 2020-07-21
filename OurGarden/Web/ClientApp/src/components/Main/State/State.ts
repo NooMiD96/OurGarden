@@ -1,3 +1,5 @@
+import { IPageInfo } from "@src/core/interfaces/IPageInfo";
+
 // -----------------
 // #region STATE
 export interface IWrapRequest<T> {
@@ -18,6 +20,8 @@ export interface IAppState {
   errorInner: string;
   isPageNotFound: boolean;
   ymId: number;
+  pageInfoId: number;
+  pageInfo?: IPageInfo;
 }
 
 export const unloadedState: IAppState = {
@@ -25,6 +29,8 @@ export const unloadedState: IAppState = {
   isDataWasGeted: false,
   errorInner: "",
   isPageNotFound: false,
-  ymId: 0
+  ymId: 0,
+  pageInfoId: 0,
+  pageInfo: undefined,
 };
 // #endregion

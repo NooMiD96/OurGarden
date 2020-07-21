@@ -1,6 +1,6 @@
-import { IPhoto } from "@src/core/IPhoto";
-import { IDescription } from "@src/core/IDescription";
-import { ISeoParams } from "@src/core/ISeoParams";
+import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { ISeoParams } from "@src/core/interfaces/ISeoParams";
+import { IDescription } from "@src/core/interfaces/IDescription";
 
 // -----------------
 // #region STATE
@@ -15,6 +15,6 @@ export interface ICategoryState {
 }
 
 export const unloadedState: ICategoryState = {
-  categoryList: []
+  categoryList: [],
 };
 // #endregion

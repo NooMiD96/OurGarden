@@ -1,4 +1,4 @@
-import { IPhoto } from "@core/IPhoto";
+import { IPhoto } from "@core/interfaces/IPhoto";
 import { ICategory } from "@components/Category/State";
 import { ISubcategory } from "@components/Subcategory/State";
 import { IProduct } from "@components/Product/State";
