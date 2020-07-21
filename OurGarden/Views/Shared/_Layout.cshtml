@@ -10,8 +10,9 @@
                 : $"{ViewData["seoTitle"]} | Наш Сад"
         )
     </title>
-    <meta name="description" content="@(ViewData["seoDescription"] ?? "")" />
-    <meta name="keywords" content="@(ViewData["seoKeywords"] ?? "")" />
+    @* data-rh="true" нужен для react-helmet, чтобы перетирать *@
+    <meta name="description" content="@(ViewData["seoDescription"] ?? "")" data-rh="true" />
+    <meta name="keywords" content="@(ViewData["seoKeywords"] ?? "")" data-rh="true" />
     <base href="~/" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
