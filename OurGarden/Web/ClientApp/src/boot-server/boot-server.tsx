@@ -7,8 +7,9 @@ import {
   createServerRenderer,
   RenderResult,
   BootFunc,
-  BootFuncParams
+  BootFuncParams,
 } from "aspnet-prerendering";
+import { HelmetProvider } from "react-helmet-async";
 
 import Loadable from "react-loadable";
 
@@ -49,17 +50,19 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
   // cause any async tasks (e.g., data access) to begin
   const routerContext: any = {};
   const app = (
-    <MobileContext.Provider value={isMobileBrowser}>
-      <Provider store={store}>
-        <StaticRouter
-          basename={basename}
-          context={routerContext}
-          location={params.location.path}
-        >
-          {AppRoutes}
-        </StaticRouter>
-      </Provider>
-    </MobileContext.Provider>
+    <HelmetProvider>
+      <MobileContext.Provider value={isMobileBrowser}>
+        <Provider store={store}>
+          <StaticRouter
+            basename={basename}
+            context={routerContext}
+            location={params.location.path}
+          >
+            {AppRoutes}
+          </StaticRouter>
+        </Provider>
+      </MobileContext.Provider>
+    </HelmetProvider>
   );
 
   // This kick off any async tasks started by React components
@@ -89,8 +92,8 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
       html: stringApp,
       globals: {
         initialReduxState,
-        __isMobileBrowser: isMobileBrowser
-      }
+        __isMobileBrowser: isMobileBrowser,
+      },
     });
   }, reject); // Also propagate any errors back into the host application
 });

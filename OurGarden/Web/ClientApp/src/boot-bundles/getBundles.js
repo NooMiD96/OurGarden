@@ -20,6 +20,7 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
 
     const modules = [];
     const routerContext = {};
+    const helmetContext = {};
 
     store.dispatch(mainActions.pageNotFoundError(isPageNotFound));
 
@@ -29,7 +30,8 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
             store,
             host,
             routerContext,
-            path
+            path,
+            helmetContext
         );
 
         const sheets = new ServerStyleSheets();
@@ -44,7 +46,17 @@ module.exports = function (callback, host, path, processDir, isPageNotFound) {
                 const styles = bundles.css || [];
                 const scripts = bundles.js || [];
 
-                callback(null, { js: scripts, css: styles, stringCss: sheets.toString() });
+                const helmet = helmetContext.helmet;
+
+                callback(
+                    null,
+                    {
+                        js: scripts,
+                        css: styles,
+                        stringCss: sheets.toString(),
+                        helmetTitle: helmet && helmet.title.toString(),
+                        helmetMeta: helmet && helmet.meta.toString()
+                    });
             })
             .catch(callback)
     });

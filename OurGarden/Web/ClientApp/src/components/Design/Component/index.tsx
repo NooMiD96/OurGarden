@@ -8,7 +8,7 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 
 import { TState, TComponentState } from "../TState";
 
-import { DESIGN_PAGE_INFO_ID } from "@src/core/constants";
+import { DESIGN_PAGE_INFO_ID, WHITE_BLOCK } from "@src/core/constants";
 
 import "./style/design.style.scss";
 
@@ -39,7 +39,7 @@ export class Design extends React.PureComponent<TState, TComponentState> {
 
     // prettier-ignore
     return (
-      <Typography className="content ourgarden-design grey-border white-background">
+      <Typography className={`content ourgarden-design ${WHITE_BLOCK}`}>
         <HeaderHelmet seoParams={pageInfo} />
 
         <DescriptionWrapper
@@ -57,10 +57,11 @@ export class Design extends React.PureComponent<TState, TComponentState> {
           <Card.Meta
             title="Рулонный газон."
             description={(
-              <Paragraph ellipsis={{
-                rows: 4,
-                expandable: false
-              }}
+              <Paragraph
+                ellipsis={{
+                  rows: 4,
+                  expandable: false,
+                }}
               >
                 Устройство рулонного газона под ключ.
                 <br />

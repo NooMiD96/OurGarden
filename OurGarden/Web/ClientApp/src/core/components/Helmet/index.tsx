@@ -1,5 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import { getSEOMetaData, getAdditionalSEOInfo } from "@src/core/utils/SEO";
 
@@ -14,7 +14,9 @@ export const HeaderHelmet = ({
   if (seoParams) {
     return (
       <Helmet>
-        <title>{seoParams.seoTitle}</title>
+        <title>
+          {seoParams.seoTitle ? `${seoParams.seoTitle} | Наш Сад` : "Наш Сад"}
+        </title>
         <meta name="description" content={seoParams.seoDescription} />
         <meta name="keywords" content={seoParams.seoKeywords} />
       </Helmet>

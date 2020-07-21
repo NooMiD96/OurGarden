@@ -7,6 +7,8 @@ import MainMobileLink from "@src/core/components/MainMobileLink";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
+import { WHITE_BLOCK } from "@src/core/constants";
+
 const { Paragraph, Title } = Typography;
 
 interface IGazon {
@@ -22,15 +24,15 @@ export class Design extends React.PureComponent<IGazon, {}> {
         {
           displayName: "Ландшафтный дизайн",
           url: "Design",
-          order: 1
+          order: 1,
         },
         {
           displayName: "Рулонный газон",
           url: "rulonnyj-gazon",
-          order: 2
-        }
+          order: 2,
+        },
       ],
-      key: "rulonnyj-gazon"
+      key: "rulonnyj-gazon",
     });
   }
 
@@ -45,7 +47,7 @@ export class Design extends React.PureComponent<IGazon, {}> {
   render() {
     // prettier-ignore
     return (
-      <Typography className="content ourgarden-rulonnyj-gazon grey-border white-background">
+      <Typography className={`content ourgarden-rulonnyj-gazon ${WHITE_BLOCK}`}>
         <HeaderHelmet seoSectionName="RulonnyjGazon" />
 
         <Title>Рулонный газон</Title>
@@ -85,14 +87,13 @@ export class Design extends React.PureComponent<IGazon, {}> {
           <Typography.Text strong> укладкой.</Typography.Text>
         </Paragraph>
 
-        <Title level={2}>
-          Купить рулонный газон в Туле
-        </Title>
+        <Title level={2}>Купить рулонный газон в Туле</Title>
         <Paragraph>
           <Typography.Text strong>Рулонный газон под ключ </Typography.Text>
-          можно купить в Туле, сделав заказ в интернет-магазине компании «Наш Сад».
-          На сайте указана цена за м2, а наши сотрудники помогут вам рассчитать необходимое
-          количество рулонов для любой площади и формы земельного участка.
+          можно купить в Туле, сделав заказ в интернет-магазине компании «Наш
+          Сад». На сайте указана цена за м2, а наши сотрудники помогут вам
+          рассчитать необходимое количество рулонов для любой площади и формы
+          земельного участка.
         </Paragraph>
 
         <Paragraph>
@@ -100,7 +101,8 @@ export class Design extends React.PureComponent<IGazon, {}> {
           {" "}
           <MainMobileLink />
           {" "}
-          или напишите в чат обратной связи на сайте.
+          или напишите в чат
+          обратной связи на сайте.
         </Paragraph>
       </Typography>
     );
@@ -108,5 +110,5 @@ export class Design extends React.PureComponent<IGazon, {}> {
 }
 
 export default connect(null, {
-  setBreadcrumb: breadcrumbActions.setBreadcrumb
+  setBreadcrumb: breadcrumbActions.setBreadcrumb,
 })(Design);

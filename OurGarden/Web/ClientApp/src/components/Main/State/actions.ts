@@ -62,19 +62,19 @@ export const actionCreators = {
   wrapRequest: <T>(
     params: IWrapRequest<T>
   ): IAppThunkAction<t.TRequestInformation | any> => (dispatch) => {
-    const {
-      fetchUrl,
-      fetchProps,
-      requestSuccess,
-      requestError,
-      controllerName,
-      apiUrl,
-      requestErrorAction,
-      requestStart,
-      saveRequest = true,
-    } = params;
-
     if (process.env.isWebpackBundle) {
+      const {
+        fetchUrl,
+        fetchProps,
+        requestSuccess,
+        requestError,
+        controllerName,
+        apiUrl,
+        requestErrorAction,
+        requestStart,
+        saveRequest = true,
+      } = params;
+
       const fetchTask = fetch(fetchUrl, fetchProps)
         .then((res: Response) => {
           if (res.status === 404) {
@@ -122,49 +122,51 @@ export const actionCreators = {
   ): IAppThunkAction<
     t.TGetPageInfo | t.TRequestInformation | t.IPageNotFoundError
   > => (dispatch, getState) => {
-    const state = getState();
-    if (state.app.pageInfoId === pageInfoId) {
-      return;
+    if (process.env.isWebpackBundle) {
+      const state = getState();
+      if (state.app.pageInfoId === pageInfoId) {
+        return;
+      }
+
+      dispatch(actionsList.getPageInfoRequest(pageInfoId));
+      const controllerName = "Home";
+      const apiUrl = "GetPageInfo";
+
+      const fetchUrl = `/api/${controllerName}/${apiUrl}?pageInfoId=${pageInfoId}`;
+      const fetchProps = {
+        credentials: "same-origin",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      };
+
+      const fetchTask = fetch(fetchUrl, fetchProps as any)
+        .then((res: Response) => {
+          if (res.status === 404) {
+            dispatch(actionsList.pageNotFoundError(true));
+          }
+          return responseCatcher(res);
+        })
+        .then((value: IResponse<IPageInfo>) => {
+          if (value && value.error) {
+            return errorCreater(value.error);
+          }
+
+          dispatch(actionsList.getPageInfoSuccess(value.data));
+          dispatch(actionsList.cancelRequest());
+
+          return Promise.resolve();
+        })
+        .catch((err: Error) => {
+          dispatch(actionsList.requestError(err.message));
+          dispatch(actionsList.getPageInfoError(err.message));
+          errorCatcher(controllerName, apiUrl, err);
+        });
+
+      addTask(fetchTask);
+      dispatch(actionsList.startRequest());
     }
-
-    dispatch(actionsList.getPageInfoRequest(pageInfoId));
-    const controllerName = "Home";
-    const apiUrl = "GetPageInfo";
-
-    const fetchUrl = `/api/${controllerName}/${apiUrl}?pageInfoId=${pageInfoId}`;
-    const fetchProps = {
-      credentials: "same-origin",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    };
-
-    const fetchTask = fetch(fetchUrl, fetchProps as any)
-      .then((res: Response) => {
-        if (res.status === 404) {
-          dispatch(actionsList.pageNotFoundError(true));
-        }
-        return responseCatcher(res);
-      })
-      .then((value: IResponse<IPageInfo>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
-        }
-
-        dispatch(actionsList.getPageInfoSuccess(value.data));
-        dispatch(actionsList.cancelRequest());
-
-        return Promise.resolve();
-      })
-      .catch((err: Error) => {
-        dispatch(actionsList.requestError(err.message));
-        dispatch(actionsList.getPageInfoError(err.message));
-        errorCatcher(controllerName, apiUrl, err);
-      });
-
-    addTask(fetchTask);
-    dispatch(actionsList.startRequest());
   },
 
   startRequest: actionsList.startRequest,

@@ -5,6 +5,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
 import Loadable from "react-loadable";
+import { HelmetProvider } from "react-helmet-async";
 
 import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
@@ -42,11 +43,13 @@ if (window !== null && window !== undefined) {
       // `hydrate` needed to attach created by server render with DOM
       ReactDOM.hydrate(
         <AppContainer>
-          <MobileContext.Provider value={isMobileBrowser}>
-            <Provider store={store}>
-              <ConnectedRouter history={history}>{routes}</ConnectedRouter>
-            </Provider>
-          </MobileContext.Provider>
+          <HelmetProvider>
+            <MobileContext.Provider value={isMobileBrowser}>
+              <Provider store={store}>
+                <ConnectedRouter history={history}>{routes}</ConnectedRouter>
+              </Provider>
+            </MobileContext.Provider>
+          </HelmetProvider>
         </AppContainer>,
         document.getElementById("react-app")
       );

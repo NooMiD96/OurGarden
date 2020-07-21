@@ -17,7 +17,7 @@
     "lottie-web": "^5.7.0",
     "moment": "^2.27.0",
     "react-dom": "16.13.1",
-    "react-helmet": "^6.1.0",
+    "react-helmet-async": "^1.0.6",
     "react": "16.13.1",
     "react-hot-loader": "^4.12.21",
     "react-lazy-load-image-component": "^1.5.0",

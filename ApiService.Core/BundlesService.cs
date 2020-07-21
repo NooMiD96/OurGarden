@@ -75,13 +75,17 @@ namespace ApiService.Core
                     result.TryGetValue("js", out var jsJson)
                     && result.TryGetValue("css", out var cssJson)
                     && result.TryGetValue("stringCss", out var stringCssJson)
+                    && result.TryGetValue("helmetTitle", out var helmetTitleJson)
+                    && result.TryGetValue("helmetMeta", out var helmetMetaJson)
                 )
                 {
                     return new BundlesInformation
                     {
                         JsBundles = jsJson.Select(x => x["publicPath"].Value<string>()).ToList(),
                         CssBundles = cssJson.Select(x => x["publicPath"].Value<string>()).ToList(),
-                        CssInjection = stringCssJson.ToString()
+                        CssInjection = stringCssJson.ToString(),
+                        HelmetTitle = helmetTitleJson.ToString(),
+                        HelmetMeta = helmetMetaJson.ToString()
                     };
                 }
                 else

@@ -21,5 +21,9 @@ namespace ApiService.Abstraction.Model
         /// Стили css в виде строки, которые нужно инъекцировать в хедер.
         /// </summary>
         public string CssInjection { get; set; }
+
+        public string HelmetTitle { get; set; }
+
+        public string HelmetMeta { get; set; }
     }
 }

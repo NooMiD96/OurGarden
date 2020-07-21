@@ -3,11 +3,19 @@ var React = require("react");
 var Loadable = require("react-loadable");
 var Provider = require("react-redux").Provider;
 var StaticRouter = require("react-router-dom").StaticRouter;
+var HelmetProvider = require("react-helmet-async").HelmetProvider;
 var AppRoutes = require("../App.tsx").AppRoutes;
 
 var { baseUrl } = require("domain-task/fetch");
 
-module.exports = function (modules, store, host, routerContext, path) {
+module.exports = function (
+    modules,
+    store,
+    host,
+    routerContext,
+    path,
+    helmetContext
+) {
     baseUrl(host);
 
     return React.createElement(
@@ -16,18 +24,24 @@ module.exports = function (modules, store, host, routerContext, path) {
             report: (moduleName) => modules.push(moduleName)
         },
         React.createElement(
-            Provider,
+            HelmetProvider,
             {
-                store: store
+                context: helmetContext
             },
             React.createElement(
-                StaticRouter,
+                Provider,
                 {
-                    basename: host,
-                    context: routerContext,
-                    location: path
+                    store: store
                 },
-                AppRoutes
+                React.createElement(
+                    StaticRouter,
+                    {
+                        basename: host,
+                        context: routerContext,
+                        location: path
+                    },
+                    AppRoutes
+                )
             )
         )
     );
