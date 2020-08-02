@@ -39,10 +39,18 @@ export class Carousel<T> extends React.PureComponent<ICarouselProps<T>, {}> {
       />
     ));
 
+    let hideDotsClassName = "";
+    if (dataSourse.length > 6) {
+      hideDotsClassName = "hide-dots-on-mobile";
+    }
+    if (dataSourse.length > 23) {
+      hideDotsClassName += " hide-dots";
+    }
+
     return (
       <React.Fragment>
         <AntdCarousel
-          className={className}
+          className={`${className} ${hideDotsClassName}`}
           autoplay
           effect="fade"
           ref={(ref: AntdCarousel | null) => {

@@ -10,20 +10,27 @@
     cursor: pointer;
   }
 
-  .slick-dots.slick-dots-bottom {
-    height: 24px;
-    bottom: 0px;
+  .slick-dots {
+    &.hide-dots,
+    &.hide-dots-on-mobile {
+      display: none;
+    }
 
-    & > li {
-      vertical-align: middle;
+    .slick-dots-bottom {
+      height: 24px;
+      bottom: 0px;
 
-      & > button {
-        height: 16px;
-        border-radius: 50%;
-      }
+      & > li {
+        vertical-align: middle;
 
-      &.slick-active > button {
-        height: 24px;
+        & > button {
+          height: 16px;
+          border-radius: 50%;
+        }
+
+        &.slick-active > button {
+          height: 24px;
+        }
       }
     }
   }
