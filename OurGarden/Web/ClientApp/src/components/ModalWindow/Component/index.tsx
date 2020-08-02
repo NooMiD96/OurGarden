@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { goBack as goBackAction } from "connected-react-router";
 
 import PhotoListModal from "./PhotoListModal";
 import NewProductInCard from "./NewProductInCard";
@@ -19,7 +20,8 @@ const ModalWindowDump = (state: TState) => {
     closeModalWindow,
     photoState,
     newProductInCard,
-    router
+    router,
+    goBack
   } = state;
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -91,7 +93,10 @@ const ModalWindowDump = (state: TState) => {
           isModalOpen: false,
           photoList: photoState.photoList,
           selectedPhoto: photoState.selectedPhoto,
-          onCloseModal: closeModalWindow,
+          onCloseModal: () => {
+            closeModalWindow();
+            goBack();
+          },
         };
         setComponentProps(props);
         setModalOpen(true);
@@ -118,6 +123,11 @@ const ModalWindowDump = (state: TState) => {
   return <ComponentToRender {...componentProps} isModalOpen={isModalOpen} />;
 };
 
-export default connect((state: IApplicationState) => ({
-  router: state.router,
-}))(ModalWindowDump);
+export default connect(
+  (state: IApplicationState) => ({
+    router: state.router,
+  }),
+  {
+    goBack: goBackAction,
+  }
+)(ModalWindowDump);
