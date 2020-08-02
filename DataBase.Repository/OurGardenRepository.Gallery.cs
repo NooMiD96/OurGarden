@@ -1,4 +1,6 @@
-﻿using DataBase.Abstraction.Model;
+﻿using Core.Helpers;
+
+using DataBase.Abstraction.Model;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -19,10 +21,14 @@ namespace DataBase.Repository
                 .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.GalleryId == galleryId);
 
-        public async Task<Gallery> GetGallery(string galleryAlias) =>
-            await Context.Gallery
+        public async Task<Gallery> GetGallery(string galleryName)
+        {
+            var normilazyName = galleryName.TransformToId();
+
+            return await Context.Gallery
                 .Include(x => x.Photos)
-                .FirstOrDefaultAsync(x => x.Alias == galleryAlias);
+                .FirstOrDefaultAsync(x => x.NormalizeAlias == normilazyName);
+        }
 
         public async ValueTask<(bool isSuccess, string error)> AddGallery(Gallery gallery)
         {

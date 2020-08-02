@@ -14,15 +14,16 @@ import { IGallery, IGalleryDTO } from "../State";
 export class Gallery extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     editItem: null,
-    showModal: false
+    showModal: false,
   };
+
   gridRef: React.RefObject<AgGrid<IGallery>> = createRef();
 
   columns: ColDef[] = [
     {
       headerName: "Название",
-      field: "name"
-    }
+      field: "alias",
+    },
   ];
 
   componentDidMount() {
@@ -36,7 +37,7 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
   onDoubleClickHandler = (data: IGallery) => {
     this.setState({
       editItem: data,
-      showModal: true
+      showModal: true,
     });
   };
 
@@ -47,7 +48,7 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
   onAddNewItemClickHandler = () => {
     this.setState({
       editItem: null,
-      showModal: true
+      showModal: true,
     });
   };
 
@@ -55,19 +56,25 @@ export class Gallery extends React.PureComponent<TState, TComponentState> {
     this.props.addOrUpdateGallery(data);
     this.setState({
       editItem: null,
-      showModal: false
+      showModal: false,
     });
   };
 
   handleClose = () => {
     this.setState({
       editItem: null,
-      showModal: false
+      showModal: false,
     });
   };
 
   render() {
-    const { errorInner, cleanErrorInner, listItem, pending } = this.props;
+    // prettier-ignore
+    const {
+      errorInner,
+      cleanErrorInner,
+      listItem,
+      pending
+    } = this.props;
     const { showModal, editItem } = this.state;
 
     return (

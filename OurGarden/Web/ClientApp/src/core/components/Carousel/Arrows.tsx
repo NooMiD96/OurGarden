@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./style/Arrows.style.scss";
+
 export const PrevArrow = (props: any) => (
   <Arrow {...props} className="carousel-slide-prev" />
 );
@@ -9,12 +11,17 @@ export const NextArrow = (props: any) => (
 );
 
 interface IArrow {
-  style: object;
-  onClick: () => void;
+  style?: React.CSSProperties;
+  onClick?: () => void;
   className: string;
 }
 
-const Arrow = ({ style = {}, onClick = () => {}, className = "" }: IArrow) => (
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const Arrow = ({
+  style = undefined,
+  onClick = undefined,
+  className = "",
+}: IArrow) => (
   <div
     className={`carousel-slide-changer ${className}`}
     style={style}

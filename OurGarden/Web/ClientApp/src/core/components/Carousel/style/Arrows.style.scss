@@ -1,0 +1,89 @@
+.carousel-slide-changer {
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+
+  position: absolute;
+  top: calc(50% - 28px);
+  cursor: pointer;
+
+  background-color: $darkGreenColor;
+
+  z-index: 1;
+
+  > .carousel-slide {
+    position: absolute;
+    top: calc(50% - 12px);
+
+    &::after {
+      content: " ";
+      position: absolute;
+    }
+  }
+
+  &.carousel-slide-prev {
+    left: 0;
+
+    > .carousel-slide {
+      left: calc(50% - 12px);
+
+      &::after {
+        border-top: 12px solid transparent;
+        border-right: 20px solid $arrowBorderColor;
+        border-bottom: 12px solid transparent;
+        border-left: 0;
+        transition: border-right-color 0.3s;
+      }
+    }
+
+    &:hover > .carousel-slide::after {
+      border-right-color: $whiteColor;
+    }
+  }
+  &.carousel-slide-next {
+    right: 0;
+
+    > .carousel-slide {
+      right: calc(50% + 6px);
+
+      &::after {
+        border-top: 12px solid transparent;
+        border-left: 20px solid $arrowBorderColor;
+        border-bottom: 12px solid transparent;
+        border-right: 0;
+        transition: border-left-color 0.3s;
+      }
+    }
+
+    &:hover > .carousel-slide::after {
+      border-left-color: $whiteColor;
+    }
+  }
+
+  @media (max-width: 580px) {
+    height: 38px;
+    width: 38px;
+
+    top: calc(50% - 19px);
+
+    > .carousel-slide {
+      top: calc(50% - 10px);
+    }
+
+    &.carousel-slide-prev > .carousel-slide {
+      left: calc(50% - 10px);
+
+      &::after {
+        border-top: 10px solid transparent;
+        border-right: 16px solid $arrowBorderColor;
+        border-bottom: 10px solid transparent;
+      }
+    }
+
+    &.carousel-slide-next > .carousel-slide::after {
+      border-top: 10px solid transparent;
+      border-left: 16px solid $arrowBorderColor;
+      border-bottom: 10px solid transparent;
+    }
+  }
+}

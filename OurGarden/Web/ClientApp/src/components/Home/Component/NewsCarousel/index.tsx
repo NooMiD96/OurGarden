@@ -2,7 +2,7 @@ import * as React from "react";
 import { push as pushAction } from "connected-react-router";
 
 import Carousel from "@core/antd/Carousel";
-import { NextArrow, PrevArrow } from "./Arrows";
+import { NextArrow, PrevArrow } from "@core/components/Carousel/Arrows";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 

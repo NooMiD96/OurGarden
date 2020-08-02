@@ -1,5 +1,7 @@
 import React from "react";
 
+import Gallery from "@src/core/components/Gallery";
+
 import { getFormattedDescription, getPartsBetween } from "./DescriptionHelper";
 import {
   CATALOG_MACROS,
@@ -22,12 +24,15 @@ const DescriptionWrapper = ({
   wrapperClassName = "",
   // Имя класса для внутренних элементов
   innerPartsClassName = "",
+  // Использовать стандартные классы обёртки, если частей рендера больше одной
+  useWysiwygDefaultClassNames = true,
   // В случае каталога, компонент с продуктами
   children,
 }: {
   description?: string;
   wrapperClassName?: string;
   innerPartsClassName?: string;
+  useWysiwygDefaultClassNames: boolean;
   children?: React.ReactNode;
 }) => {
   // Части для рендера. Если таких несколько,
@@ -53,7 +58,9 @@ const DescriptionWrapper = ({
     } else {
       const catalogPartString = catalogPart as string;
 
-      if (GALLERY_MACROS.test(catalogPartString)) {
+      const galleryMacrosMatchGroups = catalogPartString.match(GALLERY_MACROS)
+        ?.groups;
+      if (galleryMacrosMatchGroups && galleryMacrosMatchGroups.galleryName) {
         const galleryParts = getPartsBetween(catalogPartString, GALLERY_MACROS);
 
         if (galleryParts[0]) {
@@ -69,18 +76,20 @@ const DescriptionWrapper = ({
         }
 
         // Gallery
-        // renderParts.push(
-        //   <span>HELLOW</span>
-        // );
+        renderParts.push(
+          <Gallery galleryName={galleryMacrosMatchGroups.galleryName} />
+        );
 
-        if (galleryParts[1]) {
+        if (galleryParts.length > 1 && galleryParts[galleryParts.length - 1]) {
           // prettier-ignore
           const className
             = counterObj.part++ % 2 ? OPEN_PART_CLASS : CLOSE_PART_CLASS;
           renderParts.push(
             <div
               className={`${baseClassName} ${className}`}
-              dangerouslySetInnerHTML={{ __html: galleryParts[1] }}
+              dangerouslySetInnerHTML={{
+                __html: galleryParts[galleryParts.length - 1],
+              }}
             />
           );
         }
@@ -105,8 +114,11 @@ const DescriptionWrapper = ({
   return (
     <div
       className={`${wrapperClassName} ${
-        renderParts.length > 1
-          ? `${WHITE_BLOCK} ${WYSIWYG_PART_CLASS} pt18 pb5`
+        // prettier-ignore
+        renderParts.length > 1 && useWysiwygDefaultClassNames
+          ? `${WHITE_BLOCK} ${
+            WYSIWYG_PART_CLASS
+          } pt18 pb5`
           : ""
       }`}
     >

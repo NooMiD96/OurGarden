@@ -36,8 +36,8 @@ namespace Web.Services.Controllers.AdminApi
         {
             var gallery = new Gallery()
             {
-                Alias = entityDTO.Name.TransformToId(),
-                Name = entityDTO.Name,
+                Alias = entityDTO.Alias,
+                NormalizeAlias = entityDTO.Alias.TransformToId(),
                 IsVisible = entityDTO.IsVisible ?? true,
 
                 Photos = new List<Photo>()
@@ -57,9 +57,9 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> UpdateGallery(GalleryDTO galleryDTO, Gallery oldGallery)
         {
-            if (oldGallery.Name != galleryDTO.Name)
+            if (oldGallery.NormalizeAlias != galleryDTO.Alias.TransformToId())
             {
-                var entity = await _repository.GetGallery(galleryDTO.Name.TransformToId());
+                var entity = await _repository.GetGallery(galleryDTO.Alias);
 
                 if (entity != null)
                     return (false, "Галерея с таким наименованием уже существует");
@@ -67,8 +67,8 @@ namespace Web.Services.Controllers.AdminApi
 
             await _photoHelper.LoadPhotosToEntity(oldGallery, galleryDTO);
 
-            oldGallery.Alias = galleryDTO.Name.TransformToId();
-            oldGallery.Name = galleryDTO.Name;
+            oldGallery.Alias = galleryDTO.Alias;
+            oldGallery.NormalizeAlias = galleryDTO.Alias.TransformToId();
             oldGallery.IsVisible = galleryDTO.IsVisible ?? true;
 
             return await _repository.UpdateGallery(oldGallery);

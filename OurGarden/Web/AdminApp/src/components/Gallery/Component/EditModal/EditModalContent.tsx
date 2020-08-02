@@ -6,14 +6,14 @@ import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
 import Checkbox from "@core/antd/Checkbox";
 import MultiplyUploaderForm, {
-  useMultiplyUploaderForm
+  useMultiplyUploaderForm,
 } from "@src/core/components/MultiplyUploaderForm";
 
 import localeText from "../Text";
 import {
   getAddFilesDTO,
   getUpdateFilesDTO,
-  getDefaultFileList
+  getDefaultFileList,
 } from "@src/core/utils/photo";
 
 import { IGallery, IGalleryDTO } from "../../State";
@@ -33,13 +33,19 @@ export const EditModalContent = (props: IProps) => {
   const { getFieldDecorator } = form;
 
   const item = props.item || ({ isVisible: true } as IGallery);
-  const { galleryId, name, photos, isVisible } = item;
+  // prettier-ignore
+  const {
+    galleryId,
+    alias,
+    photos,
+    isVisible
+  } = item;
 
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
-    const name = form.getFieldValue("name");
-    const isVisible = form.getFieldValue("name");
+    const alias = form.getFieldValue("alias");
+    const isVisible = form.getFieldValue("isVisible");
 
     const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
     const updateFilesDTO = await getUpdateFilesDTO(
@@ -50,12 +56,12 @@ export const EditModalContent = (props: IProps) => {
       if (!err) {
         props.handleCreateSubmit({
           galleryId,
-          name: name.trim(),
+          alias: alias.trim(),
           isVisible,
 
           addFiles: addFilesDTO,
           removeFiles: multiplyUploaderParams.removeFiles,
-          updateFiles: updateFilesDTO
+          updateFiles: updateFilesDTO,
         });
       }
     });
@@ -71,15 +77,15 @@ export const EditModalContent = (props: IProps) => {
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("name", {
-          initialValue: name,
+        {getFieldDecorator("alias", {
+          initialValue: alias,
           rules: [
             {
               required: true,
               message: localeText._rule_require_name,
-              transform: (val: string) => val && val.trim()
-            }
-          ]
+              transform: (val: string) => val && val.trim(),
+            },
+          ],
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
@@ -91,13 +97,13 @@ export const EditModalContent = (props: IProps) => {
       <FormItem>
         {getFieldDecorator("isVisible", {
           initialValue: isVisible,
-          valuePropName: "checked"
+          valuePropName: "checked",
         })(<Checkbox>Категория видна пользователю</Checkbox>)}
       </FormItem>
 
       <FormItem>
         {getFieldDecorator("addFiles", {
-          rules: [{ required: false, message: localeText._rule_require_photo }]
+          rules: [{ required: false, message: localeText._rule_require_photo }],
         })(
           <MultiplyUploaderForm
             defaultFileList={defaultFileList}

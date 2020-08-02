@@ -9,7 +9,7 @@ namespace ApiService.Abstraction.DTO
         public int GalleryId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Alias { get; set; }
 
         public bool? IsVisible { get; set; }
 

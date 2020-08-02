@@ -14,11 +14,12 @@ interface IEditModalProps {
 
 export class EditModal extends React.PureComponent<IEditModalProps, {}> {
   render() {
+    // prettier-ignore
     const {
       isShow,
       item,
-      handleCreateSubmit: handleCreateSubmit,
-      handleClose: handleClose
+      handleCreateSubmit,
+      handleClose
     } = this.props;
 
     return (

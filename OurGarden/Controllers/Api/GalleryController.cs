@@ -1,7 +1,9 @@
-﻿using DataBase.Abstraction.Repositories;
+﻿using DataBase.Abstraction.Model;
+using DataBase.Abstraction.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 
+using System;
 using System.Threading.Tasks;
 
 namespace Web.Controllers.Api
@@ -25,14 +27,22 @@ namespace Web.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetGallery([FromQuery]int galleryId)
+        public async Task<IActionResult> GetGallery([FromQuery] string galleryIdentify)
         {
-            var gallery = await _repository.GetGallery(galleryId);
+            Gallery gallery;
+            if (Int32.TryParse(galleryIdentify, out var galleryId))
+            {
+                gallery = await _repository.GetGallery(galleryId);
+            }
+            else
+            {
+                gallery = await _repository.GetGallery(galleryIdentify);
+            }
 
             if (gallery == null)
-                return BadRequest("Что-то пошло не так, повторите попытку");
+                return BadRequest($"Не удалось найти галерею с идентификатором \"{galleryIdentify}\".");
 
-            return Success(gallery);
+            return Success(gallery.Photos);
         }
     }
 }

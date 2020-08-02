@@ -10,8 +10,8 @@ namespace DataBase.Abstraction.Model
         public int GalleryId { get; set; }
 
         [Required]
-        [MaxLength(128)]
-        public string Name { get; set; }
+        [MaxLength(256)]
+        public string NormalizeAlias { get; set; }
 
         [Required]
         [MaxLength(128)]

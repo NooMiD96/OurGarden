@@ -44,7 +44,7 @@ export class Design extends React.PureComponent<TState, TComponentState> {
 
         <DescriptionWrapper
           description={pageInfo?.description}
-          wrapperClassName=" "
+          useWysiwygDefaultClassNames={false}
         />
 
         <Card
