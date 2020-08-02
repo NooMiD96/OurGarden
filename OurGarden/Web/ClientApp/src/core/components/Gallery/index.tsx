@@ -1,11 +1,13 @@
 import React from "react";
 import { fetch } from "domain-task";
+import { connect } from "react-redux";
 
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
-import Carousel from "@core/antd/Carousel";
-import { NextArrow, PrevArrow } from "@core/components/Carousel/Arrows";
+import Carousel from "@core/components/Carousel";
+
+import { actionCreators } from "@src/components/ModalWindow/actions";
 
 import { IGalleryProps, IGalleryState } from "./interface/IGallery";
 import { IPhoto } from "@src/core/interfaces/IPhoto";
@@ -19,8 +21,6 @@ export class Gallery extends React.PureComponent<
   TWithRouter<IGalleryProps>,
   IGalleryState
 > {
-  caruselRef: Carousel | null = null;
-
   state: IGalleryState = {
     loading: false,
     photos: [],
@@ -80,47 +80,29 @@ export class Gallery extends React.PureComponent<
       return <div />;
     }
 
-    const { galleryName, push } = this.props;
-
-    const carouselSource = photos.map((x: IPhoto, index: number) => (
-      <img
-        className="slick-slide-content-image"
-        alt={`${galleryName}_${index + 1}`}
-        title={`${galleryName}_${index + 1}`}
-        src={x.url}
-        key={x.photoId}
-        onClick={() => {
-          // push({ hash: "Gallery" });
-        }}
-        onKeyDown={() => {
-          // push({ hash: "Gallery" });
-        }}
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
-        role="link"
-      />
-    ));
+    const { galleryName, push, showPhotoModalWindow } = this.props;
 
     return (
       <React.Fragment>
         <Carousel
           className="gallery-carousel"
-          autoplay
-          effect="fade"
-          ref={(ref: Carousel | null) => {
-            this.caruselRef = ref;
+          dataSourse={photos}
+          getKey={(x) => x.photoId}
+          getAlt={(_, index) => `${galleryName}_${index + 1}`}
+          getTitle={(_, index) => `${galleryName}_${index + 1}`}
+          // prettier-ignore
+          getImageSrc={(x) => x.previewUrl || x.url}
+          onClick={(x) => {
+            showPhotoModalWindow(x, photos);
+            push({ hash: `photo=${x.photoId}` });
+            //
           }}
-          adaptiveHeight
-          arrows
-          draggable
-          lazyLoad="progressive"
-          prevArrow={<PrevArrow />}
-          nextArrow={<NextArrow />}
-        >
-          {carouselSource}
-        </Carousel>
+        />
       </React.Fragment>
     );
   }
 }
 
-export default WithRouterPush<IGalleryProps>(Gallery as any);
+export default connect(null, {
+  showPhotoModalWindow: actionCreators.showPhotoModalWindow,
+})(WithRouterPush<IGalleryProps>(Gallery as any));

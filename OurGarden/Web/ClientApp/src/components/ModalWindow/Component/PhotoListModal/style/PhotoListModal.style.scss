@@ -1,0 +1,18 @@
+.photo-modal-close {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  outline: none;
+
+  .photo-modal-close-icon > svg {
+    height: 26px;
+    width: 26px;
+    color: white;
+  }
+}

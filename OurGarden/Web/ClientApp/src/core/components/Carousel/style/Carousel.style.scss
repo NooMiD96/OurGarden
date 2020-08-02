@@ -1,0 +1,30 @@
+.slick-slider.slick-initialized {
+  text-align: center;
+  overflow: hidden;
+
+  .slick-list {
+    max-height: 600px;
+  }
+
+  .slick-slide-content-image {
+    cursor: pointer;
+  }
+
+  .slick-dots.slick-dots-bottom {
+    height: 24px;
+    bottom: 0px;
+
+    & > li {
+      vertical-align: middle;
+
+      & > button {
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      &.slick-active > button {
+        height: 24px;
+      }
+    }
+  }
+}

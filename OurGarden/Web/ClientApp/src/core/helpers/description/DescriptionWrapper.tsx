@@ -32,7 +32,7 @@ const DescriptionWrapper = ({
   description?: string;
   wrapperClassName?: string;
   innerPartsClassName?: string;
-  useWysiwygDefaultClassNames: boolean;
+  useWysiwygDefaultClassNames?: boolean;
   children?: React.ReactNode;
 }) => {
   // Части для рендера. Если таких несколько,

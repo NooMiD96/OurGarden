@@ -2,7 +2,7 @@
 // #region REDUCER
 import { Reducer } from "redux";
 
-import { IModalWindowState, unloadedState } from "./State";
+import { IModalWindowState, unloadedState, ModalOpenType } from "./State";
 import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<IModalWindowState> = (
@@ -13,8 +13,21 @@ export const reducer: Reducer<IModalWindowState> = (
     case t.ADD_PRODUCT_TO_CARD: {
       const newState: IModalWindowState = {
         ...state,
+        modalOpenType: ModalOpenType.AddToCard,
         newProductInCard: action.payload.product,
-        ...action.payload.product,
+      };
+
+      return newState;
+    }
+
+    case t.SHOW_PHOTO_MODAL_WINDOW: {
+      const newState: IModalWindowState = {
+        ...state,
+        modalOpenType: ModalOpenType.Photo,
+        photoState: {
+          selectedPhoto: action.selectedPhoto,
+          photoList: action.photoList,
+        },
       };
 
       return newState;

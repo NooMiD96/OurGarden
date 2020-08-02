@@ -48,7 +48,7 @@ namespace Web.Services.Controllers.AdminApi
             if (!isSuccess)
                 return (isSuccess, error);
 
-            await _photoHelper.LoadPhotosToEntity(gallery, entityDTO);
+            await _photoHelper.LoadPhotosToEntity(gallery, entityDTO, maxPixel: 1600);
 
             await _context.SaveChangesAsync();
 
@@ -65,7 +65,7 @@ namespace Web.Services.Controllers.AdminApi
                     return (false, "Галерея с таким наименованием уже существует");
             }
 
-            await _photoHelper.LoadPhotosToEntity(oldGallery, galleryDTO);
+            await _photoHelper.LoadPhotosToEntity(oldGallery, galleryDTO, maxPixel: 1600);
 
             oldGallery.Alias = galleryDTO.Alias;
             oldGallery.NormalizeAlias = galleryDTO.Alias.TransformToId();
