@@ -1,9 +1,110 @@
-﻿<app id="react-app"
-     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
-     asp-prerender-data="new {
-        isMobileBrowser = @ViewData["isMobileBrowser"] ?? true,
-        isPageNotFound = @ViewData["isPageNotFound"] ?? false,
-        yandexMetrikaCounterId = @ViewData["yandexMetrikaCounterId"] ?? 0,
-    }"
->
-</app>
+﻿@inject Microsoft.AspNetCore.SpaServices.Prerendering.ISpaPrerenderer prerenderer
+
+@model ApiService.Abstraction.ViewModel.HomePageViewModel
+
+@{
+    Layout = null;
+
+    var prerenderResult = await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
+
+    var jsBundles = prerenderResult?.Globals?["js"]?.Select(x => x.Value<string>("publicPath")).ToList();
+    var cssBundles = prerenderResult?.Globals?["css"]?.Select(x => x.Value<string>("publicPath")).ToList();
+    var stringCss = prerenderResult?.Globals?["stringCss"]?.ToString();
+
+    var helmetTitle = prerenderResult?.Globals?["helmetTitle"]?.ToString();
+    var helmetMeta = prerenderResult?.Globals?["helmetMeta"]?.ToString();
+
+    var initialReduxStateJson = prerenderResult?.Globals?["initialReduxState"]?.ToString();
+
+    if (prerenderResult.StatusCode.HasValue)
+    {
+        Context.Response.StatusCode = prerenderResult?.StatusCode ?? 200;
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <base href="~/" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/site.webmanifest">
+    <link rel="mask-icon" href="~/safari-pinned-tab.svg" color="#5fd55b">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="~/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    @Html.Raw(helmetTitle)
+    @Html.Raw(helmetMeta)
+
+    <environment include="Development,Production">
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+            (function (m, e, t, r, i, k, a) {
+                m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+                m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+            })
+                (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+            ym(@Model.YandexMetrikaCounterId, "init", {
+                clickmap: true,
+                trackLinks: true,
+                accurateTrackBounce: true,
+                webvisor: true
+            });
+        </script>
+        <!-- /Yandex.Metrika counter -->
+    </environment>
+
+    <environment include="Production">
+        <!-- JivoSite -->
+        <script src="//code.jivosite.com/widget.js" data-jv-id="@Model.YandexMetrikaCounterId" async></script>
+        <script>
+            function jivo_onOpen() {
+                ym(@Model.YandexMetrikaCounterId, "reachGoal", "JIVO_CLICK")
+            }
+        </script>
+        <!-- /JivoSite -->
+    </environment>
+
+    @if (jsBundles != null)
+    {
+        @foreach (var bundle in jsBundles)
+        {
+            <script src="@bundle" asp-append-version="true"></script>
+        }
+    }
+
+    @if (cssBundles != null)
+    {
+        @foreach (var bundle in cssBundles)
+        {
+            <link href="@bundle" rel="stylesheet" asp-append-version="true" />
+        }
+    }
+
+    <style id="jss-server-side">@(Html.Raw(stringCss))</style>
+
+    <script>
+        window.initialReduxState = @Html.Raw(initialReduxStateJson);
+        window.__isMobileBrowser = @(Model.IsMobileBrowser ? "true" : "false");
+    </script>
+</head>
+<body>
+    <environment include="Production">
+        <!-- Yandex.Metrika counter -->
+        <noscript>
+            <div><img src="https://mc.yandex.ru/watch/@Model.YandexMetrikaCounterId" style="position:absolute; left:-9999px;" alt="" /></div>
+        </noscript>
+        <!-- /Yandex.Metrika counter -->
+    </environment>
+
+    <div id="react-app">@Html.Raw(prerenderResult?.Html)</div>
+</body>
+</html>

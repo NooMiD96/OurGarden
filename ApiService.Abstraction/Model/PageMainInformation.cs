@@ -24,10 +24,5 @@
         /// Удалось ли найти запрашиваемую страницу.
         /// </summary>
         public bool IsPageExists { get; set; }
-
-        /// <summary>
-        /// Информация о необходимых бандлах для запуска.
-        /// </summary>
-        public BundlesInformation BundlesInformation { get; set; }
     }
 }

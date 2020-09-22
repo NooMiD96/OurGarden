@@ -33,11 +33,6 @@ namespace ApiService
         private readonly SeoInformationOption _seoInformation;
 
         /// <summary>
-        /// Сервис по работе с бандлами.
-        /// </summary>
-        private readonly IBundlesService _bundlesService;
-
-        /// <summary>
         /// Репозиторий БД.
         /// </summary>
         private readonly IOurGardenRepository _repository;
@@ -51,12 +46,10 @@ namespace ApiService
         /// </summary>
         public HomeControllerService(ILogger<HomeControllerService> logger,
                                      IOptions<SeoInformationOption> seoOptions,
-                                     IBundlesService bundlesService,
                                      IOurGardenRepository repository)
         {
             _logger = logger;
             _seoInformation = seoOptions.Value;
-            _bundlesService = bundlesService;
             _repository = repository;
         }
 
@@ -78,19 +71,12 @@ namespace ApiService
                     isPageExists = false;
                 }
 
-                var bundlesInformation = await _bundlesService.GetBundlesInformation(
-                    $"{request.Scheme}://{request.Host}{request.PathBase}",
-                    request.Path.Value,
-                    isPageNotFound: !isPageExists
-                );
-
                 return new PageMainInformation
                 {
                     SeoTitle = seoTitle,
                     SeoDescription = seoDescription,
                     SeoKeywords = seoKeywords,
                     IsPageExists = isPageExists,
-                    BundlesInformation = bundlesInformation,
                 };
             }
             catch (Exception ex)

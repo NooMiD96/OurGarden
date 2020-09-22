@@ -8,7 +8,7 @@ const LoadOption = () => ({
     <div key="loading-auto-select" className="loading-auto-select">
       <LottieWebIcon type="loading" />
     </div>
-  )
+  ),
 });
 
 export default LoadOption;

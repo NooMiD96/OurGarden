@@ -15,7 +15,6 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ApiService.Api
@@ -23,7 +22,6 @@ namespace ApiService.Api
     /// <summary>
     /// Избавиться от <see cref="OurGardenContext"/>
     /// </summary>
-    [Obsolete]
     public class OrderControllerService : IOrderControllerService
     {
         #region Fields
@@ -140,7 +138,7 @@ namespace ApiService.Api
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Не удалось поповестить покупателя.");
+                _logger.LogError(ex, "Не удалось оповестить покупателя.");
             }
 
             return (true, null);

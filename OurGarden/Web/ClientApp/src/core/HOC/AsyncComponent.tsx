@@ -21,11 +21,11 @@ export function AsyncComponent(
 
       return (
         <>
-          <Breadcrumb />
+          <Breadcrumb {...props} />
           <Component {...props} />
         </>
       );
-    }
+    },
   });
 
   return asyncComponentLoadable;

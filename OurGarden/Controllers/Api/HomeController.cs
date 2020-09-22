@@ -36,7 +36,7 @@ namespace Web.Controllers.Api
 
         #endregion
 
-        #region
+        #region API
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPageInfo([FromQuery] int pageInfoId)

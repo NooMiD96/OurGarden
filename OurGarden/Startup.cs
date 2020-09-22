@@ -1,5 +1,3 @@
-#pragma warning disable CA1822 // Mark members as static
-
 using DependencyInjections;
 
 using Microsoft.AspNetCore.Builder;
@@ -73,7 +71,7 @@ namespace Web
                 options.HttpsPort = 443;
             });
 
-            StartUpVendors.Configuration = Configuration;
+            services.AddSpaPrerenderer();
         }
 
         /// <summary>
@@ -163,5 +161,3 @@ namespace Web
         }
     }
 }
-
-#pragma warning restore CA1822 // Mark members as static

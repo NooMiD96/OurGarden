@@ -5,7 +5,7 @@ import Modal from "@core/materialUI/modal";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
-import CustomIcon from "@src/core/antd/Icon";
+import CloseIcon from "@icons/CloseOutlined";
 
 import { IPhotoListModalProps } from "./IPhotoListModal";
 
@@ -32,7 +32,7 @@ export const PhotoListModal = ({
         className="photo-modal-close"
         tabIndex={0}
       >
-        <CustomIcon type="close" className="photo-modal-close-icon" />
+        <CloseIcon className="photo-modal-close-icon" />
       </span>
     </Modal>
   );

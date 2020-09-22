@@ -20,7 +20,7 @@
       "@src/*": ["src/*"],
       "@core/*": ["src/core/*"],
       "@components/*": ["src/components/*"],
-      "@antdSvgs/*": ["node_modules/@ant-design/icons-svg/es/asn/*"]
+      "@icons/*": ["node_modules/@ant-design/icons/*"]
     },
     "sourceMap": true,
     "skipDefaultLibCheck": true,

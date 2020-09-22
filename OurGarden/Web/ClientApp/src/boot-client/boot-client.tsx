@@ -62,7 +62,7 @@ if (window !== null && window !== undefined) {
     // Allow Hot Module Replacement
     if (module.hot) {
       module.hot.accept("@src/App", () => {
-        // eslint-disable-next-line global-require
+        // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
         routes = require<typeof App>("@src/App").AppRoutes;
         renderApp();
       });

@@ -1,4 +1,5 @@
 ﻿using ApiService.Abstraction;
+using ApiService.Abstraction.ViewModel;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -37,6 +38,9 @@ namespace Web.Controllers
 
         #region .ctor
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
         public HomeController(ILogger<HomeController> logger,
                               IOptions<SeoServicesOptions> seoServicesOption,
                               IHomeControllerService homeConstollerService)
@@ -52,6 +56,12 @@ namespace Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var viewModel = new HomePageViewModel()
+            {
+                IsPageFound = true,
+                IsMobileBrowser = false,
+            };
+
             try
             {
                 var pageInfo = await _homeConstollerService.GetPageMainInformation(HttpContext);
@@ -59,32 +69,25 @@ namespace Web.Controllers
                 if (pageInfo is null || !pageInfo.IsPageExists)
                 {
                     Response.StatusCode = 404;
+                    viewModel.IsPageFound = false;
                 }
 
-                ViewData["jsBundles"] = pageInfo?.BundlesInformation?.JsBundles ?? new string[0];
-                ViewData["cssBundles"] = pageInfo?.BundlesInformation?.CssBundles ?? new string[0];
-                ViewData["stringCss"] = pageInfo?.BundlesInformation?.CssInjection ?? "";
-
-                ViewData["isMobileBrowser"] = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
-                ViewData["isPageNotFound"] = !pageInfo?.IsPageExists;
-                ViewData["seoTitle"] = pageInfo?.SeoTitle;
-                ViewData["seoDescription"] = pageInfo?.SeoDescription;
-                ViewData["seoKeywords"] = pageInfo?.SeoKeywords;
-
-                ViewData["jivoSiteId"] = _seoServicesOption.JivoSiteId;
-                ViewData["yandexMetrikaCounterId"] = _seoServicesOption.YandexMetrikaCounterId;
+                viewModel.IsMobileBrowser = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
+                viewModel.IsPageFound = pageInfo.IsPageExists;
+                viewModel.JivoSiteId = _seoServicesOption.JivoSiteId;
+                viewModel.YandexMetrikaCounterId = _seoServicesOption.YandexMetrikaCounterId;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while return Home Index page:");
+                _logger.LogError(ex, "Error while getting Home[Index] page info:");
 
-                ViewData["jsBundles"] = new string[0];
-                ViewData["cssBundles"] = new string[0];
-                ViewData["jivoSiteId"] = _seoServicesOption.JivoSiteId;
-                ViewData["yandexMetrikaCounterId"] = _seoServicesOption.YandexMetrikaCounterId;
+                viewModel.IsMobileBrowser = IsMobileBrowser(Request.Headers["User-Agent"].ToString());
+                viewModel.IsPageFound = false;
+                viewModel.JivoSiteId = _seoServicesOption.JivoSiteId;
+                viewModel.YandexMetrikaCounterId = _seoServicesOption.YandexMetrikaCounterId;
             }
 
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult Error()

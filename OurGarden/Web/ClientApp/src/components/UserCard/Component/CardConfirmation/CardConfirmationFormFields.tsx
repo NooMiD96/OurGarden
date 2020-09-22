@@ -1,13 +1,16 @@
 import React from "react";
 
 import { FormItem } from "@src/core/antd/Form";
-import Icon from "@core/antd/Icon";
 import Input from "@src/core/antd/Input";
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
 import PhoneNumberInput, {
-  CISPhoneNumberRegExp
+  CISPhoneNumberRegExp,
 } from "@src/core/components/PhoneNumberInput";
+
+import UserOutlinedIcon from "@icons/UserOutlined";
+import PhoneOutlinedIcon from "@icons/PhoneOutlined";
+import MailOutlinedIcon from "@icons/MailOutlined";
 
 import { ICardConfirmationFormFields } from "./ICardConfirmation";
 
@@ -23,7 +26,7 @@ const colStyle = {
   // xl ≥1200px
   xl: { span: 8 },
   // xxl ≥1600px
-  xxl: { span: 8 }
+  xxl: { span: 8 },
 };
 
 const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
@@ -43,12 +46,12 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
             {
               required: true,
               message: "Введите вашу фамилию",
-              transform: (val: string) => val && val.trim()
-            }
+              transform: (val: string) => val && val.trim(),
+            },
           ]}
         >
           <Input
-            prefix={<Icon type="user" />}
+            prefix={<UserOutlinedIcon />}
             placeholder="Фамилия"
             onPressEnter={onSubmit}
           />
@@ -62,12 +65,12 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
             {
               required: true,
               message: "Введите ваше имя",
-              transform: (val: string) => val && val.trim()
-            }
+              transform: (val: string) => val && val.trim(),
+            },
           ]}
         >
           <Input
-            prefix={<Icon type="user" />}
+            prefix={<UserOutlinedIcon />}
             placeholder="Имя"
             onPressEnter={onSubmit}
           />
@@ -80,7 +83,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
           rules={[{ transform: (val: string) => val && val.trim() }]}
         >
           <Input
-            prefix={<Icon type="user" />}
+            prefix={<UserOutlinedIcon />}
             placeholder="Отчество"
             onPressEnter={onSubmit}
           />
@@ -94,14 +97,14 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
             {
               required: true,
               message: "Введите ваш контактный телефон",
-              pattern: CISPhoneNumberRegExp
-            }
+              pattern: CISPhoneNumberRegExp,
+            },
           ]}
           validateStatus={phoneError ? "error" : undefined}
         >
           <PhoneNumberInput
             placeholder="Телефон"
-            prefix={<Icon type="phone" className="input-icon" />}
+            prefix={<PhoneOutlinedIcon className="input-icon" />}
             onPressEnter={onSubmit}
           />
         </FormItem>
@@ -115,13 +118,13 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
               required: true,
               message: "Введите ваш контактный электронный адрес",
               type: "email",
-              transform: (val: string) => val && val.trim()
-            }
+              transform: (val: string) => val && val.trim(),
+            },
           ]}
         >
           <Input
             placeholder="Почта"
-            prefix={<Icon type="mail" className="input-icon" />}
+            prefix={<MailOutlinedIcon className="input-icon" />}
             onPressEnter={onSubmit}
           />
         </FormItem>

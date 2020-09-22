@@ -2,7 +2,6 @@ import getStartupValues from "./startupValues";
 import getSharedConfig from "./shareConfig";
 import getServerBundleConfig from "./serverBundleConfig";
 import getClientBundleConfig from "./clientBundleConfig";
-import getBundelConfig from "./bundelConfig";
 
 // const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 // const smp = new SpeedMeasurePlugin();
@@ -14,7 +13,7 @@ module.exports = (env: { [key: string]: string }) => {
     isShowInBrowser,
     fileNameTemplate,
     buildModeString,
-    optimizationConfiguration
+    optimizationConfiguration,
   } = getStartupValues(env, __dirname);
 
   const shareConfig = getSharedConfig(
@@ -38,14 +37,6 @@ module.exports = (env: { [key: string]: string }) => {
     shareConfig
   );
   webpackConfigList.push(clientBundleConfig);
-
-  if (!isDevBuild) {
-    const bundelConfig = getBundelConfig(
-      projectFolder,
-      shareConfig
-    );
-    webpackConfigList.push(bundelConfig);
-  }
 
   return webpackConfigList;
 };

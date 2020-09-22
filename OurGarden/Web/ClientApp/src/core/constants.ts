@@ -19,57 +19,6 @@ export const WHITE_BLOCK = "white-background grey-border";
 
 // #endregion
 
-// #region SVG Icons
-export type TIcons =
-  | "loading"
-  | "left"
-  | "right"
-  | "down"
-  | "close-circle"
-  | "close"
-  | "user"
-  | "phone"
-  | "mail"
-  | "double-right"
-  | "double-left"
-  | "bars";
-
-export const getIconAsync = async (type: TIcons) => {
-  switch (type) {
-    case "loading":
-      return (await import("@antdSvgs/LoadingOutlined")).default;
-    case "left":
-      return (await import("@antdSvgs/LeftOutlined")).default;
-    case "right":
-      return (await import("@antdSvgs/RightOutlined")).default;
-    case "double-left":
-      return (await import("@antdSvgs/DoubleLeftOutlined")).default;
-    case "double-right":
-      return (await import("@antdSvgs/DoubleRightOutlined")).default;
-    case "down":
-      return (await import("@antdSvgs/DownOutlined")).default;
-    case "close-circle":
-      return (await import("@antdSvgs/CloseCircleOutlined")).default;
-    case "close":
-      return (await import("@antdSvgs/CloseOutlined")).default;
-    case "user":
-      return (await import("@antdSvgs/UserOutlined")).default;
-    case "phone":
-      return (await import("@antdSvgs/PhoneOutlined")).default;
-    case "mail":
-      return (await import("@antdSvgs/MailOutlined")).default;
-    case "bars":
-      return (await import("@antdSvgs/BarsOutlined")).default;
-
-    default: {
-      // eslint-disable-next-line
-      const exhaustiveCheck: never = type;
-      throw new Error(`SVG with "${exhaustiveCheck}" type not found!`);
-    }
-  }
-};
-// #endregion
-
 export const MAIN_LAYOUT_GRID_COL_STYLE = {
   // xs <576px
   xs: { offset: 0, span: 24 },
@@ -92,7 +41,6 @@ export const MAIN_MOBILE_FORMATTED = "+79534343516";
 export const HELP_EMAIL = "help@наш-сад.com";
 export const SHORT_ADDRESS = "ул. 9 мая, 36";
 export const ADDRESS = `г. Тула, ${SHORT_ADDRESS}`;
-export const isShowSvgIcon = !!process.env.isWebpackBundle;
 
 export const RUSSIAN_CURRENCY = "₽";
 

@@ -32,16 +32,18 @@ const SearchProduct = (props: TWithRouter<any>) => {
   const [searchValue, setSearchValue] = useState("" as string);
 
   const onSearch = async (value: string) => {
-    const formatedValue = value ? value.trim() : null;
+    const formattedValue = value ? value.trim() : null;
     try {
-      setSearchActive(!!formatedValue);
-      if (!formatedValue) {
+      setSearchActive(!!formattedValue);
+      if (!formattedValue) {
         setProductList([]);
         return;
       }
 
       setLoading(true);
-      const { data }: { data: IProduct[] } = await fetchProducts(formatedValue);
+      const { data }: { data: IProduct[] } = await fetchProducts(
+        formattedValue
+      );
       setProductList(data);
     } catch (err) {
       console.warn(err);
