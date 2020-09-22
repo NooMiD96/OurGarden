@@ -2,7 +2,6 @@ import * as React from "react";
 import Loadable from "react-loadable";
 
 import LoadingIcon from "@src/core/components/Loading";
-import Breadcrumb from "@components/Breadcrumb";
 
 export function AsyncComponent(
   loader: () => Promise<object>,
@@ -19,12 +18,7 @@ export function AsyncComponent(
     render(loaded: any, props: any) {
       const Component = loaded.default;
 
-      return (
-        <>
-          <Breadcrumb {...props} />
-          <Component {...props} />
-        </>
-      );
+      return <Component {...props} />;
     },
   });
 

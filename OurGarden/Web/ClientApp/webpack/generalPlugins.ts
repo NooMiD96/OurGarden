@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import StringReplacePlugin from "string-replace-webpack-plugin";
 import { CheckerPlugin } from "awesome-typescript-loader";
 import webpack, { Plugin } from "webpack";
 // import { CleanWebpackPlugin } from "clean-webpack-plugin";
@@ -16,8 +15,6 @@ const getGeneralPlugins = (): Plugin[] => [
 
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
-  // an instance of the plugin must be present
-  new StringReplacePlugin(),
   // hide warning in the webpack
   new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, "node-noop"),
 
@@ -28,8 +25,8 @@ const getGeneralPlugins = (): Plugin[] => [
   new webpack.EnvironmentPlugin({
     PUBLIC_URL: AppSettings.SpaPublicPath,
     seoInformation: JSON.stringify(AppSettings.SeoInformation),
-    isWebpackBundle: true
-  })
+    isWebpackBundle: true,
+  }),
 ];
 
 export default getGeneralPlugins;

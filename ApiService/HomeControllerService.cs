@@ -86,6 +86,33 @@ namespace ApiService
             }
         }
 
+        public async Task<PageMainInformation> GetPageMainInformation(string pathname)
+        {
+            try
+            {
+                var isPageExists = true;
+                var (seoTitle, seoDescription, seoKeywords) = await GetSeoInfo(pathname);
+
+                if (seoTitle == default && seoDescription == default && seoKeywords == default)
+                {
+                    isPageExists = false;
+                }
+
+                return new PageMainInformation
+                {
+                    SeoTitle = seoTitle,
+                    SeoDescription = seoDescription,
+                    SeoKeywords = seoKeywords,
+                    IsPageExists = isPageExists,
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error while getting main information of requested page:");
+                return default;
+            }
+        }
+
         #region Private
 
         /// <summary>

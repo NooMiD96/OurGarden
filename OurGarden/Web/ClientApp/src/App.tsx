@@ -2,8 +2,9 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
 import { Layout } from "@components/Layout";
-import { AsyncComponent } from "@core/HOC/AsyncComponent";
 import PageNotFound from "@core/components/PageNotFound";
+
+import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
 export const AppRoutes = (
   <Layout>

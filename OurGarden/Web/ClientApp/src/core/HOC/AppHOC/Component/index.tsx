@@ -15,6 +15,7 @@ export class AppHOC extends React.Component<TState, {}> {
     }
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps: TState) {
     // prettier-ignore
     if (

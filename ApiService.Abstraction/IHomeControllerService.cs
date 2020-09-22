@@ -17,5 +17,13 @@ namespace ApiService.Abstraction
         /// <param name="httpContext">Контекст запроса</param>
         /// <returns>Сео информация.</returns>
         public Task<PageMainInformation> GetPageMainInformation(HttpContext httpContext);
+
+        /// <summary>
+        /// Получение Ceo информации о запрашиваемой странице.
+        /// </summary>
+        /// <param name="httpContext">Строка запроса</param>
+        /// <returns>Сео информация.</returns>
+        public Task<PageMainInformation> GetPageMainInformation(string pathname);
+
     }
 }

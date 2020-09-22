@@ -76,6 +76,7 @@
     "no-plusplus": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-use-before-define": "off"
   }
 }
