@@ -75,6 +75,7 @@
     "import/extensions": "off",
     "no-underscore-dangle": "off",
     "no-unused-expressions": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "no-plusplus": "off"
   }
 }

@@ -12,5 +12,6 @@ export interface IProps {
 
 export interface IState {
   isPreviewVisible: boolean;
+  previewImageUrl?: string;
   previewImage?: UploadFile;
 }

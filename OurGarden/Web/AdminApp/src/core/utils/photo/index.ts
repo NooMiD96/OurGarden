@@ -8,11 +8,11 @@ const convertBlobToFile = (blob: Blob, fileName = "") => {
   file.lastModified = new Date().getTime();
   file.name = fileName;
 
-  return <File>file;
+  return file as File;
 };
 
 const getPreviewFileByBlobUrl = async (url: string, fileName = "") => {
-  const blob = await fetch(url).then(res => res.blob());
+  const blob = await fetch(url).then((res) => res.blob());
 
   return convertBlobToFile(blob, fileName);
 };
@@ -26,6 +26,7 @@ export const getAddFilesDTO = async (files: UploadFile[]): Promise<File[]> => {
     if (file.originFileObj) {
       filesDTO.push(file.originFileObj as File);
 
+      // eslint-disable-next-line no-await-in-loop
       const previewFile = await getPreviewFileByBlobUrl(
         file.preview!,
         file.name
@@ -45,6 +46,7 @@ export const getUpdateFilesDTO = async (
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
+    // eslint-disable-next-line no-await-in-loop
     const previewFile = await getPreviewFileByBlobUrl(file.url, file.uid);
     filesDTO.push(previewFile);
   }
@@ -57,15 +59,15 @@ export const getDefaultFileList = (photos: IPhoto[]) => {
     return [];
   }
 
+  // prettier-ignore
   return photos.map(
-    photo =>
-      <UploadFile>{
-        uid: photo.photoId,
-        name: photo.photoId,
-        status: "done",
-        url: photo.url,
-        preview: photo.previewUrl
-      }
+    (photo) => ({
+      uid: photo.photoId,
+      name: photo.photoId,
+      status: "done",
+      url: photo.url,
+      preview: photo.previewUrl,
+    } as UploadFile)
   );
 };
 
@@ -74,16 +76,15 @@ export const updatePreview = (
   setUpdateFiles: React.Dispatch<React.SetStateAction<IUpdateFile[]>>,
   { uid, url }: IUpdateFile
 ) => {
-  const findIndex = updateFiles.findIndex(x => x.uid === uid);
+  const findIndex = updateFiles.findIndex((x) => x.uid === uid);
 
   if (findIndex !== -1) {
     setUpdateFiles(
       updateFiles.map((x, index) => {
         if (index === findIndex) {
           return { uid, url };
-        } else {
-          return x;
         }
+        return x;
       })
     );
   } else {

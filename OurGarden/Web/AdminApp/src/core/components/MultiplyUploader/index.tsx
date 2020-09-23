@@ -21,17 +21,15 @@ const COPY_IMAGE_URL_ERROR = `Для того, чтобы использоват
 export class MultiplyUploader extends React.Component<IProps, IState> {
   state: IState = {
     isPreviewVisible: false,
-    previewImage: undefined
+    previewImageUrl: undefined,
+    previewImage: undefined,
   };
 
   previewHandler = async (file: UploadFile) => {
-    if (!file.url) {
-      file.url = await getBase64(file.originFileObj);
-    }
-
     this.setState({
       previewImage: file,
-      isPreviewVisible: true
+      previewImageUrl: await getBase64(file.originFileObj),
+      isPreviewVisible: true,
     });
   };
 
@@ -64,7 +62,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
         title: "Предупреждение!",
         className: "ant-modal-confirm-warning",
         content: COPY_IMAGE_URL_ERROR,
-        cancelButtonProps: { style: { display: "none" } }
+        cancelButtonProps: { style: { display: "none" } },
       });
     } else if (document !== undefined) {
       const success = copyToClipboard(
@@ -93,7 +91,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
   cancelHandler = () => this.setState({ isPreviewVisible: false, previewImage: undefined });
 
   render() {
-    const { isPreviewVisible, previewImage } = this.state;
+    const { isPreviewVisible, previewImage, previewImageUrl } = this.state;
     const { defaultFileList, minWidth, minHeight } = this.props;
 
     return (
@@ -101,7 +99,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
         <Upload
           listType="picture-card"
           defaultFileList={defaultFileList}
-          multiple
+          // multiple
           onChange={this.successHandler}
           onRemove={this.removeHandler}
           onDownload={this.downloadhandler}
@@ -122,6 +120,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
           {previewImage && (
             <CropImage
               previewImage={previewImage}
+              previewImageUrl={previewImageUrl}
               setPreviewImage={this.setPreviewImage}
               onClose={this.cancelHandler}
               minWidth={minWidth}

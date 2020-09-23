@@ -24,7 +24,7 @@ export class CropImage extends React.Component<IProps, IState> {
 
     this.state = {
       crop,
-      croppedImageUrl: props.previewImage.preview
+      croppedImageUrl: props.previewImage.preview,
     };
   }
 
@@ -90,7 +90,7 @@ export class CropImage extends React.Component<IProps, IState> {
     if (this.imageRef && crop.width && crop.height) {
       const croppedImageUrl = await this.getCroppedImg(this.imageRef, crop);
       this.setState({
-        croppedImageUrl
+        croppedImageUrl,
       });
       this.props.setPreviewImage(croppedImageUrl);
     }
@@ -99,7 +99,10 @@ export class CropImage extends React.Component<IProps, IState> {
   render() {
     // prettier-ignore
     const {
-      previewImage, onClose, minHeight = CROP_CONFIG.height, minWidth = CROP_CONFIG.width
+      onClose,
+      minHeight = CROP_CONFIG.height,
+      minWidth = CROP_CONFIG.width,
+      previewImageUrl,
     } = this.props;
     const { crop, croppedImageUrl } = this.state;
 
@@ -108,9 +111,9 @@ export class CropImage extends React.Component<IProps, IState> {
         <div style={{ marginTop: 24 }}>
           <span title="Оригинальное изображение">Оригинал</span>
           <div>
-            {previewImage.url && (
+            {previewImageUrl && (
               <ReactCrop
-                src={previewImage.url}
+                src={previewImageUrl}
                 crop={crop}
                 ruleOfThirds
                 onImageLoaded={this.onImageLoaded}
@@ -135,7 +138,7 @@ export class CropImage extends React.Component<IProps, IState> {
                 height: minHeight,
                 maxWidth: "100%",
                 maxHeight: "100%",
-                background: `no-repeat center / contain url(${croppedImageUrl})`
+                background: `no-repeat center / contain url(${croppedImageUrl})`,
               }}
             />
           )}

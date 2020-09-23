@@ -52,7 +52,7 @@ export const useMultiplyUploaderForm = () => {
     updateFiles,
     setUpdateFiles,
     removeFiles,
-    setRemoveFiles
+    setRemoveFiles,
   };
 };
 
