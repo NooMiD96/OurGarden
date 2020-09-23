@@ -23,7 +23,7 @@ namespace SiteMapHostService
     {
         const int MAX_URL_COUNT = 50_000;
         const string BASE_URL = "https://xn----7sbbq5b0a1c.com";
-        const string SITE_MAPS_SUBDIRECTORY = "sitemaps";
+        const string SITEMAPS_SUBDIRECTORY = "sitemaps";
 
         #region Fields
 
@@ -107,7 +107,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.News,
-                    Url = $"{BASE_URL}/News/{x.Alias}",
+                    Url = $"{BASE_URL}/News/{x.NewsId}",
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -163,7 +163,14 @@ namespace SiteMapHostService
         private (XmlDocument siteMap, string siteMapFilePath) CareateSubSiteMap(string fileName)
         {
             var siteMap = new XmlDocument();
-            var siteMapFilePath = Path.Join(_publicDirectory, SITE_MAPS_SUBDIRECTORY, $"{fileName}.xml");
+
+            var sitemapSubdirPath = Path.Join(_publicDirectory, SITEMAPS_SUBDIRECTORY);
+            if (!Directory.Exists(sitemapSubdirPath))
+            {
+                Directory.CreateDirectory(sitemapSubdirPath);
+            }
+
+            var siteMapFilePath = Path.Join(sitemapSubdirPath, $"{fileName}.xml");
 
             CreateSubSiteMap(siteMap);
 
