@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import HeaderHelmet from "@src/core/components/Helmet";
 import Typography from "@core/antd/Typography";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
@@ -14,7 +13,7 @@ interface IPayment {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 }
 
-export class Payment extends React.PureComponent<IPayment, {}> {
+export class Payment extends React.PureComponent<IPayment, unknown> {
   constructor(props: IPayment) {
     super(props);
 
@@ -33,8 +32,6 @@ export class Payment extends React.PureComponent<IPayment, {}> {
   render() {
     return (
       <div className={`content ourgarden-payment ${WHITE_BLOCK}`}>
-        <HeaderHelmet seoSectionName="Payment" />
-
         <Title>Доставка</Title>
         <Paragraph>
           Уважаемые покупатели! Наш магазин предоставляет возможность доставки

@@ -16,9 +16,11 @@ class PhoneNumberInput extends React.PureComponent<any, any> {
         <PhoneInput
           inputClass="ant-input"
           buttonClass="d-none"
+          // @ts-ignore
           defaultCountry="ru"
           country="ru"
           placeholder={placeholder || "Телефон"}
+          specialLabel=""
           disableSearchIcon
           disableDropdown
           autocompleteSearch

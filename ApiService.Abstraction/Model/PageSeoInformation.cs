@@ -1,9 +1,9 @@
 ﻿namespace ApiService.Abstraction.Model
 {
     /// <summary>
-    /// Основная информация о запрашивоемой странице.
+    /// Основная информация о запрашиваемой странице.
     /// </summary>
-    public class PageMainInformation
+    public class PageSeoInformation
     {
         /// <summary>
         /// Заголовок страницы

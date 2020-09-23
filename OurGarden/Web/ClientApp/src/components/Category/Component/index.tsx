@@ -1,14 +1,13 @@
 import React from "react";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
-import HeaderHelmet from "@src/core/components/Helmet";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
 import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { TState } from "../TState";
 
-export class Category extends React.PureComponent<TState, {}> {
+export class Category extends React.PureComponent<TState, unknown> {
   constructor(props: TState) {
     super(props);
 
@@ -39,7 +38,6 @@ export class Category extends React.PureComponent<TState, {}> {
 
     return (
       <>
-        <HeaderHelmet seoSectionName="Category" />
         <CatalogCardList
           replace={replace}
           locationState={locationState}

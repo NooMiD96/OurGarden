@@ -16,9 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiService
+namespace ApiService.Core
 {
-    public class HomeControllerService : IHomeControllerService
+    public class SeoService : ISeoService
     {
         #region Fields
 
@@ -44,9 +44,9 @@ namespace ApiService
         /// <summary>
         /// .ctor
         /// </summary>
-        public HomeControllerService(ILogger<HomeControllerService> logger,
-                                     IOptions<SeoInformationOption> seoOptions,
-                                     IOurGardenRepository repository)
+        public SeoService(ILogger<SeoService> logger,
+                          IOptions<SeoInformationOption> seoOptions,
+                          IOurGardenRepository repository)
         {
             _logger = logger;
             _seoInformation = seoOptions.Value;
@@ -57,36 +57,8 @@ namespace ApiService
 
         #region IHomeConstollerService Impl
 
-        public async Task<PageMainInformation> GetPageMainInformation(HttpContext httpContext)
-        {
-            try
-            {
-                var request = httpContext.Request;
-
-                var isPageExists = true;
-                var (seoTitle, seoDescription, seoKeywords) = await GetSeoInfo(httpContext.Request.Path);
-
-                if (seoTitle == default && seoDescription == default && seoKeywords == default)
-                {
-                    isPageExists = false;
-                }
-
-                return new PageMainInformation
-                {
-                    SeoTitle = seoTitle,
-                    SeoDescription = seoDescription,
-                    SeoKeywords = seoKeywords,
-                    IsPageExists = isPageExists,
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error while getting main information of requested page:");
-                return default;
-            }
-        }
-
-        public async Task<PageMainInformation> GetPageMainInformation(string pathname)
+        /// <inheritdoc/>
+        public async Task<ServiceExecuteResult<PageSeoInformation>> GetPageSeoInformation(string pathname)
         {
             try
             {
@@ -98,18 +70,28 @@ namespace ApiService
                     isPageExists = false;
                 }
 
-                return new PageMainInformation
+                return new ServiceExecuteResult<PageSeoInformation>
                 {
-                    SeoTitle = seoTitle,
-                    SeoDescription = seoDescription,
-                    SeoKeywords = seoKeywords,
-                    IsPageExists = isPageExists,
+                    IsSuccess = true,
+                    Result = new PageSeoInformation
+                    {
+                        SeoTitle = seoTitle,
+                        SeoDescription = seoDescription,
+                        SeoKeywords = seoKeywords,
+                        IsPageExists = isPageExists,
+                    }
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error while getting main information of requested page:");
-                return default;
+                var msg = $"Не удалось получить СЕО информацию о странице \"{pathname}\". {ex.Message}";
+
+                _logger.LogError(ex, msg);
+                return new ServiceExecuteResult<PageSeoInformation>
+                {
+                    IsSuccess = false,
+                    Error = msg,
+                };
             }
         }
 
@@ -164,7 +146,7 @@ namespace ApiService
                                     return GetEntitySeoInfo(section,
                                                             entity,
                                                             entity,
-                                                            entityAliases: entity?.Subcategories);
+                                                            entityProductListAliases: entity?.Subcategories);
                                 }
                             case 3:
                                 {
@@ -174,7 +156,7 @@ namespace ApiService
                                     return GetEntitySeoInfo(section,
                                                       entity,
                                                       entity,
-                                                      entityAliases: entity?.Products);
+                                                      entityProductListAliases: entity?.Products);
                                 }
                             case 4:
                                 {
@@ -285,10 +267,16 @@ namespace ApiService
         /// <summary>
         /// Получение Сео информации для объекта.
         /// </summary>
+        /// <param name="section">Дефолтная Сео информация для данной страницы.</param>
+        /// <param name="entitySeoInfo">Сео информация данной страницы.</param>
+        /// <param name="entityAliasInfo">Отображаемое имя продукта</param>
+        /// <param name="entityProductListAliases">Список отображаемых наименований продуктов, относящихся к данному товару.</param>
+        /// <param name="getDefaultDescriptionIfNotExists">Указывает, нужно ли получать дефолтное значение мета описания (Description)</param>
+        /// <returns></returns>
         private (string seoTitleValue, string seoDescriptionValue, string seoKeywordsValue) GetEntitySeoInfo(SeoInformationSection section,
                                                                                                              ISeoInformation entitySeoInfo,
                                                                                                              IAlias entityAliasInfo,
-                                                                                                             IEnumerable<IAlias> entityAliases = null,
+                                                                                                             IEnumerable<IAlias> entityProductListAliases = null,
                                                                                                              bool getDefaultDescriptionIfNotExists = true)
         {
             if (entitySeoInfo is null || entityAliasInfo is null)
@@ -306,7 +294,7 @@ namespace ApiService
                 seoDescriptionValue = GetSeoDescriptionDefaultValue(
                     section,
                     entityAliasInfo.Alias,
-                    GetDescriptionAggregate(entityAliases, seoTitleValue)
+                    GetDescriptionAggregate(entityProductListAliases, seoTitleValue)
                 );
             }
 
@@ -315,20 +303,6 @@ namespace ApiService
                 : entitySeoInfo.SeoKeywords;
 
             return (seoTitleValue, seoDescriptionValue, seoKeywordsValue);
-        }
-
-        /// <summary>
-        /// Возвращает дефолтное значение заголовка страницы для страницы по наименованию.
-        /// </summary>
-        /// <param name="section">Секция (страница).</param>
-        /// <param name="productAlias">Пользовательское наименование продукта.</param>
-        private string GetSeoTitleDefaultValue(SeoInformationSection section, string productAlias)
-        {
-            var defaultValue = section.Title.Replace("{{value}}",
-                                                     productAlias,
-                                                     StringComparison.InvariantCultureIgnoreCase);
-
-            return defaultValue;
         }
 
         /// <summary>
@@ -358,7 +332,23 @@ namespace ApiService
         }
 
         /// <summary>
-        /// Возвращает дефолтное значение описания страницы для страницы по наименованию.
+        /// Возвращает дефолтное значение заголовка (Title) страницы для страницы по наименованию.
+        /// Подставляет в шаблон имя товара.
+        /// </summary>
+        /// <param name="section">Секция (страница).</param>
+        /// <param name="productAlias">Пользовательское наименование продукта.</param>
+        private string GetSeoTitleDefaultValue(SeoInformationSection section, string productAlias)
+        {
+            var defaultValue = section.Title.Replace("{{value}}",
+                                                     productAlias,
+                                                     StringComparison.InvariantCultureIgnoreCase);
+
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// Возвращает дефолтное значение описания (Description) страницы для страницы по наименованию.
+        /// Подставляет в шаблон имя товара или список имён товаров.
         /// </summary>
         /// <param name="section">Секция (страница).</param>
         /// <param name="productAlias">Наименование основного продукта.</param>

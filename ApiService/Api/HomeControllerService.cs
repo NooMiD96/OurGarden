@@ -43,6 +43,7 @@ namespace ApiService.Api
 
         #region IHomeControllerService Impl
 
+        /// <inheritdoc/>
         public async Task<ServiceExecuteResult<PageInfo>> GetPageInfo(int pageInfoId)
         {
             try
@@ -57,7 +58,7 @@ namespace ApiService.Api
             }
             catch (Exception ex)
             {
-                var msg = $"Не удалось получить информацию о странице. {ex.Message}";
+                var msg = $"Не удалось получить информацию о странице с идентификатором \"{pageInfoId}\". {ex.Message}";
 
                 _logger.LogError(ex, msg);
                 return new ServiceExecuteResult<PageInfo>

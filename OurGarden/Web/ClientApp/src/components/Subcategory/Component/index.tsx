@@ -1,7 +1,6 @@
 import React from "react";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
-import HeaderHelmet from "@src/core/components/Helmet";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
@@ -59,17 +58,6 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
 
     return (
       <>
-        {category && (
-          <HeaderHelmet
-            seoSectionName="Subcategory"
-            seoTitle={category.seoTitle}
-            seoTitleReplacments={[
-              {
-                replacementValue: category.alias,
-              },
-            ]}
-          />
-        )}
         <DescriptionWrapper description={category?.description}>
           <CatalogCardList
             replace={replace}

@@ -1,6 +1,5 @@
 import React from "react";
 
-import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import ProductCard from "@core/components/CatalogCardList/Cards/ProductCard";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
@@ -10,7 +9,7 @@ import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
 
 import { TState } from "../TState";
 
-export class ProductList extends React.PureComponent<TState, {}> {
+export class ProductList extends React.PureComponent<TState, unknown> {
   constructor(props: TState) {
     super(props);
 
@@ -73,17 +72,6 @@ export class ProductList extends React.PureComponent<TState, {}> {
 
     return (
       <>
-        {subcategory && (
-          <HeaderHelmet
-            seoSectionName="ProductList"
-            seoTitle={subcategory.seoTitle}
-            seoTitleReplacments={[
-              {
-                replacementValue: subcategory.alias,
-              },
-            ]}
-          />
-        )}
         <DescriptionWrapper description={subcategory?.description}>
           <CatalogCardList
             dataList={dataList}

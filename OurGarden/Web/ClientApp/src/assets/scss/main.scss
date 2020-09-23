@@ -171,3 +171,8 @@ select:-webkit-autofill:focus {
     }
   }
 }
+
+.ant-input-affix-wrapper {
+  color: rgba(0, 0, 0, 0.65);
+  max-height: 32px;
+}

@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import HeaderHelmet from "@core/components/Helmet";
 import Typography from "@core/antd/Typography";
 import MainMobileLink from "@src/core/components/MainMobileLink";
 
@@ -15,7 +14,7 @@ interface IGazon {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 }
 
-export class Design extends React.PureComponent<IGazon, {}> {
+export class Design extends React.PureComponent<IGazon, unknown> {
   constructor(props: IGazon) {
     super(props);
 
@@ -48,8 +47,6 @@ export class Design extends React.PureComponent<IGazon, {}> {
     // prettier-ignore
     return (
       <Typography className={`content ourgarden-rulonnyj-gazon ${WHITE_BLOCK}`}>
-        <HeaderHelmet seoSectionName="RulonnyjGazon" />
-
         <Title>Рулонный газон</Title>
         <Paragraph>
           <Typography.Text strong>Рулонный газон — </Typography.Text>

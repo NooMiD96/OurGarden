@@ -1,42 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { RouterState } from "connected-react-router";
+import React from "react";
 import { Helmet } from "react-helmet-async";
 
-import { IApplicationState } from "@src/Store";
+import { IPageSeoInformation } from "./interfaces/IHelmetAsync";
 
-export const HelmetAsync = ({ location: { pathname } }: RouterState) => {
-  const [seoParams, setSeoParams] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await (
-        await fetch(
-          `/api/Home/GetPageSEOParams?pathname=${encodeURIComponent(pathname)}`
-        )
-      ).json();
-
-      setSeoParams(result.data);
-    };
-
-    fetchData();
-  }, [pathname]);
-
-  if (!seoParams) {
-    return null;
-  }
+export const HelmetAsync = ({ seoTitle, seoDescription, seoKeywords }: IPageSeoInformation) => {
+  const title = seoTitle
+    ? `${seoTitle} | Наш Сад`
+    : "Наш Сад";
 
   return (
     <Helmet>
-      <title>Наш Сад</title>
-      <meta name="description" content="test-description" />
-      <meta name="keywords" content="test-content" />
+      <title>
+        {title}
+      </title>
+      <meta name="description" content={seoDescription} />
+      <meta name="keywords" content={seoKeywords} />
     </Helmet>
   );
 };
 
-export default connect(
-  (state: IApplicationState): RouterState => ({
-    ...state.router,
-  })
-)(HelmetAsync);
+export default React.memo(HelmetAsync);

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApiService.Abstraction\ApiService.Abstraction.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

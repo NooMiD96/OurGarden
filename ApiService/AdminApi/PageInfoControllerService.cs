@@ -17,14 +17,23 @@ namespace ApiService.AdminApi
     {
         #region Fields
 
+        /// <summary>
+        /// Репо БД
+        /// </summary>
         private readonly IOurGardenRepository _repository;
 
+        /// <summary>
+        /// Логгер
+        /// </summary>
         private readonly ILogger _logger;
 
         #endregion
 
         #region .ctor
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
         public PageInfoControllerService(ILogger<PageInfoControllerService> logger,
                                          IOurGardenRepository repository)
         {
@@ -36,6 +45,7 @@ namespace ApiService.AdminApi
 
         #region IPageInfoControllerService Impl
 
+        /// <inheritdoc/>
         public async Task<ServiceExecuteResult<IEnumerable<PageInfo>>> GetPageInfos()
         {
             try
@@ -61,6 +71,7 @@ namespace ApiService.AdminApi
             }
         }
 
+        /// <inheritdoc/>
         public Task<ServiceExecuteResult<bool>> AddOrUpdate(PageInfoDTO pageInfoDTO)
         {
             return Task.FromResult(new ServiceExecuteResult<bool>
@@ -128,6 +139,7 @@ namespace ApiService.AdminApi
             //}
         }
 
+        /// <inheritdoc/>
         public Task<ServiceExecuteResult<bool>> DeletePageInfo(int pageInfoId)
         {
             return Task.FromResult(new ServiceExecuteResult<bool>

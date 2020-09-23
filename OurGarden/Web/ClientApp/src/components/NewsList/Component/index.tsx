@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import HeaderHelmet from "@core/components/Helmet";
 import CatalogCardList from "@core/components/CatalogCardList";
 import { NewsCard } from "@core/components/CatalogCardList/Cards/NewsCard";
 
@@ -14,7 +13,7 @@ import { WHITE_BLOCK } from "@src/core/constants";
 
 import "./style/NewsList.style.scss";
 
-export class NewsList extends React.PureComponent<TState, {}> {
+export class NewsList extends React.PureComponent<TState, unknown> {
   constructor(props: TState) {
     super(props);
 
@@ -51,7 +50,6 @@ export class NewsList extends React.PureComponent<TState, {}> {
 
     return (
       <div className="news-list-wrapper content">
-        <HeaderHelmet seoSectionName="NewsList" />
         {dataList.length === 0 ? (
           <div className={`content ${WHITE_BLOCK} p25`}>
             На данный момент никаких активных акций нет.

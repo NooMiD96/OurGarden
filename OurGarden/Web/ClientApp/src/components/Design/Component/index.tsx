@@ -1,6 +1,5 @@
 import React from "react";
 
-import HeaderHelmet from "@core/components/Helmet";
 import Typography from "@core/antd/Typography";
 import Card from "@core/antd/Card";
 import GenerateLink from "@src/core/components/GenerateLink";
@@ -40,8 +39,6 @@ export class Design extends React.PureComponent<TState, TComponentState> {
     // prettier-ignore
     return (
       <Typography className={`content ourgarden-design ${WHITE_BLOCK}`}>
-        <HeaderHelmet seoParams={pageInfo} />
-
         <DescriptionWrapper
           description={pageInfo?.description}
           useWysiwygDefaultClassNames={false}

@@ -3,6 +3,15 @@ import { RouterState } from "connected-react-router";
 import { IAppState } from "@components/Main/State/State";
 import { reducer as AppReducer } from "@components/Main/State/reducer";
 
+import { IBreadcrumbState } from "@components/Breadcrumb/State";
+import { reducer as BreadcrumbReducer } from "@components/Breadcrumb/reducer";
+
+import { IPageSeoInformationState } from "@components/SeoHelmet/State";
+import { reducer as PageSeoInformationReducer } from "@components/SeoHelmet/reducer";
+
+import { IModalWindowState } from "@components/ModalWindow/State";
+import { reducer as ModalWindowReducer } from "@components/ModalWindow/reducer";
+
 import { INewsListState } from "@components/NewsList/State";
 import { reducer as NewsListReducer } from "@components/NewsList/reducer";
 import { INewsState } from "@components/News/State";
@@ -21,16 +30,16 @@ import { reducer as ProductReducer } from "@components/Product/reducer";
 import { IUserCardState } from "@components/UserCard/State";
 import { reducer as UserCardReducer } from "@components/UserCard/reducer";
 
-import { IBreadcrumbState } from "@components/Breadcrumb/State";
-import { reducer as BreadcrumbReducer } from "@components/Breadcrumb/reducer";
-
-import { IModalWindowState } from "@components/ModalWindow/State";
-import { reducer as ModalWindowReducer } from "@components/ModalWindow/reducer";
-
 export interface IApplicationState {
   router: RouterState;
 
   app: IAppState;
+
+  breadcrumb: IBreadcrumbState;
+
+  pageSeoInformation: IPageSeoInformationState;
+
+  modalWindow: IModalWindowState;
 
   newsList: INewsListState;
   news: INewsState;
@@ -41,14 +50,16 @@ export interface IApplicationState {
   product: IProductState;
 
   userCard: IUserCardState;
-
-  breadcrumb: IBreadcrumbState;
-
-  modalWindow: IModalWindowState;
 }
 
 export const reducers = {
   app: AppReducer,
+
+  breadcrumb: BreadcrumbReducer,
+
+  pageSeoInformation: PageSeoInformationReducer,
+
+  modalWindow: ModalWindowReducer,
 
   newsList: NewsListReducer,
   news: NewsReducer,
@@ -59,10 +70,6 @@ export const reducers = {
   product: ProductReducer,
 
   userCard: UserCardReducer,
-
-  breadcrumb: BreadcrumbReducer,
-
-  modalWindow: ModalWindowReducer,
 };
 
 export interface IAppThunkAction<TAction> {

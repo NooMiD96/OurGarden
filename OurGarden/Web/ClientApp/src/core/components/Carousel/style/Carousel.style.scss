@@ -10,13 +10,18 @@
     cursor: pointer;
   }
 
+  &.hide-dots .slick-dots {
+    display: none !important;
+  }
+  &.hide-dots-on-mobile {
+    @media (max-width: 512px) {
   .slick-dots {
-    &.hide-dots,
-    &.hide-dots-on-mobile {
-      display: none;
+        display: none !important;
+      }
+    }
     }
 
-    .slick-dots-bottom {
+  .slick-dots.slick-dots-bottom {
       height: 24px;
       bottom: 0px;
 
@@ -34,4 +39,3 @@
       }
     }
   }
-}

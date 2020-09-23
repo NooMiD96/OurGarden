@@ -34,55 +34,11 @@ export const getFileStat = async () => {
 };
 // #endregion
 
-// #region Visited Pages
-const visitedPages: { [key: string]: boolean } = {};
-
-export const isPageVisited = (url = "") => {
-  const urlSplit = url
-    .toLowerCase()
-    .slice(1)
-    .split("/");
-
-  switch (urlSplit.length) {
-    case 0:
-      if (!visitedPages["/"]) {
-        visitedPages["/"] = true;
-        return false;
-      }
-      break;
-
-    case 1:
-      if (!visitedPages[urlSplit[0]]) {
-        visitedPages[urlSplit[0]] = true;
-        return false;
-      }
-      break;
-
-    default: {
-      const mainUrl = urlSplit[0];
-      if (["catalog", "news"].includes(mainUrl)) {
-        const pageKey = `${mainUrl}/deep=${urlSplit.length - 1}`;
-        if (!visitedPages[pageKey]) {
-          visitedPages[pageKey] = true;
-          return false;
-        }
-      } else {
-        return false;
-      }
-
-      break;
-    }
-  }
-
-  return true;
-};
-// #endregion
-
-export const getParamsData = (params: BootFuncParams, field: string) => {
+export const getParamsData = (params: BootFuncParams, field: string, defaultValue: any = null) => {
   const { data } = params;
 
   if (!data || data[field] === undefined) {
-    return null;
+    return defaultValue;
   }
 
   return data[field];

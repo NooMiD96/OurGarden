@@ -1,6 +1,6 @@
 import { errorCreater } from "./ErrorCreater";
 
-// prettier-ignore
+/// prettier-ignore
 export const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const responseCatcher = async (res: Response) => {
   if (res.ok) {
@@ -23,8 +23,8 @@ export const errorCatcher = (
   componentName: string,
   methodName = "",
   error: Error,
-  action?: (error: string) => void,
-  dispatch?: (action: any) => void
+  action?: (errorData: string) => void,
+  dispatch?: (actionFunc: any) => void
 ) => {
   console.warn(
     `Catch the error at ${componentName}.\r\nCall ${methodName} method.${

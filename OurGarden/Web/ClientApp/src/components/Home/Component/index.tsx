@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import HeaderHelmet from "@core/components/Helmet";
 import NewsCarousel from "./NewsCarousel";
 import CompanyInfo from "./CompanyInfo";
 
@@ -41,7 +40,6 @@ export class Home extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className="home-wrapper content">
-        <HeaderHelmet seoParams={pageInfo} seoSectionName="Home" />
         <NewsCarousel push={push} displayList={displayList} ymId={ymId} />
         <CompanyInfo pageInfo={pageInfo} />
       </div>

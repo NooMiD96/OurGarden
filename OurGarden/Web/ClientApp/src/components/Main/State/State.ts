@@ -4,7 +4,7 @@ import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 // #region STATE
 export interface IWrapRequest<T> {
   fetchUrl: string;
-  fetchProps: {};
+  fetchProps?: RequestInit;
   requestSuccess: (data: T) => void;
   requestError?: () => void;
   controllerName: string;

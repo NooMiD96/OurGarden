@@ -40,15 +40,9 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
   // create a store and dispatch the user information
   const store = configureStore(history);
 
-  let isMobileBrowser = getParamsData(params, "isMobileBrowser");
-  isMobileBrowser = isMobileBrowser === null ? true : isMobileBrowser;
+  const isMobileBrowser = getParamsData(params, "isMobileBrowser", true);
 
-  let isPageNotFound = getParamsData(params, "isPageNotFound");
-  isPageNotFound = isPageNotFound === null ? false : isPageNotFound;
-  store.dispatch(mainActions.pageNotFoundError(isPageNotFound));
-
-  let yandexMetricaCounterId = getParamsData(params, "yandexMetrikaCounterId");
-  yandexMetricaCounterId = yandexMetricaCounterId === null ? 0 : yandexMetricaCounterId;
+  const yandexMetricaCounterId = getParamsData(params, "yandexMetrikaCounterId", 0);
   store.dispatch(mainActions.setYandexMetricaId(yandexMetricaCounterId));
 
   const modules: any[] = [];
@@ -119,6 +113,7 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
         helmetTitle: helmet?.title?.toString(),
         helmetMeta: helmet?.meta?.toString(),
       },
+      statusCode: initialReduxState.app.isPageNotFound ? 404 : 200
     });
   }, reject); // Also propagate any errors back into the host application
 });

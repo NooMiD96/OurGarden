@@ -1,6 +1,5 @@
 import React from "react";
 
-import HeaderHelmet from "@core/components/Helmet";
 import ProductContent from "./ProductContent";
 
 import { TState, TComponentState } from "../TState";
@@ -66,15 +65,6 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       <div className={`wysiwyg-wrapper content ${WHITE_BLOCK}`}>
         {product && (
           <>
-            <HeaderHelmet
-              seoSectionName="Product"
-              seoTitle={product.seoTitle}
-              seoTitleReplacments={[
-                {
-                  replacementValue: product.alias,
-                },
-              ]}
-            />
             <ProductContent
               product={product}
               addProductToCard={addProductToCard}

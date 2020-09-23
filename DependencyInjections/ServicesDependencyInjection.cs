@@ -1,7 +1,9 @@
-﻿using ApiService.Abstraction.AdminApi;
+﻿using ApiService.Abstraction;
+using ApiService.Abstraction.AdminApi;
 using ApiService.Abstraction.Api;
 using ApiService.AdminApi;
 using ApiService.Api;
+using ApiService.Core;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,9 +32,9 @@ namespace DependencyInjections
 
             #endregion
 
-            #region Home services
+            #region Services
             
-            services.AddTransient<ApiService.Abstraction.IHomeControllerService, ApiService.HomeControllerService>();
+            services.AddTransient<ISeoService, SeoService>();
 
             #endregion
 

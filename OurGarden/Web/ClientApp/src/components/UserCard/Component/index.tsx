@@ -1,7 +1,5 @@
 import React from "react";
 
-import HeaderHelmet from "@src/core/components/Helmet";
-
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
 import CardConfirm from "./CardConfirm";
@@ -111,7 +109,6 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       <div
         className={`user-card-wrapper content ${WHITE_BLOCK} ${additionalClassName}`}
       >
-        <HeaderHelmet seoSectionName="UserCard" />
         {renderComponent}
       </div>
     );

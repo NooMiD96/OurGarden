@@ -1,6 +1,5 @@
 import React from "react";
 
-import HeaderHelmet from "@src/core/components/Helmet";
 import NewsContent from "./NewsContent";
 
 import { TState, TComponentState } from "../TState";
@@ -51,15 +50,6 @@ export class News extends React.PureComponent<TState, TComponentState> {
       <div className={`news-wrapper content ${WHITE_BLOCK}`}>
         {selectedNew && (
           <>
-            <HeaderHelmet
-              seoSectionName="News"
-              seoTitle={selectedNew.seoTitle}
-              seoTitleReplacments={[
-                {
-                  replacementValue: selectedNew.alias,
-                },
-              ]}
-            />
             <NewsContent selectedNew={selectedNew} />
           </>
         )}

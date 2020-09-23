@@ -11,11 +11,6 @@
         public bool IsMobileBrowser { get; set; } = false;
 
         /// <summary>
-        /// Найдена ли запрашиваемая страница.
-        /// </summary>
-        public bool IsPageFound { get; set; } = true;
-
-        /// <summary>
         /// Ид метрики
         /// </summary>
         public int YandexMetrikaCounterId { get; set; } = 0;

@@ -64,10 +64,10 @@
 
     <environment include="Production">
         <!-- JivoSite -->
-        <script src="//code.jivosite.com/widget.js" data-jv-id="@Model.YandexMetrikaCounterId" async></script>
+        <script src="//code.jivosite.com/widget.js" data-jv-id="@Model.JivoSiteId" async></script>
         <script>
             function jivo_onOpen() {
-                ym(@Model.YandexMetrikaCounterId, "reachGoal", "JIVO_CLICK")
+                ym(@Model.JivoSiteId, "reachGoal", "JIVO_CLICK")
             }
         </script>
         <!-- /JivoSite -->

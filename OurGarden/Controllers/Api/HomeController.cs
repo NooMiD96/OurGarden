@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.Api;
+﻿using ApiService.Abstraction;
+using ApiService.Abstraction.Api;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ namespace Web.Controllers.Api
         /// <summary>
         /// Сервис основной домашний страницы
         /// </summary>
-        private readonly ApiService.Abstraction.IHomeControllerService _mainHomeControllerService;
+        private readonly ApiService.Abstraction.ISeoService _seoService;
 
         #endregion
 
@@ -34,11 +35,11 @@ namespace Web.Controllers.Api
 
         public HomeController(ILogger<HomeController> logger,
                               IHomeControllerService homeConstollerService,
-                              ApiService.Abstraction.IHomeControllerService mainHomeControllerService)
+                              ISeoService seoService)
         {
             _logger = logger;
             _homeConstollerService = homeConstollerService;
-            _mainHomeControllerService = mainHomeControllerService;
+            _seoService = seoService;
         }
 
         #endregion
@@ -59,8 +60,12 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPageSEOParams([FromQuery] string pathname)
         {
-            var execResult = await _mainHomeControllerService.GetPageMainInformation(pathname);
-            return Success(execResult);
+            var execResult = await _seoService.GetPageSeoInformation(pathname);
+
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
+            else
+                return BadRequest(execResult.Error);
         }
 
         #endregion

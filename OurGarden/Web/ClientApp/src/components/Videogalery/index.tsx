@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import HeaderHelmet from "@src/core/components/Helmet";
-
 import { WHITE_BLOCK } from "@src/core/constants";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
@@ -11,7 +9,7 @@ interface IVideogalery {
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 }
 
-export class Videogalery extends React.PureComponent<IVideogalery, {}> {
+export class Videogalery extends React.PureComponent<IVideogalery, unknown> {
   constructor(props: IVideogalery) {
     super(props);
 
@@ -30,7 +28,6 @@ export class Videogalery extends React.PureComponent<IVideogalery, {}> {
   render() {
     return (
       <div className={`content ${WHITE_BLOCK} p25`}>
-        <HeaderHelmet seoSectionName="Videogalery" />
         Данный раздел находится в разработке, приходите позднее!
       </div>
     );

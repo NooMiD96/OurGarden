@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import HeaderHelmet from "@src/core/components/Helmet";
-
 import CompanyMap from "./CompanyMap";
 import CompanyContacts from "./CompanyContacts";
 
@@ -18,7 +16,7 @@ interface IContacts {
   ymId: number;
 }
 
-export class Contacts extends React.PureComponent<IContacts, {}> {
+export class Contacts extends React.PureComponent<IContacts, unknown> {
   constructor(props: IContacts) {
     super(props);
 
@@ -45,7 +43,6 @@ export class Contacts extends React.PureComponent<IContacts, {}> {
 
     return (
       <div className="contacts-wrapper content">
-        <HeaderHelmet seoSectionName="Contacts" />
         <CompanyContacts ymId={ymId} />
         <CompanyMap />
       </div>
