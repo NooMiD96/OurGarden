@@ -78,6 +78,12 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/require-default-props": "off",
     "no-use-before-define": "off",
-    "@typescript-eslint/ban-ts-comment": "off"
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ]
   }
 }

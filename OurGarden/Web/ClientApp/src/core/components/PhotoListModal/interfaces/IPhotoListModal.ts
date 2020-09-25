@@ -1,6 +1,6 @@
 import { IPhoto } from "@src/core/interfaces/IPhoto";
 
-export interface IPhotoListModalProps {
+export interface IPhotoListModal {
   isModalOpen: boolean;
   selectedPhoto?: IPhoto;
   photoList?: IPhoto[];

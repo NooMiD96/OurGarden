@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
+import { goBack as goBackAction } from "connected-react-router";
 
-import { IApplicationState } from "@src/Store";
+import Component from "./Component";
 
 import { actionCreators } from "./actions";
+
+import { IApplicationState } from "@src/Store";
 import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
-import Component from "./Component";
 
 // prettier-ignore
 const mapStateToProps = (
@@ -12,11 +14,13 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => (<TMapStateToProps>{
   ...state.modalWindow,
+  router: state.router,
   ...ownProp
 });
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
+  goBack: goBackAction,
 };
 
 export default <any>(

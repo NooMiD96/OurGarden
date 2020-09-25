@@ -16,13 +16,13 @@ export interface IPhotoModalState {
 
 export interface IModalWindowState {
   modalOpenType: ModalOpenType;
-  newProductInCard: IProduct | null;
+  newProductInCardState: IProduct | null;
   photoState: IPhotoModalState | null;
 }
 
 export const unloadedState: IModalWindowState = {
   modalOpenType: ModalOpenType.Closed,
-  newProductInCard: null,
+  newProductInCardState: null,
   photoState: null,
 };
 // #endregion

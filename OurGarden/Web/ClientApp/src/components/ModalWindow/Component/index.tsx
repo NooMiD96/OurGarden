@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { goBack as goBackAction } from "connected-react-router";
 
-import PhotoListModal from "./PhotoListModal";
-import NewProductInCard from "./NewProductInCard";
+import NewProductInCardModal from "@src/core/components/NewProductInCardModal";
+import PhotoListModal from "@src/core/components/PhotoListModal";
 
 import { MODAL_TIMEOUT } from "@src/core/constants";
 
 import { ModalOpenType } from "../State";
 import { TState } from "../TState";
-import { INewProductInCard } from "./NewProductInCard/INewProductInCard";
-import { IPhotoListModalProps } from "./PhotoListModal/IPhotoListModal";
-import { IApplicationState } from "@src/Store";
+import { INewProductInCardModal } from "@src/core/components/NewProductInCardModal/interfaces/INewProductInCardModal";
+import { IPhotoListModal } from "@src/core/components/PhotoListModal/interfaces/IPhotoListModal";
 
 const ModalWindowDump = (state: TState) => {
   // prettier-ignore
   const {
     modalOpenType,
-    closeModalWindow,
     photoState,
-    newProductInCard,
+    newProductInCardState,
     router,
+    closeModalWindow,
     goBack
   } = state;
 
@@ -29,50 +26,39 @@ const ModalWindowDump = (state: TState) => {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     null as NodeJS.Timeout | null
   );
-  const [ComponentToRender, setComponentToRender] = useState(NewProductInCard);
+  const [ComponentToRender, setComponentToRender] = useState(
+    NewProductInCardModal
+  );
   const [componentProps, setComponentProps] = useState({});
 
   useEffect(() => {
     switch (modalOpenType) {
       case ModalOpenType.AddToCard: {
-        setComponentToRender(NewProductInCard);
+        setComponentToRender(NewProductInCardModal);
+
+        /// Снимаем фокус с элемента, чтобы после закрытия модалки
+        /// фокус не вернулся.
         if ((document.activeElement as any)?.blur) {
           (document.activeElement as any).blur();
         }
 
-        if (newProductInCard) {
-          if (modalCloseTimer !== null) {
-            clearTimeout(modalCloseTimer);
-          }
+        if (newProductInCardState) {
+          setModalOpen(true);
+
+          modalCloseTimer && clearTimeout(modalCloseTimer);
 
           const closeTimer = setTimeout(() => {
             closeModalWindow();
           }, MODAL_TIMEOUT);
-
           setModalCloseTimer(closeTimer);
-          setModalOpen(true);
 
-          const props: INewProductInCard = {
+          const props: INewProductInCardModal = {
             isModalOpen: false,
             closeModal: () => {
-              if (modalCloseTimer !== null) {
-                clearTimeout(modalCloseTimer);
-              }
+              modalCloseTimer && clearTimeout(modalCloseTimer);
               closeModalWindow();
             },
-            product: newProductInCard!,
-            onEnter: () => {
-              if (document?.body?.style?.overflow) {
-                document.body.style.overflow = "";
-                document.body.style.paddingRight = "";
-                // eslint-disable-next-line no-unused-expressions
-                document
-                  .querySelector(
-                    "body > .new-product-in-card > .MuiDialog-container"
-                  )
-                  ?.removeAttribute("tabindex");
-              }
-            },
+            product: { ...(newProductInCardState ?? {}) },
           };
           setComponentProps(props);
 
@@ -84,12 +70,13 @@ const ModalWindowDump = (state: TState) => {
 
       case ModalOpenType.Photo: {
         setComponentToRender(PhotoListModal);
+
         if (!photoState) {
           setModalOpen(false);
           return () => null;
         }
 
-        const props: IPhotoListModalProps = {
+        const props: IPhotoListModal = {
           isModalOpen: false,
           photoList: photoState.photoList,
           selectedPhoto: photoState.selectedPhoto,
@@ -111,7 +98,7 @@ const ModalWindowDump = (state: TState) => {
     }
 
     return () => null;
-  }, [modalOpenType, photoState, newProductInCard]);
+  }, [modalOpenType, photoState, newProductInCardState]);
 
   // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/withRouter.md ?
   useEffect(() => {
@@ -123,11 +110,4 @@ const ModalWindowDump = (state: TState) => {
   return <ComponentToRender {...componentProps} isModalOpen={isModalOpen} />;
 };
 
-export default connect(
-  (state: IApplicationState) => ({
-    router: state.router,
-  }),
-  {
-    goBack: goBackAction,
-  }
-)(ModalWindowDump);
+export default ModalWindowDump;

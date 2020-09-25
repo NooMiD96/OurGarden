@@ -7,7 +7,7 @@ import WithRouterPush, {
 } from "@src/core/components/WithRouterPush";
 import CloseIcon from "@icons/CloseOutlined";
 
-import { IPhotoListModalProps } from "./IPhotoListModal";
+import { IPhotoListModal } from "./interfaces/IPhotoListModal";
 
 import "./style/PhotoListModal.style.scss";
 
@@ -17,7 +17,7 @@ export const PhotoListModal = ({
   selectedPhoto,
   photoList,
   onCloseModal,
-}: TWithRouter<IPhotoListModalProps>) => {
+}: TWithRouter<IPhotoListModal>) => {
   const selectedPhotoIndex = photoList?.findIndex(
     (x) => selectedPhoto?.photoId === x.photoId
   );
@@ -40,5 +40,5 @@ export const PhotoListModal = ({
 /* eslint-enable jsx-a11y/alt-text */
 
 // Без WithRouterPush не работает тот рендер,
-// который испаользуется в ModalWindowDump
-export default WithRouterPush<IPhotoListModalProps>(PhotoListModal as any);
+// который используется в ModalWindowDump
+export default WithRouterPush<IPhotoListModal>(PhotoListModal as any);

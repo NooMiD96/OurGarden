@@ -14,7 +14,7 @@ export const reducer: Reducer<IModalWindowState> = (
       const newState: IModalWindowState = {
         ...state,
         modalOpenType: ModalOpenType.AddToCard,
-        newProductInCard: action.payload.product,
+        newProductInCardState: action.payload.product,
       };
 
       return newState;
