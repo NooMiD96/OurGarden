@@ -1,4 +1,5 @@
 ﻿using ApiService.Abstraction.Api;
+using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO.OrderDTO;
 
 using Core.Helpers;
@@ -7,8 +8,6 @@ using DataBase.Abstraction.Model;
 using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
-
-using EmailService.Abstraction;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,7 +29,7 @@ namespace ApiService.Api
 
         private readonly OurGardenContext _context;
 
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailService;
 
         private readonly ILogger _logger;
 
@@ -39,12 +38,12 @@ namespace ApiService.Api
         #region .ctor
 
         public OrderControllerService(IOurGardenRepository repository,
-                                      IEmailSender emailSender,
+                                      IEmailService emailService,
                                       ILogger<OrderControllerService> logger)
         {
             _repository = repository;
             _context = (repository as OurGardenRepository).Context;
-            _emailSender = emailSender;
+            _emailService = emailService;
             _logger = logger;
         }
 
@@ -133,7 +132,7 @@ namespace ApiService.Api
                 {
                     throw new Exception($"Отсутствует номер заказа.");
                 }
-                var task = _emailSender.SendOrderInformation(orderId);
+                var task = _emailService.SendOrderInformation(orderId);
                 task.Start(TaskScheduler.Default);
             }
             catch (Exception ex)

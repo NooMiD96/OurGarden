@@ -16,6 +16,9 @@ export const actionsList = {
     selectedPhoto,
     photoList,
   }),
+  showFeedbackModalWindow: (): t.IShowFeedbackModalWindow => ({
+    type: t.SHOW_FEEDBACK_MODAL_WINDOW,
+  }),
 };
 // #endregion
 // ----------------
@@ -23,5 +26,6 @@ export const actionsList = {
 export const actionCreators = {
   closeModalWindow: actionsList.closeModalWindow,
   showPhotoModalWindow: actionsList.showPhotoModalWindow,
+  showFeedbackModalWindow: actionsList.showFeedbackModalWindow,
 };
 // #endregion

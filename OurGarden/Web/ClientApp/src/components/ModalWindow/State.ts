@@ -7,6 +7,7 @@ export enum ModalOpenType {
   Closed,
   AddToCard,
   Photo,
+  Feedback,
 }
 
 export interface IPhotoModalState {

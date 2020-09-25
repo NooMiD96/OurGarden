@@ -1,6 +1,6 @@
-﻿using ApiService.Abstraction;
-using ApiService.Abstraction.AdminApi;
+﻿using ApiService.Abstraction.AdminApi;
 using ApiService.Abstraction.Api;
+using ApiService.Abstraction.Core;
 using ApiService.AdminApi;
 using ApiService.Api;
 using ApiService.Core;
@@ -35,6 +35,7 @@ namespace DependencyInjections
             #region Services
             
             services.AddTransient<ISeoService, SeoService>();
+            services.AddTransient<IEmailService, ApiService.Core.EmailService>();
 
             #endregion
 

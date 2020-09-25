@@ -1,8 +1,6 @@
-using DataBase.Abstraction.Model;
-using DataBase.Abstraction.Repositories;
+﻿using ApiService.Abstraction.Core;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using DataBase.Abstraction.Model;
 
 using MimeKit;
 
@@ -11,11 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmailService
+namespace ApiService.Core
 {
-    public partial class EmailSender
+    public partial class EmailService : IEmailService
     {
-        #region Consts
+        #region Const
 
         const string _templatesFolder = "wwwroot/Templates";
 
@@ -25,32 +23,7 @@ namespace EmailService
 
         #endregion
 
-        #region IEmailSender Impl
-
-        /// <inheritdoc/>
-        public async Task SendOrderInformation(int orderId)
-        {
-            try
-            {
-                var order = await GetOrderItemsInformation(orderId);
-
-                var subject = CreateOrderBodySubject(order.OrderId, order.Date);
-
-                var clientBodyInner = await CreateClientOrderBody(order);
-                var adminBodyInner = await CreateAdminOrderBody(order);
-
-                await Task.WhenAll(
-                    SendEmailAsync(order.Email, subject, clientBodyInner),
-                    SendEmailAsync(_emailOption.ReplyToLocalMail, subject, adminBodyInner)
-                );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Ошибка при отправке письма:");
-            }
-        }
-
-        #endregion
+        #region SendOrderInformation
 
         private string CreateOrderBodySubject(int orderId, DateTime date)
         {
@@ -88,10 +61,10 @@ namespace EmailService
                     order.OrderPositions
                         .Select(
                             x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
                         )
                         .Aggregate((acc, str) => acc + str),
                     StringComparison.InvariantCultureIgnoreCase)
@@ -108,7 +81,7 @@ namespace EmailService
             var body = new BodyBuilder
             {
                 HtmlBody = mjmlMessage.Html,
-                TextBody = $@"Здравствуйте! На сайте поступил новый заказ заказ №{order.OrderId}. От {order.FIO}, {order.Phone}"
+                TextBody = $@"Здравствуйте! На сайте поступил новый заказ №{order.OrderId}. От {order.FIO}, {order.Phone}"
             };
 
             return body.ToMessageBody();
@@ -139,10 +112,10 @@ namespace EmailService
                     order.OrderPositions
                         .Select(
                             x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                    .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                                  .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
                         )
                         .Aggregate((acc, str) => acc + str),
                     StringComparison.InvariantCultureIgnoreCase)
@@ -167,10 +140,7 @@ namespace EmailService
 
         private async Task<Order> GetOrderItemsInformation(int orderId)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var dbRepository = scope.ServiceProvider.GetRequiredService<IOurGardenRepository>();
-
-            var order = await dbRepository.GetOrder(orderId, true);
+            var order = await _repository.GetOrder(orderId, true);
 
             return order;
         }
@@ -181,5 +151,7 @@ namespace EmailService
 
             return await Task.FromResult(template);
         }
+
+        #endregion
     }
 }

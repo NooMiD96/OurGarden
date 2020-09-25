@@ -4,14 +4,11 @@ using System.Threading.Tasks;
 
 namespace EmailService.Abstraction
 {
+    /// <summary>
+    /// Сервис по отправке писем по почте.
+    /// </summary>
     public interface IEmailSender
     {
-        /// <summary>
-        /// Отправка иформации о заказе пользователю и на свою почту.
-        /// </summary>
-        /// <param name="orderId">Номер заказа.</param>
-        Task SendOrderInformation(int orderId);
-
         /// <summary>
         /// Отправка информации на почту пользователю <paramref name="email"/>.
         /// </summary>

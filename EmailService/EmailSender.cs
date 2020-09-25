@@ -4,13 +4,10 @@ using EmailService.Abstraction;
 
 using MailKit.Net.Smtp;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using MimeKit;
-
-using Mjml.AspNetCore;
 
 using Model;
 
@@ -19,17 +16,16 @@ using System.Threading.Tasks;
 
 namespace EmailService
 {
-    public partial class EmailSender: IEmailSender
+    /// <summary>
+    /// Сервис по отправке писем по почте.
+    /// </summary>
+    public class EmailSender: IEmailSender
     {
         #region Fields
 
         private readonly EmailOption _emailOption;
 
-        private readonly IServiceScopeFactory _scopeFactory;
-
         private readonly ILogger _logger;
-
-        private readonly IMjmlServices _mjmlServices;
 
         #endregion
 
@@ -39,14 +35,10 @@ namespace EmailService
         /// .ctor
         /// </summary>
         public EmailSender(IOptions<EmailOption> emailOption,
-                           ILogger<EmailSender> logger,
-                           IServiceScopeFactory scopeFactory,
-                           IMjmlServices mjmlServices)
+                           ILogger<EmailSender> logger)
         {
             _emailOption = emailOption.Value;
             _logger = logger;
-            _scopeFactory = scopeFactory;
-            _mjmlServices = mjmlServices;
         }
 
         #endregion
@@ -77,8 +69,9 @@ namespace EmailService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"ConnectAsync DROP\n{JsonHelper.Serialize(client)}");
-                    throw new Exception("", ex);
+                    var msg = $"Не удалось установить соединение.";
+                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    throw new Exception(msg, ex);
                 }
 
                 try
@@ -87,8 +80,9 @@ namespace EmailService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"AuthenticateAsync DROP\n{JsonHelper.Serialize(client)}");
-                    throw new Exception("", ex);
+                    var msg = $"Не удалось авторизоваться.";
+                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    throw new Exception(msg, ex);
                 }
 
                 try
@@ -97,8 +91,9 @@ namespace EmailService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"SendAsync DROP\n{JsonHelper.Serialize(client)}");
-                    throw new Exception("", ex);
+                    var msg = $"Не удалось отправить письмо.";
+                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    throw new Exception(msg, ex);
                 }
 
                 try
@@ -107,8 +102,9 @@ namespace EmailService
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"DisconnectAsync DROP\n{JsonHelper.Serialize(client)}");
-                    throw new Exception("", ex);
+                    var msg = $"Не удалось разорвать соединение.";
+                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    throw new Exception(msg, ex);
                 }
             }
             catch (Exception ex)

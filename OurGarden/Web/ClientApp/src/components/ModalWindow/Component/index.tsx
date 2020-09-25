@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
 
-import NewProductInCardModal from "@src/core/components/NewProductInCardModal";
-import PhotoListModal from "@src/core/components/PhotoListModal";
+import NewProductInCardModal from "@src/core/components/Modals/NewProductInCardModal";
+import PhotoListModal from "@src/core/components/Modals/PhotoListModal";
+import FeedbackModal from "@src/core/components/Modals/FeedbackModal";
 
 import { MODAL_TIMEOUT } from "@src/core/constants";
 
 import { ModalOpenType } from "../State";
 import { TState } from "../TState";
-import { INewProductInCardModal } from "@src/core/components/NewProductInCardModal/interfaces/INewProductInCardModal";
-import { IPhotoListModal } from "@src/core/components/PhotoListModal/interfaces/IPhotoListModal";
+import { INewProductInCardModal } from "@src/core/components/Modals/NewProductInCardModal/interfaces/INewProductInCardModal";
+import { IPhotoListModal } from "@src/core/components/Modals/PhotoListModal/interfaces/IPhotoListModal";
+import { IFeedbackModal } from "@src/core/components/Modals/FeedbackModal/interfaces/IFeedbackModal";
 
 const ModalWindowDump = (state: TState) => {
-  // prettier-ignore
   const {
     modalOpenType,
     photoState,
     newProductInCardState,
     router,
     closeModalWindow,
-    goBack
+    goBack,
   } = state;
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalCloseTimer, setModalCloseTimer] = useState(
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     null as NodeJS.Timeout | null
   );
   const [ComponentToRender, setComponentToRender] = useState(
@@ -80,6 +80,22 @@ const ModalWindowDump = (state: TState) => {
           isModalOpen: false,
           photoList: photoState.photoList,
           selectedPhoto: photoState.selectedPhoto,
+          onCloseModal: () => {
+            closeModalWindow();
+            goBack();
+          },
+        };
+        setComponentProps(props);
+        setModalOpen(true);
+
+        break;
+      }
+
+      case ModalOpenType.Feedback: {
+        setComponentToRender(FeedbackModal);
+
+        const props: IFeedbackModal = {
+          isModalOpen: false,
           onCloseModal: () => {
             closeModalWindow();
             goBack();

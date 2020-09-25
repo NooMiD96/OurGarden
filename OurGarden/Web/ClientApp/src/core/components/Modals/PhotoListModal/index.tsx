@@ -5,11 +5,9 @@ import Modal from "@core/materialUI/modal";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
-import CloseIcon from "@icons/CloseOutlined";
+import { CloseButton } from "../Components/CloseButton";
 
 import { IPhotoListModal } from "./interfaces/IPhotoListModal";
-
-import "./style/PhotoListModal.style.scss";
 
 /* eslint-disable jsx-a11y/alt-text */
 export const PhotoListModal = ({
@@ -25,15 +23,7 @@ export const PhotoListModal = ({
   return (
     <Modal open={isModalOpen} onClose={onCloseModal}>
       <img width="100%" height="100%" src={selectedPhoto?.url} />
-      <span
-        role="button"
-        onKeyDown={onCloseModal}
-        onClick={onCloseModal}
-        className="photo-modal-close"
-        tabIndex={0}
-      >
-        <CloseIcon className="photo-modal-close-icon" />
-      </span>
+      <CloseButton onCloseModal={onCloseModal} />
     </Modal>
   );
 };

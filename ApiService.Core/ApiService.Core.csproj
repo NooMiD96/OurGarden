@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.NodeServices" Version="3.1.8" />
+    <PackageReference Include="Mjml.AspNetCore" Version="1.2.27" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ApiService.Abstraction\ApiService.Abstraction.csproj" />
+    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using ApiService.Abstraction;
+﻿using ApiService.Abstraction.Core;
 using ApiService.Abstraction.Model;
 
 using DataBase.Abstraction;
@@ -109,7 +109,7 @@ namespace ApiService.Core
                 return default;
             }
 
-            var url = pathString.Value.Substring(1).ToLower();
+            var url = pathString.Value[1..].ToLower();
 
             if (url.Contains("/", StringComparison.InvariantCultureIgnoreCase))
             {

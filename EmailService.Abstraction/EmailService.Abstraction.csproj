@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.9.0" />
-    <PackageReference Include="Mjml.AspNetCore" Version="1.2.27" />
   </ItemGroup>
 
 </Project>

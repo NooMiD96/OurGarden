@@ -1,5 +1,6 @@
-﻿using ApiService.Abstraction;
-using ApiService.Abstraction.Api;
+﻿using ApiService.Abstraction.Api;
+using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +43,17 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetPageInfo([FromQuery] int pageInfoId)
         {
             var execResult = await _homeConstollerService.GetPageInfo(pageInfoId);
+
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
+            else
+                return BadRequest(execResult.Error);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SendFeedback([FromBody] FeedbackDTO feedbackDTO)
+        {
+            var execResult = await _homeConstollerService.SendFeedback(feedbackDTO);
 
             if (execResult.IsSuccess)
                 return Success(execResult.Result);

@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace ApiService.Abstraction
+namespace ApiService.Abstraction.Core
 {
     /// <summary>
     /// Сервис контроллера.
