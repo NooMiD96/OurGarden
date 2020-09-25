@@ -33,7 +33,7 @@ export type TSendOrder =
 
 export interface IAddProductToCard {
   type: typeof ADD_PRODUCT_TO_CARD;
-  payload: IUserCardProduct;
+  payload: { count: number; product: IProduct };
 }
 export interface IChangeCountOfProduct {
   type: typeof CHANGE_COUNT_OF_PRODUCT;

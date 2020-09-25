@@ -2,12 +2,12 @@ import React from "react";
 
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
-import CardConfirm from "./CardConfirm";
+import OrderCreated from "@src/core/components/OrderCreated";
 
 import { TState, TComponentState, DisplayTypeEnum } from "../TState";
-import { IOrderUserInformation } from "../IModel";
+import { IOrderUserInformation } from "../Model/IModel";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/UserCard.style.scss";
 
@@ -63,7 +63,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       productList,
       changeCountOfProduct,
       removeProductFromCard,
-      сleanProductCard,
+      cleanProductCard,
       pending,
       errorInner,
       ymId,
@@ -79,7 +79,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
 
     if (orderCreated) {
       renderComponent = (
-        <CardConfirm pending={pending} errorInner={errorInner} ymId={ymId} />
+        <OrderCreated pending={pending} errorInner={errorInner} ymId={ymId} />
       );
     } else {
       // prettier-ignore
@@ -89,7 +89,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
             productList={productList}
             removeProductFromCard={removeProductFromCard}
             changeCountOfProduct={changeCountOfProduct}
-            сleanProductCard={сleanProductCard}
+            cleanProductCard={cleanProductCard}
             onChangeOrderStep={this.onChangeOrderStep}
             ymId={ymId}
           />

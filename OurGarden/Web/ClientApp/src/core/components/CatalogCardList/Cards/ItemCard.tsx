@@ -8,7 +8,7 @@ import WithRouterPush, {
 } from "@src/core/components/WithRouterPush";
 import GenerateLink from "../../GenerateLink";
 
-import { META_TITLE_PARAMS } from "@src/core/utils/CardList";
+import { META_TITLE_PARAMS } from "@src/core/constants/cardList";
 
 import { TDataItem } from "../ICatalogCard";
 

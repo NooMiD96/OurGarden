@@ -1,12 +1,6 @@
-import { IPhoto } from "@core/interfaces/IPhoto";
-import { ICategory } from "@components/Category/State";
-import { ISubcategory } from "@components/Subcategory/State";
-import { IProduct } from "@components/Product/State";
-import { INew } from "@components/News/State";
+import { IPhoto, IPhotoField } from "@core/interfaces/IPhoto";
 
-const getFirstPhoto = (
-  item: ICategory | ISubcategory | IProduct | INew
-): IPhoto | null => {
+const getFirstPhoto = (item: IPhotoField): IPhoto | null => {
   if (!item) {
     return null;
   }
@@ -22,17 +16,13 @@ const getFirstPhoto = (
   return photo;
 };
 
-export const getPhotoSrc = (
-  item: ICategory | ISubcategory | IProduct | INew
-) => {
+export const getPhotoSrc = (item: IPhotoField) => {
   const photo = getFirstPhoto(item);
 
   return (photo && photo.url) || "";
 };
 
-export const getPreviewPhotoSrc = (
-  item: ICategory | ISubcategory | IProduct | INew
-) => {
+export const getPreviewPhotoSrc = (item: IPhotoField) => {
   const photo = getFirstPhoto(item);
 
   return (photo && (photo.previewUrl || photo.url)) || "";

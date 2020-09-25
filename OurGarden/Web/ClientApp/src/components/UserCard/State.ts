@@ -18,6 +18,6 @@ export const unloadedState: IUserCardState = {
   productList: [],
   totalCount: 0,
   pending: false,
-  errorInner: ""
+  errorInner: "",
 };
 // #endregion

@@ -4,7 +4,7 @@ import DescriptionWrapper, {
   WYSIWYG_PART_CLASS,
 } from "@src/core/helpers/description/DescriptionWrapper";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 

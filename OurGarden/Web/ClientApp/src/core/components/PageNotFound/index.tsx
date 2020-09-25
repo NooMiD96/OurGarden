@@ -3,7 +3,7 @@ import React from "react";
 import { Title, Text } from "@core/antd/Typography";
 import GenerateLink from "../GenerateLink";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/PageNotFound.style.scss";
 

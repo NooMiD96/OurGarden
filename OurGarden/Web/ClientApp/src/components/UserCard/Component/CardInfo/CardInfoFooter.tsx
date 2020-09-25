@@ -17,16 +17,16 @@ const CardInfoFooter = (props: ICardInfoFooter) => (
         </div>
         <div className="button-wrapper buttons-wrapper-with-padding">
           <Button
-            className="custome-styled-btn"
+            className="custom-styled-btn"
             onClick={() => {
               window.ym(props.ymId, "reachGoal", "CLEAN_CHECKOUT");
-              props.сleanProductCard();
+              props.cleanProductCard();
             }}
           >
             Очистить корзину
           </Button>
           <Button
-            className="custome-styled-btn"
+            className="custom-styled-btn"
             type="primary"
             onClick={() => {
               window.ym(props.ymId, "reachGoal", "TO_ORDER");

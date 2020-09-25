@@ -6,7 +6,7 @@ import MainMobileLink from "@src/core/components/MainMobileLink";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 const { Paragraph, Title } = Typography;
 

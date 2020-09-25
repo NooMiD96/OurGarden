@@ -6,45 +6,50 @@ import { IResponse } from "@core/fetchHelper/IResponse";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
-import { IOrderModel, IOrderPosition, IOrderUserInformation } from "./IModel";
+import {
+  IOrderDTO,
+  IOrderPositionDTO,
+  IOrderUserInformation,
+} from "./Model/IModel";
 import { IUserCardProduct } from "./State";
 import { IProduct } from "@components/Product/State";
+import { OrderProductDTO } from "./Model";
 
 // ----------------
 // #region ACTIONS
 export const actionsList = {
   sendOrderRequest: (): t.ISendOrderRequest => ({
-    type: t.SEND_ORDER_REQUEST
+    type: t.SEND_ORDER_REQUEST,
   }),
   sendOrderSuccess: (): t.ISendOrderSuccess => ({
-    type: t.SEND_ORDER_SUCCESS
+    type: t.SEND_ORDER_SUCCESS,
   }),
   sendOrderError: (errorMessage: string): t.ISendOrderError => ({
     type: t.SEND_ORDER_ERROR,
-    errorMessage
+    errorMessage,
   }),
 
   addProductToCard: (payload: IUserCardProduct): t.IAddProductToCard => ({
     type: t.ADD_PRODUCT_TO_CARD,
-    payload
+    payload,
   }),
   changeCountOfProduct: (
     payload: IUserCardProduct
   ): t.IChangeCountOfProduct => ({
     type: t.CHANGE_COUNT_OF_PRODUCT,
-    payload
+    payload,
   }),
   removeProductFromCard: (payload: IProduct): t.IRemoveProductFromCard => ({
     type: t.REMOVE_PRODUCT_FROM_CARD,
-    payload
+    payload,
   }),
-  сleanProductCard: (): t.ICleanProductCard => ({
-    type: t.CLEAN_PRODUCT_CARD
+  cleanProductCard: (): t.ICleanProductCard => ({
+    type: t.CLEAN_PRODUCT_CARD,
   }),
 
   loadCardFromLocalstate: (): t.ILoadCardFromLocalstate => ({
-    type: t.LOAD_CARD_FROM_LOCALSTATE
-  })
+    type: t.LOAD_CARD_FROM_LOCALSTATE,
+  }),
 };
 // #endregion
 // ----------------
@@ -57,14 +62,14 @@ export const actionCreators = {
     const apiUrl = "AddOrder";
     const { productList } = getState().userCard;
 
-    const bodyModel: IOrderModel = {
+    const bodyModel: IOrderDTO = {
       ...userInfo,
       orderPositions: productList.map(
-        (x: IUserCardProduct): IOrderPosition => ({
+        (x: IUserCardProduct): IOrderPositionDTO => ({
           number: x.count,
-          product: x.product
+          product: new OrderProductDTO(x.product),
         })
-      )
+      ),
     };
 
     // prettier-ignore
@@ -101,8 +106,8 @@ export const actionCreators = {
   addProductToCard: actionsList.addProductToCard,
   removeProductFromCard: actionsList.removeProductFromCard,
   changeCountOfProduct: actionsList.changeCountOfProduct,
-  сleanProductCard: actionsList.сleanProductCard,
+  cleanProductCard: actionsList.cleanProductCard,
 
-  loadCardFromLocalstate: actionsList.loadCardFromLocalstate
+  loadCardFromLocalstate: actionsList.loadCardFromLocalstate,
 };
 // #endregion

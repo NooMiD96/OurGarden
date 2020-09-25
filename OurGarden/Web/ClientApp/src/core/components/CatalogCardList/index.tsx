@@ -6,7 +6,10 @@ import Pagination from "@core/antd/Pagination";
 import PaginationItemRenderer from "@core/components/PaginationItemRenderer";
 import ItemCard from "./Cards/ItemCard";
 
-import { PAGING_DEFAULT_PARAMS, CARD_GRID_STYLE } from "@core/utils/CardList";
+import {
+  CARD_GRID_STYLE,
+  PAGING_DEFAULT_PARAMS,
+} from "@src/core/constants/cardList";
 
 import {
   ICatalogProps,

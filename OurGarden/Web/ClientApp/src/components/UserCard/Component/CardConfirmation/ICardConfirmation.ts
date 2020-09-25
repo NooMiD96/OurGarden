@@ -1,6 +1,6 @@
 import { FormInstance } from "@core/antd/Form";
 import { DisplayTypeEnum } from "../../TState";
-import { IOrderUserInformation } from "../../IModel";
+import { IOrderUserInformation } from "../../Model/IModel";
 import { IUserCardProduct } from "../../State";
 
 export interface ICardConfirmationForm {

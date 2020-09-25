@@ -1,14 +1,7 @@
-﻿using ApiService.Abstraction.DTO;
-
-using DataBase.Abstraction;
-using DataBase.Abstraction.Repositories;
+﻿using ApiService.Abstraction.Api;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web.Controllers.Api
@@ -17,79 +10,56 @@ namespace Web.Controllers.Api
     [ApiController]
     public class NewsController : BaseController
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "Api.NewsController";
+        #region Fields
+        
+        private readonly INewsControllerService _service;
 
-        public NewsController(IOurGardenRepository repository,
-                              ILogger<SubcategoryController> logger)
+        #endregion
+
+        #region .ctor
+
+        public NewsController(INewsControllerService service)
         {
-            _logger = logger;
-            _repository = repository;
+            _service = service;
         }
+
+        #endregion
+
+        #region API
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBreadcrumb([FromQuery] string newsId)
         {
-            var breadcrumb = await _repository.GetNewsBreadcrumb(newsId);
-            var order = 1;
+            var execResult = await _service.GetBreadcrumb(newsId);
 
-            var breadcrumbList = new List<IBreadcrumb>()
-            {
-                new BreadcrumbDTO()
-                {
-                    DisplayName = "Акции",
-                    Url = "News",
-                    Order = order++,
-                }
-            };
-
-            breadcrumbList.AddRange(
-                breadcrumb.Select(x =>
-                {
-                    x.Order = order++;
-                    return x;
-                })
-            );
-
-            return Success(breadcrumbList);
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
+            else
+                return BadRequest(execResult.Error);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllNews()
         {
-            var news = await _repository.GetNews(includeDescriptions: false);
+            var execResult = await _service.GetAllNews();
 
-            return Success(news.OrderByDescending(x => x.Date));
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
+            else
+                return BadRequest(execResult.Error);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetNews([FromQuery]string newsId)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetNews";
+            var execResult = await _service.GetNews(newsId);
 
-            if (String.IsNullOrEmpty(newsId))
-            {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: "Что-то пошло не так, необходимо выбрать новость."
-                );
-            }
-
-            var news = await _repository.GetNews(newsId);
-
-            if (news == null)
-            {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти выбранную новость.\n\tНовость: {newsId}",
-                    returnStatusCode: 404
-                );
-            }
-
-            return Success(news);
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
+            else
+                return BadRequest(execResult.Error);
         }
+
+        #endregion
     }
 }

@@ -1,13 +1,12 @@
-import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { IPhotoField } from "@src/core/interfaces/IPhoto";
 import { ISeoParams } from "@src/core/interfaces/ISeoParams";
 import { IDescription } from "@src/core/interfaces/IDescription";
 
 // -----------------
 // #region STATE
-export interface ICategory extends ISeoParams, IDescription {
+export interface ICategory extends ISeoParams, IDescription, IPhotoField {
   categoryId: string;
   alias: string;
-  photos: IPhoto[];
 }
 
 export interface ICategoryState {

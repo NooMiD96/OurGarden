@@ -15,7 +15,7 @@ import TopBar from "@components/Main/TopBar";
 import Sider from "@components/Main/Sider";
 import Breadcrumb from "@components/Breadcrumb";
 
-import { MAIN_LAYOUT_GRID_COL_STYLE } from "@core/constants";
+import { MAIN_LAYOUT_GRID_COL_STYLE } from "@src/core/constants/main";
 
 const { Header, Content } = AntdLayout;
 

@@ -1,14 +1,20 @@
 import React from "react";
 
-import CardInfoTable, { cardProductToDisplay } from "./CardInfoTable";
-
-import { IDisplayInfo, ICardInfo } from "./ICardInfo";
 import CardInfoFooter from "./CardInfoFooter";
+import CardInfoTable from "@core/components/CardInfoTable";
+
+import { ICardInfo } from "./ICardInfo";
+import { IDisplayInfo } from "@core/components/CardInfoTable/Model/IDisplayInfo";
+import { IProduct } from "@src/components/Product/State";
 
 const CardInfo = (props: ICardInfo) => {
-  const dataSource: IDisplayInfo[] = props.productList.map(
-    cardProductToDisplay
-  );
+  const dataSource = props.productList.map<IDisplayInfo<IProduct>>((x) => ({
+    product: x.product,
+    productId: x.product.productId,
+    cost: x.product.price,
+    count: x.count,
+    totalCost: x.count * x.product.price,
+  }));
 
   const totalPrice = dataSource
     .map((x) => x.totalCost)
@@ -24,7 +30,7 @@ const CardInfo = (props: ICardInfo) => {
       <CardInfoFooter
         isVisible={!!dataSource.length}
         onChangeOrderStep={props.onChangeOrderStep}
-        сleanProductCard={props.сleanProductCard}
+        cleanProductCard={props.cleanProductCard}
         totalPrice={totalPrice}
         ymId={props.ymId}
       />

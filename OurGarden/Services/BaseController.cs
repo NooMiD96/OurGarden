@@ -16,7 +16,7 @@ namespace Web.Controllers
 
         public IActionResult BadRequest(string res)
         {
-            return Ok(new { error = res });
+            return BadRequest(new { error = res });
         }
 
         public IActionResult LogBadRequest(ILogger logger,

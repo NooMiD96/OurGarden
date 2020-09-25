@@ -18,6 +18,11 @@ export const findProduct = (
 // prettier-ignore
 export const getTotalCount = (productList: IUserCardProduct[]) => productList.map((x) => x.count).reduce((count, acc) => count + acc, 0);
 
+/**
+ * Возвращает новый массив, в который был добавлен указанный товар.
+ * @param productList Исходный список товаров
+ * @param newProduct Новый товар, который должен быть добавлен
+ */
 export const addNewProduct = (
   productList: IUserCardProduct[],
   newProduct: IUserCardProduct
@@ -29,7 +34,7 @@ export const addNewProduct = (
     if (findProduct(product, newProduct)) {
       newProductList.push({
         ...product,
-        count: product.count + newProduct.count
+        count: product.count + newProduct.count,
       });
       find = true;
     } else {
@@ -54,7 +59,7 @@ export const changeCountOfProduct = (
     if (findProduct(product, newProduct)) {
       newProductList.push({
         ...product,
-        count: newProduct.count
+        count: newProduct.count,
       });
     } else {
       newProductList.push(product);

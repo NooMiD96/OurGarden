@@ -2,7 +2,6 @@
 using ApiService.Abstraction.DTO.OrderDTO;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
 
@@ -12,13 +11,10 @@ namespace Web.Controllers.Api
     [ApiController]
     public class OrderController : BaseController
     {
-        private readonly ILogger _logger;
         private readonly IOrderControllerService _service;
 
-        public OrderController(ILogger<OrderController> logger,
-                               IOrderControllerService service)
+        public OrderController(IOrderControllerService service)
         {
-            _logger = logger;
             _service = service;
         }
 

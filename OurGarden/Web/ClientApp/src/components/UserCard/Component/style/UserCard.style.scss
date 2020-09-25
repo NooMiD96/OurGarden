@@ -39,33 +39,4 @@
       margin: 1rem 0 1rem 7rem;
     }
   }
-
-  .order-success {
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    text-align: center;
-    justify-content: center;
-
-    .title-wrapper {
-      margin: 0.5rem;
-      flex: 1 1 100%;
-      font-size: 32px;
-    }
-    
-    .info-text {
-      font-size: 18px;
-    }
-
-    .btn-wrapper {
-      margin: 0.5rem;
-      flex: 1 1 100%;
-
-      .ant-btn {
-        height: auto;
-        font-size: 28px;
-      }
-    }
-  }
 }

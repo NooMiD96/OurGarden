@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ApiService.Abstraction.DTO.OrderDTO
 {
+    /// <summary>
+    /// Модель оформления заказа.
+    /// </summary>
     public class OrderCreateDTO
     {
         [Required]
@@ -19,6 +22,9 @@ namespace ApiService.Abstraction.DTO.OrderDTO
         [MaxLength(64)]
         public string Email { get; set; }
 
+        /// <summary>
+        /// Список товаров в корзине
+        /// </summary>
         [Required]
         public IEnumerable<OrderPositionDTO> OrderPositions { get; set; }
     }

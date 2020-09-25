@@ -8,7 +8,8 @@ import WithRouterPush, {
 } from "@src/core/components/WithRouterPush";
 
 import { actionCreators } from "@src/components/UserCard/actions";
-import { darkGreenColor, CARD_PATH } from "@src/core/constants";
+import { CARD_PATH } from "@src/core/constants";
+import { DARK_GREEN_COLOR } from "@src/core/constants/style";
 
 import { IApplicationState } from "@src/Store";
 
@@ -25,7 +26,7 @@ const Card = (props: TWithRouter<ICard>) => {
   return (
     <React.Fragment>
       <Badge
-        style={{ backgroundColor: darkGreenColor, color: "#fff" }}
+        style={{ backgroundColor: DARK_GREEN_COLOR, color: "#fff" }}
         count={props.totalCount}
       >
         <LottieWebIcon type="archive" onClick={() => props.push(CARD_PATH)} />

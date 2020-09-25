@@ -4,7 +4,7 @@ import ProductContent from "./ProductContent";
 
 import { TState, TComponentState } from "../TState";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/Product.style.scss";
 

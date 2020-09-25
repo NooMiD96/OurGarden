@@ -25,7 +25,7 @@ const AddToCardButton = (props: IAddToCardButton) => {
         addonAfter={(
           <Button
             block
-            className="custome-styled-btn second"
+            className="custom-styled-btn second"
             type="primary"
             onClick={addToCard}
           >

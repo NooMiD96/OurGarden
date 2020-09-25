@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 

@@ -3,11 +3,8 @@ import React from "react";
 import Gallery from "@src/core/components/Gallery";
 
 import { getFormattedDescription, getPartsBetween } from "./DescriptionHelper";
-import {
-  CATALOG_MACROS,
-  GALLERY_MACROS,
-  WHITE_BLOCK,
-} from "@src/core/constants";
+import { CATALOG_MACROS, GALLERY_MACROS } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 const PART_CLASS = "ant-typography";
 const WYSIWYG_PART_CLASS = "wysiwyg-wrapper wysiwyg-description";

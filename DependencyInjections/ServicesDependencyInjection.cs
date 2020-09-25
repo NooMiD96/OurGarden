@@ -42,6 +42,7 @@ namespace DependencyInjections
 
             services.AddTransient<IOrderControllerService, OrderControllerService>();
             services.AddTransient<IHomeControllerService, HomeControllerService>();
+            services.AddTransient<INewsControllerService, NewsControllerService>();
 
             #endregion
 

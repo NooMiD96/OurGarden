@@ -11,7 +11,7 @@ import WithRouterPush, {
 import GenerateLink from "../../GenerateLink";
 
 import { actionsList } from "@components/UserCard/actions";
-import { META_TITLE_PARAMS } from "@core/utils/CardList";
+import { META_TITLE_PARAMS } from "@src/core/constants/cardList";
 
 import { IProduct } from "@components/Product/State";
 import { IMouseClickEvent } from "@core/interfaces/IEvents";

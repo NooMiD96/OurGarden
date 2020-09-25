@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 import Button from "@core/antd/Button";
 import { Title, Paragraph } from "@core/antd/Typography";
 
-import { ICardConfirmSuccess } from "./ICardConfirm";
+import { IOrderCreatedSuccess } from "./interfaces/IOrderCreated";
 
-const CardConfirmSuccess = ({ ymId }: ICardConfirmSuccess) => {
+export const OrderCreatedSuccess = ({ ymId }: IOrderCreatedSuccess) => {
   useEffect(() => {
     if (ymId) {
       window.ym(ymId, "reachGoal", "SUCCESS_ORDER");
@@ -22,7 +22,7 @@ const CardConfirmSuccess = ({ ymId }: ICardConfirmSuccess) => {
         Мы отправили Вам письмо с информацией о заказе на почту.
       </Paragraph>
       <div className="btn-wrapper">
-        <Button className="custome-styled-btn" type="primary">
+        <Button className="custom-styled-btn" type="primary">
           <NavLink to="/">Вернуться на главную</NavLink>
         </Button>
       </div>
@@ -30,4 +30,4 @@ const CardConfirmSuccess = ({ ymId }: ICardConfirmSuccess) => {
   );
 };
 
-export default CardConfirmSuccess;
+export default OrderCreatedSuccess;

@@ -1,9 +1,9 @@
-export interface ICardConfirm {
+export interface IOrderCreated {
   pending: boolean;
   errorInner: string;
   ymId: number;
 }
 
-export interface ICardConfirmSuccess {
+export interface IOrderCreatedSuccess {
   ymId?: number;
 }

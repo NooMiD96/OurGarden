@@ -3,14 +3,15 @@
 import { Reducer } from "redux";
 import _omit from "lodash.omit";
 
-import { IUserCardState, unloadedState, IUserCardProduct } from "./State";
-import KnownAction, * as t from "./actionsType";
 import { saveItemToLS, getItemFromLS } from "@src/core/utils/localStorage";
 import {
   getTotalCount,
   addNewProduct,
-  changeCountOfProduct
+  changeCountOfProduct,
 } from "@src/core/utils/UserCardReducer";
+
+import { IUserCardState, unloadedState, IUserCardProduct } from "./State";
+import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<IUserCardState> = (
   state: IUserCardState = unloadedState,
@@ -24,8 +25,9 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         pending: true,
-        errorInner: ""
+        errorInner: "",
       };
+
       return newState;
     }
 
@@ -34,7 +36,7 @@ export const reducer: Reducer<IUserCardState> = (
         ...state,
         productList: [],
         pending: false,
-        totalCount: 0
+        totalCount: 0,
       };
 
       break;
@@ -44,7 +46,7 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         pending: false,
-        errorInner: action.errorMessage
+        errorInner: action.errorMessage,
       };
 
       return newState;
@@ -56,8 +58,9 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         productList: newProductList,
-        totalCount: getTotalCount(newProductList)
+        totalCount: getTotalCount(newProductList),
       };
+
       break;
     }
 
@@ -70,8 +73,9 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         productList: newProductList,
-        totalCount: getTotalCount(newProductList)
+        totalCount: getTotalCount(newProductList),
       };
+
       break;
     }
 
@@ -83,8 +87,9 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         productList: newProductList,
-        totalCount: getTotalCount(newProductList)
+        totalCount: getTotalCount(newProductList),
       };
+
       break;
     }
 
@@ -92,7 +97,7 @@ export const reducer: Reducer<IUserCardState> = (
       newState = {
         ...state,
         productList: [],
-        totalCount: 0
+        totalCount: 0,
       };
 
       break;
@@ -101,7 +106,7 @@ export const reducer: Reducer<IUserCardState> = (
     case t.LOAD_CARD_FROM_LOCALSTATE: {
       newState = {
         ...state,
-        ...getItemFromLS("UserCard")
+        ...getItemFromLS("UserCard"),
       };
 
       return newState;

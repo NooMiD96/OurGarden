@@ -2,7 +2,6 @@
 using ApiService.Abstraction.Api;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
 
@@ -13,11 +12,6 @@ namespace Web.Controllers.Api
     public class HomeController : BaseController
     {
         #region Fields
-        
-        /// <summary>
-        /// Логгер.
-        /// </summary>
-        private readonly ILogger _logger;
 
         /// <summary>
         /// Сервис данного контроллера.
@@ -27,17 +21,15 @@ namespace Web.Controllers.Api
         /// <summary>
         /// Сервис основной домашний страницы
         /// </summary>
-        private readonly ApiService.Abstraction.ISeoService _seoService;
+        private readonly ISeoService _seoService;
 
         #endregion
 
         #region .ctor
 
-        public HomeController(ILogger<HomeController> logger,
-                              IHomeControllerService homeConstollerService,
+        public HomeController(IHomeControllerService homeConstollerService,
                               ISeoService seoService)
         {
-            _logger = logger;
             _homeConstollerService = homeConstollerService;
             _seoService = seoService;
         }

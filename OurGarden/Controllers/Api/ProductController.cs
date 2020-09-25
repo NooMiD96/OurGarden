@@ -19,9 +19,21 @@ namespace Web.Controllers.Api
     [ApiController]
     public class ProductController : BaseController
     {
-        private readonly IOurGardenRepository _repository;
+        #region Fields
+
+        /// <summary>
+        /// Логгер.
+        /// </summary>
         private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "Api.ProductController";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly IOurGardenRepository _repository;
+
+        #endregion
+
+        #region .ctor
 
         public ProductController(IOurGardenRepository repository,
                                  ILogger<SearchController> logger)
@@ -30,20 +42,20 @@ namespace Web.Controllers.Api
             _logger = logger;
         }
 
+        #endregion
+
+        #region API
+
         [HttpGet("[action]")]
         public async Task<IActionResult> GetBreadcrumb([FromQuery] string categoryId,
                                                        [FromQuery] string subcategoryId,
                                                        [FromQuery] string productId)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetBreadcrumb";
-
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось получить Breadcrumb."
-                );
+                var msg = $"Что-то пошло не так, не удалось получить Breadcrumb для продукта, так как отсутствует категория и подкатегория.";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             var breadcrumb = String.IsNullOrEmpty(productId)
@@ -76,27 +88,20 @@ namespace Web.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProducts([FromQuery] string categoryId, [FromQuery] string subcategoryId)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetProducts";
-
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId))
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: "Что-то пошло не так, необходимо выбрать категорию с подкатегорией."
-                );
+                var msg = "Что-то пошло не так, необходимо выбрать категорию с подкатегорией.";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             var subcategory = (await _repository.GetSubcategory(categoryId, subcategoryId)).DeepClone();
 
             if (subcategory is null)
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти выбранную подкатегорию.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}",
-                    returnStatusCode: 404
-                );
+                var msg = $"Что-то пошло не так, не удалось найти выбранную подкатегорию. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\"";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             var products = await _repository.GetProducts(categoryId, subcategoryId, isGetOnlyVisible: true);
@@ -118,30 +123,25 @@ namespace Web.Controllers.Api
                                                     [FromQuery]string subcategoryId,
                                                     [FromQuery]string productId)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetProduct";
-
             if (String.IsNullOrEmpty(categoryId) || String.IsNullOrEmpty(subcategoryId) || String.IsNullOrEmpty(productId))
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: "Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар."
-                );
+                var msg = "Что-то пошло не так, необходимо выбрать категорию, подкатегорию и товар.";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             var product = await _repository.GetProduct(categoryId, subcategoryId, productId);
 
             if (product == null)
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти выбранный товар.\n\tКатегория: {categoryId}\n\tПодкатегория: {subcategoryId}\n\tТовар: {productId}",
-                    returnStatusCode: 404
-                );
+                var msg = $"Что-то пошло не так, не удалось найти выбранный товар. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\". Товар: \"{productId}\"";
+                _logger.LogError(msg);
+                return BadRequest(msg);
             }
 
             return Success(product);
         }
+
+        #endregion
     }
 }

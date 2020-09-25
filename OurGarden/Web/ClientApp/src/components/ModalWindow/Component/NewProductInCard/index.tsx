@@ -54,13 +54,13 @@ export const NewProductInCard = ({
         <Button
           key="toCard"
           type="primary"
-          className="custome-styled-btn flex-grow-1"
+          className="custom-styled-btn flex-grow-1"
           onClick={onToCardClickHanlder}
         >
           Перейти в корзину
         </Button>
         <Button
-          className="custome-styled-btn flex-grow-1"
+          className="custom-styled-btn flex-grow-1"
           key="continue"
           onClick={onContinueClickHandler}
         >

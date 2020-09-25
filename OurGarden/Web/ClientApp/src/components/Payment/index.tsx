@@ -5,7 +5,8 @@ import Typography from "@core/antd/Typography";
 
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
-import { ADDRESS, MAIN_MOBILE, WHITE_BLOCK } from "@src/core/constants";
+import { ADDRESS, MAIN_MOBILE } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 const { Paragraph, Title } = Typography;
 

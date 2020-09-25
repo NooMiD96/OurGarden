@@ -5,3 +5,7 @@ export interface IPhoto {
   url: string;
   previewUrl?: string;
 }
+
+export interface IPhotoField {
+  photos: IPhoto[];
+}

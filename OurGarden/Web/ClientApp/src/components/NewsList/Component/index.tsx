@@ -9,7 +9,7 @@ import { getLinkToNews } from "@src/core/helpers/linkGenerator";
 import { TState } from "../TState";
 import { INew } from "@components/News/State";
 
-import { WHITE_BLOCK } from "@src/core/constants";
+import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/NewsList.style.scss";
 
