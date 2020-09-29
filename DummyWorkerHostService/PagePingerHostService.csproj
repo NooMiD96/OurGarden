@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DummyWorkerHostService.Abstraction\PagePingerHostService.Abstraction.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

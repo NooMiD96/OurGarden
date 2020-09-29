@@ -1,5 +1,8 @@
 ﻿using ApiService.Abstraction.Core;
 
+using Core.Helpers;
+using Core.Utils;
+
 using DataBase.Abstraction.Model;
 
 using MimeKit;
@@ -13,18 +16,6 @@ namespace ApiService.Core
 {
     public partial class EmailService : IEmailService
     {
-        #region Const
-
-        const string _templatesFolder = "wwwroot/Templates";
-
-        const string _templateClientFileName = "MJML_TemplateClient.html";
-
-        const string _templateAdminFileName = "MJML_TemplateAdmin.html";
-
-        #endregion
-
-        #region SendOrderInformation
-
         private string CreateOrderBodySubject(int orderId, DateTime date)
         {
             var formatDate = date.ToString("dd-MM-yyyy HH:mm:ss");
@@ -34,124 +25,123 @@ namespace ApiService.Core
             return subject;
         }
 
-        private async Task<MimeEntity> CreateAdminOrderBody(Order order)
+        private string GetAdminOrderTextBody(Order order)
         {
-            const string startTableMap = "{tableMap[";
-            const string endTableMap = "]}";
+            return $"Здравствуйте! На сайте поступил новый заказ №{order.OrderId}.";
+        }
 
-            var templateString = await GetMjmlTemplateString(
+        private string GetClientOrderTextBody(Order order)
+        {
+            return $"Здравствуйте, {order.FIO}! Заказ №{order.OrderId} на сумму {order.TotalPrice} был подтвержден. Чтобы узнать подробности, перейдите по данному письму.";
+        }
+
+        /// <summary>
+        /// Формирует текст сообщения из переданного имени шаблона с указанным содержимым тела сообщения.
+        /// </summary>
+        /// <param name="order">Заказ</param>
+        /// <param name="templateFile">Имя файла</param>
+        /// <param name="textBody">Тело сообщения</param>
+        private async Task<MimeEntity> CreateOrderBody(Order order, string templateFile, string textBody)
+        {
+            var templateString = GetMjmlTemplateString(
                 Path.Join(
                     Directory.GetCurrentDirectory(),
-                    _templatesFolder,
-                    _templateAdminFileName
-                )
+                    _emailServiceOptions.TemplatesFolder
+                ),
+                templateFile
             );
 
-            var startIndex = templateString.IndexOf(startTableMap, StringComparison.InvariantCultureIgnoreCase) + startTableMap.Length;
-            var endIndex = templateString.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
-            var tableDataTemplate = templateString[startIndex..endIndex];
+            var bodyMjmlFormattedString =
+                GetOrderBodyMjmlFormattedString(
+                    GetBaseBodyMjmlFormattedString(
+                        templateString,
+                        order.FIO,
+                        order.Phone,
+                        order.Email
+                    ),
+                    order
+                );
 
-            var bodyMjmlFormattedString = templateString
-                .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
-                .Replace("{{Phone}}", order.Phone, StringComparison.InvariantCultureIgnoreCase)
-                .Replace("{{Email}}", order.Email, StringComparison.InvariantCultureIgnoreCase)
-                .Replace(
-                    $"{{tableMap[{tableDataTemplate}]}}",
-                    order.OrderPositions
-                        .Select(
-                            x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                        )
-                        .Aggregate((acc, str) => acc + str),
-                    StringComparison.InvariantCultureIgnoreCase)
-                .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase);
-
-            var mjmlMessage = await _mjmlServices.Render(bodyMjmlFormattedString);
-            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
+            string htmlMessage;
+            try
+            {
+                var mjmlMessage = await RenderMjml(bodyMjmlFormattedString);
+                htmlMessage = mjmlMessage.Html;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(
-                    $"Ошибка при отправке письма: {mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}, {val}")}"
+                    $"Ошибка при отправке письма по заказу {order.OrderId} по шаблону {templateFile}" +
+                        $"Заказ:\n{JsonHelper.Serialize(order)}",
+                    ex
                 );
             }
 
             var body = new BodyBuilder
             {
-                HtmlBody = mjmlMessage.Html,
-                TextBody = $@"Здравствуйте! На сайте поступил новый заказ №{order.OrderId}. От {order.FIO}, {order.Phone}"
+                HtmlBody = htmlMessage,
+                TextBody = textBody
             };
 
             return body.ToMessageBody();
         }
 
-        private async Task<MimeEntity> CreateClientOrderBody(Order order)
+        public string GetOrderBodyMjmlFormattedString(string templateString, Order order)
         {
-            const string startTableMap = "{tableMap[";
-            const string endTableMap = "]}";
+            var startIndex = templateString
+                .IndexOf(
+                    _emailServiceOptions.ProductListMacrosStart,
+                    StringComparison.InvariantCultureIgnoreCase
+                ) + _emailServiceOptions.ProductListMacrosStart.Length;
 
-            var templateString = await GetMjmlTemplateString(
-                Path.Join(
-                    Directory.GetCurrentDirectory(),
-                    _templatesFolder,
-                    _templateClientFileName
+            var endIndex = templateString
+                .IndexOf(
+                    _emailServiceOptions.ProductListMacrosEnd,
+                    startIndex,
+                    StringComparison.InvariantCultureIgnoreCase
+                );
+            var productItemTemplate = templateString[startIndex..endIndex];
+
+            var productListString = order.OrderPositions
+                .Select(
+                    x => productItemTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{ProductImageUrl}}", x.Product.Photos.FirstOrDefault().PreviewUrl, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace("{{ProductImageAlt}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace(
+                                                "{{ProductUrl}}",
+                                                WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
+                                                StringComparison.InvariantCultureIgnoreCase
+                                            )
                 )
-            );
+                .Aggregate((acc, str) => acc + str);
 
-            var startIndex = templateString.IndexOf(startTableMap, StringComparison.InvariantCultureIgnoreCase) + startTableMap.Length;
-            var endIndex = templateString.IndexOf(endTableMap, startIndex, StringComparison.InvariantCultureIgnoreCase);
-            var tableDataTemplate = templateString[startIndex..endIndex];
-
-            var bodyMjmlFormattedString = templateString
-                .Replace("{{FIO}}", order.FIO, StringComparison.InvariantCultureIgnoreCase)
+            return templateString
                 .Replace("{{OrderId}}", order.OrderId.ToString(), StringComparison.InvariantCultureIgnoreCase)
                 .Replace(
-                    $"{{tableMap[{tableDataTemplate}]}}",
-                    order.OrderPositions
-                        .Select(
-                            x => tableDataTemplate.Replace("{{ProductId}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{CategoryId}}", x.Product.Subcategory.Category.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                                  .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                        )
-                        .Aggregate((acc, str) => acc + str),
+                    $"{_emailServiceOptions.ProductListMacrosStart}{productItemTemplate}{_emailServiceOptions.ProductListMacrosEnd}",
+                    productListString,
                     StringComparison.InvariantCultureIgnoreCase)
                 .Replace("{{TotalPrice}}", order.TotalPrice.ToString(), StringComparison.InvariantCultureIgnoreCase);
-
-            var mjmlMessage = await _mjmlServices.Render(bodyMjmlFormattedString);
-            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
-            {
-                throw new Exception(
-                    $"Ошибка при отправке письма: {mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}, {val}")}"
-                );
-            }
-
-            var body = new BodyBuilder
-            {
-                HtmlBody = mjmlMessage.Html,
-                TextBody = $@"Здравствуйте, {order.FIO}! Заказ №{order.OrderId} на сумму {order.TotalPrice} был подтвержден. Чтобы узнать подробности, перейдите по данному письму."
-            };
-
-            return body.ToMessageBody();
         }
 
+        /// <summary>
+        /// Получение заказа со всей внутренней информацией.
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         private async Task<Order> GetOrderItemsInformation(int orderId)
         {
             var order = await _repository.GetOrder(orderId, true);
 
+            await _repository.LoadPhotoCollection(
+                order.OrderPositions.Select(x => x.Product)
+            );
+
             return order;
         }
-
-        private async Task<string> GetMjmlTemplateString(string filePath)
-        {
-            var template = File.ReadAllText(filePath);
-
-            return await Task.FromResult(template);
-        }
-
-        #endregion
     }
 }

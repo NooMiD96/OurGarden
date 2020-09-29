@@ -1,0 +1,19 @@
+<mj-column width="100%">
+  <mj-text color="#75b726" font-size="18px" font-weight="bold">
+    Информация о покупателе:
+  </mj-text>
+  <mj-table padding="10px" table-layout="inherit" css-class="order-info-table">
+    <tr style="text-align:left;padding:15px 0;">
+      <td style="width: 60%;">Имя</td>
+      <td style="width: 40%;">{{FIO}}</td>
+    </tr>
+    <tr style="text-align:left;padding:15px 0;">
+      <td style="width: 60%;">Номер телефона</td>
+      <td style="width: 40%;">{{Phone}}</td>
+    </tr>
+    <tr style="text-align:left;padding:15px 0;">
+      <td style="width: 60%;">Почта</td>
+      <td style="width: 40%;">{{Email}}</td>
+    </tr>
+  </mj-table>
+</mj-column>

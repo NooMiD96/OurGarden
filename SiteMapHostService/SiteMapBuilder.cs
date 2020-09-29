@@ -1,8 +1,13 @@
-﻿using DataBase.Abstraction.Repositories;
+﻿using Core.Utils;
+
+using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
+using Model;
 
 using SiteMapHostService.Abstraction;
 using SiteMapHostService.Abstraction.Model;
@@ -22,12 +27,13 @@ namespace SiteMapHostService
     public class SiteMapBuilder : ISiteMapBuilder
     {
         const int MAX_URL_COUNT = 50_000;
-        const string BASE_URL = "https://xn----7sbbq5b0a1c.com";
         const string SITEMAPS_SUBDIRECTORY = "sitemaps";
 
         #region Fields
 
         private readonly XNamespace NS = "http://www.sitemaps.org/schemas/sitemap/0.9";
+
+        private readonly RootOptions _rootOptions;
 
         private readonly OurGardenContext _context;
 
@@ -35,12 +41,22 @@ namespace SiteMapHostService
 
         #endregion
 
-        public SiteMapBuilder(IOurGardenRepository context)
+        #region .ctor
+
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        public SiteMapBuilder(IOptions<RootOptions> rootOptions,
+                              IOurGardenRepository context)
         {
+            _rootOptions = rootOptions.Value;
             _context = (context as OurGardenRepository).Context;
             _publicDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         }
 
+        #endregion
+
+        /// <inheritdoc/>
         public async Task CreateSiteMap()
         {
             var categoryItems = await GetCategoryItems();
@@ -68,7 +84,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Category,
-                    Url = $"{BASE_URL}/Catalog/{x.CategoryId}",
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -81,7 +97,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Subcategory,
-                    Url = $"{BASE_URL}/Catalog/{x.CategoryId}/{x.SubcategoryId}",
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -94,7 +110,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Subcategory,
-                    Url = $"{BASE_URL}/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}",
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -107,7 +123,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.News,
-                    Url = $"{BASE_URL}/News/{x.NewsId}",
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/News/{x.NewsId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -139,7 +155,7 @@ namespace SiteMapHostService
 
             foreach (var (physicalPath, lastmod) in filePaths)
             {
-                var path = physicalPath.Replace(_publicDirectory, $"{BASE_URL}").Replace("\\", "/");
+                var path = physicalPath.Replace(_publicDirectory, WebUtils.GenerateSiteAddress(_rootOptions.HostName)).Replace("\\", "/");
 
                 var xSiteMap = siteMap.CreateElement("sitemap", NS.ToString());
 

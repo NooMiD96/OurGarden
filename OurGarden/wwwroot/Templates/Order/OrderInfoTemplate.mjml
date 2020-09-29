@@ -1,0 +1,29 @@
+<mj-section>
+  <mj-column width="100%">
+    <mj-text color="#75b726" font-size="18px" font-weight="bold">
+      Информация о заказе:
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+{productListMap[
+<mj-section css-class="order-list">
+  <mj-column width="25%" css-class="order-img-column">
+    <mj-image padding-right="5px" src="{{ProductImageUrl}}" href="{{ProductUrl}}" alt="{{ProductImageAlt}}" />
+  </mj-column>
+  <mj-column width="75%" css-class="order-info-column" padding-left="5px">
+    <mj-text font-size="14px" padding-left="0px">
+      <span>Товар: {{ProductId}}</span>
+    </mj-text>
+    <mj-text font-size="12px" padding-left="0px">
+      <span style="color:#999999">Категория: {{CategoryId}}, {{SubcategoryId}}</span>
+    </mj-text>
+    <mj-text font-size="12px" padding-left="0px">
+      <span>Цена: {{ProductPrice}}</span>
+    </mj-text>
+    <mj-text font-size="12px" padding-left="0px">
+      <span style="color:#999999">Количество: {{Number}}</span>
+    </mj-text>
+  </mj-column>
+</mj-section>
+]}

@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-    public class EmailOption
+    public class EmailOptions
     {
         /// <summary>
         /// Сервер email, через который отправляется.
@@ -26,10 +26,5 @@
         /// Пароль
         /// </summary>
         public string Password { get; set; }
-
-        /// <summary>
-        /// Кого нужно так же оповестить.
-        /// </summary>
-        public string ReplyToLocalMail { get; set; }
     }
 }

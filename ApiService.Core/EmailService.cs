@@ -1,6 +1,9 @@
 ﻿using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
 
+using Core.Helpers;
+using Core.Utils;
+
 using DataBase.Abstraction.Repositories;
 
 using EmailService.Abstraction;
@@ -13,6 +16,9 @@ using Mjml.AspNetCore;
 using Model;
 
 using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ApiService.Core
@@ -24,11 +30,13 @@ namespace ApiService.Core
         private readonly ILogger _logger;
 
         private readonly IOurGardenRepository _repository;
-        
+
         private readonly IMjmlServices _mjmlServices;
 
-        private readonly EmailOption _emailOption;
-        
+        private readonly EmailServiceConfigurationOptions _emailServiceOptions;
+
+        private readonly RootOptions _rootOptions;
+
         private readonly IEmailSender _emailSender;
 
         #endregion
@@ -41,13 +49,15 @@ namespace ApiService.Core
         public EmailService(ILogger<EmailService> logger,
                             IOurGardenRepository repository,
                             IMjmlServices mjmlServices,
-                            IOptions<EmailOption> emailOption,
+                            IOptions<EmailServiceConfigurationOptions> emailOption,
+                            IOptions<RootOptions> rootOptions,
                             IEmailSender emailSender)
         {
             _logger = logger;
             _repository = repository;
             _mjmlServices = mjmlServices;
-            _emailOption = emailOption.Value;
+            _emailServiceOptions = emailOption.Value;
+            _rootOptions = rootOptions.Value;
             _emailSender = emailSender;
         }
 
@@ -55,11 +65,33 @@ namespace ApiService.Core
 
         #region IEmailService Impl
 
-        /// //TODO:
         /// <inheritdoc/>
-        public Task SendFeedback(FeedbackDTO feedbackDTO)
+        public async Task SendFeedback(FeedbackDTO feedbackDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var subject = CreateFeedbackBodySubject();
+
+                var clientBodyInner = await CreateFeedbackBody(
+                    feedbackDTO,
+                    _emailServiceOptions.FeedbackClientTemplateName,
+                    GetFeedbackClientTextBody(feedbackDTO)
+                );
+                var adminBodyInner = await CreateFeedbackBody(
+                    feedbackDTO,
+                    _emailServiceOptions.FeedbackAdminTemplateName,
+                    GetFeedbackAdminTextBody()
+                );
+
+                await Task.WhenAll(
+                    _emailSender.SendEmailAsync(feedbackDTO.Email, subject, clientBodyInner),
+                    _emailSender.SendEmailAsync(_emailServiceOptions.ReplyToMail, subject, adminBodyInner)
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Ошибка при отправке письма обратной формы:\n{JsonHelper.Serialize(feedbackDTO)}:");
+            }
         }
 
 
@@ -72,18 +104,98 @@ namespace ApiService.Core
 
                 var subject = CreateOrderBodySubject(order.OrderId, order.Date);
 
-                var clientBodyInner = await CreateClientOrderBody(order);
-                var adminBodyInner = await CreateAdminOrderBody(order);
+                var clientBodyInner = await CreateOrderBody(
+                    order,
+                    _emailServiceOptions.OrderClientTemplateName,
+                    GetClientOrderTextBody(order)
+                );
+                var adminBodyInner = await CreateOrderBody(
+                    order,
+                    _emailServiceOptions.OrderAdminTemplateName,
+                    GetAdminOrderTextBody(order)
+                );
 
                 await Task.WhenAll(
                     _emailSender.SendEmailAsync(order.Email, subject, clientBodyInner),
-                    _emailSender.SendEmailAsync(_emailOption.ReplyToLocalMail, subject, adminBodyInner)
+                    _emailSender.SendEmailAsync(_emailServiceOptions.ReplyToMail, subject, adminBodyInner)
                 );
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка при отправке письма:");
+                _logger.LogError(ex, $"Ошибка при отправке письма с идентификатором {orderId}:");
             }
+        }
+
+        #endregion
+
+        #region General Private
+
+        /// <summary>
+        /// Производит рендер Mjml шаблона.
+        /// В случае, если HTML'ную страницу не удалось получить,
+        /// то будет вызвано исключение.
+        /// </summary>
+        /// <param name="view">Шаблон</param>
+        private async Task<MjmlResponse> RenderMjml(string view)
+        {
+            var mjmlMessage = await _mjmlServices.Render(view);
+            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
+            {
+                throw new Exception(
+                    $"Ошибка при формировании письма. Используемый шаблон:\n" +
+                        $"{view}\n" +
+                        $"Полученные ошибки:\n{mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}\n{val}")}."
+                );
+            }
+
+            return mjmlMessage;
+        }
+
+        /// <summary>
+        /// Добавляет в заданные макросы в шаблоне корректную информацию.
+        /// </summary>
+        /// <param name="templateString">Строка шаблона.</param>
+        /// <param name="fio">Фио</param>
+        /// <param name="phone">Телефон</param>
+        /// <param name="email">Почта</param>
+        private string GetBaseBodyMjmlFormattedString(string templateString, string fio, string phone, string email)
+        {
+            return templateString
+                .Replace("{{FIO}}", fio, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{Phone}}", phone ?? "Не указан", StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{Email}}", email ?? "Не указана", StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{{HostAddress}}", WebUtils.GenerateSiteAddress(_rootOptions.HostName), StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Получение шаблона письма в виде строки со всеми импортированными файлами.
+        /// </summary>
+        private string GetMjmlTemplateString(string rootPath, string filePath)
+        {
+            var template = File.ReadAllText(
+                Path.Combine(rootPath, filePath)
+            );
+
+            var templateFileIncludeMatches = Regex.Matches(
+                template,
+                "<mj-include path=\"(?<templateFilePath>.*?)\" />"
+            );
+            foreach (Match templateMath in templateFileIncludeMatches)
+            {
+                var includeFilePath = templateMath.Groups["templateFilePath"]?.Value;
+                if (!string.IsNullOrEmpty(includeFilePath))
+                {
+                    template = template.Replace(
+                        templateMath.Value,
+                        GetMjmlTemplateString(
+                            rootPath,
+                            Path.Combine(rootPath, includeFilePath)
+                        )
+                    );
+                }
+            }
+
+            return template;
         }
 
         #endregion

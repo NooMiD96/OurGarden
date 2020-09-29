@@ -1,0 +1,4 @@
+<mj-column width="100%">
+  <mj-image alt="Наш Сад" align="left" padding-left="25%" padding-top="0px" width="90px" href="{{HomeAddress}}" src="{{HostAddress}}/email/logo.png"></mj-image>
+  <mj-spacer height="10vw" />
+</mj-column>

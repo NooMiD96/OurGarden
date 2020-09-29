@@ -23,7 +23,7 @@ namespace EmailService
     {
         #region Fields
 
-        private readonly EmailOption _emailOption;
+        private readonly EmailOptions _emailOption;
 
         private readonly ILogger _logger;
 
@@ -34,7 +34,7 @@ namespace EmailService
         /// <summary>
         /// .ctor
         /// </summary>
-        public EmailSender(IOptions<EmailOption> emailOption,
+        public EmailSender(IOptions<EmailOptions> emailOption,
                            ILogger<EmailSender> logger)
         {
             _emailOption = emailOption.Value;

@@ -18,5 +18,13 @@ namespace Core.Utils
 
             return false;
         }
+
+        /// <summary>
+        /// Генерирует ссылку на сайт, исходя из имени хоста.
+        /// </summary>
+        /// <param name="hostName">Хост без указания схемы и домена.</param>
+        /// <param name="path">Указывает путь, куда должна вести ссылка на сайте.</param>
+        /// <returns></returns>
+        public static string GenerateSiteAddress(string hostName, string path = null) => $"https://{hostName}.com/{path ?? ""}";
     }
 }

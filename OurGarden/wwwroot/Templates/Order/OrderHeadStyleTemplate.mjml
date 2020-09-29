@@ -1,0 +1,18 @@
+<mj-style inline="inline">
+  .order-info-table table {
+    word-break: keep-all !important;
+  }
+
+  .order-img-column {
+    width: 35% !important;
+  }
+
+  .order-info-column {
+    width: 65% !important;
+  }
+
+  .order-list {
+    border-bottom: 1px solid #75b726 !important;
+    margin: 0 10px !important;
+  }
+</mj-style>

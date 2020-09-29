@@ -1,0 +1,5 @@
+<mj-column width="100%">
+  <mj-text font-size="16px">
+    <span style="color:#75b726;font-weight:bold;font-size:16px">Итоговая сумма заказа:&nbsp;</span>{{TotalPrice}}₽
+  </mj-text>
+</mj-column>

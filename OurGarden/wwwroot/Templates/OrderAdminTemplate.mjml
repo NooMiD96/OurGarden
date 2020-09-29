@@ -1,0 +1,33 @@
+﻿<mjml>
+  <mj-head>
+    <mj-include path="./Order/OrderHeadStyleTemplate.mjml" />
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <mj-wrapper background-url="{{HostAddress}}/email/mainBackground.jpg" background-size="100%" background-repeat="no-repeat" background-color="#ffffff" padding-top="0px">
+      <mj-section>
+        <mj-include path="./BodyHeaderTemplate.mjml" />
+      </mj-section>
+
+      <mj-section>
+        <mj-column width="100%">
+          <mj-text color="#444444" font-size="14px">
+            Здравствуйте!
+          </mj-text>
+          <mj-text color="#444444" font-size="14px">
+            На сайте оформлен новый заказ №{{orderId}}.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section>
+        <mj-include path="./Order/OrderClientInfoTemplate.mjml" />
+      </mj-section>
+
+      <mj-include path="./Order/OrderInfoTemplate.mjml" />
+
+      <mj-section>
+        <mj-include path="./Order/OrderTotalPriceTemplate.mjml" />
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>
