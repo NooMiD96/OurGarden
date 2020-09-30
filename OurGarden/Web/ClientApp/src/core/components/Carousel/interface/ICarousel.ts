@@ -1,6 +1,6 @@
 export interface ICarouselProps<T> {
   className?: string;
-  dataSourse: T[];
+  dataSource: T[];
   onClick?: (x: T, e: React.SyntheticEvent) => void;
   getAlt: (x: T, index: number) => string;
   getTitle: (x: T, index: number) => string;

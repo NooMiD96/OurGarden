@@ -86,7 +86,7 @@ export class Gallery extends React.PureComponent<
       <React.Fragment>
         <Carousel
           className="gallery-carousel"
-          dataSourse={photos}
+          dataSource={photos}
           getKey={(x) => x.photoId}
           getAlt={(_, index) => `${galleryName}_${index + 1}`}
           getTitle={(_, index) => `${galleryName}_${index + 1}`}

@@ -12,21 +12,20 @@ import "./style/Carousel.style.scss";
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 
 export class Carousel<T> extends React.PureComponent<ICarouselProps<T>, {}> {
-  caruselRef: AntdCarousel | null = null;
+  carouselRef: AntdCarousel | null = null;
 
   render() {
-    // prettier-ignore
     const {
       className,
-      dataSourse,
+      dataSource,
       onClick,
       getAlt,
       getTitle,
       getKey,
-      getImageSrc
+      getImageSrc,
     } = this.props;
 
-    const carouselSource = dataSourse.map((x, index) => (
+    const carouselSource = dataSource.map((x, index) => (
       <img
         key={getKey(x, index)}
         className="slick-slide-content-image"
@@ -40,10 +39,10 @@ export class Carousel<T> extends React.PureComponent<ICarouselProps<T>, {}> {
     ));
 
     let hideDotsClassName = "";
-    if (dataSourse.length > 6) {
+    if (dataSource.length > 6) {
       hideDotsClassName = "hide-dots-on-mobile";
     }
-    if (dataSourse.length > 23) {
+    if (dataSource.length > 23) {
       hideDotsClassName += " hide-dots";
     }
 
@@ -54,7 +53,7 @@ export class Carousel<T> extends React.PureComponent<ICarouselProps<T>, {}> {
           autoplay
           effect="fade"
           ref={(ref: AntdCarousel | null) => {
-            this.caruselRef = ref;
+            this.carouselRef = ref;
           }}
           adaptiveHeight
           arrows

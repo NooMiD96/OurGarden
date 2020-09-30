@@ -15,9 +15,7 @@ import { IPageSeoInformation, unloadedState } from "./State";
 // ----------------
 // #region ACTIONS
 export const actionsList = {
-  getPageSeoInformation: (
-    pageKey: string
-  ): t.IGetPageSeoInformation => ({
+  getPageSeoInformation: (pageKey: string): t.IGetPageSeoInformation => ({
     type: t.GET_PAGE_SEO_INFORMATION,
     payload: pageKey,
   }),
@@ -36,10 +34,11 @@ const controllerName = "Home";
 export const actionCreators = {
   getPageSeoInformation: (
     pathname: string
-  ): IAppThunkAction<t.IGetPageSeoInformation | t.ISetPageSeoInformation | mainTypes.IPageNotFoundError> => (
-    dispatch,
-    getState
-  ) => {
+  ): IAppThunkAction<
+    | t.IGetPageSeoInformation
+    | t.ISetPageSeoInformation
+    | mainTypes.IPageNotFoundError
+  > => (dispatch, getState) => {
     const currentKey = getState().pageSeoInformation.key;
 
     if (currentKey === pathname) {
@@ -63,25 +62,27 @@ export const actionCreators = {
         }
         return responseCatcher(res);
       })
-      .then((value: IResponse<IPageSeoInformation & { isPageExists: boolean }>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
+      .then(
+        (value: IResponse<IPageSeoInformation & { isPageExists: boolean }>) => {
+          if (value && value.error) {
+            return errorCreater(value.error);
+          }
+
+          const { isPageExists, ...pageSeoInformation } = value.data;
+
+          if (!isPageExists) {
+            dispatch(mainActions.pageNotFoundError(true));
+          }
+          dispatch(
+            actionsList.setPageSeoInformation({
+              pageSeoInformation,
+              key: pathname,
+            })
+          );
+
+          return Promise.resolve();
         }
-
-        const { isPageExists, ...pageSeoInformation } = value.data;
-
-        if (!isPageExists) {
-          dispatch(mainActions.pageNotFoundError(true));
-        }
-        dispatch(
-          actionsList.setPageSeoInformation({
-            pageSeoInformation,
-            key: pathname,
-          })
-        );
-
-        return Promise.resolve();
-      })
+      )
       .catch((err: Error) => {
         dispatch(mainActions.pageNotFoundError(true));
         dispatch(actionsList.setPageSeoInformation(unloadedState));
@@ -90,6 +91,6 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getPageSeoInformation(pathname));
-  }
+  },
 };
 // #endregion

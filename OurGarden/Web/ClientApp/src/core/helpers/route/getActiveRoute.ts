@@ -8,7 +8,7 @@ const getActiveRoute = (
   if (!tabList || !tabList.length) {
     return "";
   }
-  let defaultActiveKey;
+  let activeKey;
 
   if (location && location.pathname) {
     // "/asd".split("/") ==> ["", "asd"];
@@ -20,16 +20,16 @@ const getActiveRoute = (
       for (let i = 0; i < tabList.length; i++) {
         const tab = tabList[i];
         if (tab.link.replace(/\s/g, "-").toLowerCase() === mainRoute) {
-          defaultActiveKey = tab.link;
+          activeKey = tab.link;
           break;
         }
       }
     } else {
-      defaultActiveKey = "Home";
+      activeKey = "";
     }
   }
 
-  return defaultActiveKey;
+  return activeKey;
 };
 
 const getActiveCategory = (

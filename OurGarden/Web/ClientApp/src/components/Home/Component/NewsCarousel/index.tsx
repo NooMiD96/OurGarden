@@ -22,7 +22,7 @@ export class NewsCarousel extends React.PureComponent<INewsCarousel, {}> {
     return (
       <React.Fragment>
         <Carousel
-          dataSourse={displayList}
+          dataSource={displayList}
           getKey={(x) => x.newsId}
           getAlt={(x) => x.alias}
           getTitle={(x) => x.alias}

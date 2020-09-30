@@ -11,7 +11,7 @@ import { getActiveRoute } from "@core/helpers/route/getActiveRoute";
 import { IApplicationState } from "@src/Store";
 
 const tabList = [
-  { title: "Главная", link: "Home" },
+  { title: "Главная", link: "" },
   { title: "Каталог", link: "Catalog" },
   { title: "Акции", link: "News" },
   { title: "Доставка и оплата", link: "Payment" },
@@ -42,9 +42,12 @@ export class NavMenu extends React.PureComponent<
 
   getActiveTabIndex = (location: Location<any>) => {
     const activeKey = getActiveRoute(tabList, location);
-    const index = activeKey && tabList.findIndex((x) => x.link === activeKey);
+    let index = -1;
+    if (activeKey || activeKey === "") {
+      index = tabList.findIndex((x) => x.link === activeKey);
+    }
 
-    return typeof index === "number" ? index : false;
+    return typeof index === "number" && index !== -1 ? index : false;
   };
 
   handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
@@ -68,7 +71,7 @@ export class NavMenu extends React.PureComponent<
         >
           {tabList.map((x) => (
             <Tab
-              key={x.link}
+              key={x.link || "Home"}
               label={<GenerateLink {...x} />}
               disableFocusRipple
               disableRipple
