@@ -38,7 +38,7 @@ export const getColumns = <T extends IRecord>(
           <GenerateLink
             link={getLinkToProduct(record.product)}
             title={record.product.alias}
-            linkClassName="product-name"
+            className="product-name"
           />
         </div>
       ),

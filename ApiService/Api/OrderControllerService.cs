@@ -57,6 +57,7 @@ namespace ApiService.Api
             var orderId = -1;
             try
             {
+                /// Создаём рыбу модели заказа
                 var order = new Order()
                 {
                     OrderId = 0,
@@ -79,6 +80,8 @@ namespace ApiService.Api
                 await _repository.AddOrder(order);
                 await _repository.AddClient(client);
 
+                /// Прокидываем связь в позиции заказа
+                /// с настоящим товаром
                 order.OrderPositions = orderDTO.OrderPositions.Select(x =>
                     new OrderPosition()
                     {
@@ -98,6 +101,7 @@ namespace ApiService.Api
 
                 await _repository.UpdateOrder(order);
 
+                /// Подгружаем товары, которые мы связали на прошлом шагу
                 await _context.Entry(order)
                     .Collection(x => x.OrderPositions)
                     .Query()
@@ -109,7 +113,6 @@ namespace ApiService.Api
                     orderPos.Price = orderPos.Product.Price;
                     orderPos.Name = orderPos.Product.Alias;
                 }
-
                 order.TotalPrice = order.OrderPositions.Select(x => x.Number * x.Price).Sum();
 
                 await _repository.UpdateOrder(order);
@@ -122,8 +125,9 @@ namespace ApiService.Api
             {
                 transaction.Rollback();
 
-                _logger.LogError(ex, $"Не удалось создать заказ, DTO: {JsonHelper.Serialize(orderDTO)}");
-                return (false, "Не удалось создать заказ!");
+                var msg = $"Не удалось создать заказ по след. причине: {ex.Message}";
+                _logger.LogError(ex, $"{msg}. Модель запроса:\n{JsonHelper.Serialize(orderDTO)}");
+                return (false, msg);
             }
 
             try
@@ -132,12 +136,14 @@ namespace ApiService.Api
                 {
                     throw new Exception($"Отсутствует номер заказа.");
                 }
-                var task = _emailService.SendOrderInformation(orderId);
-                task.Start(TaskScheduler.Default);
+
+                await _emailService.SendOrderInformation(orderId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Не удалось оповестить покупателя.");
+                var msg = $"Не удалось отправить письмо на почту по след. причине: {ex.Message}";
+                _logger.LogError(ex, msg);
+                return (false, msg);
             }
 
             return (true, null);

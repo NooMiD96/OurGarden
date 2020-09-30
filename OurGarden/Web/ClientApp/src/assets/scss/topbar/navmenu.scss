@@ -19,6 +19,7 @@
   }
 
   .Mui-selected {
+    .nav-link-wrapper,
     .nav-link {
       color: $darkGreenColor;
     }
@@ -36,6 +37,9 @@
     &:hover {
       color: $greenColor;
     }
+  }
+  .nav-link-wrapper {
+    color: $darkGreyColor;
   }
 
   .MuiSvgIcon-root {

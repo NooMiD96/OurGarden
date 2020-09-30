@@ -17,7 +17,7 @@ const tabList = [
   { title: "Доставка и оплата", link: "Payment" },
   { title: "Ландшафтный дизайн", link: "Design" },
   { title: "Видеогалерея", link: "Videogalery" },
-  { title: "Контакты", link: "About" }
+  { title: "Контакты", link: "About" },
 ];
 
 export class NavMenu extends React.PureComponent<
@@ -28,14 +28,14 @@ export class NavMenu extends React.PureComponent<
     super(props);
 
     this.state = {
-      tabIndex: this.getActiveTabIndex(props.location)
+      tabIndex: this.getActiveTabIndex(props.location),
     };
   }
 
   componentDidUpdate(prevProps: RouterState) {
     if (prevProps.location !== this.props.location) {
       this.setState({
-        tabIndex: this.getActiveTabIndex(this.props.location)
+        tabIndex: this.getActiveTabIndex(this.props.location),
       });
     }
   }
@@ -47,9 +47,9 @@ export class NavMenu extends React.PureComponent<
     return typeof index === "number" ? index : false;
   };
 
-  handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     this.setState({
-      tabIndex: newValue
+      tabIndex: newValue,
     });
   };
 
@@ -82,6 +82,6 @@ export class NavMenu extends React.PureComponent<
 
 export default connect(
   (state: IApplicationState): RouterState => ({
-    ...state.router
+    ...state.router,
   })
 )(NavMenu);

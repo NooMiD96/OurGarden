@@ -4,13 +4,14 @@ import { Reducer } from "redux";
 
 import { IModalWindowState, unloadedState, ModalOpenType } from "./State";
 import KnownAction, * as t from "./actionsType";
+import { ADD_PRODUCT_TO_CARD } from "@components/UserCard/actionsType";
 
 export const reducer: Reducer<IModalWindowState> = (
   state: IModalWindowState = unloadedState,
   action: KnownAction
 ) => {
   switch (action.type) {
-    case t.ADD_PRODUCT_TO_CARD: {
+    case ADD_PRODUCT_TO_CARD: {
       const newState: IModalWindowState = {
         ...state,
         modalOpenType: ModalOpenType.AddToCard,
@@ -28,6 +29,15 @@ export const reducer: Reducer<IModalWindowState> = (
           selectedPhoto: action.selectedPhoto,
           photoList: action.photoList,
         },
+      };
+
+      return newState;
+    }
+
+    case t.SHOW_FEEDBACK_MODAL_WINDOW: {
+      const newState: IModalWindowState = {
+        ...state,
+        modalOpenType: ModalOpenType.Feedback,
       };
 
       return newState;

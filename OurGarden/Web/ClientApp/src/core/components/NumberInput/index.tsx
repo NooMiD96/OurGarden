@@ -1,20 +1,19 @@
 import React from "react";
 
-import Input, { InputProps } from "@core/antd/Input";
+import Input from "@core/antd/Input";
 
-import { IKeyChangeEvent } from "@src/core/interfaces/IEvents";
+import {
+  IKeyChangeEvent,
+  IPressEnterEvent,
+} from "@src/core/interfaces/IEvents";
+import { INumberInput } from "./interfaces/INumberInput";
 
-interface INumberInput extends InputProps {
-  value: string;
-  onValueChange?: (value: string) => void;
-  onBlur?: () => void;
-}
+class NumberInput extends React.Component<INumberInput, unknown> {
+  inputRef: React.RefObject<Input> | null = null;
 
-class NumberInput extends React.Component<INumberInput, {}> {
   onChange = (e: IKeyChangeEvent) => {
     e.preventDefault();
     const { value } = e.target;
-    // const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
     const reg = /^([1-9][0-9]*)$/;
 
     // prettier-ignore
@@ -44,6 +43,11 @@ class NumberInput extends React.Component<INumberInput, {}> {
     }
   };
 
+  onPressEnter = (event: IPressEnterEvent) => {
+    event.currentTarget.blur();
+    this.props.onPressEnter && this.props.onPressEnter(event);
+  };
+
   onClick = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -52,13 +56,18 @@ class NumberInput extends React.Component<INumberInput, {}> {
   render() {
     const props = { ...this.props };
     delete props.onValueChange;
+    delete props.onPressEnter;
 
     return (
       <Input
         {...props}
+        // @ts-ignore
+        enterkeyhint="done"
+        ref={this.inputRef}
         onChange={this.onChange}
         onBlur={this.onBlur}
         onClick={this.onClick}
+        onPressEnter={this.onPressEnter}
         maxLength={25}
       />
     );

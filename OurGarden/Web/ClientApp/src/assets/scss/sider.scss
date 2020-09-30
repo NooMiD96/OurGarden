@@ -63,11 +63,9 @@
       font-size: 16px;
       width: 100%;
 
-      > a.nav-link {
-        max-height: 600px;
+      .nav-link-wrapper,
+      .nav-link {
         font-weight: 500;
-        overflow: hidden;
-        text-overflow: ellipsis;
 
         &:hover {
           color: $whiteColor;
@@ -87,7 +85,8 @@
     &:not(.ant-menu-horizontal) .ant-menu-item-selected {
       background-color: $darkGreenColor;
 
-      > a.nav-link {
+      .nav-link-wrapper,
+      .nav-link {
         color: $whiteColor;
       }
     }

@@ -7,6 +7,8 @@ import GenerateLink from "@src/core/components/GenerateLink";
 import { TState } from "../TState";
 import { IBreadcrumb } from "../State";
 
+import "./style/Breadcrumb.style.scss";
+
 const { Header } = Layout;
 
 const slash = <span className="slash">/</span>;
@@ -16,9 +18,7 @@ const homeBreadcrumb: IBreadcrumb = {
   order: 0,
 };
 
-export const Breadcrumb = ({
-  breadcrumb: breadcrumbList
-}: TState) => {
+export const Breadcrumb = ({ breadcrumb: breadcrumbList }: TState) => {
   if (breadcrumbList.length === 0) {
     return null;
   }
@@ -29,9 +29,10 @@ export const Breadcrumb = ({
         title={homeBreadcrumb.displayName}
         link={homeBreadcrumb.url}
         active
+        className="dark-green-color"
       />
       {slash}
-    </React.Fragment>
+    </React.Fragment>,
   ];
 
   // eslint-disable-next-line no-plusplus
@@ -45,6 +46,7 @@ export const Breadcrumb = ({
           title={breadcrumb.displayName}
           link={breadcrumb.url}
           active={active}
+          className={active ? "dark-green-color" : ""}
         />
         {active && slash}
       </React.Fragment>

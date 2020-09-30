@@ -59,29 +59,16 @@
     line-height: inherit;
     padding: unset;
     height: auto;
-
-    .breadcrumb {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      min-height: 67px;
-      font-size: 18px;
-      font-weight: 500;
-
-      .slash {
-        padding: 0 5px;
-      }
-
-      .nav-link {
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
   }
 
   .content {
     flex: 0 1 auto;
   }
+}
+
+.nav-link-wrapper {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -14,7 +14,7 @@ import { actionsList } from "@components/UserCard/actions";
 import { META_TITLE_PARAMS } from "@src/core/constants/cardList";
 
 import { IProduct } from "@components/Product/State";
-import { IMouseClickEvent } from "@core/interfaces/IEvents";
+import { IMouseClickEvent, IPressEnterEvent } from "@core/interfaces/IEvents";
 import { TDataItem } from "@core/components/CatalogCardList/ICatalogCard";
 
 export interface IProductCardProps {
@@ -30,9 +30,11 @@ const ProductCard = (props: TWithRouter<IProductCard>) => {
   const { item, push, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 
-  const addToCardHandler = (e: IMouseClickEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const addToCardHandler = (e?: IMouseClickEvent | IPressEnterEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     window.ym(ymId, "reachGoal", "CHECKOUT_CLICK");
 

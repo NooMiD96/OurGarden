@@ -31,12 +31,24 @@ namespace ApiService.Core
 
         private readonly IOurGardenRepository _repository;
 
+        /// <summary>
+        /// Сервис по рендеру шаблона Mjml.
+        /// </summary>
         private readonly IMjmlServices _mjmlServices;
 
+        /// <summary>
+        /// Настройки сервиса по отправке писем.
+        /// </summary>
         private readonly EmailServiceConfigurationOptions _emailServiceOptions;
 
+        /// <summary>
+        /// Основные настройки приложения
+        /// </summary>
         private readonly RootOptions _rootOptions;
 
+        /// <summary>
+        /// Сервис отправки писем.
+        /// </summary>
         private readonly IEmailSender _emailSender;
 
         #endregion
@@ -90,10 +102,11 @@ namespace ApiService.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка при отправке письма обратной формы:\n{JsonHelper.Serialize(feedbackDTO)}:");
+                var msg = $"Ошибка при отправке письма обратной формы: {ex.Message}";
+                _logger.LogError(ex, $"{msg} Модель:\n{JsonHelper.Serialize(feedbackDTO)}");
+                throw new Exception(msg, ex);
             }
         }
-
 
         /// <inheritdoc/>
         public async Task SendOrderInformation(int orderId)
@@ -122,7 +135,9 @@ namespace ApiService.Core
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка при отправке письма с идентификатором {orderId}:");
+                var msg = $"Ошибка при отправке письма с идентификатором {orderId}: {ex.Message}";
+                _logger.LogError(ex, msg);
+                throw new Exception(msg, ex);
             }
         }
 
@@ -170,6 +185,8 @@ namespace ApiService.Core
         /// <summary>
         /// Получение шаблона письма в виде строки со всеми импортированными файлами.
         /// </summary>
+        /// <param name="rootPath">Путь к папке с шаблонами писем.</param>
+        /// <param name="filePath">Путь к файлу относительно папки с шаблонами.</param>
         private string GetMjmlTemplateString(string rootPath, string filePath)
         {
             var template = File.ReadAllText(

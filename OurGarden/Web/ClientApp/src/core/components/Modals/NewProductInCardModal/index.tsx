@@ -55,6 +55,7 @@ export const NewProductInCard = ({
           <GenerateLink
             link={getLinkToProduct(product || {})}
             title={product?.alias ?? "Товар был"}
+            className="d-inline"
           />
           {" добавлен в корзину"}
         </StyledDialogContentText>

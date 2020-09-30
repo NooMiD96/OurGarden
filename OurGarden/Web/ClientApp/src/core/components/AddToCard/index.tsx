@@ -1,19 +1,11 @@
 import React from "react";
 
-import { IProduct } from "@src/components/Product/State";
-import AddToCardButton from "./AddToCardButton";
+import AddToCardButton from "../AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
 
-import { IMouseClickEvent } from "@core/interfaces/IEvents";
+import { IAddToCard } from "./interfaces/IAddToCard";
 
 import "./style/AddToCard.style.scss";
-
-export interface IAddToCard {
-  product: IProduct & { link: string };
-  itemCount: string;
-  setItemCount: (value: string) => void;
-  addToCard: (e: IMouseClickEvent) => void;
-}
 
 const AddToCard = (props: IAddToCard) => {
   // prettier-ignore

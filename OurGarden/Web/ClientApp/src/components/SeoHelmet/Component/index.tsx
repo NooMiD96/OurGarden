@@ -5,8 +5,8 @@ import { HelmetAsync } from "@src/core/components/HelmetAsync";
 import { TState } from "../TState";
 
 export class SeoHelmet extends React.PureComponent<TState> {
-  // eslint-disable-next-line react/no-deprecated
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.getNewPageInformation();
   }
 
@@ -15,15 +15,14 @@ export class SeoHelmet extends React.PureComponent<TState> {
   }
 
   getNewPageInformation() {
-    const { location: { pathname } } = this.props;
+    const {
+      location: { pathname },
+    } = this.props;
     this.props.getPageSeoInformation(pathname);
   }
 
   render() {
-    return (
-      <HelmetAsync {...this.props.pageSeoInformation} />
-
-    );
+    return <HelmetAsync {...this.props.pageSeoInformation} />;
   }
 }
 

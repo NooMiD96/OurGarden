@@ -6,7 +6,7 @@ import { Paragraph } from "@core/antd/Typography";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
-import GenerateLink from "../../GenerateLink";
+import GenerateLink from "@src/core/components/GenerateLink";
 
 import { META_TITLE_PARAMS } from "@src/core/constants/cardList";
 
