@@ -10,6 +10,7 @@ import * as t from "./actionsType";
 
 import { IWrapRequest } from "./State";
 import { IPageInfo } from "@src/core/interfaces/IPageInfo";
+import { ResponseError } from "@src/core/declarations/ResponseError";
 
 // ----------------
 // #region ACTIONS
@@ -83,8 +84,8 @@ export const actionCreators = {
           return responseCatcher(res);
         })
         .then((value: IResponse<T>) => {
-          if (value && value.error) {
-            return errorCreater(value.error);
+          if (value?.error) {
+            return errorCreater({ message: value.error });
           }
 
           requestSuccess(value.data);
@@ -92,7 +93,7 @@ export const actionCreators = {
 
           return Promise.resolve();
         })
-        .catch((err: Error) => {
+        .catch((err: ResponseError) => {
           if (requestError) {
             requestError();
           }
@@ -149,8 +150,8 @@ export const actionCreators = {
           return responseCatcher(res);
         })
         .then((value: IResponse<IPageInfo>) => {
-          if (value && value.error) {
-            return errorCreater(value.error);
+          if (value?.error) {
+            return errorCreater({ message: value.error });
           }
 
           dispatch(actionsList.getPageInfoSuccess(value.data));
@@ -158,7 +159,7 @@ export const actionCreators = {
 
           return Promise.resolve();
         })
-        .catch((err: Error) => {
+        .catch((err: ResponseError) => {
           dispatch(actionsList.requestError(err.message));
           dispatch(actionsList.getPageInfoError(err.message));
           errorCatcher(controllerName, apiUrl, err);

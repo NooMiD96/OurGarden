@@ -37,6 +37,7 @@ export const reducer: Reducer<IUserCardState> = (
         productList: [],
         pending: false,
         totalCount: 0,
+        orderId: action.payload,
       };
 
       break;
@@ -91,6 +92,24 @@ export const reducer: Reducer<IUserCardState> = (
       };
 
       break;
+    }
+
+    case t.SET_ORDER_ID: {
+      newState = {
+        ...state,
+        orderId: action.payload,
+      };
+
+      return newState;
+    }
+
+    case t.CLEAN_ERROR_INNER: {
+      newState = {
+        ...state,
+        errorInner: "",
+      };
+
+      return newState;
     }
 
     case t.CLEAN_PRODUCT_CARD: {

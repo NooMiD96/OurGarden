@@ -14,6 +14,7 @@ import {
 import { IUserCardProduct } from "./State";
 import { IProduct } from "@components/Product/State";
 import { OrderProductDTO } from "./Model";
+import { ResponseError } from "@core/declarations/ResponseError";
 
 // ----------------
 // #region ACTIONS
@@ -21,8 +22,9 @@ export const actionsList = {
   sendOrderRequest: (): t.ISendOrderRequest => ({
     type: t.SEND_ORDER_REQUEST,
   }),
-  sendOrderSuccess: (): t.ISendOrderSuccess => ({
+  sendOrderSuccess: (orderId: number): t.ISendOrderSuccess => ({
     type: t.SEND_ORDER_SUCCESS,
+    payload: orderId,
   }),
   sendOrderError: (errorMessage: string): t.ISendOrderError => ({
     type: t.SEND_ORDER_ERROR,
@@ -47,6 +49,14 @@ export const actionsList = {
     type: t.CLEAN_PRODUCT_CARD,
   }),
 
+  setOrderId: (orderId?: number): t.ISetOrderId => ({
+    type: t.SET_ORDER_ID,
+    payload: orderId,
+  }),
+  cleanErrorInner: (): t.ICleanErrorInner => ({
+    type: t.CLEAN_ERROR_INNER,
+  }),
+
   loadCardFromLocalstate: (): t.ILoadCardFromLocalstate => ({
     type: t.LOAD_CARD_FROM_LOCALSTATE,
   }),
@@ -58,7 +68,10 @@ const controllerName = "Order";
 export const actionCreators = {
   sendOrder: (
     userInfo: IOrderUserInformation
-  ): IAppThunkAction<t.TSendOrder> => (dispatch, getState) => {
+  ): IAppThunkAction<t.TSendOrder | t.ISetOrderId | t.ICleanErrorInner> => (
+    dispatch,
+    getState
+  ) => {
     const apiUrl = "AddOrder";
     const { productList } = getState().userCard;
 
@@ -78,35 +91,41 @@ export const actionCreators = {
       method: "POST",
       body: JSON.stringify(bodyModel),
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     })
       .then(responseCatcher)
-      .then((value: IResponse<void>) => {
-        if (value && value.error) {
-          return errorCreater(value.error);
+      .then((value: IResponse<number>) => {
+        if (value?.error) {
+          return errorCreater({ message: value.error, data: value.data });
         }
 
-        dispatch(actionsList.sendOrderSuccess());
+        dispatch(actionsList.sendOrderSuccess(value.data));
 
         return Promise.resolve();
       })
-      .catch((err: Error) => errorCatcher(
+      .catch((err: ResponseError) => errorCatcher(
         controllerName,
         apiUrl,
         err,
         actionsList.sendOrderError,
-        dispatch
+        dispatch,
+        actionsList.setOrderId
       ));
 
     addTask(fetchTask);
     dispatch(actionsList.sendOrderRequest());
+    dispatch(actionsList.setOrderId());
+    dispatch(actionsList.cleanErrorInner());
   },
 
   addProductToCard: actionsList.addProductToCard,
   removeProductFromCard: actionsList.removeProductFromCard,
   changeCountOfProduct: actionsList.changeCountOfProduct,
   cleanProductCard: actionsList.cleanProductCard,
+
+  setOrderId: actionsList.setOrderId,
+  cleanErrorInner: actionsList.cleanErrorInner,
 
   loadCardFromLocalstate: actionsList.loadCardFromLocalstate,
 };

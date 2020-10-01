@@ -36,8 +36,8 @@ const ModalWindowDump = (state: TState) => {
       case ModalOpenType.AddToCard: {
         setComponentToRender(NewProductInCardModal);
 
-        /// Снимаем фокус с элемента, чтобы после закрытия модалки
-        /// фокус не вернулся.
+        // Снимаем фокус с элемента, чтобы после закрытия модалки
+        // фокус не вернулся.
         if ((document.activeElement as any)?.blur) {
           (document.activeElement as any).blur();
         }

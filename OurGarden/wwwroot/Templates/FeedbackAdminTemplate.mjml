@@ -11,7 +11,7 @@
     </mj-style>
   </mj-head>
   <mj-body background-color="#ffffff">
-    <mj-wrapper background-url="{{HostAddress}}/email/mainBackground.jpg" background-size="100%" background-repeat="no-repeat" background-color="#ffffff" padding-top="0px">
+    <mj-wrapper background-url="{{HostAddress}}email/mainBackground.jpg" background-size="100%" background-repeat="no-repeat" background-color="#ffffff" padding-top="0px">
       <mj-section>
         <mj-include path="./BodyHeaderTemplate.mjml" />
       </mj-section>

@@ -11,6 +11,7 @@ import * as mainTypes from "../Main/State/actionsType";
 import { actionCreators as mainActions } from "../Main/State/actions";
 
 import { IPageSeoInformation, unloadedState } from "./State";
+import { ResponseError } from "@src/core/declarations/ResponseError";
 
 // ----------------
 // #region ACTIONS
@@ -64,8 +65,8 @@ export const actionCreators = {
       })
       .then(
         (value: IResponse<IPageSeoInformation & { isPageExists: boolean }>) => {
-          if (value && value.error) {
-            return errorCreater(value.error);
+          if (value?.error) {
+            return errorCreater({ message: value.error });
           }
 
           const { isPageExists, ...pageSeoInformation } = value.data;
@@ -83,7 +84,7 @@ export const actionCreators = {
           return Promise.resolve();
         }
       )
-      .catch((err: Error) => {
+      .catch((err: ResponseError) => {
         dispatch(mainActions.pageNotFoundError(true));
         dispatch(actionsList.setPageSeoInformation(unloadedState));
         errorCatcher(controllerName, apiUrl, err);

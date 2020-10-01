@@ -7,7 +7,7 @@ import { actionCreators } from "./actions";
 import { IApplicationState } from "@src/Store";
 import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
 
-/// prettier-ignore
+// prettier-ignore
 const mapStateToProps = (
   state: IApplicationState,
   ownProp: TOwnProps

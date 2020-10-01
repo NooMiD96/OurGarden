@@ -10,11 +10,11 @@ import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/acti
 export enum DisplayTypeEnum {
   CardInfo,
   CardConfirmation,
+  OrderCreate,
 }
 
 export type TComponentState = {
   displayType: DisplayTypeEnum;
-  orderCreated: boolean;
   mounted: boolean;
 };
 

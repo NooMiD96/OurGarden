@@ -7,7 +7,8 @@ type TTarget =
   | "CLEAN_CHECKOUT"
   | "TO_ORDER"
   | "TO_ORDER_2"
-  | "SUCCESS_ORDER";
+  | "SUCCESS_ORDER"
+  | "FAULT_ORDER";
 
 type TFuncName = "reachGoal";
 

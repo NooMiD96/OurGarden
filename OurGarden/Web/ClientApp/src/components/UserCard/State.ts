@@ -12,6 +12,7 @@ export interface IUserCardState {
   totalCount: number;
   pending: boolean;
   errorInner: string;
+  orderId?: number;
 }
 
 export const unloadedState: IUserCardState = {

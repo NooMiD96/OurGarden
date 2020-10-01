@@ -1,7 +1,9 @@
+import { ResponseError } from "@core/declarations/ResponseError";
 import { errorCreater } from "./ErrorCreater";
 
-/// prettier-ignore
-export const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+// prettier-ignore
+export const uncatchError
+  = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const responseCatcher = async (res: Response) => {
   if (res.ok) {
     return res.json();
@@ -15,16 +17,19 @@ export const responseCatcher = async (res: Response) => {
       return errorCreater.createAuthError();
 
     default:
-      return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+      return errorCreater({
+        message: `${uncatchError}. Статус ошибки ${res.status}.`,
+      });
   }
 };
 
 export const errorCatcher = (
   componentName: string,
   methodName = "",
-  error: Error,
+  error: ResponseError,
   action?: (errorData: string) => void,
-  dispatch?: (actionFunc: any) => void
+  dispatch?: (actionFunc: any) => void,
+  dataAction?: (data: any) => void
 ) => {
   console.warn(
     `Catch the error at ${componentName}.\r\nCall ${methodName} method.${
@@ -32,7 +37,13 @@ export const errorCatcher = (
     }`
   );
 
-  if (action && dispatch) {
-    dispatch(action(error.message));
+  if (dispatch) {
+    if (action) {
+      dispatch(action(error.message));
+    }
+
+    if (dataAction && error.data) {
+      dispatch(dataAction(error.data));
+    }
   }
 };
