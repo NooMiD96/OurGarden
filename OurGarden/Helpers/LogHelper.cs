@@ -11,10 +11,10 @@ namespace Web.Helpers
         public static string LogError(ILogger logger,
                                       string apiLocate,
                                       Exception exception = null,
-                                      string customeError = ERROR,
+                                      string customError = ERROR,
                                       int returnStatusCode = 200)
         {
-            var returnErrorString = customeError;
+            var returnErrorString = customError;
             var logErrorString = $"{apiLocate}\n{returnErrorString}\nreturnStatusCode=={returnStatusCode}";
 
             if (exception != null)

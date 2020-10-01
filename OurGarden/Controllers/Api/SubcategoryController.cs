@@ -40,7 +40,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось получить Breadcrumb."
+                    customError: $"Что-то пошло не так, не удалось получить Breadcrumb."
                 );
             }
 
@@ -78,7 +78,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: $"Что-то пошло не так, необходимо выбрать категорию."
+                    customError: $"Что-то пошло не так, необходимо выбрать категорию."
                 );
             }
 
@@ -89,7 +89,7 @@ namespace Web.Controllers.Api
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}",
+                    customError: $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}",
                     returnStatusCode: 404
                 );
             }

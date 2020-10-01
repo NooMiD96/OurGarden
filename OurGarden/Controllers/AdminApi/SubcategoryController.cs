@@ -85,7 +85,7 @@ namespace Web.Controllers.AdminApi
                         return LogBadRequest(
                             _logger,
                             API_LOCATE,
-                            customeError: $"Что-то пошло не так, не удалось найти подкатегорию.\n\tКатегория: {subcategoryDTO.CategoryId}\n\tПодкатегория: {subcategoryDTO.SubcategoryId}"
+                            customError: $"Что-то пошло не так, не удалось найти подкатегорию.\n\tКатегория: {subcategoryDTO.CategoryId}\n\tПодкатегория: {subcategoryDTO.SubcategoryId}"
                         );
                     }
 
@@ -102,7 +102,7 @@ namespace Web.Controllers.AdminApi
                     return LogBadRequest(
                         _logger,
                         API_LOCATE,
-                        customeError: error
+                        customError: error
                     );
 
                 return Success(isSuccess);
@@ -113,7 +113,7 @@ namespace Web.Controllers.AdminApi
                     _logger,
                     API_LOCATE,
                     exception: ex,
-                    customeError: error
+                    customError: error
                 );
             }
         }
@@ -132,7 +132,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: error
+                    customError: error
                 );
         }
     }

@@ -86,7 +86,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderId}"
+                    customError: $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderId}"
                 );
             }
 
@@ -107,7 +107,7 @@ namespace Web.Controllers.AdminApi
                     return LogBadRequest(
                         _logger,
                         API_LOCATE,
-                        customeError: $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderDTO.OrderId}"
+                        customError: $"Что-то пошло не так, не удалось найти заказ.\n\tНомер заказа: {orderDTO.OrderId}"
                     );
                 }
 
@@ -117,7 +117,7 @@ namespace Web.Controllers.AdminApi
                     return LogBadRequest(
                         _logger,
                         API_LOCATE,
-                        customeError: $"Что-то пошло не так, не удалось найти данный статус заказа.\n\tНомер статуса: {orderDTO.StatusId}"
+                        customError: $"Что-то пошло не так, не удалось найти данный статус заказа.\n\tНомер статуса: {orderDTO.StatusId}"
                     );
                 }
 

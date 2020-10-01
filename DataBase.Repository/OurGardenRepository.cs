@@ -21,7 +21,7 @@ namespace DataBase.Repository
         public async Task LoadPhotoCollection<T>(T model) where T : IPhoto
         {
             await Context.Entry(model)
-                .Reference("Photos")
+                .Collection("Photos")
                 .LoadAsync();
         }
 
@@ -34,9 +34,7 @@ namespace DataBase.Repository
                 var model = modelList.ElementAt(i);
 
                 taskList.Add(
-                    Context.Entry(model)
-                        .Reference("Photos")
-                        .LoadAsync()
+                    LoadPhotoCollection(model)
                 );
             }
 

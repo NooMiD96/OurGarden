@@ -109,7 +109,9 @@ namespace EmailService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка при попытке отправить письмо на почту \"{email}\".");
+                var msg = $"Ошибка при попытке отправить письмо на почту \"{email}\" по след. причине: {ex.Message}";
+                _logger.LogError(ex, msg);
+                throw new Exception(msg, ex);
             }
         }
 

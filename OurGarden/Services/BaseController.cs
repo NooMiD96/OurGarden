@@ -14,21 +14,21 @@ namespace Web.Controllers
             return Ok(new { data = res });
         }
 
-        public IActionResult BadRequest(string res)
+        public IActionResult BadRequest<T>(string res, T data = default)
         {
-            return BadRequest(new { error = res });
+            return BadRequest(new { error = res, data });
         }
 
         public IActionResult LogBadRequest(ILogger logger,
                                            string apiLocate,
                                            [FromServices] Exception exception = null,
-                                           string customeError = null,
+                                           string customError = null,
                                            int returnStatusCode = 200)
         {
             var returnErrorString = LogError(logger,
                                              apiLocate,
                                              exception,
-                                             customeError,
+                                             customError,
                                              returnStatusCode);
 
             return returnStatusCode switch

@@ -1,6 +1,7 @@
 ﻿using ApiService.Abstraction.Api;
 using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO.OrderDTO;
+using ApiService.Abstraction.Model;
 
 using Core.Helpers;
 
@@ -50,7 +51,7 @@ namespace ApiService.Api
         #endregion
 
         /// <inheritdoc/>
-        public async ValueTask<(bool isSuccess, string error)> AddOrder(OrderCreateDTO orderDTO)
+        public async Task<ServiceExecuteResult<int>> AddOrder(OrderCreateDTO orderDTO)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -127,7 +128,13 @@ namespace ApiService.Api
 
                 var msg = $"Не удалось создать заказ по след. причине: {ex.Message}";
                 _logger.LogError(ex, $"{msg}. Модель запроса:\n{JsonHelper.Serialize(orderDTO)}");
-                return (false, msg);
+
+                return new ServiceExecuteResult<int>
+                {
+                    IsSuccess = false,
+                    Error = msg,
+                    Result = 0
+                };
             }
 
             try
@@ -143,10 +150,20 @@ namespace ApiService.Api
             {
                 var msg = $"Не удалось отправить письмо на почту по след. причине: {ex.Message}";
                 _logger.LogError(ex, msg);
-                return (false, msg);
+
+                return new ServiceExecuteResult<int>
+                {
+                    IsSuccess = false,
+                    Error = msg,
+                    Result = orderId != -1 ? orderId : 0
+                };
             }
 
-            return (true, null);
+            return new ServiceExecuteResult<int>
+            {
+                IsSuccess = true,
+                Result = orderId,
+            };
         }
     }
 }

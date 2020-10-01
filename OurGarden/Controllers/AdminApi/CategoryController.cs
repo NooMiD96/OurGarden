@@ -73,7 +73,7 @@ namespace Web.Controllers.AdminApi
                         return LogBadRequest(
                             _logger,
                             API_LOCATE,
-                            customeError: $"Что-то пошло не так, не удалось найти категорию.\n\tКатегория: {categoryDTO.CategoryId}"
+                            customError: $"Что-то пошло не так, не удалось найти категорию.\n\tКатегория: {categoryDTO.CategoryId}"
                         );
 
                     if (categoryDTO.Alias.TransformToId() != oldCategory.Alias.TransformToId())
@@ -86,7 +86,7 @@ namespace Web.Controllers.AdminApi
                     return LogBadRequest(
                         _logger,
                         API_LOCATE,
-                        customeError: error
+                        customError: error
                     );
 
                 return Success(isSuccess);
@@ -97,7 +97,7 @@ namespace Web.Controllers.AdminApi
                     _logger,
                     API_LOCATE,
                     exception: ex,
-                    customeError: error
+                    customError: error
                 );
             }
         }
@@ -115,7 +115,7 @@ namespace Web.Controllers.AdminApi
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    customeError: error
+                    customError: error
                 );
         }
     }

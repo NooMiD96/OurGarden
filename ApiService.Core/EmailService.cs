@@ -135,7 +135,7 @@ namespace ApiService.Core
             }
             catch (Exception ex)
             {
-                var msg = $"Ошибка при отправке письма с идентификатором {orderId}: {ex.Message}";
+                var msg = $"Ошибка при отправке информационного письма о заказе №{orderId}. {ex.Message}";
                 _logger.LogError(ex, msg);
                 throw new Exception(msg, ex);
             }

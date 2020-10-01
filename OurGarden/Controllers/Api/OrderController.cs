@@ -21,12 +21,12 @@ namespace Web.Controllers.Api
         [HttpPost("[action]")]
         public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderDTO)
         {
-            var (isSuccess, error) = await _service.AddOrder(orderDTO);
+            var execResult = await _service.AddOrder(orderDTO);
 
-            if (isSuccess)
-                return Success(true);
+            if (execResult.IsSuccess)
+                return Success(execResult.Result);
             else
-                return BadRequest(error);
+                return BadRequest(execResult.Error, execResult.Result);
         }
     }
 }

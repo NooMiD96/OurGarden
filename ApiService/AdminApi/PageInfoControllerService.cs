@@ -101,7 +101,7 @@ namespace ApiService.AdminApi
             //            return LogBadRequest(
             //                _logger,
             //                API_LOCATE,
-            //                customeError: $"Что-то пошло не так, не удалось найти товар.\n\tКатегория: {productDTO.CategoryId}\n\tПодкатегория: {productDTO.SubcategoryId}\n\tТовар: {productDTO.ProductId}"
+            //                customError: $"Что-то пошло не так, не удалось найти товар.\n\tКатегория: {productDTO.CategoryId}\n\tПодкатегория: {productDTO.SubcategoryId}\n\tТовар: {productDTO.ProductId}"
             //            );
             //        }
 
@@ -123,7 +123,7 @@ namespace ApiService.AdminApi
             //        return LogBadRequest(
             //            _logger,
             //            API_LOCATE,
-            //            customeError: error
+            //            customError: error
             //        );
 
             //    return Success(isSuccess);
@@ -134,7 +134,7 @@ namespace ApiService.AdminApi
             //        _logger,
             //        API_LOCATE,
             //        exception: ex,
-            //        customeError: error
+            //        customError: error
             //    );
             //}
         }
