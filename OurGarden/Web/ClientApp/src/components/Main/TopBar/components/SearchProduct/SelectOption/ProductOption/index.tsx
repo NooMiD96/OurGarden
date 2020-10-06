@@ -41,7 +41,7 @@ const ProductOption = (item: IProductOption) => {
           }}
           link={link}
           title={item.alias}
-          linkClassName="search-menu-item-text"
+          className="search-menu-item-text"
         />
       </div>
     ),

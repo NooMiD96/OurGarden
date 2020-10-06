@@ -7,6 +7,7 @@ import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/PageNotFound.style.scss";
 
+// prettier-ignore
 export const PageNotFound = () => (
   <div className={`page-not-found content ${WHITE_BLOCK} p25`}>
     <div className="title">
@@ -20,8 +21,9 @@ export const PageNotFound = () => (
     <Text className="description">
       К сожалению, мы не смогли найти страницу, которую Вы запрашиваете. Вы
       можете воспользоваться нашим поиском или
-      {/* prettier-ignore */ " "}
-      <GenerateLink link="/" title="перейти на главную" />
+      {" "}
+      <GenerateLink link="/" title="перейти на главную" className="d-inline" />
+      .
     </Text>
   </div>
 );

@@ -19,7 +19,7 @@
       <span style="color:#999999">Категория: {{CategoryId}}, {{SubcategoryId}}</span>
     </mj-text>
     <mj-text font-size="12px" padding-left="0px">
-      <span>Цена: {{ProductPrice}}</span>
+      <span>Цена: {{ProductPrice}}₽</span>
     </mj-text>
     <mj-text font-size="12px" padding-left="0px">
       <span style="color:#999999">Количество: {{Number}}</span>

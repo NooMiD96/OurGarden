@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Core.Utils
 {
@@ -25,6 +26,14 @@ namespace Core.Utils
         /// <param name="hostName">Хост без указания схемы и домена.</param>
         /// <param name="path">Указывает путь, куда должна вести ссылка на сайте.</param>
         /// <returns></returns>
-        public static string GenerateSiteAddress(string hostName, string path = null) => $"https://{hostName}.com/{path ?? ""}";
+        public static string GenerateSiteAddress(string hostName, string path = null)
+        {
+            if (IPAddress.TryParse(hostName, out var ipAddress))
+            {
+                return $"https://{ipAddress}/{path ?? ""}";
+            }
+            
+            return $"https://{hostName}.com/{path ?? ""}";
+        }
     }
 }

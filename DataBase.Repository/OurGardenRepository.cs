@@ -28,17 +28,12 @@ namespace DataBase.Repository
         /// <inheritdoc/>
         public async Task LoadPhotoCollection<T>(IEnumerable<T> modelList) where T : IPhoto
         {
-            var taskList = new List<Task>();
             for (int i = 0; i < modelList.Count(); i++)
             {
                 var model = modelList.ElementAt(i);
 
-                taskList.Add(
-                    LoadPhotoCollection(model)
-                );
+                await LoadPhotoCollection(model);
             }
-
-            await Task.WhenAll(taskList);
         }
     }
 }

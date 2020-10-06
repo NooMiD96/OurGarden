@@ -109,11 +109,22 @@ namespace ApiService.Core
                                             .Replace("{{SubcategoryId}}", x.Product.Subcategory.Alias, StringComparison.InvariantCultureIgnoreCase)
                                             .Replace("{{Number}}", x.Number.ToString(), StringComparison.InvariantCultureIgnoreCase)
                                             .Replace("{{ProductPrice}}", x.Product.Price.ToString(), StringComparison.InvariantCultureIgnoreCase)
-                                            .Replace("{{ProductImageUrl}}", x.Product.Photos.FirstOrDefault().PreviewUrl, StringComparison.InvariantCultureIgnoreCase)
+                                            .Replace(
+                                                "{{ProductImageUrl}}",
+                                                WebUtils.GenerateSiteAddress(
+                                                    _rootOptions.HostName,
+                                                    x.Product.Photos.FirstOrDefault().PreviewUrl
+                                                        ?? x.Product.Photos.FirstOrDefault().Url
+                                                ),
+                                                StringComparison.InvariantCultureIgnoreCase
+                                            )
                                             .Replace("{{ProductImageAlt}}", x.Product.Alias, StringComparison.InvariantCultureIgnoreCase)
                                             .Replace(
                                                 "{{ProductUrl}}",
-                                                WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
+                                                WebUtils.GenerateSiteAddress(
+                                                    _rootOptions.HostName,
+                                                    $"Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"
+                                                ),
                                                 StringComparison.InvariantCultureIgnoreCase
                                             )
                 )

@@ -1,78 +1,85 @@
-#react-app .ant-pagination {
-  text-align: right;
-  text-align: end;
-
-  .ant-pagination-item-link {
-    background-color: unset;
-    border: unset;
+#react-app {
+  .wysiwyg-wrapper .ant-pagination {
+    margin-left: -40px;
+    margin-right: -40px;
   }
 
-  .ant-pagination-item {
-    &:focus,
-    &:hover {
+  .ant-pagination {
+    text-align: right;
+    text-align: end;
+
+    .ant-pagination-item-link {
+      background-color: unset;
+      border: unset;
+    }
+
+    .ant-pagination-item {
+      &:focus,
+      &:hover {
+        border-color: $darkGreenColor;
+
+        span,
+        a {
+          color: $darkGreenColor;
+        }
+      }
+    }
+
+    .ant-pagination-item-active {
       border-color: $darkGreenColor;
 
       span,
       a {
         color: $darkGreenColor;
       }
-    }
-  }
 
-  .ant-pagination-item-active {
-    border-color: $darkGreenColor;
+      &:focus,
+      &:hover {
+        border-color: $lightGreenColor;
 
-    span,
-    a {
-      color: $darkGreenColor;
-    }
-
-    &:focus,
-    &:hover {
-      border-color: $lightGreenColor;
-
-      span,
-      a {
-        color: $lightGreenColor;
+        span,
+        a {
+          color: $lightGreenColor;
+        }
       }
     }
-  }
 
-  .ant-pagination-prev,
-  .ant-pagination-next {
-    .ant-pagination-item-link {
-      font-size: 16px;
-    }
-
-    &:focus,
-    &:hover {
+    .ant-pagination-prev,
+    .ant-pagination-next {
       .ant-pagination-item-link {
-        color: $darkGreenColor;
-        border-color: $darkGreenColor;
+        font-size: 16px;
+      }
+
+      &:focus,
+      &:hover {
+        .ant-pagination-item-link {
+          color: $darkGreenColor;
+          border-color: $darkGreenColor;
+        }
       }
     }
-  }
 
-  .ant-pagination-disabled {
-    &,
-    &:hover,
-    &:focus {
-      cursor: not-allowed;
-
-      .ant-pagination-item-link,
-      span,
-      a {
-        color: rgba(0, 0, 0, 0.25);
-        border-color: #d9d9d9;
+    .ant-pagination-disabled {
+      &,
+      &:hover,
+      &:focus {
         cursor: not-allowed;
+
+        .ant-pagination-item-link,
+        span,
+        a {
+          color: rgba(0, 0, 0, 0.25);
+          border-color: #d9d9d9;
+          cursor: not-allowed;
+        }
       }
     }
-  }
 
-  .ant-pagination-jump-prev,
-  .ant-pagination-jump-next {
-    .ant-pagination-item-container .ant-pagination-item-link-icon {
-      color: $darkGreenColor;
+    .ant-pagination-jump-prev,
+    .ant-pagination-jump-next {
+      .ant-pagination-item-container .ant-pagination-item-link-icon {
+        color: $darkGreenColor;
+      }
     }
   }
 }

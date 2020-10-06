@@ -84,7 +84,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Category,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}"),
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -97,7 +97,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Subcategory,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}"),
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}/{x.SubcategoryId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -110,7 +110,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.Subcategory,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();
@@ -123,7 +123,7 @@ namespace SiteMapHostService
                 .Select(x => new SiteMapSimpleItem()
                 {
                     ItemType = ItemType.News,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"/News/{x.NewsId}"),
+                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"News/{x.NewsId}"),
                     LastModified = DateTime.Now
                 })
                 .ToListAsync();

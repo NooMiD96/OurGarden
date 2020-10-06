@@ -62,7 +62,6 @@ export class Design extends React.PureComponent<TState, TComponentState> {
                 }}
               >
                 Устройство рулонного газона под ключ.
-                <br />
                 <GenerateLink
                   onClick={(e) => {
                     e.stopPropagation();
