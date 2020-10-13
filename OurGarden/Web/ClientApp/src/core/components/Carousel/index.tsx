@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import AntdCarousel from "@core/antd/Carousel";
-import { NextArrow, PrevArrow } from "@core/components/Carousel/Arrows";
+import { NextArrow, PrevArrow } from "@core/components/Arrows";
 
 import { MobileContext } from "@src/core/constants";
 
@@ -11,7 +11,7 @@ import "./style/Carousel.style.scss";
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 
-export class Carousel<T> extends React.PureComponent<ICarouselProps<T>, {}> {
+export class Carousel<T> extends React.PureComponent<ICarouselProps<T>> {
   carouselRef: AntdCarousel | null = null;
 
   render() {

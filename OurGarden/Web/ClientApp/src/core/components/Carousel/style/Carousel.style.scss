@@ -15,27 +15,27 @@
   }
   &.hide-dots-on-mobile {
     @media (max-width: 512px) {
-  .slick-dots {
+      .slick-dots {
         display: none !important;
       }
     }
-    }
+  }
 
   .slick-dots.slick-dots-bottom {
-      height: 24px;
-      bottom: 0px;
+    height: 24px;
+    bottom: 0px;
 
-      & > li {
-        vertical-align: middle;
+    & > li {
+      vertical-align: middle;
 
-        & > button {
-          height: 16px;
-          border-radius: 50%;
-        }
+      & > button {
+        height: 16px;
+        border-radius: 50%;
+      }
 
-        &.slick-active > button {
-          height: 24px;
-        }
+      &.slick-active > button {
+        height: 24px;
       }
     }
   }
+}
