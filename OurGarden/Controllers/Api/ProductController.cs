@@ -36,7 +36,7 @@ namespace Web.Controllers.Api
         #region .ctor
 
         public ProductController(IOurGardenRepository repository,
-                                 ILogger<SearchController> logger)
+                                 ILogger<ProductController> logger)
         {
             _repository = repository;
             _logger = logger;
@@ -99,7 +99,7 @@ namespace Web.Controllers.Api
 
             if (subcategory is null)
             {
-                var msg = $"Что-то пошло не так, не удалось найти выбранную подкатегорию. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\"";
+                var msg = $"Что-то пошло не так, не удалось найти выбранную подкатегорию. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\"\nREQUEST-PATH: {Request.Path}{Request.QueryString}";
                 _logger.LogError(msg);
                 return BadRequest(msg);
             }
@@ -134,7 +134,7 @@ namespace Web.Controllers.Api
 
             if (product == null)
             {
-                var msg = $"Что-то пошло не так, не удалось найти выбранный товар. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\". Товар: \"{productId}\"";
+                var msg = $"Что-то пошло не так, не удалось найти выбранный товар. Категория: \"{categoryId}\". Подкатегория: \"{subcategoryId}\". Товар: \"{productId}\"\nREQUEST-PATH: {Request.Path}{Request.QueryString}";
                 _logger.LogError(msg);
                 return BadRequest(msg);
             }

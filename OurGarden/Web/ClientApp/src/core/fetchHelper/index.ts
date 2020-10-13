@@ -2,12 +2,13 @@ import { ResponseError } from "@core/declarations/ResponseError";
 import { errorCreater } from "./ErrorCreater";
 
 // prettier-ignore
-export const uncatchError
+export const uncatchedError
   = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const responseCatcher = async (res: Response) => {
   if (res.ok) {
     return res.json();
   }
+
   switch (res.status) {
     case 400:
       // eslint-disable-next-line no-return-await
@@ -18,7 +19,7 @@ export const responseCatcher = async (res: Response) => {
 
     default:
       return errorCreater({
-        message: `${uncatchError}. Статус ошибки ${res.status}.`,
+        message: `${uncatchedError}. Статус ошибки ${res.status}.`,
       });
   }
 };
@@ -31,9 +32,14 @@ export const errorCatcher = (
   dispatch?: (actionFunc: any) => void,
   dataAction?: (data: any) => void
 ) => {
+  // prettier-ignore
   console.warn(
-    `Catch the error at ${componentName}.\r\nCall ${methodName} method.${
-      error.stack ? `\r\n${error.stack}` : ` ${error.message}`
+    `Catch the error at ${
+      componentName
+    }.\nCall ${
+      methodName
+    } method.\n${
+      error?.stack ? `STACK: ${error.stack}` : `MESSAGE: ${error.message}`
     }`
   );
 
