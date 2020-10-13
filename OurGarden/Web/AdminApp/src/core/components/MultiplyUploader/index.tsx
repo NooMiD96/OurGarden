@@ -26,9 +26,13 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
   };
 
   previewHandler = async (file: UploadFile) => {
+    const previewImageUrl = file.originFileObj
+      ? await getBase64(file.originFileObj)
+      : file.url;
+
     this.setState({
       previewImage: file,
-      previewImageUrl: await getBase64(file.originFileObj),
+      previewImageUrl,
       isPreviewVisible: true,
     });
   };
@@ -56,7 +60,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
     }
   };
 
-  downloadhandler = (file: UploadFile) => {
+  downloadHandler = (file: UploadFile) => {
     if (file.originFileObj) {
       confirm({
         title: "Предупреждение!",
@@ -102,7 +106,7 @@ export class MultiplyUploader extends React.Component<IProps, IState> {
           // multiple
           onChange={this.successHandler}
           onRemove={this.removeHandler}
-          onDownload={this.downloadhandler}
+          onDownload={this.downloadHandler}
           onPreview={this.previewHandler}
           showUploadList={UPLOAD_LIST}
           customRequest={customRequest}
