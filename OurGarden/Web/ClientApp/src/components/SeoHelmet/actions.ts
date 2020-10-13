@@ -47,8 +47,9 @@ export const actionCreators = {
     }
 
     const apiUrl = "GetPageSEOParams";
+    const encodedPathname = encodeURIComponent(pathname);
 
-    const fetchUrl = `/api/${controllerName}/${apiUrl}?pathname=${pathname}`;
+    const fetchUrl = `/api/${controllerName}/${apiUrl}?pathname=${encodedPathname}`;
     const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",

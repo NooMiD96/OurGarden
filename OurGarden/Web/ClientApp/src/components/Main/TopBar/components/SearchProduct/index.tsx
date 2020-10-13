@@ -14,7 +14,9 @@ import debounce from "lodash.debounce";
 import { IProduct } from "@src/components/Product/State";
 
 const fetchProducts = async (search: string) => {
-  const result = await fetch(`/api/Search?search=${search}`, {
+  const encodedSearch = encodeURIComponent(search);
+
+  const result = await fetch(`/api/Search?search=${encodedSearch}`, {
     credentials: "same-origin",
     method: "GET",
   }).then((res: Response) => res.json());
