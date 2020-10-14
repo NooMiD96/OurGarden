@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO;
 
 using Core.Constants;
 
@@ -7,6 +8,8 @@ using DataBase.Abstraction.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using PhotoService.Abstraction;
 
 using System;
 using System.Threading.Tasks;
@@ -28,11 +31,13 @@ namespace Web.Controllers.AdminApi
         private const string ERROR = "Что-то пошло не так, повторите попытку.";
 
         public GalleryController(IOurGardenRepository repository,
-                                 ILogger<GalleryController> logger)
+                                 ILogger<GalleryController> logger,
+                                 IPhotoSaver photoSaver,
+                                 IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository;
             _logger = logger;
-            _service = new GalleryControllerService(repository, logger);
+            _service = new GalleryControllerService(repository, photoSaver, photoEntityUpdater);
         }
 
         [HttpGet("[action]")]

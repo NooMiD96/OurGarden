@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataBase.Abstraction.Model
+namespace PhotoService.Abstraction.Model
 {
     public class Photo
     {

@@ -12,6 +12,9 @@ using OrderCleanerHostService.Abstraction;
 using PagePingerHostService;
 using PagePingerHostService.Abstraction;
 
+using PhotoService;
+using PhotoService.Abstraction;
+
 using Services.BackgroundWork.OrderCleaner;
 
 using SiteMapHostService;
@@ -35,8 +38,10 @@ namespace DependencyInjections
             #region Services
             
             services.AddTransient<ISeoService, SeoService>();
-            services.AddTransient<IEmailService, ApiService.Core.EmailService>();
-
+            services.AddTransient<IEmailService, ApiService.Core.Email.EmailService>();
+            services.AddTransient<IPhotoSaver, PhotoSaver>();
+            services.AddTransient<IPhotoEntityUpdater, PhotoEntityUpdater>();
+         
             #endregion
 
             #region Api

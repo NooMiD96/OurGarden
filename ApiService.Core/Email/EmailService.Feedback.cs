@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ApiService.Core
+namespace ApiService.Core.Email
 {
     public partial class EmailService : IEmailService
     {

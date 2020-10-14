@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+
 using System;
 
 namespace DependencyInjections
@@ -53,7 +55,8 @@ namespace DependencyInjections
                 .AddSignInManager()
                 .AddEntityFrameworkStores<OurGardenContext>();
 
-            services.AddTransient<IOurGardenRepository, OurGardenRepository>();
+            services.AddScoped<IOurGardenRepository, OurGardenRepository>();
+            services.AddScoped<IPhotoSaverRepository, OurGardenRepository>();
 
             return services;
         }

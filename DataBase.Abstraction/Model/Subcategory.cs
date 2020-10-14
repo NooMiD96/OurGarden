@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PhotoService.Abstraction.Model;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataBase.Abstraction.Model

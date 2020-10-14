@@ -4,6 +4,8 @@ using DataBase.Abstraction.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+using PhotoService.Abstraction.Model;
+
 namespace DataBase.Context
 {
     public partial class OurGardenContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>

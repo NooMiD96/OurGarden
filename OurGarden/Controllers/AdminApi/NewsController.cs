@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO;
 
 using Core.Constants;
 using Core.Helpers;
@@ -8,6 +9,8 @@ using DataBase.Abstraction.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using PhotoService.Abstraction;
 
 using System;
 using System.Linq;
@@ -29,11 +32,13 @@ namespace Web.Controllers.AdminApi
         private const string CONTROLLER_LOCATE = "AdminApi.NewsController";
 
         public NewsController(IOurGardenRepository repository,
-                              ILogger<NewsController> logger)
+                              ILogger<NewsController> logger,
+                              IPhotoSaver photoSaver,
+                              IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository;
             _logger = logger;
-            _service = new NewsControllerService(_repository, _logger);
+            _service = new NewsControllerService(_repository, _logger, photoSaver, photoEntityUpdater);
         }
 
         [HttpGet("[action]")]

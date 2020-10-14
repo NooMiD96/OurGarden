@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO;
 
 using Core.Helpers;
 
@@ -10,13 +11,13 @@ using DataBase.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+using PhotoService.Abstraction.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Web.Controllers.AdminApi;
-using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -24,18 +25,20 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
-        private readonly FileHelper _fileHelper;
-        private readonly PhotoHelper _photoHelper;
+        private readonly IPhotoSaver _photoSaver;
+        private readonly IPhotoEntityUpdater _photoEntityUpdater;
         private readonly ILogger _logger;
 
         public CategoryControllerService(IOurGardenRepository repository,
-                                         ILogger logger)
+                                         ILogger logger,
+                                         IPhotoSaver photoSaver,
+                                         IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository.Context;
             _logger = logger;
-            _fileHelper = new FileHelper(repository);
-            _photoHelper = new PhotoHelper(repository, logger);
+            _photoSaver = photoSaver;
+            _photoEntityUpdater = photoEntityUpdater;
         }
 
         private async ValueTask<(Category category, string error)> CreateCategory(CategoryDTO entityDTO,
@@ -66,9 +69,9 @@ namespace Web.Services.Controllers.AdminApi
                 return (null, error);
             }
 
-            _photoHelper.MovePhotosToEntity(category, defaultPhotoList);
+            _photoEntityUpdater.MovePhotosToEntity(category, defaultPhotoList);
 
-            await _photoHelper.LoadPhotosToEntity(category,
+            await _photoEntityUpdater.LoadPhotosToEntity(category,
                                                   entityDTO,
                                                   scheduleAddedPhotoList,
                                                   scheduleDeletePhotoList);
@@ -164,7 +167,7 @@ namespace Web.Services.Controllers.AdminApi
                     };
 
                     // Удаляем фотографию для старой
-                    _photoHelper.MovePhotosToEntity(newSubcategory, oldSubcategory.Photos);
+                    _photoEntityUpdater.MovePhotosToEntity(newSubcategory, oldSubcategory.Photos);
 
                     // Загружаем список продуктов
                     await _context
@@ -196,12 +199,12 @@ namespace Web.Services.Controllers.AdminApi
                             Photos = new List<Photo>()
                         };
 
-                        _photoHelper.MovePhotosToEntity(newProduct, product.Photos);
+                        _photoEntityUpdater.MovePhotosToEntity(newProduct, product.Photos);
 
                         newSubcategory.Products.Add(newProduct);
                     }
 
-                    // Добовляем новую подкатегорию
+                    // Добавляем новую подкатегорию
                     _context.Add(newSubcategory);
 
                     // Теперь мы можем изменить заказы, т.к. новая категория с подкатегорией и продуктами добавлены
@@ -251,7 +254,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in scheduleDeletePhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 return (true, null);
@@ -260,7 +263,7 @@ namespace Web.Services.Controllers.AdminApi
             {
                 foreach (var photo in scheduleAddedPhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 var errMsg = "Ошибка при обновлении категории. Возможно подкатегория и товар с такой категорией уже существует.";
@@ -282,7 +285,7 @@ namespace Web.Services.Controllers.AdminApi
         /// <returns></returns>
         public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
         {
-            await _photoHelper.LoadPhotosToEntity(oldCategory, categoryDTO);
+            await _photoEntityUpdater.LoadPhotosToEntity(oldCategory, categoryDTO);
 
             oldCategory.Alias = categoryDTO.Alias;
             oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
@@ -313,7 +316,7 @@ namespace Web.Services.Controllers.AdminApi
 
             foreach (var photo in category.Photos)
             {
-                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
             }
 
             await _context.Entry(category)
@@ -328,7 +331,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in subcategory.Photos)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 await _context.Entry(subcategory)
@@ -343,7 +346,7 @@ namespace Web.Services.Controllers.AdminApi
 
                     foreach (var photo in product.Photos)
                     {
-                        await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                        await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO.Subcategory;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO.Subcategory;
 
 using Core.Constants;
 using Core.Helpers;
@@ -8,6 +9,8 @@ using DataBase.Abstraction.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using PhotoService.Abstraction;
 
 using System;
 using System.Linq;
@@ -30,11 +33,13 @@ namespace Web.Controllers.AdminApi
         private const string ERROR = "Что-то пошло не так, повторите попытку.";
 
         public SubcategoryController(IOurGardenRepository repository,
-                                     ILogger<SubcategoryController> logger)
+                                     ILogger<SubcategoryController> logger,
+                                     IPhotoSaver photoSaver,
+                                     IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository;
             _logger = logger;
-            _service = new SubcategoryControllerService(_repository, logger);
+            _service = new SubcategoryControllerService(_repository, logger, photoSaver, photoEntityUpdater);
         }
 
         [HttpGet("[action]")]

@@ -1,12 +1,13 @@
 ﻿using DataBase.Abstraction.Model;
 
-using System;
+using PhotoService.Abstraction;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataBase.Abstraction.Repositories
 {
-    public interface IOurGardenRepository
+    public interface IOurGardenRepository : IPhotoSaverRepository
     {
         #region General
 
@@ -22,7 +23,7 @@ namespace DataBase.Abstraction.Repositories
 
         #endregion
 
-            #region Category
+        #region Category
 
         Task<IEnumerable<Category>> GetCategories(bool isGetOnlyVisible = false);
 
@@ -162,14 +163,6 @@ namespace DataBase.Abstraction.Repositories
 
         #endregion Order
 
-        #region Files
-
-        Task AddFile(Photo photo, bool updateDB = true);
-
-        ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true);
-
-        #endregion Files
-
         #region Search
 
         Task<IEnumerable<ISearch>> Search(string search, bool isGetOnlyVisible = true);
@@ -178,9 +171,13 @@ namespace DataBase.Abstraction.Repositories
 
         #region PageInfo
 
-        public Task<PageInfo> GetPageInfo(int pageInfoId);
+        Task<PageInfo> GetPageInfo(int pageInfoId);
 
-        public Task<IEnumerable<PageInfo>> GetPageInfos();
+        Task<IEnumerable<PageInfo>> GetPageInfos();
+
+        Task AddPageInfo(PageInfo pageInfo);
+
+        Task UpdatePageInfo(PageInfo pageInfo);
 
         #endregion
     }

@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ApiService.Core
+namespace ApiService.Core.Email
 {
     public partial class EmailService : IEmailService
     {

@@ -1,6 +1,6 @@
-﻿using DataBase.Abstraction.Model;
+﻿using Microsoft.EntityFrameworkCore;
 
-using Microsoft.EntityFrameworkCore;
+using PhotoService.Abstraction.Model;
 
 using System;
 using System.Threading.Tasks;
@@ -9,7 +9,9 @@ namespace DataBase.Repository
 {
     public partial class OurGardenRepository
     {
-        public async Task AddFile(Photo photo, bool updateDB = true)
+        /// <inheritdoc/>
+        /// <seealso cref="IPhotoSaverRepository"/>
+        public async Task AddPhoto(Photo photo, bool updateDB = true)
         {
             Context.Photo.Add(photo);
 
@@ -19,7 +21,9 @@ namespace DataBase.Repository
             }
         }
 
-        public async ValueTask<bool> DeleteFile(Guid photoId, bool updateDB = true)
+        /// <inheritdoc/>
+        /// <seealso cref="IPhotoSaverRepository"/>
+        public async ValueTask<bool> RemovePhoto(Guid photoId, bool updateDB = true)
         {
             var photo = await Context.Photo.FirstOrDefaultAsync(x => x.PhotoId == photoId);
             if (photo == null)
@@ -28,7 +32,9 @@ namespace DataBase.Repository
             Context.Photo.Remove(photo);
 
             if (updateDB)
+            {
                 await Context.SaveChangesAsync();
+            }
 
             return true;
         }

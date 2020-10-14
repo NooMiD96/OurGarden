@@ -21,6 +21,8 @@
     <ProjectReference Include="..\DummyWorkerHostService\PagePingerHostService.csproj" />
     <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
+    <ProjectReference Include="..\ImageService.Abstraction\PhotoService.Abstraction.csproj" />
+    <ProjectReference Include="..\ImageService\PhotoService.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\OrderCleanerHostService\OrderCleanerHostService.csproj" />
     <ProjectReference Include="..\SiteMapHostService\SiteMapHostService.csproj" />

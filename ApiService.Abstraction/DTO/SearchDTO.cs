@@ -1,4 +1,4 @@
-﻿using DataBase.Abstraction.Model;
+﻿using PhotoService.Abstraction.Model;
 
 using System.Collections.Generic;
 

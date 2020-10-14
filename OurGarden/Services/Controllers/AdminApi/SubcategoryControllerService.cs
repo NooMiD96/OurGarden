@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO.Subcategory;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO.Subcategory;
 
 using Core.Helpers;
 
@@ -10,13 +11,13 @@ using DataBase.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+using PhotoService.Abstraction.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Web.Controllers.AdminApi;
-using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -24,18 +25,20 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
-        private readonly FileHelper _fileHelper;
-        private readonly PhotoHelper _photoHelper;
+        private readonly IPhotoSaver _photoSaver;
+        private readonly IPhotoEntityUpdater _photoEntityUpdater;
         private readonly ILogger _logger;
 
         public SubcategoryControllerService(IOurGardenRepository repository,
-                                            ILogger logger)
+                                            ILogger logger,
+                                            IPhotoSaver photoSaver,
+                                            IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository.Context;
             _logger = logger;
-            _fileHelper = new FileHelper(repository);
-            _photoHelper = new PhotoHelper(repository, logger);
+            _photoSaver = photoSaver;
+            _photoEntityUpdater = photoEntityUpdater;
         }
 
         private async ValueTask<(Subcategory subcategory, string error)> CreateSubcategory(SubcategoryDTO entityDTO,
@@ -68,9 +71,9 @@ namespace Web.Services.Controllers.AdminApi
                 return (null, error);
             }
 
-            _photoHelper.MovePhotosToEntity(subcategory, defaultPhotoList);
+            _photoEntityUpdater.MovePhotosToEntity(subcategory, defaultPhotoList);
 
-            await _photoHelper.LoadPhotosToEntity(subcategory,
+            await _photoEntityUpdater.LoadPhotosToEntity(subcategory,
                                                   entityDTO,
                                                   scheduleAddedPhotoList,
                                                   scheduleDeletePhotoList);
@@ -150,7 +153,7 @@ namespace Web.Services.Controllers.AdminApi
                         Photos = new List<Photo>()
                     };
 
-                    _photoHelper.MovePhotosToEntity(newProduct, product.Photos);
+                    _photoEntityUpdater.MovePhotosToEntity(newProduct, product.Photos);
 
                     newSubcategory.Products.Add(newProduct);
                 }
@@ -198,7 +201,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in scheduleDeletePhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 return (true, null);
@@ -207,7 +210,7 @@ namespace Web.Services.Controllers.AdminApi
             {
                 foreach (var photo in scheduleAddedPhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 var errMsg = "Ошибка при обновлении подкатегории. Возможно товар с такой подкатегорией уже существует.";
@@ -223,7 +226,7 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> UpdateSubcategory(SubcategoryDTO subcategoryDTO, Subcategory oldSubcategory)
         {
-            await _photoHelper.LoadPhotosToEntity(oldSubcategory, subcategoryDTO);
+            await _photoEntityUpdater.LoadPhotosToEntity(oldSubcategory, subcategoryDTO);
 
             oldSubcategory.Alias = subcategoryDTO.Alias;
             oldSubcategory.IsVisible = subcategoryDTO.IsVisible ?? true;
@@ -251,7 +254,7 @@ namespace Web.Services.Controllers.AdminApi
 
             foreach (var photo in subcategory.Photos)
             {
-                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
             }
 
             await _context.Entry(subcategory)
@@ -266,7 +269,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in product.Photos)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
             }
 

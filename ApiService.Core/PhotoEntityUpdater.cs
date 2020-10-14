@@ -1,45 +1,69 @@
-﻿#pragma warning disable CA1822 // Mark members as static
-
-using ApiService.Abstraction;
+﻿using ApiService.Abstraction;
+using ApiService.Abstraction.Core;
 
 using DataBase.Abstraction;
-using DataBase.Abstraction.Model;
 using DataBase.Abstraction.Repositories;
 
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+using PhotoService.Abstraction.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-using Web.Controllers.AdminApi;
-
-namespace Web.Helpers
+namespace ApiService.Core
 {
-    public class PhotoHelper
+    /// <summary>
+    /// Сервис по обновлению модели с фотографиями.
+    /// </summary>
+    public class PhotoEntityUpdater : IPhotoEntityUpdater
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly FileHelper _fileHelper;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "Service.PhotoHelper";
+        #region Fields
 
-        public PhotoHelper(IOurGardenRepository repository, ILogger logger)
+        /// <summary>
+        /// Репозиторий БД
+        /// </summary>
+        private readonly IOurGardenRepository _repository;
+
+        /// <summary>
+        /// Сервис сохранения фотографий
+        /// </summary>
+        private readonly IPhotoSaver _photoSaver;
+
+        /// <summary>
+        /// Логгер
+        /// </summary>
+        private readonly ILogger _logger;
+
+        #endregion
+
+        #region .ctor
+
+        public PhotoEntityUpdater(IOurGardenRepository repository,
+                                  ILogger<PhotoEntityUpdater> logger,
+                                  IPhotoSaver photoSaver)
         {
             _repository = repository;
             _logger = logger;
-            _fileHelper = new FileHelper(_repository);
+            _photoSaver = photoSaver;
         }
 
+        #endregion
+
+        #region IPhotoEntityUpdater Impl
+
+        /// <inheritdoc/>
         public async Task LoadPhotosToEntity<TType, TTypeDTO>(TType entity,
                                                               TTypeDTO entityDTO,
                                                               List<Photo> scheduleAddedPhotoList = null,
                                                               List<Photo> scheduleDeletePhotoList = null,
-                                                              int maxPixel = FileHelper.MAX_PIXEL) where TType : IPhoto
-                                                                                                   where TTypeDTO : IPhotoDTO
+                                                              int maxPixel = IPhotoSaver.MAX_PIXEL) where TType : IPhoto
+                                                                                                    where TTypeDTO : IPhotoDTO
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".LoadFilesToEntity";
-
             if (entityDTO.AddFiles != null && entityDTO.AddFiles.Count != 0)
             {
                 for (var i = 0; i < entityDTO.AddFiles.Count; i += 2)
@@ -47,7 +71,7 @@ namespace Web.Helpers
                     var photoFile = entityDTO.AddFiles.ElementAt(i);
                     var previewFile = entityDTO.AddFiles.ElementAt(i + 1);
 
-                    var photo = await _fileHelper.AddFileToRepository(photoFile, previewFile, updateDB: false, maxPixel: maxPixel);
+                    var photo = await _photoSaver.AddFileToRepository(photoFile, previewFile, updateDB: false, maxPixel: maxPixel);
 
                     entity.Photos.Add(photo);
 
@@ -69,7 +93,7 @@ namespace Web.Helpers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"{DateTime.Now}:\n\t{API_LOCATE}\n\terr: Не удалось распарсить строку {entityDTO.RemoveFiles}\n\tmes: {ex.Message}\n\t{ex.StackTrace}");
+                    _logger.LogError(ex, $"При обновлении фотографий не удалось распарсить строку {entityDTO.RemoveFiles}\n\tmes: {ex.Message}\n\t{ex.StackTrace}");
                 }
 
                 var removePhotos = entity.Photos
@@ -78,7 +102,7 @@ namespace Web.Helpers
 
                 foreach (var photo in removePhotos)
                 {
-                    await _repository.DeleteFile(photo.PhotoId, updateDB: false);
+                    await _repository.RemovePhoto(photo.PhotoId, updateDB: false);
                     entity.Photos.Remove(photo);
 
                     if (scheduleDeletePhotoList != null)
@@ -99,12 +123,13 @@ namespace Web.Helpers
                     var file = entity.Photos.FirstOrDefault(x => x.PhotoId == fileGuid);
                     if (file != null)
                     {
-                        _fileHelper.UpdateFilePreview(file, newPreview, maxPixel: maxPixel);
+                        _photoSaver.UpdateFilePreview(file, newPreview, maxPixel: maxPixel);
                     }
                 }
             }
         }
 
+        /// <inheritdoc/>
         public void MovePhotosToEntity<TType>(TType entity, ICollection<Photo> fileList) where TType : IPhoto
         {
             if (fileList != null)
@@ -118,7 +143,7 @@ namespace Web.Helpers
                 }
             }
         }
+
+        #endregion
     }
 }
-
-#pragma warning restore CA1822 // Mark members as static

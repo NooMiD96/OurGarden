@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO;
 
 using Core.Helpers;
 
@@ -9,12 +10,12 @@ using DataBase.Repository;
 
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+using PhotoService.Abstraction.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using Web.Controllers.AdminApi;
-using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -23,16 +24,19 @@ namespace Web.Services.Controllers.AdminApi
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly ILogger _logger;
-        private readonly FileHelper _fileHelper;
-        private readonly PhotoHelper _photoHelper;
+        private readonly IPhotoSaver _photoSaver;
+        private readonly IPhotoEntityUpdater _photoEntityUpdater;
 
-        public NewsControllerService(IOurGardenRepository repository, ILogger logger)
+        public NewsControllerService(IOurGardenRepository repository,
+                                     ILogger logger,
+                                     IPhotoSaver photoSaver,
+                                     IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository.Context;
             _logger = logger;
-            _fileHelper = new FileHelper(repository);
-            _photoHelper = new PhotoHelper(repository, logger);
+            _photoSaver = photoSaver;
+            _photoEntityUpdater = photoEntityUpdater;
         }
 
         private async ValueTask<(News entity, string error)> CreateNews(NewsDTO entityDTO,
@@ -61,9 +65,9 @@ namespace Web.Services.Controllers.AdminApi
                 return (null, error);
             }
 
-            _photoHelper.MovePhotosToEntity(entity, defaultPhotoList);
+            _photoEntityUpdater.MovePhotosToEntity(entity, defaultPhotoList);
 
-            await _photoHelper.LoadPhotosToEntity(entity,
+            await _photoEntityUpdater.LoadPhotosToEntity(entity,
                                                   entityDTO,
                                                   scheduleAddedPhotoList,
                                                   scheduleDeletePhotoList,
@@ -123,7 +127,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in scheduleDeletePhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 return (true, null);
@@ -132,7 +136,7 @@ namespace Web.Services.Controllers.AdminApi
             {
                 foreach (var photo in scheduleAddedPhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует.";
@@ -148,7 +152,7 @@ namespace Web.Services.Controllers.AdminApi
 
         public async ValueTask<(bool isSuccess, string error)> UpdateNews(NewsDTO entityDTO, News oldEntity)
         {
-            await _photoHelper.LoadPhotosToEntity(oldEntity, entityDTO, maxPixel: 1600);
+            await _photoEntityUpdater.LoadPhotosToEntity(oldEntity, entityDTO, maxPixel: 1600);
 
             oldEntity.Alias = entityDTO.Alias;
             oldEntity.Description = entityDTO.Description;
@@ -174,7 +178,7 @@ namespace Web.Services.Controllers.AdminApi
 
             foreach (var photo in entity.Photos)
             {
-                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
             }
 
             await _repository.DeleteNews(entity);

@@ -16,12 +16,22 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class PageInfoController : BaseController
     {
+        #region Fields
+
         private readonly IPageInfoControllerService _service;
+
+        #endregion
+
+        #region .ctor
 
         public PageInfoController(IPageInfoControllerService service)
         {
             _service = service;
         }
+
+        #endregion
+
+        #region API
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPageInfos()
@@ -55,5 +65,7 @@ namespace Web.Controllers.AdminApi
             else
                 return BadRequest(execResult.Error);
         }
+        
+        #endregion
     }
 }

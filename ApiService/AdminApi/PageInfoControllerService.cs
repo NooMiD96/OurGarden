@@ -80,6 +80,25 @@ namespace ApiService.AdminApi
                 Error = "Данный функционал ещё не доступен"
             });
 
+            try
+            {
+                if (pageInfoDTO.PageInfoId == 0)
+                {
+                    //_repository.AddPageInfo(
+
+                    //);
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
             //try
             //{
             //    bool isSuccess;

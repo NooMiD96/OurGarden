@@ -1,4 +1,5 @@
-﻿using ApiService.Abstraction.DTO.ProductDTO;
+﻿using ApiService.Abstraction.Core;
+using ApiService.Abstraction.DTO.ProductDTO;
 
 using Core.Helpers;
 
@@ -9,13 +10,13 @@ using DataBase.Repository;
 
 using Microsoft.Extensions.Logging;
 
+using PhotoService.Abstraction;
+using PhotoService.Abstraction.Model;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Web.Controllers.AdminApi;
-using Web.Helpers;
 
 namespace Web.Services.Controllers.AdminApi
 {
@@ -23,18 +24,20 @@ namespace Web.Services.Controllers.AdminApi
     {
         private readonly OurGardenRepository _repository;
         private readonly OurGardenContext _context;
-        private readonly FileHelper _fileHelper;
-        private readonly PhotoHelper _photoHelper;
+        private readonly IPhotoSaver _photoSaver;
+        private readonly IPhotoEntityUpdater _photoEntityUpdater;
         private readonly ILogger _logger;
 
         public ProductControllerService(IOurGardenRepository repository,
-                                        ILogger logger)
+                                        ILogger logger,
+                                        IPhotoSaver photoSaver,
+                                        IPhotoEntityUpdater photoEntityUpdater)
         {
             _repository = repository as OurGardenRepository;
             _context = _repository.Context;
             _logger = logger;
-            _fileHelper = new FileHelper(repository);
-            _photoHelper = new PhotoHelper(repository, logger);
+            _photoSaver = photoSaver;
+            _photoEntityUpdater = photoEntityUpdater;
         }
 
         private async ValueTask<(Product product, string error)> CreateProduct(ProductDTO entityDTO,
@@ -67,9 +70,9 @@ namespace Web.Services.Controllers.AdminApi
                 return (null, error);
             }
 
-            _photoHelper.MovePhotosToEntity(product, defaultPhotoList);
+            _photoEntityUpdater.MovePhotosToEntity(product, defaultPhotoList);
 
-            await _photoHelper.LoadPhotosToEntity(product,
+            await _photoEntityUpdater.LoadPhotosToEntity(product,
                                                   entityDTO,
                                                   scheduleAddedPhotoList,
                                                   scheduleDeletePhotoList);
@@ -144,7 +147,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var photo in scheduleDeletePhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 return (true, null);
@@ -153,23 +156,23 @@ namespace Web.Services.Controllers.AdminApi
             {
                 foreach (var photo in scheduleAddedPhotoList)
                 {
-                    await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                    await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
                 var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует.";
 
                 _logger.LogError(ex, errMsg);
-                
+
                 return cancelUpdate((
                     false,
                     $"{errMsg} Текст ошибки: {ex.Message}"
                 ));
             }
         }
-        
+
         public async ValueTask<(bool isSuccess, string error)> UpdateProduct(ProductDTO productDTO, Product oldProduct)
         {
-            await _photoHelper.LoadPhotosToEntity(oldProduct, productDTO);
+            await _photoEntityUpdater.LoadPhotosToEntity(oldProduct, productDTO);
 
             oldProduct.Alias = productDTO.Alias;
             oldProduct.IsVisible = productDTO.IsVisible ?? true;
@@ -197,7 +200,7 @@ namespace Web.Services.Controllers.AdminApi
 
             foreach (var photo in product.Photos)
             {
-                await _fileHelper.RemoveFileFromRepository(photo, updateDB: false);
+                await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
             }
 
             await _repository.DeleteProduct(product);

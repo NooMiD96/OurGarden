@@ -26,8 +26,19 @@ namespace SiteMapHostService
 {
     public class SiteMapBuilder : ISiteMapBuilder
     {
+        #region CONST
+
+        /// <summary>
+        /// Максимальное кол-во ссылок в одном файле
+        /// </summary>
         const int MAX_URL_COUNT = 50_000;
+
+        /// <summary>
+        /// Папка в которой будут лежать карты сайта
+        /// </summary>
         const string SITEMAPS_SUBDIRECTORY = "sitemaps";
+
+        #endregion
 
         #region Fields
 
