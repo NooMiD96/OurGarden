@@ -18,7 +18,6 @@
     },
     "StartDev": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -26,18 +25,9 @@
     },
     "StartProd": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
         "ASPNETCORE_SUPPRESSSTATUSMESSAGES": "true"
-      },
-      "applicationUrl": "https://127.0.0.1:5001;http://127.0.0.1:5000"
-    },
-    "StartStage": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging"
       },
       "applicationUrl": "https://127.0.0.1:5001;http://127.0.0.1:5000"
     }

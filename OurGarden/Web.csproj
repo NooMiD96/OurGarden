@@ -9,7 +9,7 @@
     <SpaClientRoot>$(SpaRoot)ClientApp\</SpaClientRoot>
     <SpaAdminRoot>$(SpaRoot)AdminApp\</SpaAdminRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaClientRoot)node_modules\**;$(SpaAdminRoot)node_modules\**</DefaultItemExcludes>
-    <Configurations>Debug;Release;Stage</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -72,9 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
     <Folder Include="wwwroot\admin\" />
-    <Folder Include="wwwroot\bundles\" />
     <Folder Include="wwwroot\client\" />
   </ItemGroup>
 
@@ -116,12 +114,6 @@
     <Message Importance="high" Text="Run Debug config" />
 
     <CallTarget Targets="CheckEnvironment;UpdateWebPackages" />
-  </Target>
-
-  <Target Name="StageBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Stage' ">
-    <Message Importance="high" Text="Run Stage config" />
-
-    <CallTarget Targets="CheckEnvironment;UpdateWebPackages;BuildWebProjects" />
   </Target>
 
   <Target Name="ProdBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">

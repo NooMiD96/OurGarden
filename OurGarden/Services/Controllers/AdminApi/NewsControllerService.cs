@@ -21,7 +21,7 @@ namespace Web.Services.Controllers.AdminApi
 {
     public class NewsControllerService
     {
-        private readonly OurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly ILogger _logger;
         private readonly IPhotoSaver _photoSaver;
@@ -32,8 +32,8 @@ namespace Web.Services.Controllers.AdminApi
                                      IPhotoSaver photoSaver,
                                      IPhotoEntityUpdater photoEntityUpdater)
         {
-            _repository = repository as OurGardenRepository;
-            _context = _repository.Context;
+            _repository = repository;
+            _context = (_repository as OurGardenRepository).Context;
             _logger = logger;
             _photoSaver = photoSaver;
             _photoEntityUpdater = photoEntityUpdater;

@@ -22,7 +22,7 @@ namespace Web.Services.Controllers.AdminApi
 {
     public class ProductControllerService
     {
-        private readonly OurGardenRepository _repository;
+        private readonly IOurGardenRepository _repository;
         private readonly OurGardenContext _context;
         private readonly IPhotoSaver _photoSaver;
         private readonly IPhotoEntityUpdater _photoEntityUpdater;
@@ -33,8 +33,8 @@ namespace Web.Services.Controllers.AdminApi
                                         IPhotoSaver photoSaver,
                                         IPhotoEntityUpdater photoEntityUpdater)
         {
-            _repository = repository as OurGardenRepository;
-            _context = _repository.Context;
+            _repository = repository;
+            _context = (repository as OurGardenRepository).Context;
             _logger = logger;
             _photoSaver = photoSaver;
             _photoEntityUpdater = photoEntityUpdater;
