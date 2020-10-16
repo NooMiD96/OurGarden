@@ -7,6 +7,11 @@
 
     var prerenderResult = await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
 
+    if (!String.IsNullOrEmpty(prerenderResult.RedirectUrl))
+    {
+        Context.Response.Redirect(prerenderResult.RedirectUrl, true);
+    }
+
     var jsBundles = prerenderResult?.Globals?["js"]?.Select(x => x.Value<string>("publicPath")).ToList();
     var cssBundles = prerenderResult?.Globals?["css"]?.Select(x => x.Value<string>("publicPath")).ToList();
     var stringCss = prerenderResult?.Globals?["stringCss"]?.ToString();
@@ -92,7 +97,16 @@
     <style id="jss-server-side">@(Html.Raw(stringCss))</style>
 
     <script>
-        window.initialReduxState = @Html.Raw(initialReduxStateJson);
+        window.initialReduxState = @{
+            if (initialReduxStateJson != null)
+            {
+                @Html.Raw(initialReduxStateJson);
+            }
+            else
+            {
+                @Html.Raw("\"\"");
+            }
+        };
         window.__isMobileBrowser = @(Model.IsMobileBrowser ? "true" : "false");
     </script>
 </head>

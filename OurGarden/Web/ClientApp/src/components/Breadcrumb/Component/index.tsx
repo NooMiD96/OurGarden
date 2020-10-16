@@ -14,7 +14,7 @@ const { Header } = Layout;
 const slash = <span className="slash">/</span>;
 const homeBreadcrumb: IBreadcrumb = {
   displayName: "Главная",
-  url: "Home",
+  url: "",
   order: 0,
 };
 
