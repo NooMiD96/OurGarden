@@ -21,6 +21,13 @@ namespace DataBase.Abstraction.Repositories
         /// </summary>
         Task LoadPhotoCollection<T>(IEnumerable<T> modelList) where T : IPhoto;
 
+        /// <summary>
+        /// Сохраняет все внесённые изменения,
+        /// так как есть методы которые сразу не вызывают сохранения.
+        /// </summary>
+        /// <returns></returns>
+        Task<int> SaveChangesAsync();
+
         #endregion
 
         #region Category
@@ -172,12 +179,18 @@ namespace DataBase.Abstraction.Repositories
         #region PageInfo
 
         Task<PageInfo> GetPageInfo(int pageInfoId);
+        
+        Task<PageInfo> GetPageInfo(string pageInfoAlias);
 
         Task<IEnumerable<PageInfo>> GetPageInfos();
 
-        Task AddPageInfo(PageInfo pageInfo);
+        ValueTask<(bool isSuccess, string error)> AddPageInfo(PageInfo pageInfo);
 
-        Task UpdatePageInfo(PageInfo pageInfo);
+        ValueTask<(bool isSuccess, string error)> UpdatePageInfo(PageInfo pageInfo);
+
+        Task DeletePageInfo(int pageInfoId);
+
+        Task DeletePageInfo(PageInfo pageInfo);
 
         #endregion
     }

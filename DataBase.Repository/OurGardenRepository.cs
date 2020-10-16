@@ -35,5 +35,11 @@ namespace DataBase.Repository
                 await LoadPhotoCollection(model);
             }
         }
+
+        /// <inheritdoc/>
+        public Task<int> SaveChangesAsync()
+        {
+            return Context.SaveChangesAsync();
+        }
     }
 }

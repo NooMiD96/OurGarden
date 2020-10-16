@@ -12,7 +12,11 @@ namespace DataBase.Abstraction.Model
         public int PageInfoId { get; set; }
 
         #region IAlias
-        
+
+        [Required]
+        [MaxLength(256)]
+        public string NormalizeAlias { get; set; }
+
         [Required]
         [MaxLength(128)]
         public string Alias { get; set; }

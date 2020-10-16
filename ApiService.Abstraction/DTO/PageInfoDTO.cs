@@ -1,11 +1,10 @@
-﻿using PhotoService.Abstraction.Model;
+﻿using Microsoft.AspNetCore.Http;
 
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApiService.Abstraction.DTO
 {
-    public class PageInfoDTO
+    public class PageInfoDTO : IPhotoDTO
     {
         public int PageInfoId { get; set; }
 
@@ -48,10 +47,10 @@ namespace ApiService.Abstraction.DTO
 
         #endregion
 
-        #region Childrens
+        public IFormFileCollection AddFiles { get; set; }
 
-        public ICollection<Photo> Photos { get; set; }
+        public IFormFileCollection UpdateFiles { get; set; }
 
-        #endregion
+        public string RemoveFiles { get; set; }
     }
 }

@@ -23,11 +23,11 @@ namespace DataBase.Repository
 
         public async Task<Gallery> GetGallery(string galleryName)
         {
-            var normilazyName = galleryName.TransformToId();
+            var normalizeName = galleryName.TransformToId();
 
             return await Context.Gallery
                 .Include(x => x.Photos)
-                .FirstOrDefaultAsync(x => x.NormalizeAlias == normilazyName);
+                .FirstOrDefaultAsync(x => x.NormalizeAlias == normalizeName);
         }
 
         public async ValueTask<(bool isSuccess, string error)> AddGallery(Gallery gallery)

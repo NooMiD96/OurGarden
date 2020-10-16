@@ -18,6 +18,7 @@ namespace ApiService.Abstraction.Core
         /// В <paramref name="scheduleAddedPhotoList"/> и <paramref name="scheduleDeletePhotoList"/> загружаются фотографии,
         /// с которыми нужно проделать постобработку.
         /// </summary>
+        /// <remarks>Вызов данной функции не приводит к сохранению изменений в БД!</remarks>
         Task LoadPhotosToEntity<TType, TTypeDTO>(TType entity,
                                                  TTypeDTO entityDTO,
                                                  List<Photo> scheduleAddedPhotoList = null,
