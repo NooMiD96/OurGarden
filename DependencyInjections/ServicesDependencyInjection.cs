@@ -4,6 +4,7 @@ using ApiService.Abstraction.Core;
 using ApiService.AdminApi;
 using ApiService.Api;
 using ApiService.Core;
+using ApiService.Core.Admin;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,7 +42,8 @@ namespace DependencyInjections
             services.AddTransient<IEmailService, ApiService.Core.Email.EmailService>();
             services.AddTransient<IPhotoSaver, PhotoSaver>();
             services.AddTransient<IPhotoEntityUpdater, PhotoEntityUpdater>();
-         
+            services.AddTransient<IAdminCRUDService, AdminCRUDService>();
+
             #endregion
 
             #region Api
