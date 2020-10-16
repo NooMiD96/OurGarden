@@ -139,7 +139,7 @@ namespace Web.Services.Controllers.AdminApi
                     await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
                 }
 
-                var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованем уже существует.";
+                var errMsg = "Ошибка при обновлении товара. Возможно товар с таким наименованием уже существует.";
 
                 _logger.LogError(ex, errMsg);
 

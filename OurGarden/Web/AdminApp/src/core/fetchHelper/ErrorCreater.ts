@@ -1,15 +1,28 @@
-import { IJsonValidationError } from "./IResponse";
+import { IJsonValidationError, IResponse } from "./IResponse";
 
-export const errorCreater = (message: string) =>
-  Promise.reject(new Error(message));
+// prettier-ignore
+export const errorCreater = (message: string) => Promise.reject(new Error(message));
 
 errorCreater.createValidationError = async (res: Response) => {
-  const error: IJsonValidationError = await res.json();
+  try {
+    // prettier-ignore
+    const error: IJsonValidationError & IResponse<unknown>
+      = await res.clone().json();
 
-  return errorCreater(
-    `Ошибка формата данных. Проверьте что все обязательные поля заполнены. ${error.title}`
-  );
+    if (error?.error) {
+      return errorCreater(error.error);
+    }
+
+    // prettier-ignore
+    return errorCreater(
+      `Ошибка формата данных. Проверьте что все обязательные поля заполнены. ${error?.title
+        ?? ""}`
+    );
+    // eslint-disable-next-line no-empty
+  } catch {}
+  const errorString = await res.text();
+  return errorCreater(errorString);
 };
 
-errorCreater.createAuthError = () =>
-  errorCreater("Ошибка авторизации! Пожалуйста, перезайдите заново.");
+// prettier-ignore
+errorCreater.createAuthError = () => errorCreater("Ошибка авторизации! Пожалуйста, перезайдите заново.");

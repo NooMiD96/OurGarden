@@ -80,8 +80,6 @@ namespace Web.Controllers.AdminApi
                         (isSuccess, error) = await _service.FullUpdateNews(newsDTO, oldNews);
                     else
                         (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
-
-                    (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
                 }
 
                 if (!isSuccess)

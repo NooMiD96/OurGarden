@@ -11,6 +11,7 @@ export const responseCatcher = async (res: Response) => {
   try {
     console.warn("JSON.stringify(res)");
     console.warn(JSON.stringify(res));
+    // eslint-disable-next-line no-empty
   } catch (error) {}
 
   switch (res.status) {
