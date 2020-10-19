@@ -1,5 +1,3 @@
-import { Push } from "connected-react-router";
-
 import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 
 import { actionCreators as mainActionCreators } from "@components/Main/State/actions";
@@ -18,7 +16,6 @@ export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = {
-  push: Push;
   getPageInfo: typeof mainActionCreators.getPageInfo;
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 };

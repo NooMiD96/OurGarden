@@ -12,11 +12,13 @@ const TooltipContent = ({
   showPhoneTooltip = true,
   showEmailTooltip = true,
   showGalleryTooltip = true,
+  showAddressTooltip = true,
+  showShortAddressTooltip = true,
 }: IDescriptionTooltipProps) => {
   const tips: React.ReactNode[] = [];
 
   if (showCatalogTooltip) {
-    tips.push((
+    tips.push(
       <p key="catalog-tip">
         {"{{"}
         catalog
@@ -26,13 +28,14 @@ const TooltipContent = ({
         {" "}
         {conditionStringHelper}
         {" "}
-        на его месте будет выводиться каталог с товарами.
+        на его месте будет выводиться каталог с
+        товарами.
       </p>
-    ));
+    );
   }
 
   if (showPhoneTooltip) {
-    tips.push((
+    tips.push(
       <p key="phone-tip">
         {"{{"}
         phone
@@ -42,13 +45,14 @@ const TooltipContent = ({
         {" "}
         {conditionStringHelper}
         {" "}
-        на его месте будет выводится форматированный телефон.
+        на его месте будет выводится
+        форматированный телефон.
       </p>
-    ));
+    );
   }
 
   if (showEmailTooltip) {
-    tips.push((
+    tips.push(
       <p key="email-tip">
         {"{{"}
         email
@@ -60,11 +64,48 @@ const TooltipContent = ({
         {" "}
         на его месте будет выводится почта.
       </p>
-    ));
+    );
+  }
+
+  if (showAddressTooltip) {
+    tips.push(
+      <p key="address-tip">
+        {"{{"}
+        address
+        {"}}"}
+        {" "}
+        -
+        {" "}
+        {conditionStringHelper}
+        {" "}
+        на его месте будет выводится адрес
+        магазина (т.е. &quot;г. Тула,
+        {"{{"}
+        short_address
+        {"}}"}
+        &quot;).
+      </p>
+    );
+  }
+
+  if (showShortAddressTooltip) {
+    tips.push(
+      <p key="email-tip">
+        {"{{"}
+        short_address
+        {"}}"}
+        {" "}
+        -
+        {" "}
+        {conditionStringHelper}
+        {" "}
+        на его месте будет выводится короткий адрес магазина (т.е. &quot;ул. 9 мая, 36&quot;).
+      </p>
+    );
   }
 
   if (showGalleryTooltip) {
-    tips.push((
+    tips.push(
       <p key="gallery-tip">
         {"{{"}
         gallery=Имя галереи
@@ -74,16 +115,13 @@ const TooltipContent = ({
         {" "}
         {conditionStringHelper}
         {" "}
-        на его месте будет выводится галерея, с указанным именем.
+        на его месте будет выводится галерея, с
+        указанным именем.
       </p>
-    ));
+    );
   }
 
-  return (
-    <div>
-      {tips}
-    </div>
-  );
+  return <div>{tips}</div>;
 };
 
 // prettier-ignore
@@ -92,6 +130,8 @@ const DescriptionTooltip = ({
   showPhoneTooltip = true,
   showEmailTooltip = true,
   showGalleryTooltip = true,
+  showAddressTooltip = true,
+  showShortAddressTooltip = true,
 }: IDescriptionTooltipProps) => (
   <Tooltip
     title={(
@@ -100,6 +140,8 @@ const DescriptionTooltip = ({
         showPhoneTooltip={showPhoneTooltip}
         showEmailTooltip={showEmailTooltip}
         showGalleryTooltip={showGalleryTooltip}
+        showAddressTooltip={showAddressTooltip}
+        showShortAddressTooltip={showShortAddressTooltip}
       />
     )}
   >

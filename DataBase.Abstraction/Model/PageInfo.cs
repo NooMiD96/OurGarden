@@ -43,7 +43,10 @@ namespace DataBase.Abstraction.Model
         /// Можно ли изменить поле Alias
         /// </summary>
         public bool IsAliasCanBeEdited {
-            get => PageInfoId != HomePageId && PageInfoId != DesignPageId;
+            get => PageInfoId != HomePageId
+                && PageInfoId != DesignPageId
+                && PageInfoId != PaymentPageId
+                && PageInfoId != GazonPageId;
         }
 
         #region Static Pages Id

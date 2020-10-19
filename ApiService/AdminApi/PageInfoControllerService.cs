@@ -139,7 +139,10 @@ namespace ApiService.AdminApi
                         };
                     }
 
-                    if (entityDTO.IsAliasCanBeEdited)
+                    if (
+                        entityDTO.IsAliasCanBeEdited
+                        && oldEntity.Alias.TransformToId() != entityDTO.Alias.TransformToId()
+                    )
                     {
                         //await FullUpdate(entityDTO, oldEntity);
                         throw new NotImplementedException();

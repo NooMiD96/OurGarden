@@ -232,8 +232,12 @@ namespace ApiService.Core
                     section = _seoInformation.NewsList;
                     break;
                 case "payment":
-                    section = _seoInformation.Payment;
-                    break;
+                    pageInfo = await _repository.GetPageInfo(PageInfo.PaymentPageId);
+                    return (
+                        pageInfo.SeoTitle,
+                        pageInfo.SeoDescription,
+                        pageInfo.SeoKeywords
+                    );
 
                 case "videogalery":
                     section = _seoInformation.Videogalery;
@@ -245,8 +249,12 @@ namespace ApiService.Core
                     section = _seoInformation.UserCard;
                     break;
                 case "rulonnyj-gazon":
-                    section = _seoInformation.RulonnyjGazon;
-                    break;
+                    pageInfo = await _repository.GetPageInfo(PageInfo.GazonPageId);
+                    return (
+                        pageInfo.SeoTitle,
+                        pageInfo.SeoDescription,
+                        pageInfo.SeoKeywords
+                    );
 
                 default:
                     return default;

@@ -12,6 +12,8 @@ export const RUSSIAN_CURRENCY = "₽";
 
 export const PHONE_MACROS = "{{phone}}";
 export const EMAIL_MACROS = "{{email}}";
+export const ADDRESS_MACROS = "{{address}}";
+export const SHORT_ADDRESS_MACROS = "{{short_address}}";
 export const CATALOG_MACROS = "{{catalog}}";
 export const GALLERY_MACROS = /{{gallery=(?<galleryName>.+)}}/;
 
@@ -21,3 +23,5 @@ export const CARD_PATH = "/Card";
 
 export const HOME_PAGE_INFO_ID = 1;
 export const DESIGN_PAGE_INFO_ID = 2;
+export const PAYMENT_PAGE_INFO_ID = 3;
+export const GAZON_PAGE_INFO_ID = 4;

@@ -4,6 +4,10 @@ import {
   MAIN_MOBILE_FORMATTED,
   MAIN_MOBILE,
   HELP_EMAIL,
+  ADDRESS_MACROS,
+  ADDRESS,
+  SHORT_ADDRESS,
+  SHORT_ADDRESS_MACROS,
 } from "@src/core/constants";
 
 /**
@@ -39,5 +43,7 @@ export const getFormattedDescription = (description?: string) => {
     .replace(
       EMAIL_MACROS,
       `<a class="email-wrapper" href="mailto:${HELP_EMAIL}"><span>${HELP_EMAIL}</span></a>`
-    );
+    )
+    .replace(ADDRESS_MACROS, `<span>${ADDRESS}</span>`)
+    .replace(SHORT_ADDRESS_MACROS, `<span>${SHORT_ADDRESS}</span>`);
 };

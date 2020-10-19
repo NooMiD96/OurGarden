@@ -3,4 +3,6 @@ export interface IDescriptionTooltipProps {
   showPhoneTooltip?: boolean;
   showEmailTooltip?: boolean;
   showGalleryTooltip?: boolean;
+  showAddressTooltip?: boolean;
+  showShortAddressTooltip?: boolean;
 }
