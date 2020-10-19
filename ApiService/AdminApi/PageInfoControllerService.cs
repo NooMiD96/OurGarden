@@ -232,8 +232,6 @@ namespace ApiService.AdminApi
         /// Функция по обновлению полей сущности. Используется во многих местах,
         /// поэтому приведена единая.
         /// </summary>
-        /// <typeparam name="TType">Исходный тип сущности</typeparam>
-        /// <typeparam name="TTypeDTO">ДТО модель</typeparam>
         /// <param name="entity">Исходный объект</param>
         /// <param name="entityDTO">ДТО</param>
         public override void UpdateEntityObjectAction(PageInfo entity, PageInfoDTO entityDTO)

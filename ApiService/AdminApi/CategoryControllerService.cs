@@ -1,5 +1,8 @@
-﻿using ApiService.Abstraction.Core;
+﻿using ApiService.Abstraction.AdminApi;
+using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
+using ApiService.Abstraction.Model;
+using ApiService.Core.Admin;
 
 using Core.Helpers;
 
@@ -8,7 +11,6 @@ using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using PhotoService.Abstraction;
@@ -19,20 +21,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Services.Controllers.AdminApi
+namespace ApiService.AdminApi
 {
-    public class CategoryControllerService
+    public class CategoryControllerService : AdminCRUDService<Category, CategoryDTO>, ICategoryControllerService, IAdminCRUDService<Category, CategoryDTO>
     {
+        #region Fields
+
+        /// <summary>
+        /// Репо БД
+        /// </summary>
         private readonly IOurGardenRepository _repository;
+
+        /// <summary>
+        /// Оригинальный контекст БД
+        /// </summary>
+        [Obsolete]
         private readonly OurGardenContext _context;
-        private readonly IPhotoSaver _photoSaver;
-        private readonly IPhotoEntityUpdater _photoEntityUpdater;
+
+        /// <summary>
+        /// Логгер
+        /// </summary>
         private readonly ILogger _logger;
 
-        public CategoryControllerService(IOurGardenRepository repository,
-                                         ILogger logger,
+        /// <summary>
+        /// Сервис сохранения фотографий
+        /// </summary>
+        private readonly IPhotoSaver _photoSaver;
+
+        /// <summary>
+        /// Сервис обновления фотографий у существующего объекта
+        /// </summary>
+        private readonly IPhotoEntityUpdater _photoEntityUpdater;
+
+        #endregion
+
+        #region .ctor
+
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        public CategoryControllerService(ILogger<CategoryControllerService> logger,
+                                         IOurGardenRepository repository,
                                          IPhotoSaver photoSaver,
-                                         IPhotoEntityUpdater photoEntityUpdater)
+                                         IPhotoEntityUpdater photoEntityUpdater) : base(repository,
+                                                                                        photoSaver,
+                                                                                        photoEntityUpdater)
         {
             _repository = repository;
             _context = (_repository as OurGardenRepository).Context;
@@ -41,60 +74,171 @@ namespace Web.Services.Controllers.AdminApi
             _photoEntityUpdater = photoEntityUpdater;
         }
 
-        private async ValueTask<(Category category, string error)> CreateCategory(CategoryDTO entityDTO,
-                                                                                  ICollection<Photo> defaultPhotoList = null,
-                                                                                  List<Photo> scheduleAddedPhotoList = null,
-                                                                                  List<Photo> scheduleDeletePhotoList = null)
+        #endregion
+
+        #region ICategoryControllerService Impl
+
+        /// <inheritdoc/>
+        public async Task<ServiceExecuteResult<IEnumerable<Category>>> GetCategories()
         {
-            var category = new Category()
+            try
             {
-                CategoryId = entityDTO.Alias.TransformToId(),
+                var categories = (
+                        await _repository.GetCategories(isGetOnlyVisible: false)
+                    )
+                    .OrderBy(x => x.Alias)
+                    .ToList();
 
-                Alias = entityDTO.Alias,
-                IsVisible = entityDTO.IsVisible ?? true,
+                foreach (var category in categories)
+                {
+                    category.Photos = category.Photos.OrderBy(x => x.Date).ToList();
+                }
 
-                SeoTitle = entityDTO.SeoTitle,
-                SeoDescription = entityDTO.SeoDescription,
-                SeoKeywords = entityDTO.SeoKeywords,
-
-                Description = entityDTO.Description,
-
-                Photos = new List<Photo>()
-            };
-
-            //Добавляем и проверяем можем ли мы добавить данную категорию
-            var (isSuccess, error) = await _repository.AddCategory(category);
-            if (!isSuccess)
-            {
-                return (null, error);
+                return new ServiceExecuteResult<IEnumerable<Category>>
+                {
+                    IsSuccess = true,
+                    Result = categories
+                };
             }
+            catch (Exception ex)
+            {
+                var msg = $"Не удалось получить список категорий. ${ex.Message}";
+                _logger.LogError(ex, msg);
 
-            _photoEntityUpdater.MovePhotosToEntity(category, defaultPhotoList);
-
-            await _photoEntityUpdater.LoadPhotosToEntity(category,
-                                                  entityDTO,
-                                                  scheduleAddedPhotoList,
-                                                  scheduleDeletePhotoList);
-
-            await _context.SaveChangesAsync();
-
-            return (category, null);
+                return new ServiceExecuteResult<IEnumerable<Category>>
+                {
+                    IsSuccess = false,
+                    Error = msg
+                };
+            }
         }
 
-        /// <summary>
-        /// Добавление новой категории
-        /// </summary>
-        public async ValueTask<(bool isSuccess, string error)> AddCategory(CategoryDTO categoryDTO)
+        /// <inheritdoc/>
+        public async Task<ServiceExecuteResult<bool>> AddOrUpdate(CategoryDTO entityDTO)
         {
-            var (category, error) = await CreateCategory(categoryDTO);
+            try
+            {
+                if (String.IsNullOrEmpty(entityDTO?.CategoryId))
+                {
+                    var (entity, error) = await this.CreateEntity(
+                        entityDTO,
+                        addEntityDbFunc: _repository.AddCategory);
 
-            return (category != null, error);
+                    if (entity == null)
+                    {
+                        return new ServiceExecuteResult<bool>
+                        {
+                            IsSuccess = false,
+                            Error = error
+                        };
+                    }
+
+                    return new ServiceExecuteResult<bool>
+                    {
+                        IsSuccess = true,
+                        Result = true
+                    };
+                }
+                else
+                {
+                    var oldEntity = await _repository.GetCategory(entityDTO.CategoryId);
+
+                    if (oldEntity is null)
+                    {
+                        var msg = $"Не удалось найти категорию с именем \"{entityDTO.Alias}\" (идентификатором \"{entityDTO.CategoryId}\")";
+                        _logger.LogError(msg);
+
+                        return new ServiceExecuteResult<bool>
+                        {
+                            IsSuccess = false,
+                            Error = msg
+                        };
+                    }
+
+                    if (oldEntity.Alias.TransformToId() != oldEntity.Alias.TransformToId())
+                    {
+                        var (isSuccess, error) = await FullUpdate(entityDTO, oldEntity);
+
+                        return new ServiceExecuteResult<bool>
+                        {
+                            IsSuccess = isSuccess,
+                            Result = isSuccess,
+                            Error = error
+                        };
+                    }
+                    else
+                    {
+                        var (isSuccess, error) = await this.UpdateEntity(
+                            oldEntity,
+                            entityDTO,
+                            updateEntityDbFunc: _repository.UpdateCategory);
+
+                        return new ServiceExecuteResult<bool>
+                        {
+                            IsSuccess = isSuccess,
+                            Result = isSuccess,
+                            Error = error
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = $"В результате добавления/обновления произошла ошибка: {ex.Message}";
+                _logger.LogError($"{msg}\nModel: {JsonHelper.Serialize(entityDTO)}");
+
+                return new ServiceExecuteResult<bool>
+                {
+                    IsSuccess = false,
+                    Error = msg
+                };
+            }
         }
 
-        /// <summary>
-        /// Обновление категории, включая её потомков
-        /// </summary>
-        public async ValueTask<(bool isSuccess, string error)> FullUpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
+        /// <inheritdoc/>
+        public async Task<ServiceExecuteResult<bool>> DeleteCategory(string categoryId)
+        {
+            try
+            {
+                var entity = await _repository.GetCategory(categoryId);
+                if (entity is null)
+                {
+                    var msg = $"Не удалось удалить категорию с идентификатором \"{categoryId}\" так как такая категория не найдена.";
+                    _logger.LogError(msg);
+
+                    return new ServiceExecuteResult<bool>
+                    {
+                        IsSuccess = false,
+                        Error = msg
+                    };
+                }
+
+                await Delete(entity);
+
+                return new ServiceExecuteResult<bool>
+                {
+                    IsSuccess = true,
+                    Result = true
+                };
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Не удалось удалить категорию с идентификатором \"{categoryId}\" по след. причине: {ex.Message}";
+                _logger.LogError(msg);
+
+                return new ServiceExecuteResult<bool>
+                {
+                    IsSuccess = false,
+                    Error = msg
+                };
+            }
+        }
+
+        #endregion
+
+        #region Private
+
+        private async ValueTask<(bool isSuccess, string error)> FullUpdate(CategoryDTO categoryDTO, Category oldCategory)
         {
             // В случае когда нам не удаётся обновить данную модель
             // Мы должны удалить те фото, которые были добавлены
@@ -115,10 +259,11 @@ namespace Web.Services.Controllers.AdminApi
             {
                 #region Create new entity and migrate/update photo list
 
-                var (newCategory, error) = await CreateCategory(categoryDTO,
-                                                                defaultPhotoList: oldCategory.Photos,
-                                                                scheduleAddedPhotoList: scheduleAddedPhotoList,
-                                                                scheduleDeletePhotoList: scheduleDeletePhotoList);
+                var (newCategory, error) = await this.CreateEntity(categoryDTO,
+                                                                   addEntityDbFunc: _repository.AddCategory,
+                                                                   defaultPhotoList: oldCategory.Photos,
+                                                                   scheduleAddedPhotoList: scheduleAddedPhotoList,
+                                                                   scheduleDeletePhotoList: scheduleDeletePhotoList);
 
                 if (newCategory is null)
                 {
@@ -143,11 +288,8 @@ namespace Web.Services.Controllers.AdminApi
                     var oldSubcategory = oldCategory.Subcategories.ElementAt(0);
                     var newSubcategory = default(Subcategory);
 
-                    // Загружаем для подкатегории фотографию
-                    await _context
-                        .Entry(oldSubcategory)
-                        .Collection(x => x.Photos)
-                        .LoadAsync();
+                    // Загружаем для подкатегории фотографии
+                    await _repository.LoadPhotoCollection(oldSubcategory);
 
                     // Создаём новую подкатегорию
                     newSubcategory = new Subcategory()
@@ -177,10 +319,7 @@ namespace Web.Services.Controllers.AdminApi
 
                     foreach (var product in oldSubcategory.Products)
                     {
-                        await _context
-                            .Entry(product)
-                            .Collection(x => x.Photos)
-                            .LoadAsync();
+                        await _repository.LoadPhotoCollection(product);
 
                         var newProduct = new Product()
                         {
@@ -244,7 +383,7 @@ namespace Web.Services.Controllers.AdminApi
                     _context.Remove(oldSubcategory);
 
                     // Сохраняем изменения
-                    await _context.SaveChangesAsync();
+                    await _repository.SaveChangesAsync();
                 }
 
                 // Если всё прошло удачно, удаляем старую категорию
@@ -278,42 +417,26 @@ namespace Web.Services.Controllers.AdminApi
         }
 
         /// <summary>
-        /// Обновление категории, не включая потомков
+        /// Функция по обновлению полей сущности. Используется во многих местах,
+        /// поэтому приведена единая.
         /// </summary>
-        /// <param name="categoryDTO"></param>
-        /// <param name="oldCategory"></param>
-        /// <returns></returns>
-        public async ValueTask<(bool isSuccess, string error)> UpdateCategory(CategoryDTO categoryDTO, Category oldCategory)
+        /// <param name="entity">Исходный объект</param>
+        /// <param name="entityDTO">ДТО</param>
+        public override void UpdateEntityObjectAction(Category entity, CategoryDTO entityDTO)
         {
-            await _photoEntityUpdater.LoadPhotosToEntity(oldCategory, categoryDTO);
+            entity.CategoryId = entityDTO.Alias.TransformToId();
 
-            oldCategory.Alias = categoryDTO.Alias;
-            oldCategory.IsVisible = categoryDTO.IsVisible ?? true;
+            entity.Alias = entityDTO.Alias;
+            entity.IsVisible = entityDTO.IsVisible ?? true;
+            entity.Description = entityDTO.Description;
 
-            oldCategory.Description = categoryDTO.Description;
-
-            oldCategory.SeoTitle = categoryDTO.SeoTitle;
-            oldCategory.SeoDescription = categoryDTO.SeoDescription;
-            oldCategory.SeoKeywords = categoryDTO.SeoKeywords;
-
-            return await _repository.UpdateCategory(oldCategory);
+            entity.SeoTitle = entityDTO.SeoTitle;
+            entity.SeoDescription = entityDTO.SeoDescription;
+            entity.SeoKeywords = entityDTO.SeoKeywords;
         }
 
-        /// <summary>
-        /// Удаление категории
-        /// </summary>
-        public async ValueTask<(bool isSuccess, string error)> DeleteCategory(string categoryId)
+        private async Task Delete(Category category)
         {
-            var category = await _repository.GetCategory(categoryId);
-
-            if (category is null)
-            {
-                return (
-                    false,
-                    $"Что-то пошло не так, не удалось найти категорию.\n\tКатегория: {categoryId}"
-                );
-            }
-
             foreach (var photo in category.Photos)
             {
                 await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
@@ -325,10 +448,7 @@ namespace Web.Services.Controllers.AdminApi
 
             foreach (var subcategory in category.Subcategories)
             {
-                await _context.Entry(subcategory)
-                    .Collection(x => x.Photos)
-                    .LoadAsync();
-
+                await _repository.LoadPhotoCollection(subcategory);
                 foreach (var photo in subcategory.Photos)
                 {
                     await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
@@ -340,10 +460,7 @@ namespace Web.Services.Controllers.AdminApi
 
                 foreach (var product in subcategory.Products)
                 {
-                    await _context.Entry(product)
-                        .Collection(x => x.Photos)
-                        .LoadAsync();
-
+                    await _repository.LoadPhotoCollection(product);
                     foreach (var photo in product.Photos)
                     {
                         await _photoSaver.RemoveFileFromRepository(photo, updateDB: false);
@@ -352,8 +469,8 @@ namespace Web.Services.Controllers.AdminApi
             }
 
             await _repository.DeleteCategory(category);
-
-            return (true, null);
         }
+
+        #endregion
     }
 }

@@ -55,6 +55,7 @@ namespace DependencyInjections
             #region AdminApi
 
             services.AddTransient<IPageInfoControllerService, PageInfoControllerService>();
+            services.AddTransient<ICategoryControllerService, CategoryControllerService>();
 
             #endregion
 

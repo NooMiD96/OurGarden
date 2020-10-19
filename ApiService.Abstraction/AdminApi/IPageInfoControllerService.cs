@@ -16,18 +16,18 @@ namespace ApiService.Abstraction.AdminApi
         /// <summary>
         /// Получение списка страниц
         /// </summary>
-        public Task<ServiceExecuteResult<IEnumerable<PageInfo>>> GetPageInfos();
+        Task<ServiceExecuteResult<IEnumerable<PageInfo>>> GetPageInfos();
 
         /// <summary>
         /// Добавление новой страницы
         /// </summary>
         /// <param name="pageInfoDTO">Модель страницы</param>
-        public Task<ServiceExecuteResult<bool>> AddOrUpdate(PageInfoDTO pageInfoDTO);
+        Task<ServiceExecuteResult<bool>> AddOrUpdate(PageInfoDTO pageInfoDTO);
 
         /// <summary>
         /// Удаление имеющейся страницы
         /// </summary>
         /// <param name="pageInfoId">Ид страницы</param>
-        public Task<ServiceExecuteResult<bool>> DeletePageInfo(int pageInfoId);
+        Task<ServiceExecuteResult<bool>> DeletePageInfo(int pageInfoId);
     }
 }
