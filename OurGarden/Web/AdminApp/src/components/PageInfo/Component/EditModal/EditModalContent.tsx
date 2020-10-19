@@ -4,33 +4,28 @@ import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 import Icon from "@core/antd/Icon";
 import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
-import Select from "@core/antd/Select";
-import Checkbox from "@core/antd/Checkbox";
 import CKEditor from "@core/components/CKEditor";
 import MultiplyUploaderForm, {
   useMultiplyUploaderForm,
 } from "@src/core/components/MultiplyUploaderForm";
-import MetaDataForm from "@src/core/components/MetaDataForm";
 
 import localeText from "../Text";
-import { filterOption } from "@core/utils/select";
 import {
   getAddFilesDTO,
   getUpdateFilesDTO,
   getDefaultFileList,
 } from "@src/core/utils/photo";
 
-import { ISubcategory, ISubcategoryDTO } from "../../State";
+import { IPageInfo, IPageInfoDTO } from "../../State";
 import { IPressEnterEvent } from "@src/core/IEvents";
-import { IItemDictionary } from "@src/components/Category/State";
+import MetaDataForm from "@src/core/components/MetaDataForm";
 import DescriptionTooltip from "@src/core/helpers/Description/DescriptionTooltip";
 
 interface IProps extends FormComponentProps {
-  item: ISubcategory | null;
+  item: IPageInfo | null;
   loading: boolean;
-  dropdownData: IItemDictionary[];
-  handleCreateSubmit: (data: ISubcategoryDTO) => void;
-  handleClose: () => void;
+  handleCreateSubmit: (data: IPageInfoDTO) => void;
+  handleClose: Function;
 }
 
 export const EditModalContent = (props: IProps) => {
@@ -40,13 +35,12 @@ export const EditModalContent = (props: IProps) => {
   const { form } = props;
   const { getFieldDecorator } = form;
 
-  const item = props.item || ({ isVisible: true } as ISubcategory);
+  const item = props.item || ({} as IPageInfo);
+  // prettier-ignore
   const {
-    subcategoryId,
-    categoryId,
+    pageInfoId,
     alias,
     photos,
-    isVisible,
     description,
     seoTitle,
     seoDescription,
@@ -56,10 +50,7 @@ export const EditModalContent = (props: IProps) => {
   const onSubmit = async (e?: IPressEnterEvent | React.FormEvent) => {
     e && e.preventDefault();
 
-    const newCategoryId = form.getFieldValue("newCategoryId");
-
     const alias = form.getFieldValue("alias");
-    const isVisible = form.getFieldValue("isVisible");
 
     const description: string = ckEditor.current!.state.editorApi.getData();
 
@@ -79,13 +70,8 @@ export const EditModalContent = (props: IProps) => {
     props.form.validateFields((err: any, _values: any) => {
       if (!err) {
         props.handleCreateSubmit({
-          categoryId,
-          subcategoryId,
-
-          newCategoryId,
-
+          pageInfoId,
           alias: alias.trim(),
-          isVisible,
 
           description,
 
@@ -101,12 +87,6 @@ export const EditModalContent = (props: IProps) => {
     });
   };
 
-  const options = props.dropdownData.map((item) => (
-    <Select.Option key={item.itemId} value={item.itemId}>
-      {item.alias}
-    </Select.Option>
-  ));
-
   const onClose = () => {
     form.resetFields();
     props.handleClose();
@@ -117,47 +97,21 @@ export const EditModalContent = (props: IProps) => {
   return (
     <Form layout="vertical" onSubmit={onSubmit}>
       <FormItem>
-        {getFieldDecorator("newCategoryId", {
-          initialValue: categoryId,
-          rules: [
-            { required: true, message: localeText._rule_require_catedory },
-          ],
-        })(
-          <Select
-            showSearch
-            placeholder="Выберете категорию"
-            optionFilterProp="children"
-            filterOption={filterOption}
-          >
-            {options}
-          </Select>
-        )}
-      </FormItem>
-
-      <FormItem>
         {getFieldDecorator("alias", {
           initialValue: alias,
           rules: [
             {
               required: true,
-              message: localeText._rule_require_alias,
+              message: localeText._rule_require_name,
               transform: (val: string) => val && val.trim(),
             },
           ],
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
-            placeholder={localeText._label_alias}
-            onPressEnter={onSubmit}
+            placeholder={localeText._label_name}
           />
         )}
-      </FormItem>
-
-      <FormItem>
-        {getFieldDecorator("isVisible", {
-          initialValue: isVisible,
-          valuePropName: "checked",
-        })(<Checkbox>Подкатегория видна пользователю</Checkbox>)}
       </FormItem>
 
       <FormItem>
@@ -230,11 +184,13 @@ export const EditModalContent = (props: IProps) => {
 
       <FormItem>
         {getFieldDecorator("description", {
-          rules: [{ required: false }],
+          rules: [
+            { required: true, message: localeText._rule_require_description },
+          ],
         })(
           <CKEditor
             ref={ckEditor}
-            tooltip={<DescriptionTooltip showCatalogTooltip />}
+            tooltip={<DescriptionTooltip />}
             data={description}
           />
         )}

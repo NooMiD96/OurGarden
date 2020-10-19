@@ -18,7 +18,8 @@ const navList = [
   { key: "Заказы", title: "Заказы", link: "Заказы" },
   { key: "Клиенты", title: "Клиенты", link: "Клиенты" },
   { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
-  { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" }
+  { key: "Страницы", title: "Страницы", link: "Страницы" },
+  { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" },
 ];
 
 export const NavMenu = (props: RouterState) => {
@@ -33,21 +34,21 @@ export const NavMenu = (props: RouterState) => {
           background: "rgba(255, 255, 255, 0.2)",
           margin: "16px",
           textAlign: "center",
-          paddingTop: "2px"
+          paddingTop: "2px",
         }}
       >
         <span
           style={{
             fontSize: "18px",
             fontWeight: "bold",
-            color: "white"
+            color: "white",
           }}
         >
           Наш Сад
         </span>
       </div>
       <Menu theme="dark" mode="inline" selectedKeys={selectedKeys}>
-        {navList.map(x => (
+        {navList.map((x) => (
           <Menu.Item key={x.key}>
             <GenerateLink {...x} />
           </Menu.Item>
@@ -59,6 +60,6 @@ export const NavMenu = (props: RouterState) => {
 
 export default connect(
   (state: IApplicationState): RouterState => ({
-    ...state.router
+    ...state.router,
   })
 )(NavMenu);

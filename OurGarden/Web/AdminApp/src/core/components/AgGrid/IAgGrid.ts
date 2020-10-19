@@ -7,6 +7,7 @@ export interface IAgGridProps<T> {
   rowData: T[];
   onDoubleClickHandler?: (data: T) => void;
   readOnly?: boolean;
+  rowSelectEnableField?: string;
   categoryList?: IItemDictionary[];
 }
 

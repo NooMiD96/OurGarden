@@ -6,7 +6,7 @@ import Input from "@core/antd/Input";
 import EditModalFooter from "@src/core/components/EditModalFooter";
 import CKEditor from "@core/components/CKEditor";
 import MultiplyUploaderForm, {
-  useMultiplyUploaderForm
+  useMultiplyUploaderForm,
 } from "@core/components/MultiplyUploaderForm";
 import MetaDataForm from "@src/core/components/MetaDataForm";
 import DescriptionTooltip from "@src/core/helpers/Description/DescriptionTooltip";
@@ -15,7 +15,7 @@ import localeText from "../Text";
 import {
   getAddFilesDTO,
   getUpdateFilesDTO,
-  getDefaultFileList
+  getDefaultFileList,
 } from "@src/core/utils/photo";
 
 import { INews } from "../../State";
@@ -52,7 +52,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
     const seoKeywords = form.getFieldValue("seoKeywords");
 
     props.form.setFieldsValue({
-      description
+      description,
     });
 
     const addFilesDTO = await getAddFilesDTO(multiplyUploaderParams.addFiles);
@@ -74,7 +74,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
 
           addFiles: addFilesDTO,
           removeFiles: multiplyUploaderParams.removeFiles,
-          updateFiles: updateFilesDTO
+          updateFiles: updateFilesDTO,
         });
       }
     });
@@ -96,9 +96,9 @@ export const EditModalContent = (props: IEditModalContentProps) => {
             {
               required: true,
               message: localeText._rule_require_alias,
-              transform: (val: string) => val && val.trim()
-            }
-          ]
+              transform: (val: string) => val && val.trim(),
+            },
+          ],
         })(
           <Input
             prefix={<Icon type="edit" className="input-prefix-color" />}
@@ -110,7 +110,7 @@ export const EditModalContent = (props: IEditModalContentProps) => {
 
       <FormItem>
         {getFieldDecorator("addFiles", {
-          rules: [{ required: false, message: localeText._rule_require_photo }]
+          rules: [{ required: false, message: localeText._rule_require_photo }],
         })(
           <MultiplyUploaderForm
             defaultFileList={defaultFileList}
@@ -128,9 +128,9 @@ export const EditModalContent = (props: IEditModalContentProps) => {
             {
               required: false,
               max: 128,
-              message: "Длина не должна превышать 128 символов"
-            }
-          ]
+              message: "Длина не должна превышать 128 символов",
+            },
+          ],
         })(
           <MetaDataForm
             checkboxText="Указать заголовок"
@@ -147,9 +147,9 @@ export const EditModalContent = (props: IEditModalContentProps) => {
             {
               required: false,
               max: 256,
-              message: "Длина не должна превышать 256 символов"
-            }
-          ]
+              message: "Длина не должна превышать 256 символов",
+            },
+          ],
         })(
           <MetaDataForm
             checkboxText="Указать описание"
@@ -166,9 +166,9 @@ export const EditModalContent = (props: IEditModalContentProps) => {
             {
               required: false,
               max: 512,
-              message: "Длина не должна превышать 512 символов"
-            }
-          ]
+              message: "Длина не должна превышать 512 символов",
+            },
+          ],
         })(
           <MetaDataForm
             checkboxText="Указать ключевые слова (через запятую)"
@@ -181,9 +181,15 @@ export const EditModalContent = (props: IEditModalContentProps) => {
       <FormItem>
         {getFieldDecorator("description", {
           rules: [
-            { required: true, message: localeText._rule_require_description }
-          ]
-        })(<CKEditor ref={ckEditor} tooltip={<DescriptionTooltip showCatalogTooltip={false} />} data={description} />)}
+            { required: true, message: localeText._rule_require_description },
+          ],
+        })(
+          <CKEditor
+            ref={ckEditor}
+            tooltip={<DescriptionTooltip />}
+            data={description}
+          />
+        )}
       </FormItem>
 
       <EditModalFooter onSubmit={onSubmit} onClose={onClose} />

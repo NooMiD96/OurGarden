@@ -26,14 +26,14 @@ namespace DataBase.Repository
 
         public async ValueTask<(bool isSuccess, string error)> AddPageInfo(PageInfo entity)
         {
-            var searchEntity = Context.PageInfo.FirstOrDefaultAsync(x => x.PageInfoId == entity.PageInfoId);
+            var searchEntity = await Context.PageInfo.FirstOrDefaultAsync(x => x.PageInfoId == entity.PageInfoId);
             if (!(searchEntity is null))
             {
                 return (false, "Данная страница уже существует");
             }
 
             var normalizeName = entity.Alias.TransformToId();
-            searchEntity = Context.PageInfo.FirstOrDefaultAsync(x => x.NormalizeAlias == normalizeName);
+            searchEntity = await Context.PageInfo.FirstOrDefaultAsync(x => x.NormalizeAlias == normalizeName);
             if (!(searchEntity is null))
             {
                 return (false, "Страница с данным именем уже существует");

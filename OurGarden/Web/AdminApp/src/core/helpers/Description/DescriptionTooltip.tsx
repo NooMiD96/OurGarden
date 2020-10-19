@@ -6,6 +6,7 @@ import { IDescriptionTooltipProps } from "./IDescriptionTooltip";
 
 const conditionStringHelper = "Если в тексте указан данный блок,";
 
+/* prettier-ignore */
 const TooltipContent = ({
   showCatalogTooltip = true,
   showPhoneTooltip = true,
@@ -85,24 +86,25 @@ const TooltipContent = ({
   );
 };
 
+// prettier-ignore
 const DescriptionTooltip = ({
-  showCatalogTooltip = true,
+  showCatalogTooltip = false,
   showPhoneTooltip = true,
   showEmailTooltip = true,
   showGalleryTooltip = true,
 }: IDescriptionTooltipProps) => (
-  <Tooltip title={(
-    <TooltipContent
-      showCatalogTooltip={showCatalogTooltip}
-      showPhoneTooltip={showPhoneTooltip}
-      showEmailTooltip={showEmailTooltip}
-      showGalleryTooltip={showGalleryTooltip}
-    />
-  )}
+  <Tooltip
+    title={(
+      <TooltipContent
+        showCatalogTooltip={showCatalogTooltip}
+        showPhoneTooltip={showPhoneTooltip}
+        showEmailTooltip={showEmailTooltip}
+        showGalleryTooltip={showGalleryTooltip}
+      />
+    )}
   >
     <Icon type="question" style={{ color: "#40a9ff" }} />
   </Tooltip>
 );
-
 
 export default DescriptionTooltip;

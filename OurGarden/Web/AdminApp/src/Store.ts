@@ -24,6 +24,9 @@ import { reducer as ClientReducer } from "@src/components/Clients/reducer";
 import { IGalleryState } from "./components/Gallery/State";
 import { reducer as GalleryReducer } from "@src/components/Gallery/reducer";
 
+import { IPageInfoState } from "./components/PageInfo/State";
+import { reducer as PageInfoReducer } from "@src/components/PageInfo/reducer";
+
 import { IVideoState } from "./components/VideoGallery/State";
 import { reducer as VideoReducer } from "@src/components/VideoGallery/reducer";
 
@@ -42,6 +45,7 @@ export interface IApplicationState {
   client: IClientState;
 
   gallery: IGalleryState;
+  pageInfo: IPageInfoState;
   video: IVideoState;
 }
 
@@ -58,7 +62,8 @@ export const reducers = {
   client: ClientReducer,
 
   gallery: GalleryReducer,
-  video: VideoReducer
+  pageInfo: PageInfoReducer,
+  video: VideoReducer,
 };
 
 export interface IAppThunkAction<TAction> {

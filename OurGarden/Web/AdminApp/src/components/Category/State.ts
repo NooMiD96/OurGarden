@@ -18,7 +18,10 @@ export interface ICategory extends ISeoParams, IDescription {
   photos: IPhoto[];
 }
 
-export interface ICategoryDTO extends IMultiplyPhotoDTO, ISeoParams, IDescription {
+export interface ICategoryDTO
+  extends IMultiplyPhotoDTO,
+    ISeoParams,
+    IDescription {
   categoryId: string | null;
   alias: string;
   isVisible: boolean;
@@ -31,6 +34,6 @@ export interface ICategoryState extends IDefaultState {
 export const unloadedState: ICategoryState = {
   listItem: [],
   pending: false,
-  errorInner: ""
+  errorInner: "",
 };
 // #endregion

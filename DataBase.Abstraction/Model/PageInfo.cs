@@ -52,10 +52,14 @@ namespace DataBase.Abstraction.Model
 
         public static int DesignPageId { get; } = 2;
 
+        public static int PaymentPageId { get; } = 3;
+
+        public static int GazonPageId { get; } = 4;
+
         #endregion
 
         #region Childrens
-        
+
         public ICollection<Photo> Photos { get; set; }
 
         #endregion

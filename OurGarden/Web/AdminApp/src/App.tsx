@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Layout } from "@components/Layout";
 import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
+/* prettier-ignore */
 export const AppRoutes = (
   <Layout>
     <Route
@@ -49,6 +50,11 @@ export const AppRoutes = (
       exact
       path="/фотогалерея"
       component={AsyncComponent(() => import(/* webpackChunkName: "Gallery" */ "@components/Gallery"))}
+    />
+    <Route
+      exact
+      path="/страницы"
+      component={AsyncComponent(() => import(/* webpackChunkName: "PageInfo" */ "@components/PageInfo"))}
     />
     <Route
       exact

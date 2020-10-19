@@ -15,13 +15,14 @@ export class AgGrid<T> extends React.PureComponent<
 > {
   state: IAgGridState = {
     columns: [],
-    gridApi: {} as GridApi
+    gridApi: {} as GridApi,
   };
 
   componentDidMount() {
     const columns = [...this.props.columns];
+    const { readOnly } = this.props;
 
-    if (!this.props.readOnly) {
+    if (!readOnly) {
       columns.unshift({
         headerName: "Выбор",
         field: "select",
@@ -29,7 +30,7 @@ export class AgGrid<T> extends React.PureComponent<
         width: 65,
         checkboxSelection: true,
         suppressSizeToFit: true,
-        pinned: "left"
+        pinned: "left",
       });
       columns.push({
         headerName: "Действие",
@@ -38,7 +39,7 @@ export class AgGrid<T> extends React.PureComponent<
         width: 80,
         checkboxSelection: false,
         suppressSizeToFit: true,
-        pinned: "right"
+        pinned: "right",
       });
     }
 
@@ -47,13 +48,13 @@ export class AgGrid<T> extends React.PureComponent<
 
   onGridReady = (params: GridReadyEvent) => {
     this.setState({
-      gridApi: params.api
+      gridApi: params.api,
     });
     params.api.sizeColumnsToFit();
   };
 
   render() {
-    const { rowData, onDoubleClickHandler } = this.props;
+    const { rowData, onDoubleClickHandler, rowSelectEnableField } = this.props;
     const { columns = [] } = this.state;
 
     return (
@@ -63,15 +64,20 @@ export class AgGrid<T> extends React.PureComponent<
           onRowDataUpdated={() => {
             this.state.gridApi.sizeColumnsToFit();
           }}
+          isRowSelectable={(rowNode: any) => {
+            if (rowSelectEnableField !== undefined) {
+              return rowNode.data[rowSelectEnableField];
+            }
+            return true;
+          }}
           rowData={rowData}
           onGridReady={this.onGridReady}
           columnTypes={columnTypesDef}
           defaultColDef={defaultColDef}
-          onRowDoubleClicked={params =>
-            onDoubleClickHandler && onDoubleClickHandler(params.data)
-          }
+          // prettier-ignore
+          onRowDoubleClicked={(params) => onDoubleClickHandler && onDoubleClickHandler(params.data)}
           context={{
-            parentComponent: this
+            parentComponent: this,
           }}
           suppressScrollOnNewData
         />

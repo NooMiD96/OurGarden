@@ -6,27 +6,38 @@ import Checkbox from "@core/antd/Checkbox";
 import { IMetaDataFormProps, IMetaDataFormState } from "./IMetaDataForm";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
-class MetaDataForm extends React.PureComponent<IMetaDataFormProps, IMetaDataFormState> {
+class MetaDataForm extends React.PureComponent<
+  IMetaDataFormProps,
+  IMetaDataFormState
+> {
   state: IMetaDataFormState = {
     isEditable: !!this.props.value,
     metaValue: this.props.value!,
-  }
+  };
 
   onEditableChange = (e: CheckboxChangeEvent) => {
-    this.setState({
-      isEditable: e.target.checked
-    }, () => {
-      this.props.onChange!(this.state.isEditable ? this.state.metaValue : undefined);
-    });
-  }
+    this.setState(
+      {
+        isEditable: e.target.checked,
+      },
+      () => {
+        this.props.onChange!(
+          this.state.isEditable ? this.state.metaValue : undefined
+        );
+      }
+    );
+  };
 
   onMetaValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({
-      metaValue: e.target.value
-    }, () => {
-      this.props.onChange!(this.state.metaValue);
-    });
-  }
+    this.setState(
+      {
+        metaValue: e.target.value,
+      },
+      () => {
+        this.props.onChange!(this.state.metaValue);
+      }
+    );
+  };
 
   render() {
     const { isEditable, metaValue } = this.state;
@@ -34,7 +45,9 @@ class MetaDataForm extends React.PureComponent<IMetaDataFormProps, IMetaDataForm
       checkboxText,
       maxRows = 3,
       minRows = 5,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       value: _value,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onChange: _onChange,
       ...props
     } = this.props;

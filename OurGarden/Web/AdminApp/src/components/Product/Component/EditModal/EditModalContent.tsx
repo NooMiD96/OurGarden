@@ -307,7 +307,7 @@ export const EditModalContent = (props: IProps) => {
         })(
           <CKEditor
             ref={ckEditor}
-            tooltip={<DescriptionTooltip showCatalogTooltip={false} />}
+            tooltip={<DescriptionTooltip />}
             data={description}
           />
         )}

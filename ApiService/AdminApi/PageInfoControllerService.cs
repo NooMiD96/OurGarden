@@ -237,6 +237,7 @@ namespace ApiService.AdminApi
         public override void UpdateEntityObjectAction(PageInfo entity, PageInfoDTO entityDTO)
         {
             entity.Alias = entityDTO.Alias;
+            entity.NormalizeAlias = entityDTO.Alias.TransformToId();
             entity.Description = entityDTO.Description;
 
             entity.SeoTitle = entityDTO.SeoTitle;

@@ -155,7 +155,7 @@ namespace ApiService.AdminApi
                         };
                     }
 
-                    if (oldEntity.Alias.TransformToId() != oldEntity.Alias.TransformToId())
+                    if (entityDTO.Alias.TransformToId() != oldEntity.Alias.TransformToId())
                     {
                         var (isSuccess, error) = await FullUpdate(entityDTO, oldEntity);
 
