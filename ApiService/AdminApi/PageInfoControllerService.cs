@@ -2,6 +2,7 @@
 using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
 using ApiService.Abstraction.Model;
+using ApiService.Core.Admin;
 
 using Core.Helpers;
 
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ApiService.AdminApi
 {
-    public class PageInfoControllerService : IPageInfoControllerService
+    public class PageInfoControllerService : AdminCRUDService<PageInfo, PageInfoDTO>, IPageInfoControllerService, IAdminCRUDService<PageInfo, PageInfoDTO>
     {
         #region Fields
 
@@ -42,11 +43,6 @@ namespace ApiService.AdminApi
         /// </summary>
         private readonly IPhotoEntityUpdater _photoEntityUpdater;
 
-        /// <summary>
-        /// Сервис с общими функциями для всех админских операций.
-        /// </summary>
-        private readonly IAdminCRUDService _adminCRUDService;
-
         #endregion
 
         #region .ctor
@@ -57,14 +53,14 @@ namespace ApiService.AdminApi
         public PageInfoControllerService(ILogger<PageInfoControllerService> logger,
                                          IOurGardenRepository repository,
                                          IPhotoSaver photoSaver,
-                                         IPhotoEntityUpdater photoEntityUpdater,
-                                         IAdminCRUDService adminCRUDService)
+                                         IPhotoEntityUpdater photoEntityUpdater) : base(repository,
+                                                                                        photoSaver,
+                                                                                        photoEntityUpdater)
         {
             _repository = repository;
             _logger = logger;
             _photoSaver = photoSaver;
             _photoEntityUpdater = photoEntityUpdater;
-            _adminCRUDService = adminCRUDService;
         }
 
         #endregion
@@ -104,9 +100,8 @@ namespace ApiService.AdminApi
             {
                 if (entityDTO.PageInfoId == 0)
                 {
-                    var (entity, error) = await _adminCRUDService.CreateEntity<PageInfo, PageInfoDTO>(
+                    var (entity, error) = await this.CreateEntity(
                         entityDTO,
-                        updateEntityObjectAction: this.UpdateEntity,
                         addEntityDbFunc: _repository.AddPageInfo);
 
                     if (entity == null)
@@ -151,10 +146,9 @@ namespace ApiService.AdminApi
                     }
                     else
                     {
-                        var (isSuccess, error) = await _adminCRUDService.UpdateEntity<PageInfo, PageInfoDTO>(
+                        var (isSuccess, error) = await this.UpdateEntity(
                             oldEntity,
                             entityDTO,
-                            updateEntityObjectAction: this.UpdateEntity,
                             updateEntityDbFunc: _repository.UpdatePageInfo);
 
                         return new ServiceExecuteResult<bool>
@@ -242,8 +236,7 @@ namespace ApiService.AdminApi
         /// <typeparam name="TTypeDTO">ДТО модель</typeparam>
         /// <param name="entity">Исходный объект</param>
         /// <param name="entityDTO">ДТО</param>
-        private void UpdateEntity<TType, TTypeDTO>(TType entity, TTypeDTO entityDTO) where TType    : PageInfo
-                                                                                     where TTypeDTO : PageInfoDTO
+        public override void UpdateEntityObjectAction(PageInfo entity, PageInfoDTO entityDTO)
         {
             entity.Alias = entityDTO.Alias;
             entity.Description = entityDTO.Description;

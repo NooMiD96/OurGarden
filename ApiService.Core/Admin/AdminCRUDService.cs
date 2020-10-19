@@ -13,7 +13,13 @@ using System.Threading.Tasks;
 
 namespace ApiService.Core.Admin
 {
-    public class AdminCRUDService : IAdminCRUDService
+    /// <summary>
+    /// Общие операции обновления сущностей для админки.
+    /// </summary>
+    /// <typeparam name="TType">Тип сущности</typeparam>
+    /// <typeparam name="TTypeDTO">Тип ДТО</typeparam>
+    public abstract class AdminCRUDService<TType, TTypeDTO> : IAdminCRUDService<TType, TTypeDTO> where TType : IPhoto, new()
+                                                                                                 where TTypeDTO : IPhotoDTO
     {
         #region Fields
 
@@ -51,30 +57,27 @@ namespace ApiService.Core.Admin
         #endregion
 
         /// <inheritdoc/>
-        public async ValueTask<(TType entity, string error)> CreateEntity<TType, TTypeDTO>(TTypeDTO entityDTO,
-                                                                                           Action<TType, TTypeDTO> updateEntityAction,
-                                                                                           Func<TType, ValueTask<(bool isSuccess, string error)>> addEntityFunc,
-                                                                                           ICollection<Photo> defaultPhotoList = null,
-                                                                                           List<Photo> scheduleAddedPhotoList = null,
-                                                                                           List<Photo> scheduleDeletePhotoList = null) where TType : IPhoto, new()
-                                                                                                                                       where TTypeDTO : IPhotoDTO
+        public abstract void UpdateEntityObjectAction(TType entity, TTypeDTO entityDTO);
+
+        /// <inheritdoc/>
+        public async ValueTask<(TType entity, string error)> CreateEntity(TTypeDTO entityDTO,
+                                                                          Func<TType, ValueTask<(bool isSuccess, string error)>> addEntityDbFunc,
+                                                                          ICollection<Photo> defaultPhotoList = null,
+                                                                          List<Photo> scheduleAddedPhotoList = null,
+                                                                          List<Photo> scheduleDeletePhotoList = null)
         {
             var newEntity = new TType
             {
                 Photos = new List<Photo>()
             };
-            if (updateEntityAction == null)
-            {
-                throw new ArgumentNullException(nameof(updateEntityAction));
-            }
-            updateEntityAction(newEntity, entityDTO);
+            this.UpdateEntityObjectAction(newEntity, entityDTO);
 
             //Добавляем и проверяем можем ли мы добавить данную категорию
-            if (addEntityFunc == null)
+            if (addEntityDbFunc == null)
             {
-                throw new ArgumentNullException(nameof(addEntityFunc));
+                throw new ArgumentNullException(nameof(addEntityDbFunc));
             }
-            var (isSuccess, error) = await addEntityFunc(newEntity);
+            var (isSuccess, error) = await addEntityDbFunc(newEntity);
             if (!isSuccess)
             {
                 return (default(TType), error);
@@ -93,14 +96,12 @@ namespace ApiService.Core.Admin
         }
 
         /// <inheritdoc/>
-        public async ValueTask<(bool isSuccess, string error)> UpdateEntity<TType, TTypeDTO>(TType entity,
-                                                                                             TTypeDTO entityDTO,
-                                                                                             Action<TType, TTypeDTO> updateEntityObjectAction,
-                                                                                             Func<TType, ValueTask<(bool isSuccess, string error)>> updateEntityDbFunc) where TType : IPhoto
-                                                                                                                                                                        where TTypeDTO : IPhotoDTO
+        public async ValueTask<(bool isSuccess, string error)> UpdateEntity(TType entity,
+                                                                            TTypeDTO entityDTO,
+                                                                            Func<TType, ValueTask<(bool isSuccess, string error)>> updateEntityDbFunc)
         {
             await _photoEntityUpdater.LoadPhotosToEntity(entity, entityDTO);
-            updateEntityObjectAction(entity, entityDTO);
+            this.UpdateEntityObjectAction(entity, entityDTO);
             return await updateEntityDbFunc(entity);
         }
     }
