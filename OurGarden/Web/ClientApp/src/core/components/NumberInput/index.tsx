@@ -8,21 +8,27 @@ import {
 } from "@src/core/interfaces/IEvents";
 import { INumberInput } from "./interfaces/INumberInput";
 
+const numReg = /^0?([1-9][0-9]*)$/;
 class NumberInput extends React.Component<INumberInput, unknown> {
   inputRef: React.RefObject<Input> | null = null;
 
   onChange = (e: IKeyChangeEvent) => {
     e.preventDefault();
-    const { value } = e.target;
-    const reg = /^([1-9][0-9]*)$/;
 
-    // prettier-ignore
-    if (
-      (!Number.isNaN((value as any) as number) && reg.test(value))
-      || value === ""
-    ) {
-      const { onValueChange } = this.props;
-      onValueChange && onValueChange(value);
+    const { onValueChange } = this.props;
+
+    if (!onValueChange) {
+      return;
+    }
+
+    const { value } = e.target;
+
+    if (value === "") {
+      onValueChange(value);
+    }
+
+    if (!Number.isNaN((value as any) as number) && numReg.test(value)) {
+      onValueChange(value);
     }
   };
 
