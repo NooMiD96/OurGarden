@@ -5,7 +5,7 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 
 import { TState, TComponentState } from "../TState";
 
-import { PAYMENT_PAGE_INFO_ID } from "@src/core/constants";
+import { PAYMENT_PAGE_INFO_ID } from "@src/core/constants/staticPages";
 import { WHITE_BLOCK } from "@src/core/constants/style";
 
 export class Payment extends React.PureComponent<TState, TComponentState> {

@@ -7,7 +7,7 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 
 import { TState, TComponentState } from "../TState";
 
-import { DESIGN_PAGE_INFO_ID } from "@src/core/constants";
+import { DESIGN_PAGE_INFO_ID } from "@src/core/constants/staticPages";
 import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/design.style.scss";

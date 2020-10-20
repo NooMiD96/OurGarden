@@ -20,8 +20,3 @@ export const GALLERY_MACROS = /{{gallery=(?<galleryName>.+)}}/;
 export const MODAL_TIMEOUT = 5_000;
 
 export const CARD_PATH = "/Card";
-
-export const HOME_PAGE_INFO_ID = 1;
-export const DESIGN_PAGE_INFO_ID = 2;
-export const PAYMENT_PAGE_INFO_ID = 3;
-export const GAZON_PAGE_INFO_ID = 4;

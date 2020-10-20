@@ -110,6 +110,46 @@ namespace DataBase.Context
                         SeoTitle = "Рулонный газон под ключ в Туле",
                         SeoDescription = "Купить качественный и недорогой рулонный газон под ключ в Туле можно в интернет-магазине «Наш Сад»: мы предоставляем доставку на дом в любой уголок России.",
                         SeoKeywords = "газон, ключ, рулонный"
+                    },
+                    new PageInfo()
+                    {
+                        PageInfoId = Abstraction.Model.PageInfo.CatalogPageId,
+                        Alias = "Каталог",
+                        NormalizeAlias = "Catalog",
+                        Description = null,
+                        SeoTitle = "Каталог",
+                        SeoDescription = "Купить товары для сада в Туле. У нас в наличии Грунты, Гортензии, Картофель, Колоновидные деревья, Лук, Малина, Мини-деревья, Английские и Японские розы и другие товары.",
+                        SeoKeywords = null
+                    },
+                    new PageInfo()
+                    {
+                        PageInfoId = Abstraction.Model.PageInfo.NewsListPageId,
+                        Alias = "Новости",
+                        NormalizeAlias = "News",
+                        Description = null,
+                        SeoTitle = "Новости",
+                        SeoDescription = null,
+                        SeoKeywords = null
+                    },
+                    new PageInfo()
+                    {
+                        PageInfoId = Abstraction.Model.PageInfo.ContactsPageId,
+                        Alias = "Контакты",
+                        NormalizeAlias = "About",
+                        Description = null,
+                        SeoTitle = "Контакты",
+                        SeoDescription = null,
+                        SeoKeywords = null
+                    },
+                    new PageInfo()
+                    {
+                        PageInfoId = Abstraction.Model.PageInfo.CardPageId,
+                        Alias = "Корзина",
+                        NormalizeAlias = "Card",
+                        Description = null,
+                        SeoTitle = "Корзина",
+                        SeoDescription = null,
+                        SeoKeywords = null
                     }
                 );
 

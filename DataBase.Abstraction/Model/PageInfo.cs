@@ -23,7 +23,6 @@ namespace DataBase.Abstraction.Model
 
         #endregion
 
-        [Required]
         public string Description { get; set; }
 
         #region ISeoInformation
@@ -46,7 +45,11 @@ namespace DataBase.Abstraction.Model
             get => PageInfoId != HomePageId
                 && PageInfoId != DesignPageId
                 && PageInfoId != PaymentPageId
-                && PageInfoId != GazonPageId;
+                && PageInfoId != GazonPageId
+                && PageInfoId != CatalogPageId
+                && PageInfoId != NewsListPageId
+                && PageInfoId != ContactsPageId
+                && PageInfoId != CardPageId;
         }
 
         #region Static Pages Id
@@ -58,6 +61,14 @@ namespace DataBase.Abstraction.Model
         public static int PaymentPageId { get; } = 3;
 
         public static int GazonPageId { get; } = 4;
+
+        public static int CatalogPageId { get; } = 5;
+
+        public static int NewsListPageId { get; } = 6;
+
+        public static int ContactsPageId { get; } = 7;
+
+        public static int CardPageId { get; } = 8;
 
         #endregion
 

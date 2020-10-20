@@ -4,14 +4,16 @@ using DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OurGardenContext))]
-    partial class OurGardenContextModelSnapshot : ModelSnapshot
+    [Migration("20201020105037_OptionalDescriptionInPageInfoTable")]
+    partial class OptionalDescriptionInPageInfoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -452,35 +454,6 @@ namespace Web.Migrations
                             SeoDescription = "Купить качественный и недорогой рулонный газон под ключ в Туле можно в интернет-магазине «Наш Сад»: мы предоставляем доставку на дом в любой уголок России.",
                             SeoKeywords = "газон, ключ, рулонный",
                             SeoTitle = "Рулонный газон под ключ в Туле"
-                        },
-                        new
-                        {
-                            PageInfoId = 5,
-                            Alias = "Каталог",
-                            NormalizeAlias = "Catalog",
-                            SeoDescription = "Купить товары для сада в Туле. У нас в наличии Грунты, Гортензии, Картофель, Колоновидные деревья, Лук, Малина, Мини-деревья, Английские и Японские розы и другие товары.",
-                            SeoTitle = "Каталог"
-                        },
-                        new
-                        {
-                            PageInfoId = 6,
-                            Alias = "Новости",
-                            NormalizeAlias = "News",
-                            SeoTitle = "Новости"
-                        },
-                        new
-                        {
-                            PageInfoId = 7,
-                            Alias = "Контакты",
-                            NormalizeAlias = "About",
-                            SeoTitle = "Контакты"
-                        },
-                        new
-                        {
-                            PageInfoId = 8,
-                            Alias = "Корзина",
-                            NormalizeAlias = "Card",
-                            SeoTitle = "Корзина"
                         });
                 });
 

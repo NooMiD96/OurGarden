@@ -204,19 +204,30 @@ namespace ApiService.Core
                 case "home":
                 case "":
                 case null:
-                    pageInfo = await _repository.GetPageInfo(PageInfo.HomePageId);
-                    return (
-                        pageInfo.SeoTitle,
-                        pageInfo.SeoDescription,
-                        pageInfo.SeoKeywords
-                    );
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.HomePageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
 
                 case "catalog":
-                    section = _seoInformation.Category;
-                    var categories = await _repository.GetCategories();
+                    {
+                        //section = _seoInformation.Category;
+                        //var categories = await _repository.GetCategories();
 
-                    metaValue = GetDescriptionAggregate(categories, default);
-                    break;
+                        //metaValue = GetDescriptionAggregate(categories, default);
+                        //break;
+
+                        pageInfo = await _repository.GetPageInfo(PageInfo.CatalogPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
 
                 case "design":
                     {
@@ -229,35 +240,66 @@ namespace ApiService.Core
                     }
 
                 case "news":
-                    section = _seoInformation.NewsList;
-                    break;
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.NewsListPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
+
                 case "payment":
-                    pageInfo = await _repository.GetPageInfo(PageInfo.PaymentPageId);
-                    return (
-                        pageInfo.SeoTitle,
-                        pageInfo.SeoDescription,
-                        pageInfo.SeoKeywords
-                    );
+                    { 
+                        pageInfo = await _repository.GetPageInfo(PageInfo.PaymentPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
 
                 case "videogalery":
                     section = _seoInformation.Videogalery;
                     break;
+
                 case "about":
-                    section = _seoInformation.Contacts;
-                    break;
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.ContactsPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
+
                 case "card":
-                    section = _seoInformation.UserCard;
-                    break;
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.ContactsPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
+
                 case "rulonnyj-gazon":
-                    pageInfo = await _repository.GetPageInfo(PageInfo.GazonPageId);
-                    return (
-                        pageInfo.SeoTitle,
-                        pageInfo.SeoDescription,
-                        pageInfo.SeoKeywords
-                    );
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.GazonPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
 
                 default:
                     return default;
+            }
+
+            if (section is null)
+            {
+                return default;
             }
 
             return (

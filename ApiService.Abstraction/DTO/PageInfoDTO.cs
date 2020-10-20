@@ -15,7 +15,6 @@ namespace ApiService.Abstraction.DTO
 
         #endregion
 
-        [Required]
         public string Description { get; set; }
 
         #region ISeoInformation

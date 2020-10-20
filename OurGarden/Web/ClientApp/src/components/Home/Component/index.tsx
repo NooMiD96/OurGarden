@@ -5,7 +5,7 @@ import CompanyInfo from "./CompanyInfo";
 
 import { TState, TComponentState } from "../TState";
 
-import { HOME_PAGE_INFO_ID } from "@src/core/constants";
+import { HOME_PAGE_INFO_ID } from "@src/core/constants/staticPages";
 
 import "./style/Home.style.scss";
 

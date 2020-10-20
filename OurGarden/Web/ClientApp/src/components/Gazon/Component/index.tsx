@@ -5,7 +5,7 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 
 import { TState, TComponentState } from "../TState";
 
-import { GAZON_PAGE_INFO_ID } from "@src/core/constants";
+import { GAZON_PAGE_INFO_ID } from "@src/core/constants/staticPages";
 import { WHITE_BLOCK } from "@src/core/constants/style";
 
 export class Gazon extends React.PureComponent<TState, TComponentState> {

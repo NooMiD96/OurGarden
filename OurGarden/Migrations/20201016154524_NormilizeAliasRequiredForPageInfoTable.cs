@@ -6,16 +6,6 @@ namespace Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "NormalizeAlias",
-                table: "PageInfo",
-                maxLength: 256,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(256)",
-                oldMaxLength: 256,
-                oldNullable: true);
-
             migrationBuilder.UpdateData(
                 table: "PageInfo",
                 keyColumn: "PageInfoId",
@@ -29,6 +19,16 @@ namespace Web.Migrations
                 keyValue: 2,
                 columns: new[] { "NormalizeAlias", "SeoKeywords" },
                 values: new object[] { "Design", "ландшафтный, дизайн, Тула, участок, озеленение" });
+
+            migrationBuilder.AlterColumn<string>(
+                name: "NormalizeAlias",
+                table: "PageInfo",
+                maxLength: 256,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(256)",
+                oldMaxLength: 256,
+                oldNullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

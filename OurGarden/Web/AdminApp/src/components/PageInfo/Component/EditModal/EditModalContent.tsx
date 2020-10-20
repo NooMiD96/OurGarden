@@ -184,9 +184,7 @@ export const EditModalContent = (props: IProps) => {
 
       <FormItem>
         {getFieldDecorator("description", {
-          rules: [
-            { required: true, message: localeText._rule_require_description },
-          ],
+          rules: [{ required: false }],
         })(
           <CKEditor
             ref={ckEditor}
