@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
+    <ProjectReference Include="..\ImageService.Abstraction\PhotoService.Abstraction.csproj" />
+  </ItemGroup>
+
 </Project>

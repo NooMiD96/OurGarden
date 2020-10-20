@@ -42,7 +42,15 @@ namespace SiteMapHostService
 
         #region Fields
 
-        private readonly XNamespace NS = "http://www.sitemaps.org/schemas/sitemap/0.9";
+        /// <summary>
+        /// Ссылка на NS для ссылок сайта
+        /// </summary>
+        private readonly XNamespace siteUrlNS = "http://www.sitemaps.org/schemas/sitemap/0.9";
+
+        /// <summary>
+        /// Ссылка на NS для изображений сайта
+        /// </summary>
+        private readonly XNamespace siteImageNS = "http://www.google.com/schemas/sitemap-image/1.1";
 
         private readonly RootOptions _rootOptions;
 
@@ -92,11 +100,14 @@ namespace SiteMapHostService
         {
             return await _context
                 .Category
+                .Include(x => x.Photos)
                 .Select(x => new SiteMapSimpleItem()
                 {
+                    Url = $"Catalog/{x.CategoryId}",
+                    LastModified = DateTime.Now,
+                    Name = x.Alias,
                     ItemType = ItemType.Category,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}"),
-                    LastModified = DateTime.Now
+                    Photos = x.Photos,
                 })
                 .ToListAsync();
         }
@@ -105,11 +116,14 @@ namespace SiteMapHostService
         {
             return await _context
                 .Subcategory
+                .Include(x => x.Photos)
                 .Select(x => new SiteMapSimpleItem()
                 {
+                    Url = $"Catalog/{x.CategoryId}/{x.SubcategoryId}",
+                    LastModified = DateTime.Now,
+                    Name = x.Alias,
                     ItemType = ItemType.Subcategory,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}/{x.SubcategoryId}"),
-                    LastModified = DateTime.Now
+                    Photos = x.Photos,
                 })
                 .ToListAsync();
         }
@@ -118,11 +132,14 @@ namespace SiteMapHostService
         {
             return await _context
                 .Product
+                .Include(x => x.Photos)
                 .Select(x => new SiteMapSimpleItem()
                 {
+                    Url = $"Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}",
+                    LastModified = DateTime.Now,
+                    Name = x.Alias,
                     ItemType = ItemType.Subcategory,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"Catalog/{x.CategoryId}/{x.SubcategoryId}/{x.ProductId}"),
-                    LastModified = DateTime.Now
+                    Photos = x.Photos,
                 })
                 .ToListAsync();
         }
@@ -131,11 +148,14 @@ namespace SiteMapHostService
         {
             return await _context
                 .News
+                .Include(x => x.Photos)
                 .Select(x => new SiteMapSimpleItem()
                 {
+                    Url = $"News/{x.NewsId}",
+                    LastModified = DateTime.Now,
+                    Name = x.Alias,
                     ItemType = ItemType.News,
-                    Url = WebUtils.GenerateSiteAddress(_rootOptions.HostName, $"News/{x.NewsId}"),
-                    LastModified = DateTime.Now
+                    Photos = x.Photos,
                 })
                 .ToListAsync();
         }
@@ -146,6 +166,10 @@ namespace SiteMapHostService
 
         #region Create Root Sitemap
 
+        /// <summary>
+        /// Создаёт карту сайта для переданных файлов.
+        /// </summary>
+        /// <param name="filePaths"></param>
         private void CreateSiteMap(IEnumerable<(string filePath, string lastMod)> filePaths)
         {
             var siteMap = new XmlDocument();
@@ -156,9 +180,13 @@ namespace SiteMapHostService
             siteMap.Save(siteMapFilePath);
         }
 
+        /// <summary>
+        /// Создание рутовой карты сайта, которая содержит ссылки на остальные.
+        /// Остальные карты на момент вызова уже созданы.
+        /// </summary>
         private void CreateMainSiteMap(XmlDocument siteMap, IEnumerable<(string filePath, string lastMod)> filePaths)
         {
-            var xDoc = siteMap.CreateElement("sitemapindex", NS.ToString());
+            var xDoc = siteMap.CreateElement("sitemapindex", siteUrlNS.ToString());
             var declaration = siteMap.CreateXmlDeclaration("1.0", "utf-8", String.Empty);
 
             siteMap.AppendChild(declaration);
@@ -168,11 +196,11 @@ namespace SiteMapHostService
             {
                 var path = physicalPath.Replace(_publicDirectory, WebUtils.GenerateSiteAddress(_rootOptions.HostName)).Replace("\\", "/");
 
-                var xSiteMap = siteMap.CreateElement("sitemap", NS.ToString());
+                var xSiteMap = siteMap.CreateElement("sitemap", siteUrlNS.ToString());
 
-                var xLoc = siteMap.CreateElement("loc", NS.ToString());
+                var xLoc = siteMap.CreateElement("loc", siteUrlNS.ToString());
                 var xLocText = siteMap.CreateTextNode(path);
-                var xLastmod = siteMap.CreateElement("lastmod", NS.ToString());
+                var xLastmod = siteMap.CreateElement("lastmod", siteUrlNS.ToString());
                 var xLastmodText = siteMap.CreateTextNode(lastmod);
 
                 xDoc.AppendChild(xSiteMap);
@@ -187,7 +215,11 @@ namespace SiteMapHostService
 
         #region Create Sub Sitemap
 
-        private (XmlDocument siteMap, string siteMapFilePath) CareateSubSiteMap(string fileName)
+        /// <summary>
+        /// Создаёт файл карты сайта для раздела.
+        /// </summary>
+        /// <param name="fileName">Путь куда сохраниться карта.</param>
+        private (XmlDocument siteMap, string siteMapFilePath) CreateSubSiteMap(string fileName)
         {
             var siteMap = new XmlDocument();
 
@@ -199,14 +231,17 @@ namespace SiteMapHostService
 
             var siteMapFilePath = Path.Join(sitemapSubdirPath, $"{fileName}.xml");
 
-            CreateSubSiteMap(siteMap);
+            InitSubSiteMap(siteMap);
 
             return (siteMap, siteMapFilePath);
         }
 
-        private void CreateSubSiteMap(XmlDocument siteMap)
+        /// <summary>
+        /// Создаёт в xml файле основную часть карты сайта.
+        /// </summary>
+        private void InitSubSiteMap(XmlDocument siteMap)
         {
-            var rootNode = siteMap.CreateElement("urlset", NS.ToString());
+            var rootNode = siteMap.CreateElement("urlset", siteUrlNS.ToString());
             var declaration = siteMap.CreateXmlDeclaration("1.0", "utf-8", String.Empty);
 
             siteMap.AppendChild(declaration);
@@ -214,7 +249,10 @@ namespace SiteMapHostService
         }
         #endregion
 
-        private XmlDocument OpenSitemap(string path)
+        /// <summary>
+        /// Открытие xml файл.
+        /// </summary>
+        private XmlDocument OpenXML(string path)
         {
             if (!File.Exists(path))
             {
@@ -286,24 +324,46 @@ namespace SiteMapHostService
                         fileList.Add((siteMapFilePath, lastmod));
                     }
 
-                    (xMain, siteMapFilePath) = CareateSubSiteMap($"{filePrefix}-{fileCounter++}");
+                    (xMain, siteMapFilePath) = CreateSubSiteMap($"{filePrefix}-{fileCounter++}");
 
                     xDoc = xMain.DocumentElement;
 
                     itemCounter = 0;
                 }
 
-                var xUrl = xMain.CreateElement("url", NS.ToString());
-                var xLoc = xMain.CreateElement("loc", NS.ToString());
-                var xLocText = xMain.CreateTextNode(item.Url);
-                var xLastmod = xMain.CreateElement("lastmod", NS.ToString());
-                var xLastmodText = xMain.CreateTextNode(item.LastModified.GetDate().ToString(DateFormat));
-
+                var xUrl = xMain.CreateElement("url", siteUrlNS.ToString());
                 xDoc.AppendChild(xUrl);
-                xUrl.AppendChild(xLoc);
-                xLoc.AppendChild(xLocText);
-                xUrl.AppendChild(xLastmod);
-                xLastmod.AppendChild(xLastmodText);
+
+                var xUrlLoc = xMain.CreateElement("loc", siteUrlNS.ToString());
+                xUrl.AppendChild(xUrlLoc);
+                var xUrlLocText = xMain.CreateTextNode(WebUtils.GenerateSiteAddress(_rootOptions.HostName, item.Url));
+                xUrlLoc.AppendChild(xUrlLocText);
+
+                var xUrlLastmod = xMain.CreateElement("lastmod", siteUrlNS.ToString());
+                xUrl.AppendChild(xUrlLastmod);
+                var xUrlLastmodText = xMain.CreateTextNode(item.LastModified.GetDate().ToString(DateFormat));
+                xUrlLastmod.AppendChild(xUrlLastmodText);
+
+                if (item.Photos != null)
+                {
+                    foreach (var photo in item.Photos)
+                    {
+                        var xImage = xMain.CreateElement("image", siteImageNS.ToString());
+                        xUrl.AppendChild(xImage);
+
+                        var xImageLoc = xMain.CreateElement("loc", siteImageNS.ToString());
+                        xImage.AppendChild(xImageLoc);
+
+                        var xImageLocText = xMain.CreateTextNode(WebUtils.GenerateSiteAddress(_rootOptions.HostName, photo.Url));
+                        xImageLoc.AppendChild(xImageLocText);
+
+                        var xImageTitle = xMain.CreateElement("title", siteImageNS.ToString());
+                        xImage.AppendChild(xImageTitle);
+
+                        var xImageTitleText = xMain.CreateTextNode(item.Name);
+                        xImageTitle.AppendChild(xImageTitleText);
+                    }
+                }
 
                 itemCounter++;
             }
@@ -323,7 +383,7 @@ namespace SiteMapHostService
 
         private string GetLastmodSitemap(XmlDocument xMain, string filePath, IEnumerable<SiteMapSimpleItem> items)
         {
-            var prevSitemap = OpenSitemap(filePath);
+            var prevSitemap = OpenXML(filePath);
             DateTime lastmod = default;
 
             if (prevSitemap != null && items.Any() && prevSitemap.InnerXml.Equals(xMain.InnerXml))
