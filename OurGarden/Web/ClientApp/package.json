@@ -29,7 +29,8 @@
     "react-router-dom": "^5.2.0",
     "react-yandex-maps": "^4.4.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "xregexp": "^4.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -40,6 +41,7 @@
     "@babel/register": "^7.11.5",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
     "@types/copy-webpack-plugin": "^6.0.0",
+    "@types/xregexp": "3.0.29",
     "@types/fs-extra": "^9.0.1",
     "@types/history": "^4.7.5",
     "@types/lodash.debounce": "^4.0.6",

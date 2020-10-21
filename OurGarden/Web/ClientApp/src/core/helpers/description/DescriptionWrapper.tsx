@@ -1,4 +1,5 @@
 import React from "react";
+import XRegExp from "xregexp";
 
 import Gallery from "@src/core/components/Gallery";
 
@@ -55,8 +56,10 @@ const DescriptionWrapper = ({
     } else {
       const catalogPartString = catalogPart as string;
 
-      const galleryMacrosMatchGroups = catalogPartString.match(GALLERY_MACROS)
-        ?.groups;
+      const galleryMacrosMatchGroups = XRegExp.exec(
+        catalogPartString,
+        GALLERY_MACROS
+      )?.groups;
       if (galleryMacrosMatchGroups && galleryMacrosMatchGroups.galleryName) {
         const galleryParts = getPartsBetween(catalogPartString, GALLERY_MACROS);
 
