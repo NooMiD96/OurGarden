@@ -56,12 +56,15 @@ const DescriptionWrapper = ({
     } else {
       const catalogPartString = catalogPart as string;
 
-      const galleryMacrosMatchGroups = XRegExp.exec(
-        catalogPartString,
-        GALLERY_MACROS
-      )?.groups;
-      if (galleryMacrosMatchGroups && galleryMacrosMatchGroups.galleryName) {
-        const galleryParts = getPartsBetween(catalogPartString, GALLERY_MACROS);
+      // Поиск по имени в регулярке на Edge и IE не работает,
+      // из-за этого используется данная библиотека
+      const regEx = XRegExp(GALLERY_MACROS);
+      const galleryMacrosMatchGroups = XRegExp.exec(catalogPartString, regEx);
+
+      if (galleryMacrosMatchGroups?.length > 1) {
+        const foundMacros = galleryMacrosMatchGroups[0];
+        const galleryName = galleryMacrosMatchGroups[1];
+        const galleryParts = getPartsBetween(catalogPartString, foundMacros);
 
         if (galleryParts[0]) {
           // prettier-ignore
@@ -76,9 +79,7 @@ const DescriptionWrapper = ({
         }
 
         // Gallery
-        renderParts.push(
-          <Gallery galleryName={galleryMacrosMatchGroups.galleryName} />
-        );
+        renderParts.push(<Gallery galleryName={galleryName} />);
 
         if (galleryParts.length > 1 && galleryParts[galleryParts.length - 1]) {
           // prettier-ignore

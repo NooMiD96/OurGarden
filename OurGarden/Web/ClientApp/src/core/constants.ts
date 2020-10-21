@@ -15,7 +15,7 @@ export const EMAIL_MACROS = "{{email}}";
 export const ADDRESS_MACROS = "{{address}}";
 export const SHORT_ADDRESS_MACROS = "{{short_address}}";
 export const CATALOG_MACROS = "{{catalog}}";
-export const GALLERY_MACROS = /{{gallery=(?<galleryName>.+)}}/;
+export const GALLERY_MACROS = "{{gallery=(?<galleryName>.+)}}";
 
 export const MODAL_TIMEOUT = 5_000;
 
