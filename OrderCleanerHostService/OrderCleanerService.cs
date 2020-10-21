@@ -18,6 +18,14 @@ namespace Services.BackgroundWork.OrderCleaner
 {
     public class OrderCleanerService : IOrderCleanerService
     {
+        #region Consts
+
+        const string HostServiceName = "OrderCleanerService";
+        const string HostServiceWorkStart = HostServiceName + " is start working.";
+        const string HostServiceWorkEnd = HostServiceName + " is work done.";
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -54,7 +62,7 @@ namespace Services.BackgroundWork.OrderCleaner
 
         public async Task DoWork()
         {
-            _logger.LogInformation($"OrderCleanerService is working.");
+            _logger.LogInformation(HostServiceWorkStart);
 
             try
             {
@@ -75,10 +83,10 @@ namespace Services.BackgroundWork.OrderCleaner
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"OrderCleanerService: {ex.Message}");
+                _logger.LogError(ex, $"OrderCleanerService error: {ex.Message}");
             }
 
-            _logger.LogInformation($"OrderCleanerService is worked.");
+            _logger.LogInformation(HostServiceWorkEnd);
         }
 
         #endregion

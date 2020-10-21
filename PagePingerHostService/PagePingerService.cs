@@ -18,36 +18,49 @@ namespace PagePingerHostService
     /// </summary>
     public class PagePingerService : IPagePingerService
     {
-        private readonly ILogger Logger;
-        private readonly RootOptions RootOptions;
+        #region Consts
+
+        const string HostServiceName = "PagePingerService";
+        const string HostServiceWorkStart = HostServiceName + " is start working.";
+        const string HostServiceWorkEnd = HostServiceName + " is work done.";
+
+        #endregion
+
+        private readonly ILogger _logger;
+        private readonly RootOptions _rootOptions;
+        private byte _workCounter = 0;
 
         public PagePingerService(ILogger<PagePingerService> logger,
                                  IOptions<RootOptions> rootOptions)
         {
-            Logger = logger;
-            RootOptions = rootOptions.Value;
+            _logger = logger;
+            _rootOptions = rootOptions.Value;
         }
 
         public async Task PingMainPage(string page = null)
         {
-            Logger.LogInformation($"DummyWorkerService is working.");
+            if (_workCounter == 0)
+                _logger.LogInformation(HostServiceWorkStart);
 
             try
             {
                 using var client = new WebClient();
                 await client.DownloadDataTaskAsync(
                     new Uri(
-                        page ?? WebUtils.GenerateSiteAddress(RootOptions.HostName)
+                        page ?? WebUtils.GenerateSiteAddress(_rootOptions.HostName)
                     )
                 );
             }
             catch (Exception ex)
             {
                 /// TODO: Send email
-                Logger.LogError(ex, $"DummyWorkerService: {ex.Message}");
+                _logger.LogError(ex, $"PagePingerService error: {ex.Message}");
             }
 
-            Logger.LogInformation($"DummyWorkerService is worked.");
+            if (_workCounter == 0)
+                _logger.LogInformation(HostServiceWorkEnd);
+
+            _workCounter++;
         }
     }
 }

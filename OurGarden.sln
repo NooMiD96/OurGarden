@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HostServices", "HostService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PagePinger", "PagePinger", "{DD31334E-5334-4EB4-A7D0-66311C340E2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagePingerHostService", "DummyWorkerHostService\PagePingerHostService.csproj", "{8B39236F-75EE-4CDF-9B56-DC59F32D7BEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagePingerHostService", "PagePingerHostService\PagePingerHostService.csproj", "{8B39236F-75EE-4CDF-9B56-DC59F32D7BEF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagePingerHostService.Abstraction", "DummyWorkerHostService.Abstraction\PagePingerHostService.Abstraction.csproj", "{1B0915CD-A25D-4D2E-855C-2770070C8B77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagePingerHostService.Abstraction", "PagePingerHostService.Abstraction\PagePingerHostService.Abstraction.csproj", "{1B0915CD-A25D-4D2E-855C-2770070C8B77}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrderCleaner", "OrderCleaner", "{5A6D1BDC-1B46-4DA8-AD08-EF6E9DE41E8B}"
 EndProject

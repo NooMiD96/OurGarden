@@ -19,7 +19,6 @@ namespace OrderCleanerHostService
 
         const string HostServiceName = "OrderCleanerHostedService";
         const string HostServiceStart = HostServiceName + " is starting.";
-        const string HostServiceWork = HostServiceName + " is working.";
         const string HostServiceEnd = HostServiceName + " is stopping.";
 
         #endregion
@@ -72,8 +71,6 @@ namespace OrderCleanerHostService
         /// </summary>
         private void DoWork(object state)
         {
-            Logger.LogInformation(HostServiceWork);
-
             OrderCleanerService.DoWork();
         }
 

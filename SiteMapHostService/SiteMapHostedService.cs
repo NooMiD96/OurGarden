@@ -20,7 +20,6 @@ namespace SiteMapHostService
 
         const string HostServiceName = "SiteMapHostedService";
         const string HostServiceStart = HostServiceName + " is starting.";
-        const string HostServiceWork = HostServiceName + " is working.";
         const string HostServiceEnd = HostServiceName + " is stopping.";
 
         #endregion
@@ -74,8 +73,6 @@ namespace SiteMapHostService
         /// <param name="state"></param>
         private void DoWork(object state)
         {
-            Logger.LogInformation(HostServiceWork);
-
             SiteMapService.DoWork();
         }
 

@@ -10,37 +10,39 @@ namespace SiteMapHostService
 {
     public class SiteMapService : ISiteMapService
     {
-        readonly ILogger _logger;
-        private readonly IServiceProvider Services;
+        #region Fields
 
-        const string HostServiceName = "SiteMapService";
-        const string HostServiceStart = HostServiceName + " is starting.";
-        const string HostServiceEnd = HostServiceName + " is worked end.";
+        private readonly ILogger _logger;
+
+        private readonly IServiceProvider _services;
+
+        #endregion
+
+        #region .ctor
 
         public SiteMapService(IServiceProvider services, ILogger<SiteMapService> logger)
         {
-            Services = services;
+            _services = services;
             _logger = logger;
         }
 
+        #endregion
+
         public async Task DoWork()
         {
-            _logger.LogInformation(HostServiceStart);
+            try
+            {
+               using var scope = _services.CreateScope();
 
-            using (var scope = Services.CreateScope())
-                try
-                {
-                    var siteMapBuilder = scope.ServiceProvider.GetRequiredService<ISiteMapBuilder>();
+                var siteMapBuilder = scope.ServiceProvider.GetRequiredService<ISiteMapBuilder>();
 
-                    await siteMapBuilder.CreateSiteMap();
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Send email
-                    _logger.LogError(ex, $"{HostServiceName}: {ex.Message}");
-                }
-
-            _logger.LogInformation(HostServiceEnd);
+                await siteMapBuilder.CreateSiteMap();
+            }
+            catch (Exception ex)
+            {
+                // TODO: Send email
+                _logger.LogError(ex, $"SiteMapService error: {ex.Message}");
+            }
         }
     }
 }

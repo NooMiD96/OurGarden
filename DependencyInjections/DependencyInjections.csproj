@@ -18,7 +18,7 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
     <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
-    <ProjectReference Include="..\DummyWorkerHostService\PagePingerHostService.csproj" />
+    <ProjectReference Include="..\PagePingerHostService\PagePingerHostService.csproj" />
     <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\ImageService.Abstraction\PhotoService.Abstraction.csproj" />

@@ -13,9 +13,8 @@ namespace PagePingerHostService
     {
         #region Consts
 
-        const string HostServiceName = "DummyHostedService";
+        const string HostServiceName = "PagePingerHostedService";
         const string HostServiceStart = HostServiceName + " is starting.";
-        const string HostServiceWork = HostServiceName + " is working.";
         const string HostServiceEnd = HostServiceName + " is stopping.";
 
         #endregion
@@ -68,8 +67,6 @@ namespace PagePingerHostService
         /// </summary>
         private void DoWork(object state)
         {
-            Logger.LogInformation(HostServiceWork);
-
             PagePingerService.PingMainPage();
         }
 
