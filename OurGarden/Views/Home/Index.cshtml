@@ -5,25 +5,49 @@
 @{
     Layout = null;
 
-    var prerenderResult = await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
+    var jsBundles = new List<string>();
+    var cssBundles = new List<string>();
+    string stringCss = default;
 
-    if (!String.IsNullOrEmpty(prerenderResult.RedirectUrl))
+    string helmetTitle = default;
+    string helmetMeta = default;
+
+    string initialReduxStateJson = default;
+
+    string html = default;
+    try
     {
-        Context.Response.Redirect(prerenderResult.RedirectUrl, true);
+
+        var prerenderResult = await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
+
+        if (!String.IsNullOrEmpty(prerenderResult.RedirectUrl))
+        {
+            Context.Response.Redirect(prerenderResult.RedirectUrl, true);
+        }
+
+        html = prerenderResult?.Html;
+
+        jsBundles = prerenderResult?.Globals?["js"]?.Select(x => x.Value<string>("publicPath")).ToList();
+        cssBundles = prerenderResult?.Globals?["css"]?.Select(x => x.Value<string>("publicPath")).ToList();
+        stringCss = prerenderResult?.Globals?["stringCss"]?.ToString();
+
+        helmetTitle = prerenderResult?.Globals?["helmetTitle"]?.ToString();
+        helmetMeta = prerenderResult?.Globals?["helmetMeta"]?.ToString();
+
+        initialReduxStateJson = prerenderResult?.Globals?["initialReduxState"]?.ToString();
+
+        if (prerenderResult != null && prerenderResult.StatusCode.HasValue)
+        {
+            if (Context.Response != null)
+            {
+                Context.Response.StatusCode = prerenderResult?.StatusCode ?? 200;
+            }
+        }
     }
-
-    var jsBundles = prerenderResult?.Globals?["js"]?.Select(x => x.Value<string>("publicPath")).ToList();
-    var cssBundles = prerenderResult?.Globals?["css"]?.Select(x => x.Value<string>("publicPath")).ToList();
-    var stringCss = prerenderResult?.Globals?["stringCss"]?.ToString();
-
-    var helmetTitle = prerenderResult?.Globals?["helmetTitle"]?.ToString();
-    var helmetMeta = prerenderResult?.Globals?["helmetMeta"]?.ToString();
-
-    var initialReduxStateJson = prerenderResult?.Globals?["initialReduxState"]?.ToString();
-
-    if (prerenderResult != null && prerenderResult.StatusCode.HasValue)
+    catch (Exception ex)
     {
-        Context.Response.StatusCode = prerenderResult?.StatusCode ?? 200;
+        Serilog.Log.Error(ex, "Что-то пошло не так, на рендере страницы произошла ошибка!!!");
+        Context.Response.Redirect("/", true);
     }
 }
 
@@ -119,6 +143,6 @@
         <!-- /Yandex.Metrika counter -->
     </environment>
 
-    <div id="react-app">@Html.Raw(prerenderResult?.Html)</div>
+    <div id="react-app">@Html.Raw(html)</div>
 </body>
 </html>

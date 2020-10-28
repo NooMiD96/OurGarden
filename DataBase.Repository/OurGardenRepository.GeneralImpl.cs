@@ -246,6 +246,12 @@ namespace DataBase.Repository
             }
         }
 
+        /// <summary>
+        /// Получение значений первичных ключей модели для передаваемого объекта
+        /// </summary>
+        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <param name="entity">Сущность, у которой нужно найти ключи</param>
+        /// <returns></returns>
         private object[] GetKeyValues<T>(T entity)
         {
             var keys = Context
