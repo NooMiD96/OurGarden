@@ -3,6 +3,7 @@ using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using System.Threading.Tasks;
 
@@ -24,13 +25,20 @@ namespace Web.Controllers.Api
         /// </summary>
         private readonly ISeoService _seoService;
 
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private readonly ILogger _logger;
+
         #endregion
 
         #region .ctor
 
-        public HomeController(IHomeControllerService homeConstollerService,
+        public HomeController(ILogger<HomeController> logger,
+                              IHomeControllerService homeConstollerService,
                               ISeoService seoService)
         {
+            _logger = logger;
             _homeConstollerService = homeConstollerService;
             _seoService = seoService;
         }
@@ -70,6 +78,12 @@ namespace Web.Controllers.Api
                 return Success(execResult.Result);
             else
                 return BadRequest(execResult.Error);
+        }
+
+        [HttpPost("[action]")]
+        public void LogWebAppError([FromQuery] string errorString)
+        {
+            _logger.LogError(errorString);
         }
 
         #endregion

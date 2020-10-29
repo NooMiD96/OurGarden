@@ -97,7 +97,13 @@ export const actionCreators = {
           if (requestError) {
             requestError();
           }
-          dispatch(actionsList.requestError(err.message));
+          dispatch(
+            actionsList.requestError(
+              `${err.message}. Url: ${fetchUrl}. Props: ${JSON.stringify(
+                fetchProps
+              )}`
+            )
+          );
           errorCatcher(
             controllerName,
             apiUrl,

@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { fetch } from "domain-task";
 
 import PageNotFound from "@core/components/PageNotFound";
 import LoadingHOC from "@core/HOC/LoadingHOC";
@@ -38,6 +39,20 @@ export class AppHOC extends React.Component<TState, {}> {
     }
 
     return false;
+  }
+
+  componentDidUpdate(prevProps: TState) {
+    if (this.props.errorInner !== prevProps.errorInner) {
+      fetch(
+        `/api/Home/LogWebAppError?errorString=${encodeURIComponent(
+          this.props.errorInner
+        )}`,
+        {
+          credentials: "same-origin",
+          method: "POST",
+        }
+      );
+    }
   }
 
   resetState = () => {
