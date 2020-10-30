@@ -106,6 +106,7 @@ export class Catalog<T> extends React.PureComponent<
           total={dataList.length}
           onChange={this.onPageChange}
           showLessItems
+          showSizeChanger={false}
         />
         <Row className="row-type-flex" gutter={rowGutter}>
           {itemsToDisplay}
