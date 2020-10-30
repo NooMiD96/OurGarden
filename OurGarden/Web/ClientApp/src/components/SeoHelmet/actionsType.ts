@@ -19,7 +19,7 @@ export interface ISetPageSeoInformation {
   /**
    * Объект из ключа и СЕО информации
    */
-  payload: { pageSeoInformation: IPageSeoInformation; key: string };
+  payload: { pageSeoInformation?: IPageSeoInformation; key: string };
 }
 
 type KnownAction = IGetPageSeoInformation | ISetPageSeoInformation;

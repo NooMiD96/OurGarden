@@ -21,7 +21,7 @@ export const actionsList = {
     payload: pageKey,
   }),
   setPageSeoInformation: (payload: {
-    pageSeoInformation: IPageSeoInformation;
+    pageSeoInformation?: IPageSeoInformation;
     key: string;
   }): t.ISetPageSeoInformation => ({
     type: t.SET_PAGE_SEO_INFORMATION,
@@ -45,6 +45,11 @@ export const actionCreators = {
     if (currentKey === pathname) {
       return;
     }
+    dispatch(
+      actionsList.setPageSeoInformation({
+        key: pathname,
+      })
+    );
 
     const apiUrl = "GetPageSEOParams";
     const encodedPathname = encodeURIComponent(pathname);

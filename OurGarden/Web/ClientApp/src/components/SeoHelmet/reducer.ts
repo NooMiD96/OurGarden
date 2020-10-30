@@ -20,11 +20,14 @@ export const reducer: Reducer<IPageSeoInformationState> = (
     }
 
     case t.SET_PAGE_SEO_INFORMATION: {
+      const { key, pageSeoInformation } = action.payload;
       const newState: IPageSeoInformationState = {
         ...state,
-        pageSeoInformation: action.payload.pageSeoInformation,
-        key: action.payload.key,
+        key,
       };
+      if (pageSeoInformation) {
+        newState.pageSeoInformation = pageSeoInformation;
+      }
 
       return newState;
     }
