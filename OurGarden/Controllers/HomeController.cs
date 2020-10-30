@@ -58,7 +58,7 @@ namespace Web.Controllers
                 )
                 {
                     return RedirectPermanent(
-                        requestPath[0..requestPath.LastIndexOf("/")]
+                        requestPath[0..(Request.Path.Value.LastIndexOf("/") + 1)]
                     );
                 }
             }

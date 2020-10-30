@@ -9,15 +9,15 @@ import { INew } from "./State";
 // #region ACTIONS
 export const actionsList = {
   getNewsRequest: (): t.IGetNewsRequest => ({
-    type: t.GET_NEWS_REQUEST
+    type: t.GET_NEWS_REQUEST,
   }),
   getNewsSuccess: (payload: INew): t.IGetNewsSuccess => ({
     type: t.GET_NEWS_SUCCESS,
-    payload
+    payload,
   }),
   getNewsError: (): t.IGetNewsError => ({
-    type: t.GET_NEWS_ERROR
-  })
+    type: t.GET_NEWS_ERROR,
+  }),
 };
 // #endregion
 // ----------------
@@ -32,12 +32,12 @@ export const actionCreators = {
     const encodedNewsId = encodeURIComponent(newsId);
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?newsId=${encodedNewsId}`;
-    const fetchProps = {
+    const fetchProps = <RequestInit>{
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     const requestStart = () => dispatch(actionsList.getNewsRequest());
@@ -46,7 +46,7 @@ export const actionCreators = {
       dispatch(
         actionsList.getNewsSuccess({
           ...data,
-          date: new Date(data.date)
+          date: new Date(data.date),
         })
       );
     };
@@ -58,7 +58,7 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getNewsError,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
@@ -67,8 +67,8 @@ export const actionCreators = {
   ) => {
     breadcrumbActions.getBreadcrumb({
       controllerName,
-      params
+      params,
     })(dispatch, getState);
-  }
+  },
 };
 // #endregion

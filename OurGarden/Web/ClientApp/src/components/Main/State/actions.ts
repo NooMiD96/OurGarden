@@ -76,6 +76,8 @@ export const actionCreators = {
         saveRequest = true,
       } = params;
 
+      const fetchPropsString = JSON.stringify(fetchProps);
+
       const fetchTask = fetch(fetchUrl, fetchProps)
         .then((res: Response) => {
           if (res.status === 404) {
@@ -99,9 +101,7 @@ export const actionCreators = {
           }
           dispatch(
             actionsList.requestError(
-              `${err.message}. Url: ${fetchUrl}. Props: ${JSON.stringify(
-                fetchProps
-              )}`
+              `${err.message}. Url: ${fetchUrl}. Props: ${fetchPropsString}`
             )
           );
           errorCatcher(
