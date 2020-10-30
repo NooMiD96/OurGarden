@@ -56,6 +56,14 @@
     }
   }
 
+  @media (min-width: 1200px) and (max-width: 1366px) {
+    .add-to-card-button-wrapper.card-add-button {
+      input {
+        display: none;
+      }
+    }
+  }
+
   @media (max-width: 512px) {
     .add-to-card-button-wrapper.card-add-button {
       input {

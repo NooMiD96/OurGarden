@@ -8,20 +8,69 @@ import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper
 import { getPhotoSrc } from "@core/utils/photo";
 import { getFormattedDescription } from "@src/core/helpers/description/DescriptionHelper";
 
-import { IMouseClickEvent } from "@core/interfaces/IEvents";
+import { IMouseClickEvent, IPressEnterEvent } from "@core/interfaces/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
 
 export class ProductContent extends React.PureComponent<
   IProductContentProps,
   IProductContentState
 > {
+  productWrapper: HTMLDivElement | null = null;
+
+  onResizeHandlerTimer?: NodeJS.Timeout;
+
   constructor(props: IProductContentProps) {
     super(props);
 
     this.state = {
       itemCount: "1",
+      showTitleBeforeProductPhoto: false,
+      showTitleAfterProductPhoto: true,
+      productImageClass: "max-width-30",
     };
   }
+
+  componentDidMount() {
+    if (window) {
+      window.addEventListener("resize", this.onResizeHandler);
+    }
+    this.detectProductWrapperSize();
+  }
+
+  componentWillUnmount() {
+    if (window) {
+      window.removeEventListener("resize", this.onResizeHandler);
+    }
+  }
+
+  onResizeHandler = () => {
+    if (this.onResizeHandlerTimer) {
+      clearTimeout(this.onResizeHandlerTimer);
+    }
+
+    this.onResizeHandlerTimer = setTimeout(this.detectProductWrapperSize, 250);
+  };
+
+  detectProductWrapperSize = () => {
+    if (this.productWrapper) {
+      const { width } = this.productWrapper.getBoundingClientRect();
+
+      if (width <= 475) {
+        this.setState({
+          showTitleBeforeProductPhoto: true,
+          showTitleAfterProductPhoto: false,
+        });
+      } else {
+        this.setState({
+          showTitleBeforeProductPhoto: false,
+          showTitleAfterProductPhoto: true,
+        });
+      }
+      this.setState({
+        productImageClass: width >= 425 ? "max-width-30" : "",
+      });
+    }
+  };
 
   setItemCount = (newCount: string) => {
     this.setState({
@@ -29,9 +78,11 @@ export class ProductContent extends React.PureComponent<
     });
   };
 
-  addToCard = (e: IMouseClickEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  addToCard = (e?: IMouseClickEvent | IPressEnterEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     const { ymId } = this.props;
 
@@ -49,23 +100,43 @@ export class ProductContent extends React.PureComponent<
 
   render() {
     const { product } = this.props;
-    const { itemCount } = this.state;
+    const {
+      itemCount,
+      showTitleBeforeProductPhoto,
+      showTitleAfterProductPhoto,
+      productImageClass,
+    } = this.state;
 
     const productPhoto = getPhotoSrc(product);
     const description = getFormattedDescription(product.description);
 
     return (
       <React.Fragment>
-        {productPhoto && (
-          <img
-            src={productPhoto}
-            alt={product!.alias}
-            className="product-photo"
-          />
-        )}
+        <div
+          className="product-info"
+          // eslint-disable-next-line no-return-assign
+          ref={(x) => (this.productWrapper = x)}
+        >
+          {showTitleBeforeProductPhoto && (
+            <Title className="title-before-product-photo">
+              {product.alias}
+            </Title>
+          )}
 
-        <div className="product-info">
-          <Title>{product.alias}</Title>
+          {productPhoto && (
+            <img
+              src={productPhoto}
+              alt={product.alias}
+              className={`product-photo ${productImageClass} ${
+                showTitleBeforeProductPhoto ? "w-100" : ""
+              }`}
+            />
+          )}
+
+          {showTitleAfterProductPhoto && (
+            <Title className="title-after-product-photo">{product.alias}</Title>
+          )}
+
           <span className="product-cost">
             {product.price ? (
               <>
@@ -90,7 +161,11 @@ export class ProductContent extends React.PureComponent<
             setItemCount={this.setItemCount}
             addToCard={this.addToCard}
           />
-        ) : null}
+        ) : (
+          <span className="empty-cost-hint">
+            Свяжитесь с нами для уточнения цены
+          </span>
+        )}
       </React.Fragment>
     );
   }

@@ -1,32 +1,33 @@
 .wysiwyg-wrapper {
+  .product-info .ant-typography {
+    font-family: BerlingskeSerif;
+    font-weight: 400;
+    font-size: 30px;
+    padding-right: 30px;
+  }
+
   .product-photo {
-    max-width: 40%;
     min-width: 230px;
     float: left;
     margin: 0rem 2rem 0.5rem 0;
   }
 
-  .product-info {
-    .ant-typography {
-      font-family: BerlingskeSerif;
-      font-weight: 400;
-      font-size: 30px;
-      padding-right: 30px;
-    }
+  .empty-cost-hint,
+  .product-cost {
+    font-size: 21px;
+    color: $darkGreenColor;
+  }
 
-    .product-cost {
-      font-size: 21px;
-      position: absolute;
-      top: 0;
-      right: 2rem;
-      color: $darkGreenColor;
-    }
+  .product-cost {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+  }
 
-    .product-description {
-      font-size: 16px;
-      font-weight: 500;
-      color: $greyColor;
-    }
+  .product-description {
+    font-size: 16px;
+    font-weight: 500;
+    color: $greyColor;
   }
 
   .wysiwyg-description {

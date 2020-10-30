@@ -9,4 +9,7 @@ export interface IProductContentProps {
 
 export interface IProductContentState {
   itemCount: string;
+  showTitleBeforeProductPhoto: boolean;
+  showTitleAfterProductPhoto: boolean;
+  productImageClass: string;
 }
