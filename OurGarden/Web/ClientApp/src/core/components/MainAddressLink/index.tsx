@@ -18,7 +18,7 @@ const MainAddressLink = ({
     onClick={(e) => {
       e.preventDefault();
       if (push) {
-        push("/About");
+        push("/Contacts");
       }
     }}
   >

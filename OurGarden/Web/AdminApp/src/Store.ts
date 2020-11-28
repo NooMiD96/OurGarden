@@ -27,9 +27,6 @@ import { reducer as GalleryReducer } from "@src/components/Gallery/reducer";
 import { IPageInfoState } from "./components/PageInfo/State";
 import { reducer as PageInfoReducer } from "@src/components/PageInfo/reducer";
 
-import { IVideoState } from "./components/VideoGallery/State";
-import { reducer as VideoReducer } from "@src/components/VideoGallery/reducer";
-
 export interface IApplicationState {
   router: RouterState;
 
@@ -46,7 +43,6 @@ export interface IApplicationState {
 
   gallery: IGalleryState;
   pageInfo: IPageInfoState;
-  video: IVideoState;
 }
 
 export const reducers = {
@@ -63,7 +59,6 @@ export const reducers = {
 
   gallery: GalleryReducer,
   pageInfo: PageInfoReducer,
-  video: VideoReducer,
 };
 
 export interface IAppThunkAction<TAction> {

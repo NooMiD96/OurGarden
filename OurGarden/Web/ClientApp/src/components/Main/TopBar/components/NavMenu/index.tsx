@@ -16,8 +16,8 @@ const tabList = [
   { title: "Акции", link: "News" },
   { title: "Доставка и оплата", link: "Payment" },
   { title: "Ландшафтный дизайн", link: "Design" },
-  { title: "Видеогалерея", link: "Videogalery" },
-  { title: "Контакты", link: "About" },
+  { title: "Контакты", link: "Contacts" },
+  { title: "О нас", link: "About" },
 ];
 
 export class NavMenu extends React.PureComponent<

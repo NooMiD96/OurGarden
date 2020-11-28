@@ -56,12 +56,5 @@ export const AppRoutes = (
       path="/страницы"
       component={AsyncComponent(() => import(/* webpackChunkName: "PageInfo" */ "@components/PageInfo"))}
     />
-    <Route
-      exact
-      path="/видеогалерея"
-      component={AsyncComponent(() => import(
-        /* webpackChunkName: "VideoGallery" */ "@components/VideoGallery"
-      ))}
-    />
   </Layout>
 );

@@ -11,6 +11,7 @@ import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 import { IApplicationState } from "@src/Store";
 
 const navList = [
+  { key: "Главная", title: "Главная", link: "" },
   { key: "Новости и акции", title: "Новости и акции", link: "Новости и акции" },
   { key: "Категории", title: "Категории", link: "Категории" },
   { key: "Подкатегории", title: "Подкатегории", link: "Подкатегории" },
@@ -19,7 +20,6 @@ const navList = [
   { key: "Клиенты", title: "Клиенты", link: "Клиенты" },
   { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
   { key: "Страницы", title: "Страницы", link: "Страницы" },
-  { key: "Видеогалерея", title: "Видеогалерея", link: "Видеогалерея" },
 ];
 
 export const NavMenu = (props: RouterState) => {

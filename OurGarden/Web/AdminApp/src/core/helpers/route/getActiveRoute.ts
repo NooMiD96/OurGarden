@@ -16,8 +16,9 @@ const getActiveRoute = (
         }
       }
     }
+    return [tabList[0]];
   }
-}
+};
 
 export {
   getActiveRoute

@@ -119,14 +119,12 @@ export const AppRoutes = (
       />
 
       <Route
-        path="/Videogalery"
+        path="/Contacts"
         // prettier-ignore
         component={AsyncComponent(
-          () => import(
-          /* webpackChunkName: "Videogalery" */ "@components/Videogalery"
-          ),
-          ["@components/Videogalery"],
-          () => [require.resolveWeak("@components/Videogalery")]
+          () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
+          ["@components/Contacts"],
+          () => [require.resolveWeak("@components/Contacts")]
         )}
       />
 
@@ -134,9 +132,9 @@ export const AppRoutes = (
         path="/About"
         // prettier-ignore
         component={AsyncComponent(
-          () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
-          ["@components/Contacts"],
-          () => [require.resolveWeak("@components/Contacts")]
+          () => import(/* webpackChunkName: "About" */ "@components/About"),
+          ["@components/About"],
+          () => [require.resolveWeak("@components/About")]
         )}
       />
 

@@ -6,3 +6,4 @@ export const CATALOG_PAGE_ID = 5;
 export const NEWS_LIST_PAGE_ID = 6;
 export const CONTACTS_PAGE_ID = 7;
 export const CARD_PAGE_ID = 8;
+export const ABOUT_PAGE_ID = 9;

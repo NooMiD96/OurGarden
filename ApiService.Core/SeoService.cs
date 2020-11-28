@@ -259,13 +259,19 @@ namespace ApiService.Core
                         );
                     }
 
-                case "videogalery":
-                    section = _seoInformation.Videogalery;
-                    break;
+                case "contacts":
+                    {
+                        pageInfo = await _repository.GetPageInfo(PageInfo.ContactsPageId);
+                        return (
+                            pageInfo.SeoTitle,
+                            pageInfo.SeoDescription,
+                            pageInfo.SeoKeywords
+                        );
+                    }
 
                 case "about":
                     {
-                        pageInfo = await _repository.GetPageInfo(PageInfo.ContactsPageId);
+                        pageInfo = await _repository.GetPageInfo(PageInfo.AboutPageId);
                         return (
                             pageInfo.SeoTitle,
                             pageInfo.SeoDescription,

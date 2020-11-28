@@ -49,7 +49,8 @@ namespace DataBase.Abstraction.Model
                 && PageInfoId != CatalogPageId
                 && PageInfoId != NewsListPageId
                 && PageInfoId != ContactsPageId
-                && PageInfoId != CardPageId;
+                && PageInfoId != CardPageId
+                && PageInfoId != AboutPageId;
         }
 
         #region Static Pages Id
@@ -70,6 +71,8 @@ namespace DataBase.Abstraction.Model
 
         public static int CardPageId { get; } = 8;
 
+        public static int AboutPageId { get; } = 9;
+        
         #endregion
 
         #region Childrens

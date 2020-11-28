@@ -135,7 +135,7 @@ namespace DataBase.Context
                     {
                         PageInfoId = Abstraction.Model.PageInfo.ContactsPageId,
                         Alias = "Контакты",
-                        NormalizeAlias = "About",
+                        NormalizeAlias = "Contacts",
                         Description = null,
                         SeoTitle = "Контакты",
                         SeoDescription = null,
@@ -148,6 +148,16 @@ namespace DataBase.Context
                         NormalizeAlias = "Card",
                         Description = null,
                         SeoTitle = "Корзина",
+                        SeoDescription = null,
+                        SeoKeywords = null
+                    },
+                    new PageInfo()
+                    {
+                        PageInfoId = Abstraction.Model.PageInfo.AboutPageId,
+                        Alias = "О нас",
+                        NormalizeAlias = "About",
+                        Description = "<p>Данный раздел находится в разработке, приходите позднее!</p>",
+                        SeoTitle = "О нас",
                         SeoDescription = null,
                         SeoKeywords = null
                     }
