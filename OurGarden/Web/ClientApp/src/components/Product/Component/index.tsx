@@ -59,7 +59,14 @@ export class Product extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { product, addProductToCard, ymId } = this.props;
+    const {
+      product,
+      addProductToCard,
+      ymId,
+      push,
+      showPhotoModalWindow,
+      showFeedbackModalWindow,
+    } = this.props;
 
     return (
       <div className={`wysiwyg-wrapper content ${WHITE_BLOCK}`}>
@@ -69,6 +76,9 @@ export class Product extends React.PureComponent<TState, TComponentState> {
               product={product}
               addProductToCard={addProductToCard}
               ymId={ymId}
+              push={push}
+              showPhotoModalWindow={showPhotoModalWindow}
+              showFeedbackModalWindow={showFeedbackModalWindow}
             />
           </>
         )}

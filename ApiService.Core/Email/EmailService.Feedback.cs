@@ -52,7 +52,8 @@ namespace ApiService.Core.Email
                     fio: feedbackDTO.FIO,
                     phone: feedbackDTO.Phone,
                     email: feedbackDTO.Email
-                );
+                )
+                .Replace("{{Message}}", feedbackDTO.Message);
 
             string htmlMessage;
             try

@@ -6,7 +6,7 @@ import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = Record<string, unknown>;
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IProductListState &
@@ -15,7 +15,7 @@ export type TStateToProps = IProductListState &
     categoryId: string;
     subcategoryId: string;
   }> & { isDataWasGeted: boolean; ymId: number };
-export type TOwnProps = {};
+export type TOwnProps = Record<string, unknown>;
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT

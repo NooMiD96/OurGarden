@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FormItem } from "@src/core/antd/Form";
-import Input from "@src/core/antd/Input";
+import Input, { TextArea } from "@src/core/antd/Input";
 import PhoneNumberInput, {
   CISPhoneNumberRegExp,
 } from "@src/core/components/PhoneNumberInput";
@@ -84,12 +84,11 @@ export const FeedbackForm = ({ onSubmit }: IFeedbackForm) => (
         },
       ]}
     >
-      <Input.TextArea
+      <TextArea
         placeholder="Текст сообщения"
         // @ts-ignore
         prefix={<PhoneOutlinedIcon className="input-icon" />}
         autoSize={{ minRows: 4, maxRows: 12 }}
-        onPressEnter={onSubmit}
       />
     </FormItem>
   </React.Fragment>

@@ -11,6 +11,8 @@ import { getFormattedDescription } from "@src/core/helpers/description/Descripti
 import { IMouseClickEvent, IPressEnterEvent } from "@core/interfaces/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
 
+/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role,jsx-a11y/interactive-supports-focus */
+
 export class ProductContent extends React.PureComponent<
   IProductContentProps,
   IProductContentState
@@ -99,7 +101,12 @@ export class ProductContent extends React.PureComponent<
   };
 
   render() {
-    const { product } = this.props;
+    const {
+      product,
+      push,
+      showFeedbackModalWindow,
+      showPhotoModalWindow,
+    } = this.props;
     const {
       itemCount,
       showTitleBeforeProductPhoto,
@@ -130,6 +137,15 @@ export class ProductContent extends React.PureComponent<
               className={`product-photo ${productImageClass} ${
                 showTitleBeforeProductPhoto ? "w-100" : ""
               }`}
+              onClick={() => {
+                showPhotoModalWindow(product.photos[0], product.photos);
+                push({ hash: `photo=${product.photos[0].photoId}` });
+              }}
+              onKeyDown={() => {
+                showPhotoModalWindow(product.photos[0], product.photos);
+                push({ hash: `photo=${product.photos[0].photoId}` });
+              }}
+              role="button"
             />
           )}
 
@@ -162,7 +178,12 @@ export class ProductContent extends React.PureComponent<
             addToCard={this.addToCard}
           />
         ) : (
-          <span className="empty-cost-hint">
+          <span
+            className="empty-cost-hint cursor-pointer"
+            onClick={showFeedbackModalWindow}
+            onKeyDown={showFeedbackModalWindow}
+            role="button"
+          >
             Свяжитесь с нами для уточнения цены
           </span>
         )}
@@ -170,5 +191,7 @@ export class ProductContent extends React.PureComponent<
     );
   }
 }
+
+/* eslint-enable jsx-a11y/interactive-supports-focus */
 
 export default ProductContent;

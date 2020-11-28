@@ -24,29 +24,50 @@ export const FeedbackModal = ({
 }: TWithRouter<IFeedbackModal>) => {
   const [form] = useForm();
   const [isLoading, setLoadingState] = useState(false);
+  const [errorMessage, setErrorText] = useState("");
+  const [successMessage, setSuccessText] = useState("");
   const { getFieldsError } = form;
 
   const onSubmitHandler = async () => {
     const values = await form.validateFields();
     setLoadingState(true);
-    await sendFeedback(values as IFeedbackDTO);
+
+    const result = await sendFeedback(values as IFeedbackDTO);
+
+    if (result.ok) {
+      setSuccessText("Форма была успешно отправлена!");
+    } else {
+      const resultErrorText = await result.text();
+      setErrorText(resultErrorText);
+    }
     setLoadingState(false);
   };
 
   return (
-    <Modal open={isModalOpen} onClose={onCloseModal}>
+    <Modal open={isModalOpen} onClose={onCloseModal} fullWidth>
       <DialogTitle>Форма обратной связи</DialogTitle>
 
       <DialogContent dividers>
-        <Form
-          {...formItemLayout}
-          className={isLoading ? "d-none" : ""}
-          layout="vertical"
-          form={form}
-          onFinish={onSubmitHandler}
-        >
-          <FeedbackForm form={form} onSubmit={onSubmitHandler} />
-        </Form>
+        {successMessage ? (
+          <span>{successMessage}</span>
+        ) : (
+          <>
+            <span>
+              {errorMessage
+                ? `При отправке формы произошла ошибка: ${errorMessage}. Пожалуйста, свяжитесь с нами и сообщите нам эту ошибку`
+                : ""}
+            </span>
+            <Form
+              {...formItemLayout}
+              className={isLoading ? "d-none" : ""}
+              layout="vertical"
+              form={form}
+              onFinish={onSubmitHandler}
+            >
+              <FeedbackForm form={form} onSubmit={onSubmitHandler} />
+            </Form>
+          </>
+        )}
 
         {isLoading && <Loading />}
       </DialogContent>
@@ -60,7 +81,7 @@ export const FeedbackModal = ({
             type="primary"
             className="custom-styled-btn"
             onClick={onSubmitHandler}
-            disabled={hasErrors(getFieldsError())}
+            disabled={hasErrors(getFieldsError()) || !!successMessage}
           >
             Отправить
           </Button>

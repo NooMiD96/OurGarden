@@ -22,7 +22,7 @@ const mapStateToProps = (
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
   push,
-  replace
+  replace,
 };
 
 export default connect<

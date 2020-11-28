@@ -1,9 +1,11 @@
 import { connect } from "react-redux";
+import { push } from "connected-react-router";
 
 import Component from "./Component";
 
 import { actionCreators } from "./actions";
 import { actionCreators as userCardActions } from "@components/UserCard/actions";
+import { actionCreators as modalWindowsActions } from "@components/ModalWindow/actions";
 
 import { IApplicationState } from "@src/Store";
 import { TOwnProps, TMapStateToProps, TMapDispatchToProps } from "./TState";
@@ -22,7 +24,10 @@ const mapStateToProps = (
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
-  addProductToCard: userCardActions.addProductToCard
+  addProductToCard: userCardActions.addProductToCard,
+  showPhotoModalWindow: modalWindowsActions.showPhotoModalWindow,
+  showFeedbackModalWindow: modalWindowsActions.showFeedbackModalWindow,
+  push,
 };
 
 export default connect<

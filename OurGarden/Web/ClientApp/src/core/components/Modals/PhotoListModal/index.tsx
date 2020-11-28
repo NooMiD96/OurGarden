@@ -64,24 +64,28 @@ export const PhotoListModal = ({
         src={photoList[selectedPhotoIndex].url}
       />
       <CloseButton onCloseModal={onCloseModal} />
-      <PrevArrow
-        tabindex={-1}
-        // prettier-ignore
-        onClick={() => setSelectedPhotoIndex(
-          (
-            (
-              selectedPhotoIndex === 0
-                ? photoList.length
-                : selectedPhotoIndex
-            ) - 1
-          ) % photoList.length
-        )}
-      />
-      <NextArrow
-        tabindex={-1}
-        // prettier-ignore
-        onClick={() => setSelectedPhotoIndex((selectedPhotoIndex + 1) % photoList.length)}
-      />
+      {photoList.length > 1 && (
+        <>
+          <PrevArrow
+            tabindex={-1}
+            // prettier-ignore
+            onClick={() => setSelectedPhotoIndex(
+              (
+                (
+                  selectedPhotoIndex === 0
+                    ? photoList.length
+                    : selectedPhotoIndex
+                ) - 1
+              ) % photoList.length
+            )}
+          />
+          <NextArrow
+            tabindex={-1}
+            // prettier-ignore
+            onClick={() => setSelectedPhotoIndex((selectedPhotoIndex + 1) % photoList.length)}
+          />
+        </>
+      )}
     </Modal>
   );
 };

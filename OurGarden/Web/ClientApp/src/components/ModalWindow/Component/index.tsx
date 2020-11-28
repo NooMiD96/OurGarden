@@ -98,7 +98,6 @@ const ModalWindowDump = (state: TState) => {
           isModalOpen: false,
           onCloseModal: () => {
             closeModalWindow();
-            goBack();
           },
         };
         setComponentProps(props);

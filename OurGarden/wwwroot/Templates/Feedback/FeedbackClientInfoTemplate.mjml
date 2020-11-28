@@ -1,11 +1,13 @@
 <mj-text color="#444444" font-size="14px">
-  <div>
-    Оставленные контакты для связи:
-    <div>
-      Номер телефона: {{Phone}}
-    </div>
-    <div>
-      Почта: {{Email}}
-    </div>
-  </div>
+  Оставленные контакты для связи:
 </mj-text>
+<mj-table padding="10px" table-layout="inherit" css-class="order-info-table">
+  <tr style="text-align:left;padding:15px 0;">
+    <td style="width: 60%;">Номер телефона:</td>
+    <td style="width: 40%;">{{Phone}}</td>
+  </tr>
+  <tr style="text-align:left;padding:15px 0;">
+    <td style="width: 60%;">Почта:</td>
+    <td style="width: 40%;">{{Email}}</td>
+  </tr>
+</mj-table>
