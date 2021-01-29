@@ -1,6 +1,7 @@
 import * as t from "./actionsType";
 
 import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { IFeedbackModalState } from "./State";
 
 // ----------------
 // #region ACTIONS
@@ -16,8 +17,11 @@ export const actionsList = {
     selectedPhoto,
     photoList,
   }),
-  showFeedbackModalWindow: (): t.IShowFeedbackModalWindow => ({
+  showFeedbackModalWindow: ({
+    product,
+  }: IFeedbackModalState): t.IShowFeedbackModalWindow => ({
     type: t.SHOW_FEEDBACK_MODAL_WINDOW,
+    product,
   }),
 };
 // #endregion

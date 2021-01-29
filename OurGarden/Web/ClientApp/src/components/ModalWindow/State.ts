@@ -15,15 +15,21 @@ export interface IPhotoModalState {
   photoList: IPhoto[];
 }
 
+export interface IFeedbackModalState {
+  product?: IProduct;
+}
+
 export interface IModalWindowState {
   modalOpenType: ModalOpenType;
   newProductInCardState: IProduct | null;
   photoState: IPhotoModalState | null;
+  feedbackState: IFeedbackModalState | null;
 }
 
 export const unloadedState: IModalWindowState = {
   modalOpenType: ModalOpenType.Closed,
   newProductInCardState: null,
   photoState: null,
+  feedbackState: null,
 };
 // #endregion

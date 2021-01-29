@@ -100,13 +100,14 @@ export class ProductContent extends React.PureComponent<
     });
   };
 
+  openFeedbackModal = () => {
+    this.props.showFeedbackModalWindow({
+      product: this.props.product,
+    });
+  };
+
   render() {
-    const {
-      product,
-      push,
-      showFeedbackModalWindow,
-      showPhotoModalWindow,
-    } = this.props;
+    const { product, push, showPhotoModalWindow } = this.props;
     const {
       itemCount,
       showTitleBeforeProductPhoto,
@@ -180,8 +181,8 @@ export class ProductContent extends React.PureComponent<
         ) : (
           <span
             className="empty-cost-hint cursor-pointer"
-            onClick={showFeedbackModalWindow}
-            onKeyDown={showFeedbackModalWindow}
+            onClick={this.openFeedbackModal}
+            onKeyDown={this.openFeedbackModal}
             role="button"
           >
             Свяжитесь с нами для уточнения цены

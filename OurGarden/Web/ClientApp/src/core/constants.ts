@@ -17,6 +17,6 @@ export const SHORT_ADDRESS_MACROS = "{{short_address}}";
 export const CATALOG_MACROS = "{{catalog}}";
 export const GALLERY_MACROS = "{{gallery=(?<galleryName>.+)}}";
 
-export const MODAL_TIMEOUT = 5_000;
+export const MODAL_TIMEOUT = 500_000;
 
 export const CARD_PATH = "/Card";

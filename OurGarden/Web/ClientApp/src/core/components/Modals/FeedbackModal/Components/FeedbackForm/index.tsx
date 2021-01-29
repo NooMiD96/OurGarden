@@ -12,7 +12,10 @@ import MailOutlinedIcon from "@icons/MailOutlined";
 
 import { IFeedbackForm } from "./interfaces/IFeedbackForm";
 
-export const FeedbackForm = ({ onSubmit }: IFeedbackForm) => (
+export const FeedbackForm = ({
+  onSubmit,
+  messageDefaultValue,
+}: IFeedbackForm) => (
   <React.Fragment>
     <FormItem
       name="firstName"
@@ -83,6 +86,7 @@ export const FeedbackForm = ({ onSubmit }: IFeedbackForm) => (
           message: "Пожалуйста, введите сообщение",
         },
       ]}
+      initialValue={messageDefaultValue}
     >
       <TextArea
         placeholder="Текст сообщения"

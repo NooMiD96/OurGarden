@@ -38,6 +38,9 @@ export const reducer: Reducer<IModalWindowState> = (
       const newState: IModalWindowState = {
         ...state,
         modalOpenType: ModalOpenType.Feedback,
+        feedbackState: {
+          product: action.product,
+        },
       };
 
       return newState;

@@ -4,7 +4,7 @@ import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = Record<string, unknown>;
 
 // -----------------------------
 // REDUX STATE OF COMPONENT
@@ -13,7 +13,7 @@ export type TStateToProps = IModalWindowState & {
 };
 // -----------------------------
 // OWN PROPS
-export type TOwnProps = {};
+export type TOwnProps = Record<string, unknown>;
 // -----------------------------
 // FINAL PROPS
 export type TMapStateToProps = TStateToProps & TOwnProps;

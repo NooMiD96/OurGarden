@@ -1,5 +1,6 @@
 import { IAddProductToCard } from "@components/UserCard/actionsType";
 import { IPhoto } from "@src/core/interfaces/IPhoto";
+import { IProduct } from "../Product/State";
 
 // -----------------
 // #region ACTIONS TYPE
@@ -22,6 +23,7 @@ export interface ICloseModalWindow {
 
 export interface IShowFeedbackModalWindow {
   type: typeof SHOW_FEEDBACK_MODAL_WINDOW;
+  product?: IProduct;
 }
 
 type KnownAction =

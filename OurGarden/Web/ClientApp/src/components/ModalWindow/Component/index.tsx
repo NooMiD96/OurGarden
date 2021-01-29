@@ -16,6 +16,7 @@ const ModalWindowDump = (state: TState) => {
   const {
     modalOpenType,
     photoState,
+    feedbackState,
     newProductInCardState,
     router,
     closeModalWindow,
@@ -99,6 +100,7 @@ const ModalWindowDump = (state: TState) => {
           onCloseModal: () => {
             closeModalWindow();
           },
+          product: feedbackState?.product,
         };
         setComponentProps(props);
         setModalOpen(true);

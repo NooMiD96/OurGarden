@@ -13,7 +13,7 @@ import Loading from "@core/components/Loading";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";
-import { formItemLayout, sendFeedback } from "./utils";
+import { sendFeedback } from "./utils";
 
 import { IFeedbackModal } from "./interfaces/IFeedbackModal";
 import { IFeedbackDTO } from "./interfaces/IFeedbackDTO";
@@ -21,11 +21,17 @@ import { IFeedbackDTO } from "./interfaces/IFeedbackDTO";
 export const FeedbackModal = ({
   isModalOpen,
   onCloseModal,
+  product,
 }: TWithRouter<IFeedbackModal>) => {
   const [form] = useForm();
   const [isLoading, setLoadingState] = useState(false);
   const [errorMessage, setErrorText] = useState("");
   const [successMessage, setSuccessText] = useState("");
+  const [messageDefaultValue] = useState(
+    product
+      ? `Доброго времени! Подскажите, пожалуйста, когда поступит в продажу товар "${product?.alias}?"`
+      : ""
+  );
   const { getFieldsError } = form;
 
   const onSubmitHandler = async () => {
@@ -58,13 +64,16 @@ export const FeedbackModal = ({
                 : ""}
             </span>
             <Form
-              {...formItemLayout}
               className={isLoading ? "d-none" : ""}
               layout="vertical"
               form={form}
               onFinish={onSubmitHandler}
             >
-              <FeedbackForm form={form} onSubmit={onSubmitHandler} />
+              <FeedbackForm
+                messageDefaultValue={messageDefaultValue}
+                form={form}
+                onSubmit={onSubmitHandler}
+              />
             </Form>
           </>
         )}
@@ -73,19 +82,17 @@ export const FeedbackModal = ({
       </DialogContent>
 
       <DialogActions>
-        <div className="button-wrapper order-confirmation-footer">
-          <Button className="custom-styled-btn" onClick={onCloseModal}>
-            Отмена
-          </Button>
-          <Button
-            type="primary"
-            className="custom-styled-btn"
-            onClick={onSubmitHandler}
-            disabled={hasErrors(getFieldsError()) || !!successMessage}
-          >
-            Отправить
-          </Button>
-        </div>
+        <Button className="custom-styled-btn" onClick={onCloseModal}>
+          Отмена
+        </Button>
+        <Button
+          type="primary"
+          className="custom-styled-btn"
+          onClick={onSubmitHandler}
+          disabled={hasErrors(getFieldsError()) || !!successMessage}
+        >
+          Отправить
+        </Button>
       </DialogActions>
     </Modal>
   );

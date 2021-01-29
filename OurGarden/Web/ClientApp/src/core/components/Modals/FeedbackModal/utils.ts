@@ -1,25 +1,6 @@
 import { IFeedbackDTO } from "./interfaces/IFeedbackDTO";
 import { fetch } from "domain-task";
 
-export const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-  },
-};
-
 const apiController = "Home";
 export const sendFeedback = async (modelDTO: IFeedbackDTO) => {
   const result: Promise<Response> = await fetch(
