@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Modal, {
   DialogTitle,
@@ -27,9 +27,9 @@ export const FeedbackModal = ({
   const [isLoading, setLoadingState] = useState(false);
   const [errorMessage, setErrorText] = useState("");
   const [successMessage, setSuccessText] = useState("");
-  const [messageDefaultValue] = useState(
+  const [messageDefaultValue, setMessageDefaultValue] = useState(
     product
-      ? `Доброго времени! Подскажите, пожалуйста, когда поступит в продажу товар "${product?.alias}?"`
+      ? `Доброго времени! Подскажите, пожалуйста, когда поступит в продажу товар "${product.alias}?"`
       : ""
   );
   const { getFieldsError } = form;
@@ -49,6 +49,18 @@ export const FeedbackModal = ({
     setLoadingState(false);
   };
 
+  useEffect(() => {
+    if (isModalOpen && (successMessage || !isLoading)) {
+      const message = product
+        ? `Доброго времени! Подскажите, пожалуйста, когда поступит в продажу товар "${product.alias}?"`
+        : "";
+      setLoadingState(false);
+      setSuccessText("");
+      setMessageDefaultValue(message);
+      form.setFieldsValue({ message });
+    }
+  }, [isModalOpen]);
+
   return (
     <Modal open={isModalOpen} onClose={onCloseModal} fullWidth>
       <DialogTitle>Форма обратной связи</DialogTitle>
@@ -60,7 +72,7 @@ export const FeedbackModal = ({
           <>
             <span>
               {errorMessage
-                ? `При отправке формы произошла ошибка: ${errorMessage}. Пожалуйста, свяжитесь с нами и сообщите нам эту ошибку`
+                ? `При отправке формы произошла ошибка: ${errorMessage} Пожалуйста, свяжитесь с нами и сообщите нам эту ошибку.`
                 : ""}
             </span>
             <Form
@@ -85,14 +97,24 @@ export const FeedbackModal = ({
         <Button className="custom-styled-btn" onClick={onCloseModal}>
           Отмена
         </Button>
-        <Button
-          type="primary"
-          className="custom-styled-btn"
-          onClick={onSubmitHandler}
-          disabled={hasErrors(getFieldsError()) || !!successMessage}
-        >
-          Отправить
-        </Button>
+        {successMessage ? (
+          <Button
+            type="primary"
+            className="custom-styled-btn"
+            onClick={onCloseModal}
+          >
+            Закрыть
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            className="custom-styled-btn"
+            onClick={onSubmitHandler}
+            disabled={hasErrors(getFieldsError()) || !!successMessage}
+          >
+            Отправить
+          </Button>
+        )}
       </DialogActions>
     </Modal>
   );

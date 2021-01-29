@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from "react";
 
 import Modal from "@core/materialUI/modal";
@@ -55,14 +58,27 @@ export const PhotoListModal = ({
             ) % photoList.length
           );
         }
+        if (event.key === "Escape") {
+          onCloseModal();
+        }
       }}
     >
-      <img
-        width="100%"
-        height="100%"
-        className="photo-list-modal-image"
-        src={photoList[selectedPhotoIndex].url}
-      />
+      <div
+        className="image-img-wrapper"
+        onClick={(e) => {
+          e.preventDefault();
+          onCloseModal();
+        }}
+      >
+        <img
+          className="image-img"
+          src={photoList[selectedPhotoIndex].url}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        />
+      </div>
       <CloseButton onCloseModal={onCloseModal} />
       {photoList.length > 1 && (
         <>

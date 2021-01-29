@@ -1,4 +1,5 @@
 import React from "react";
+import _isEqual from "lodash.isequal";
 
 import ProductContent from "./ProductContent";
 
@@ -47,7 +48,7 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       getBreadcrumb,
     } = this.props;
 
-    if (prevProps.match.params !== this.props.match.params) {
+    if (!_isEqual(prevProps.match.params, this.props.match.params)) {
       getProduct(categoryId, subcategoryId, productId);
 
       getBreadcrumb({

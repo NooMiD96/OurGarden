@@ -10,6 +10,7 @@
     <SpaAdminRoot>$(SpaRoot)AdminApp\</SpaAdminRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaClientRoot)node_modules\**;$(SpaAdminRoot)node_modules\**</DefaultItemExcludes>
     <Configurations>Debug;Release</Configurations>
+    <UserSecretsId>f609d782-7b75-48d6-ab49-0a3d2bab00bd</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,4 @@
-﻿using Core.Helpers;
-
-using EmailService.Abstraction;
+﻿using EmailService.Abstraction;
 
 using MailKit.Net.Smtp;
 
@@ -70,7 +68,7 @@ namespace EmailService
                 catch (Exception ex)
                 {
                     var msg = $"Не удалось установить соединение.";
-                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    _logger.LogError(ex, $"{msg}");
                     throw new Exception(msg, ex);
                 }
 
@@ -81,7 +79,7 @@ namespace EmailService
                 catch (Exception ex)
                 {
                     var msg = $"Не удалось авторизоваться.";
-                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    _logger.LogError(ex, $"{msg}");
                     throw new Exception(msg, ex);
                 }
 
@@ -92,7 +90,7 @@ namespace EmailService
                 catch (Exception ex)
                 {
                     var msg = $"Не удалось отправить письмо.";
-                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    _logger.LogError(ex, $"{msg}");
                     throw new Exception(msg, ex);
                 }
 
@@ -103,7 +101,7 @@ namespace EmailService
                 catch (Exception ex)
                 {
                     var msg = $"Не удалось разорвать соединение.";
-                    _logger.LogError(ex, $"{msg}\n{JsonHelper.Serialize(client)}");
+                    _logger.LogError(ex, $"{msg}");
                     throw new Exception(msg, ex);
                 }
             }
