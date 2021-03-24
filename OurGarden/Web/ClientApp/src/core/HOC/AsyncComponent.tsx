@@ -4,7 +4,7 @@ import Loadable from "react-loadable";
 import LoadingIcon from "@src/core/components/Loading";
 
 export function AsyncComponent(
-  loader: () => Promise<object>,
+  loader: () => Promise<Record<string, unknown>>,
   modules: [string],
   webpack: () => [any]
 ) {

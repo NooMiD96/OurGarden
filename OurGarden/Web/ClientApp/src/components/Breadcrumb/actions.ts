@@ -10,15 +10,15 @@ import qs from "querystring";
 // #region ACTIONS
 export const actionsList = {
   getBreadcrumb: (): t.IGetBreadcrumb => ({
-    type: t.GET_BREADCRUMB
+    type: t.GET_BREADCRUMB,
   }),
   setBreadcrumb: (payload: {
     breadcrumb: IBreadcrumb[];
     key: string;
   }): t.ISetBreadcrumb => ({
     type: t.SET_BREADCRUMB,
-    payload
-  })
+    payload,
+  }),
 };
 // #endregion
 // ----------------
@@ -27,7 +27,7 @@ export const actionCreators = {
   getBreadcrumb: ({
     controllerName,
     key = "",
-    params = {}
+    params = {},
   }: {
     controllerName: string;
     key?: string;
@@ -51,12 +51,12 @@ export const actionCreators = {
     const apiUrl = "GetBreadcrumb";
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?${paramString}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     const requestStart = () => dispatch(actionsList.getBreadcrumb());
@@ -65,7 +65,7 @@ export const actionCreators = {
       dispatch(
         actionsList.setBreadcrumb({
           breadcrumb: data,
-          key
+          key,
         })
       );
     };
@@ -76,9 +76,9 @@ export const actionCreators = {
       fetchProps,
       fetchUrl,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
   },
-  setBreadcrumb: actionsList.setBreadcrumb
+  setBreadcrumb: actionsList.setBreadcrumb,
 };
 // #endregion

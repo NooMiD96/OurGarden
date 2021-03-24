@@ -11,22 +11,22 @@ import { ICategory } from "../Category/State";
 // #region ACTIONS
 export const actionsList = {
   getSubcategoryListRequest: (): t.IGetSubcategoryListRequest => ({
-    type: t.GET_SUBCATEGORY_LIST_REQUEST
+    type: t.GET_SUBCATEGORY_LIST_REQUEST,
   }),
   getSubcategoryListSuccess: (
     payload: ISubcategory[]
   ): t.IGetSubcategoryListSuccess => ({
     type: t.GET_SUBCATEGORY_LIST_SUCCESS,
-    payload
+    payload,
   }),
   getSubcategoryListError: (): t.IGetSubcategoryListError => ({
-    type: t.GET_SUBCATEGORY_LIST_ERROR
+    type: t.GET_SUBCATEGORY_LIST_ERROR,
   }),
 
   saveCategory: (payload: ICategory): t.ISaveCategory => ({
     type: t.SAVE_CATEGORY,
-    payload
-  })
+    payload,
+  }),
 };
 // #endregion
 // ----------------
@@ -43,12 +43,12 @@ export const actionCreators = {
     const encodedCategoryId = encodeURIComponent(categoryId);
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     // prettier-ignore
@@ -57,11 +57,7 @@ export const actionCreators = {
     const requestSuccess = (
       data: ICategory & { subcategories: ISubcategory[] }
     ) => {
-      dispatch(
-        actionsList.saveCategory(
-          _omit(data, ["subcategories"])
-        )
-      );
+      dispatch(actionsList.saveCategory(_omit(data, ["subcategories"])));
       dispatch(actionsList.getSubcategoryListSuccess(data.subcategories));
     };
 
@@ -72,7 +68,7 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getSubcategoryListError,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
@@ -81,8 +77,8 @@ export const actionCreators = {
   ) => {
     breadcrumbActions.getBreadcrumb({
       controllerName,
-      params
+      params,
     })(dispatch, getState);
-  }
+  },
 };
 // #endregion

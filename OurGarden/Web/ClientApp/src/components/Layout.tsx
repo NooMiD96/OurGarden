@@ -1,23 +1,21 @@
 import * as React from "react";
 import ruRU from "antd/es/locale/ru_RU";
 
-import AntdLayout from "@core/antd/Layout";
+import AntdLayout, { Header, Content } from "@core/antd/Layout";
 import ConfigProvider from "@core/antd/ConfigProvider";
-import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
+// // import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import ModalWindow from "./ModalWindow";
 import SeoHelmet from "./SeoHelmet";
 
 import AppHOC from "@core/HOC/AppHOC";
-import ErrorHandler from "@core/HOC/ErrorHandler";
 import TopBar from "@components/Main/TopBar";
 import Sider from "@components/Main/Sider";
 import Breadcrumb from "@components/Breadcrumb";
+import ErrorHandler from "@core/HOC/ErrorHandler";
 
 import { MAIN_LAYOUT_GRID_COL_STYLE } from "@src/core/constants/main";
-
-const { Header, Content } = AntdLayout;
 
 export const Layout = ({ children }: { children?: React.ReactNode }) => {
   React.useEffect(() => {
@@ -42,7 +40,7 @@ export const Layout = ({ children }: { children?: React.ReactNode }) => {
             <Sider />
             <AntdLayout>
               <Content className="main-content-wrapper">
-                <ConfigProvider locale={ruRU} renderEmpty={RenderEmptyProvider}>
+                <ConfigProvider locale={ruRU}>
                   <SeoHelmet />
                   <Breadcrumb />
                   <AppHOC>{children}</AppHOC>

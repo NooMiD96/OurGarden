@@ -1,11 +1,8 @@
-import Search from "antd/es/input/Search";
-import { SearchProps } from "antd/lib/input/Search";
+import Search, { SearchProps } from "antd/es/input/Search";
 import "antd/es/input/style/index.css";
 
 import "./Button";
 
-export {
-  SearchProps,
-};
+export { SearchProps };
 
 export default Search;

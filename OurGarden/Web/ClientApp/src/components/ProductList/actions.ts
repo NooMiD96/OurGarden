@@ -11,24 +11,24 @@ import { ISubcategory } from "../Subcategory/State";
 // #region ACTIONS
 export const actionsList = {
   getProductListRequest: (): t.IGetProductListRequest => ({
-    type: t.GET_PRODUCT_LIST_REQUEST
+    type: t.GET_PRODUCT_LIST_REQUEST,
   }),
   getProductListSuccess: (payload: IProduct[]): t.IGetProductListSuccess => ({
     type: t.GET_PRODUCT_LIST_SUCCESS,
-    payload
+    payload,
   }),
   getProductListError: (): t.IGetProductListError => ({
-    type: t.GET_PRODUCT_LIST_ERROR
+    type: t.GET_PRODUCT_LIST_ERROR,
   }),
 
   cleanProductList: (): t.ICleanProductList => ({
-    type: t.CLEAN_PRODUCT_LIST
+    type: t.CLEAN_PRODUCT_LIST,
   }),
 
   saveSubcategory: (payload: ISubcategory): t.ISaveSubcategory => ({
     type: t.SAVE_SUBCATEGORY,
-    payload
-  })
+    payload,
+  }),
 };
 // #endregion
 // ----------------
@@ -47,21 +47,17 @@ export const actionCreators = {
     const encodedSubcategoryId = encodeURIComponent(subcategoryId);
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}&subcategoryId=${encodedSubcategoryId}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
     const requestStart = () => dispatch(actionsList.getProductListRequest());
 
     const requestSuccess = (data: ISubcategory & { products: IProduct[] }) => {
-      dispatch(
-        actionsList.saveSubcategory(
-          _omit(data, ["products"])
-        )
-      );
+      dispatch(actionsList.saveSubcategory(_omit(data, ["products"])));
       dispatch(actionsList.getProductListSuccess(data.products));
     };
 
@@ -72,7 +68,7 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getProductListError,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
@@ -81,9 +77,9 @@ export const actionCreators = {
   ) => {
     breadcrumbActions.getBreadcrumb({
       controllerName,
-      params
+      params,
     })(dispatch, getState);
   },
-  cleanProductList: actionsList.cleanProductList
+  cleanProductList: actionsList.cleanProductList,
 };
 // #endregion

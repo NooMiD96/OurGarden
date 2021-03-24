@@ -5,10 +5,7 @@ import Input, { TextArea } from "@src/core/antd/Input";
 import PhoneNumberInput, {
   CISPhoneNumberRegExp,
 } from "@src/core/components/PhoneNumberInput";
-
-import UserOutlinedIcon from "@icons/UserOutlined";
-import PhoneOutlinedIcon from "@icons/PhoneOutlined";
-import MailOutlinedIcon from "@icons/MailOutlined";
+import Svg from "@src/core/components/Svg";
 
 import { IFeedbackForm } from "./interfaces/IFeedbackForm";
 
@@ -27,7 +24,7 @@ export const FeedbackForm = ({
       ]}
     >
       <Input
-        prefix={<UserOutlinedIcon />}
+        prefix={<Svg type="form-user" />}
         placeholder="Имя"
         onPressEnter={onSubmit}
       />
@@ -35,7 +32,7 @@ export const FeedbackForm = ({
 
     <FormItem name="secondName">
       <Input
-        prefix={<UserOutlinedIcon />}
+        prefix={<Svg type="form-user" />}
         placeholder="Фамилия"
         onPressEnter={onSubmit}
       />
@@ -56,7 +53,7 @@ export const FeedbackForm = ({
     >
       <Input
         placeholder="Почта"
-        prefix={<MailOutlinedIcon className="input-icon" />}
+        prefix={<Svg type="form-mail" className="input-icon" />}
         onPressEnter={onSubmit}
       />
     </FormItem>
@@ -73,7 +70,7 @@ export const FeedbackForm = ({
     >
       <PhoneNumberInput
         placeholder="Телефон"
-        prefix={<PhoneOutlinedIcon className="input-icon" />}
+        prefix={<Svg type="form-phone" className="input-icon" />}
         onPressEnter={onSubmit}
       />
     </FormItem>
@@ -91,7 +88,6 @@ export const FeedbackForm = ({
       <TextArea
         placeholder="Текст сообщения"
         // @ts-ignore
-        prefix={<PhoneOutlinedIcon className="input-icon" />}
         autoSize={{ minRows: 4, maxRows: 12 }}
       />
     </FormItem>

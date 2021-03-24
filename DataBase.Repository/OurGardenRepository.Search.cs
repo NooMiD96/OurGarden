@@ -17,29 +17,41 @@ namespace DataBase.Repository
 
             var result = new List<ISearch>();
 
-            result.AddRange(categories.Select(x => new Search()
-            {
-                CategoryId = x.CategoryId,
-                Photos = x.Photos,
-                Alias = x.Alias
-            }));
+            result.AddRange(
+                categories.Select(
+                    x => new Search()
+                    {
+                        CategoryId = x.CategoryId,
+                        Photos = x.Photos,
+                        Alias = x.Alias
+                    }
+                )
+            );
 
-            result.AddRange(subcategories.Select(x => new Search()
-            {
-                CategoryId = x.CategoryId,
-                SubcategoryId = x.SubcategoryId,
-                Photos = x.Photos,
-                Alias = x.Alias
-            }));
+            result.AddRange(
+                subcategories.Select(
+                    x => new Search()
+                    {
+                        CategoryId = x.CategoryId,
+                        SubcategoryId = x.SubcategoryId,
+                        Photos = x.Photos,
+                        Alias = x.Alias
+                    }
+                )
+            );
 
-            result.AddRange(products.Select(x => new Search()
-            {
-                CategoryId = x.CategoryId,
-                SubcategoryId = x.SubcategoryId,
-                ProductId = x.ProductId,
-                Photos = x.Photos,
-                Alias = x.Alias
-            }));
+            result.AddRange(
+                products.Select(
+                    x => new Search()
+                    {
+                        CategoryId = x.CategoryId,
+                        SubcategoryId = x.SubcategoryId,
+                        ProductId = x.ProductId,
+                        Photos = x.Photos,
+                        Alias = x.Alias
+                    }
+                )
+            );
 
             return result;
         }

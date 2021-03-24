@@ -13,9 +13,6 @@ const getAssetsModuleRules = (
     use: [
       {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-          hmr: !env || !env.prod,
-        },
       },
       require.resolve("css-loader"),
     ],
@@ -25,9 +22,6 @@ const getAssetsModuleRules = (
     use: [
       {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-          hmr: !env || !env.prod,
-        },
       },
       "css-loader",
       {
@@ -42,20 +36,14 @@ const getAssetsModuleRules = (
     test: /\.svg$/,
     use: [
       {
-        loader: "babel-loader",
-      },
-      {
-        loader: "react-svg-loader",
-        options: {
-          jsx: true, // true outputs JSX tags
-        },
+        loader: "svg-react-loader",
       },
     ],
   },
   // https://webpack.js.org/loaders/url-loader/
   // https://webpack.js.org/loaders/file-loader/
   {
-    test: /\.(png|jpg|jpeg|gif)$/,
+    test: /\.(png|jpg|jpeg|gif|webp)$/,
     loader: "url-loader",
     options: {
       limit: 10 * 1024,

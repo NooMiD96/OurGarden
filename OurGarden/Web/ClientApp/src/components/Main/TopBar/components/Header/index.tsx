@@ -1,7 +1,7 @@
 import React from "react";
 
-import Row from "@src/core/antd/Row";
-import Col from "@src/core/antd/Col";
+import Row from "@core/antd/Row";
+import Col from "@core/antd/Col";
 
 import SearchProduct from "@components/Main/TopBar/components/SearchProduct";
 

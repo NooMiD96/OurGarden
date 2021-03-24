@@ -1,13 +1,13 @@
 import React from "react";
 
-import { Title } from "@src/core/antd/Typography";
+import Title from "@src/core/antd/Typography/Title";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
 
 import { getPhotoSrc } from "@src/core/utils/photo";
 
 import { INewsContentProps } from "./INewsContent";
 
-export class NewsContent extends React.PureComponent<INewsContentProps, {}> {
+export class NewsContent extends React.PureComponent<INewsContentProps, any> {
   render() {
     const { selectedNew } = this.props;
 

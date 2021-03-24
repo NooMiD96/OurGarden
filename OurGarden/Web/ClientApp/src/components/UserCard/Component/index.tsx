@@ -39,6 +39,7 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
       && prevProps.location.key !== this.props.location.key
       && this.state.displayType !== DisplayTypeEnum.CardInfo
     ) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         displayType: DisplayTypeEnum.CardInfo
       });

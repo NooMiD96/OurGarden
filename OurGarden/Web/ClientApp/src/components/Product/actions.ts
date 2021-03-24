@@ -8,15 +8,15 @@ import { IAppThunkAction } from "@src/Store";
 // #region ACTIONS
 export const actionsList = {
   getProductRequest: (): t.IGetProductRequest => ({
-    type: t.GET_PRODUCT_REQUEST
+    type: t.GET_PRODUCT_REQUEST,
   }),
   getProductSuccess: (payload: IProduct): t.IGetProductSuccess => ({
     type: t.GET_PRODUCT_SUCCESS,
-    payload
+    payload,
   }),
   getProductError: (): t.IGetProductError => ({
-    type: t.GET_PRODUCT_ERROR
-  })
+    type: t.GET_PRODUCT_ERROR,
+  }),
 };
 // #endregion
 // ----------------
@@ -34,12 +34,12 @@ export const actionCreators = {
     const encodedProductId = encodeURIComponent(productId);
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?categoryId=${encodedCategoryId}&subcategoryId=${encodedSubcategoryId}&productId=${encodedProductId}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     const requestStart = () => dispatch(actionsList.getProductRequest());
@@ -55,7 +55,7 @@ export const actionCreators = {
       fetchUrl,
       requestErrorAction: actionsList.getProductError,
       requestStart,
-      requestSuccess
+      requestSuccess,
     })(dispatch, getState);
   },
   getBreadcrumb: (params: any): IAppThunkAction<any> => (
@@ -64,8 +64,8 @@ export const actionCreators = {
   ) => {
     breadcrumbActions.getBreadcrumb({
       controllerName,
-      params
+      params,
     })(dispatch, getState);
-  }
+  },
 };
 // #endregion

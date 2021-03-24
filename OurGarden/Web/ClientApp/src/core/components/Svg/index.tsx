@@ -8,7 +8,7 @@ class Svg extends React.PureComponent<ISvgProps, ISvgState> {
   unmaunted = false;
 
   state: ISvgState = {
-    SvgComponent: undefined
+    SvgComponent: undefined,
   };
 
   async componentDidMount() {
@@ -33,7 +33,8 @@ class Svg extends React.PureComponent<ISvgProps, ISvgState> {
 
   render() {
     const { SvgComponent } = this.state;
-    return SvgComponent ? <SvgComponent /> : <span />;
+    const { className } = this.props;
+    return SvgComponent ? <SvgComponent className={className} /> : <span />;
   }
 }
 

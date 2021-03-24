@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Title } from "@src/core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
 
 import Svg from "@core/components/Svg";
-import MainMobileLink from "@src/core/components/MainMobileLink";
-import MainEmailLink from "@src/core/components/MainEmailLink";
-import MainAddressLink from "@src/core/components/MainAddressLink";
+import MainMobileLink from "@core/components/MainMobileLink";
+import MainEmailLink from "@core/components/MainEmailLink";
+import MainAddressLink from "@core/components/MainAddressLink";
 
 export interface ICompanyContacts {
   ymId: number;
@@ -18,30 +18,33 @@ export const CompanyContacts = ({ ymId }: ICompanyContacts) => (
     <div>
       <MainAddressLink
         showFullAddress
-        prefixIcon={(
+        prefixIcon={
+          // eslint-disable-next-line react/jsx-wrap-multilines
           <i className="anticon">
             <Svg type="place-contacts" />
           </i>
-        )}
+        }
       />
     </div>
     <div>
       <MainMobileLink
         ymId={ymId}
-        prefixIcon={(
+        prefixIcon={
+          // eslint-disable-next-line react/jsx-wrap-multilines
           <i className="anticon">
             <Svg type="phone-contacts" />
           </i>
-        )}
+        }
       />
     </div>
     <div>
       <MainEmailLink
-        prefixIcon={(
+        prefixIcon={
+          // eslint-disable-next-line react/jsx-wrap-multilines
           <i className="anticon">
             <Svg type="mail-contacts" />
           </i>
-        )}
+        }
       />
     </div>
   </div>

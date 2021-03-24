@@ -32,7 +32,7 @@ export const actionCreators = {
     const encodedNewsId = encodeURIComponent(newsId);
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}?newsId=${encodedNewsId}`;
-    const fetchProps = <RequestInit>{
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {

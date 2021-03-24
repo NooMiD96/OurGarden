@@ -27,7 +27,7 @@ export const actionCreators = {
     const apiUrl = "GetAllNews";
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {

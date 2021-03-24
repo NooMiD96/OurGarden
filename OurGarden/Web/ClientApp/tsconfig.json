@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "noEmit": true,
+    "noEmit": false,
     "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["dom", "es2015", "es7", "webworker"],
@@ -20,7 +20,7 @@
       "@src/*": ["src/*"],
       "@core/*": ["src/core/*"],
       "@components/*": ["src/components/*"],
-      "@icons/*": ["node_modules/@ant-design/icons/*"]
+      "@icons-svg/*": ["node_modules/@ant-design/icons-svg/inline-svg/*"]
     },
     "sourceMap": true,
     "skipDefaultLibCheck": true,

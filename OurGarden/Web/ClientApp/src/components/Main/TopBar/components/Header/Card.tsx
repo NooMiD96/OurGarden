@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import Badge from "@core/antd/Badge";
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import WithRouterPush, {
   TWithRouter,
@@ -19,20 +18,43 @@ interface ICard {
 }
 
 const Card = (props: TWithRouter<ICard>) => {
+  const [WrapperComponent, setWrapperComponent] = useState(null as any);
+
   useEffect(() => {
     props.loadCardFromLocalstate();
   }, []);
 
-  return (
-    <React.Fragment>
-      <Badge
+  useEffect(() => {
+    const loadComponent = async (productCount: number) => {
+      if (productCount) {
+        const component = await import(
+          /* webpackChunkName: "UserCardBadge" */ "@core/antd/Badge"
+        );
+
+        setWrapperComponent(component);
+      }
+    };
+
+    loadComponent(props.totalCount);
+  }, [props.totalCount]);
+  const icon = (
+    <LottieWebIcon type="archive" onClick={() => props.push(CARD_PATH)} />
+  );
+
+  if (WrapperComponent) {
+    return (
+      // eslint-disable-next-line react/jsx-pascal-case
+      <WrapperComponent.default
+        className="badge-wrapper"
         style={{ backgroundColor: DARK_GREEN_COLOR, color: "#fff" }}
         count={props.totalCount}
       >
-        <LottieWebIcon type="archive" onClick={() => props.push(CARD_PATH)} />
-      </Badge>
-    </React.Fragment>
-  );
+        {icon}
+      </WrapperComponent.default>
+    );
+  }
+
+  return <span className="badge-wrapper">{icon}</span>;
 };
 
 export default WithRouterPush<any>(

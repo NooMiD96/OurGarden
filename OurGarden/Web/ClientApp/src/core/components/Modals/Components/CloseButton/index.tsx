@@ -1,6 +1,6 @@
 import React from "react";
 
-import CloseIcon from "@icons/CloseOutlined";
+import Svg from "@src/core/components/Svg";
 
 import { ICloseButton } from "./interfaces/ICloseButton";
 
@@ -14,6 +14,6 @@ export const CloseButton = ({ onCloseModal }: ICloseButton) => (
     className="photo-modal-close"
     tabIndex={0}
   >
-    <CloseIcon className="photo-modal-close-icon" />
+    <Svg type="close" className="photo-modal-close-icon" />
   </span>
 );

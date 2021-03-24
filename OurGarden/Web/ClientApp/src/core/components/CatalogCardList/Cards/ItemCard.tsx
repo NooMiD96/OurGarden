@@ -2,7 +2,7 @@ import React from "react";
 
 import Card from "@core/antd/Card";
 import LazyImage from "@core/components/LazyImage";
-import { Paragraph } from "@core/antd/Typography";
+import Paragraph from "@core/antd/Typography/Paragraph";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";

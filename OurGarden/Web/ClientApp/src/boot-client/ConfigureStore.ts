@@ -6,7 +6,7 @@ import {
   StoreEnhancer,
   StoreEnhancerStoreCreator,
   ReducersMapObject,
-  AnyAction
+  AnyAction,
 } from "redux";
 import thunk from "redux-thunk";
 import { connectRouter, routerMiddleware } from "connected-react-router";
@@ -22,8 +22,8 @@ const buildRootReducer = (
   historyForRouterReducer: History,
   appReducers: ReducersMapObject<ApplicationState, AnyAction>
 ) => combineReducers<ApplicationState>({
+  ...appReducers,
   router: connectRouter(historyForRouterReducer),
-  ...appReducers
 });
 
 export default function configureStore(

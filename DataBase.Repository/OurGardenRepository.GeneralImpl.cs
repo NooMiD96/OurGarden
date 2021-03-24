@@ -179,20 +179,22 @@ namespace DataBase.Repository
 
         private Expression<Func<T, bool>> GetSearchExpression<T>(string search) where T : IAlias
         {
+            Expression<Func<T, bool>> combineExpressions = x => x.Alias.Contains(search);
+
             var searchStrings = search.Split(" ");
-
-            Expression<Func<T, bool>> combineExpressions = x => x.Alias.Contains(searchStrings[0]);
-
-            for (int i = 0; i < searchStrings.Length; i++)
+            if (searchStrings.Length > 1)
             {
-                var str = searchStrings[i];
-                if (String.IsNullOrEmpty(str))
+                for (int i = 0; i < searchStrings.Length; i++)
                 {
-                    continue;
-                }
+                    var str = searchStrings[i];
+                    if (String.IsNullOrEmpty(str) || str.Length <= 3)
+                    {
+                        continue;
+                    }
 
-                Expression<Func<T, bool>> expr = x => x.Alias.Contains(str);
-                combineExpressions = combineExpressions.Or(expr);
+                    Expression<Func<T, bool>> expr = x => x.Alias.Contains(str);
+                    combineExpressions = combineExpressions.Or(expr);
+                }
             }
 
             return combineExpressions;

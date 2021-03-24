@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Text } from "@core/antd/Typography";
+import Text from "@core/antd/Typography/Text";
 import Empty from "@core/antd/Empty";
 
 const RenderEmptyProvider = () => (

@@ -58,6 +58,34 @@ export const getSvg = async (type: TSvgList) => {
         )
       ).default;
 
+    case "form-user":
+      return (
+        await import(
+          /* webpackChunkName: "form-user" */ "@icons-svg/outlined/user.svg"
+        )
+      ).default;
+
+    case "form-phone":
+      return (
+        await import(
+          /* webpackChunkName: "form-phone" */ "@icons-svg/outlined/phone.svg"
+        )
+      ).default;
+
+    case "form-mail":
+      return (
+        await import(
+          /* webpackChunkName: "form-mail" */ "@icons-svg/outlined/mail.svg"
+        )
+      ).default;
+
+    case "close":
+      return (
+        await import(
+          /* webpackChunkName: "close" */ "@icons-svg/outlined/close.svg"
+        )
+      ).default;
+
     default:
       // eslint-disable-next-line
       const exhaustiveCheck: never = type;

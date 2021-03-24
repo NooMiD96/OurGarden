@@ -1,15 +1,18 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import { RuleSetRule } from "webpack";
+import { LoaderOptions } from "ts-loader/dist/interfaces";
 
 const getJsModuleRules = (): RuleSetRule[] => [
-  // https://github.com/s-panferov/awesome-typescript-loader
   // TS module for webpack
   {
-    test: /\.(ts|tsx)?$/,
+    test: /\.(ts|tsx|js|jsx)?$/,
     include: /src/,
-    use: "awesome-typescript-loader?silent=true"
-  }
+    loader: "ts-loader",
+    options: <LoaderOptions>{
+      allowTsInNodeModules: true,
+    },
+  },
 ];
 
 export default getJsModuleRules;

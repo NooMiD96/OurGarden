@@ -3,6 +3,7 @@ import { IPhoto } from "@src/core/interfaces/IPhoto";
 
 // -----------------
 // #region STATE
+// eslint-disable-next-line no-shadow
 export enum ModalOpenType {
   Closed,
   AddToCard,

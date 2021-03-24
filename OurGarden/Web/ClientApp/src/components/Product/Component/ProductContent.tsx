@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Title } from "@core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
 import AddToCardButton from "@core/components/AddToCardButton";
 import RussianCurrency from "@core/components/RussianCurrency";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
@@ -19,7 +19,7 @@ export class ProductContent extends React.PureComponent<
 > {
   productWrapper: HTMLDivElement | null = null;
 
-  onResizeHandlerTimer?: NodeJS.Timeout;
+  onResizeHandlerTimer: any;
 
   constructor(props: IProductContentProps) {
     super(props);

@@ -1,8 +1,8 @@
 import React from "react";
 
-import Form, { hasErrors, useForm } from "@src/core/antd/Form";
-import Button from "@src/core/antd/Button";
-import TotalPrice from "@src/core/components/TotalPrice";
+import Form, { hasErrors, useForm } from "@core/antd/Form";
+import Button from "@core/antd/Button";
+import TotalPrice from "@core/components/TotalPrice";
 import CardConfirmationFormFields from "./CardConfirmationFormFields";
 
 import { ICardConfirmationForm } from "./ICardConfirmation";

@@ -1,9 +1,10 @@
 import React from "react";
 
-import { Title, Text } from "@core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
+import Text from "@core/antd/Typography/Text";
 import GenerateLink from "../GenerateLink";
 
-import { WHITE_BLOCK } from "@src/core/constants/style";
+import { WHITE_BLOCK } from "@core/constants/style";
 
 import "./style/PageNotFound.style.scss";
 

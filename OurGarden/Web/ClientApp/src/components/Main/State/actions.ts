@@ -140,7 +140,7 @@ export const actionCreators = {
       const apiUrl = "GetPageInfo";
 
       const fetchUrl = `/api/${controllerName}/${apiUrl}?pageInfoId=${pageInfoId}`;
-      const fetchProps = {
+      const fetchProps: RequestInit = {
         credentials: "same-origin",
         method: "GET",
         headers: {

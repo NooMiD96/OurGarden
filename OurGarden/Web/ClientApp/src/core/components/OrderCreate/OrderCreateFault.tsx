@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import Button from "@core/antd/Button";
-import { Title, Paragraph } from "@core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
+import Paragraph from "@core/antd/Typography/Paragraph";
 import MainMobileLink from "../MainMobileLink";
 
 import { CARD_PATH } from "@src/core/constants";

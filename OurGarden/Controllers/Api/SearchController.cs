@@ -38,9 +38,16 @@ namespace Web.Controllers.Api
                 );
             }
 
-            var result = await _repository.Search(search);
+            var searchString = search.Trim();
+            var result = await _repository.Search(searchString);
 
-            return Success(result.OrderBy(x => x.Alias));
+            searchString = searchString.ToLower();
+            var orderedResult = result
+                .OrderBy(x => x.Alias.ToLower().Contains(searchString) ? 0 : 1)
+                .ThenBy(x => x.Alias)
+                .ToList();
+
+            return Success(orderedResult);
         }
     }
 }

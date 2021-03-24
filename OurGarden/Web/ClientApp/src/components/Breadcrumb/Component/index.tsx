@@ -1,6 +1,6 @@
 import React from "react";
 
-import Layout from "@core/antd/Layout";
+import { Header } from "@core/antd/Layout";
 
 import GenerateLink from "@src/core/components/GenerateLink";
 
@@ -8,8 +8,6 @@ import { TState } from "../TState";
 import { IBreadcrumb } from "../State";
 
 import "./style/Breadcrumb.style.scss";
-
-const { Header } = Layout;
 
 const slash = <span className="slash">/</span>;
 const homeBreadcrumb: IBreadcrumb = {

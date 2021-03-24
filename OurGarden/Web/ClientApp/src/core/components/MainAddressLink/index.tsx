@@ -1,9 +1,7 @@
 import React from "react";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
+import WithRouterPush, { TWithRouter } from "@core/components/WithRouterPush";
 
-import { ADDRESS, SHORT_ADDRESS } from "@src/core/constants";
+import { ADDRESS, SHORT_ADDRESS } from "@core/constants";
 import { IMainAddressLink } from "./IMainAddressLink";
 
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/anchor-is-valid */

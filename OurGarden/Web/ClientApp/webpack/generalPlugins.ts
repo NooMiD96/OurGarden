@@ -1,19 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import { CheckerPlugin } from "awesome-typescript-loader";
 import webpack, { Plugin } from "webpack";
-// import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 import AppSettings from "../../../appsettings.json";
 
 const getGeneralPlugins = (): Plugin[] => [
-  // new CleanWebpackPlugin(),
-  // https://github.com/s-panferov/awesome-typescript-loader
-  // awesome-typescript-loader plugin
-  // `CheckerPlugin` is optional. Use it if want async error reporting.
-  new CheckerPlugin(),
-
-  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  // @ant-design/icons
+  // new webpack.IgnorePlugin(/@ant-design\/icons/),
+  // new webpack.IgnorePlugin(/@ant-design\/react-slick/),
 
   // hide warning in the webpack
   new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, "node-noop"),

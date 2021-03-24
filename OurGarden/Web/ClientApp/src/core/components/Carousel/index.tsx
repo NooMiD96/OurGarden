@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import AntdCarousel from "@core/antd/Carousel";
+import AntdCarousel, { CarouselRef } from "@core/antd/Carousel";
 import { NextArrow, PrevArrow } from "@core/components/Arrows";
 
 import { MobileContext } from "@src/core/constants";
@@ -12,7 +12,7 @@ import "./style/Carousel.style.scss";
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 
 export class Carousel<T> extends React.PureComponent<ICarouselProps<T>> {
-  carouselRef: AntdCarousel | null = null;
+  carouselRef: React.Ref<CarouselRef> | undefined;
 
   render() {
     const {
@@ -52,9 +52,7 @@ export class Carousel<T> extends React.PureComponent<ICarouselProps<T>> {
           className={`${className} ${hideDotsClassName}`}
           autoplay
           effect="fade"
-          ref={(ref: AntdCarousel | null) => {
-            this.carouselRef = ref;
-          }}
+          ref={this.carouselRef}
           adaptiveHeight
           arrows
           draggable

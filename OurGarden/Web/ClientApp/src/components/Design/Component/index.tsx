@@ -1,6 +1,7 @@
 import React from "react";
 
 import Typography from "@core/antd/Typography";
+import Paragraph from "@core/antd/Typography/Paragraph";
 import Card from "@core/antd/Card";
 import GenerateLink from "@src/core/components/GenerateLink";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
@@ -11,8 +12,6 @@ import { DESIGN_PAGE_INFO_ID } from "@src/core/constants/staticPages";
 import { WHITE_BLOCK } from "@src/core/constants/style";
 
 import "./style/design.style.scss";
-
-const { Paragraph } = Typography;
 
 export class Design extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {

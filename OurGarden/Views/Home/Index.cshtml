@@ -1,9 +1,13 @@
-﻿@inject Microsoft.AspNetCore.SpaServices.Prerendering.ISpaPrerenderer prerenderer
+﻿@using System.Text.RegularExpressions
+@inject Microsoft.AspNetCore.SpaServices.Prerendering.ISpaPrerenderer prerenderer
 
 @model ApiService.Abstraction.ViewModel.HomePageViewModel
 
 @{
     Layout = null;
+
+    const string siteUrl = "https://xn----7sbbq5b0a1c.com/";
+    const string logoSiteUrl = "https://xn----7sbbq5b0a1c.com/esh.png";
 
     var jsBundles = new List<string>();
     var cssBundles = new List<string>();
@@ -13,6 +17,9 @@
     string helmetMeta = default;
 
     string initialReduxStateJson = default;
+
+    string titleText = default;
+    string descriptionText = default;
 
     string html = default;
     try
@@ -33,6 +40,11 @@
         helmetTitle = prerenderResult?.Globals?["helmetTitle"]?.ToString();
         helmetMeta = prerenderResult?.Globals?["helmetMeta"]?.ToString();
 
+        var titleMatch = Regex.Match(helmetTitle, @"<title.*>(.*)</title>");
+        titleText = titleMatch.Success ? titleMatch.Groups[1]?.Value : default;
+        var descriptionMatch = Regex.Match(helmetMeta, @"<meta.*name=""description"" content=""(.*?)"".*/>");
+        descriptionText = descriptionMatch.Success ? descriptionMatch.Groups[1]?.Value : default;
+
         initialReduxStateJson = prerenderResult?.Globals?["initialReduxState"]?.ToString();
 
         if (prerenderResult != null && prerenderResult.StatusCode.HasValue)
@@ -51,7 +63,7 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -70,6 +82,32 @@
 
     @Html.Raw(helmetTitle)
     @Html.Raw(helmetMeta)
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="@siteUrl">
+    <meta property="og:image" content="@logoSiteUrl">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="@siteUrl">
+    <meta property="twitter:image" content="@logoSiteUrl">
+
+    @if (!String.IsNullOrWhiteSpace(titleText))
+    {
+        <meta property="og:title" content="@titleText">
+        <meta property="twitter:title" content="@titleText">
+    }
+    else
+    {
+        <meta property="og:title" content="Наш Сад">
+        <meta property="twitter:title" content="Наш Сад">
+    }
+    @if (!String.IsNullOrWhiteSpace(descriptionText))
+    {
+        <meta property="og:description" content="@descriptionText">
+        <meta property="twitter:description" content="@descriptionText">
+    }
 
     <environment include="Development,Production">
         <!-- Yandex.Metrika counter -->

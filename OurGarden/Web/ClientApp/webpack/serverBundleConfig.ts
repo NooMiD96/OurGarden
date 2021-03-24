@@ -12,11 +12,11 @@ const serverPlugins = (): Plugin[] => [
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     filename: "[name].css",
-    ignoreOrder: true
+    ignoreOrder: true,
   }),
   new optimize.LimitChunkCountPlugin({
-    maxChunks: 1
-  })
+    maxChunks: 1,
+  }),
 ];
 
 // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -26,21 +26,21 @@ const getServerBundleConfig = (
 ): Configuration => {
   const serverBundleConfig = merge(sharedConfig, {
     entry: {
-      [AppSettings.SpaServerFileName]: "./src/boot-server/boot-server.tsx"
+      [AppSettings.SpaServerFileName]: "./src/boot-server/boot-server.tsx",
     },
     output: {
       filename: "[name].js",
       chunkFilename: "[name].js",
       path: path.join(projectFolder, AppSettings.SpaPhysicalServerPath),
-      libraryTarget: "commonjs"
+      libraryTarget: "commonjs",
     },
     // https://webpack.js.org/configuration/resolve/#resolve-mainfields
     // Import only main from package
     resolve: {
-      mainFields: ["main"]
+      mainFields: ["main"],
     },
     target: "node",
-    plugins: serverPlugins()
+    plugins: serverPlugins(),
   });
 
   return serverBundleConfig;

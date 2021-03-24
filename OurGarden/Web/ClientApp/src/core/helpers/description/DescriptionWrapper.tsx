@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from "react";
 import XRegExp from "xregexp";
 
@@ -11,6 +12,65 @@ const PART_CLASS = "ant-typography";
 const WYSIWYG_PART_CLASS = "wysiwyg-wrapper wysiwyg-description";
 const OPEN_PART_CLASS = "pt0 pb0";
 const CLOSE_PART_CLASS = "pt0 pb0 mtn16";
+
+const InjectReactComponents = ({
+  baseClassName,
+  counterObj,
+  renderPart,
+}: {
+  baseClassName: string;
+  counterObj: { part: number };
+  renderPart: any;
+}) => {
+  const renderParts: any[] = [];
+  const renderPartString = renderPart as string;
+
+  // Поиск по имени в регулярке на Edge и IE не работает,
+  // из-за этого используется данная библиотека
+  const regEx = XRegExp(GALLERY_MACROS);
+  const galleryMacrosMatchGroups = XRegExp.exec(renderPartString, regEx);
+  if (galleryMacrosMatchGroups && galleryMacrosMatchGroups?.length > 1) {
+    const foundMacros = galleryMacrosMatchGroups[0];
+    const galleryName = galleryMacrosMatchGroups[1];
+    const galleryParts = getPartsBetween(renderPartString, foundMacros);
+
+    if (galleryParts[0]) {
+      renderParts.push(
+        ...InjectReactComponents({
+          baseClassName,
+          counterObj,
+          renderPart: galleryParts[0],
+        })
+      );
+    }
+
+    // Gallery
+    renderParts.push(<Gallery galleryName={galleryName} />);
+
+    if (galleryParts.length > 1 && galleryParts[galleryParts.length - 1]) {
+      renderParts.push(
+        ...InjectReactComponents({
+          baseClassName,
+          counterObj,
+          renderPart: galleryParts[galleryParts.length - 1],
+        })
+      );
+    }
+
+    return renderParts;
+  }
+
+  renderParts.push(
+    <div
+      className={`${baseClassName} ${
+        counterObj.part++ % 2 ? OPEN_PART_CLASS : CLOSE_PART_CLASS
+      }`}
+      dangerouslySetInnerHTML={{ __html: renderPartString }}
+    />
+  );
+
+  return renderParts;
+};
 
 /**
  * Формирует Html шаблон с реакт компоненты, с учётом макросов.
@@ -54,61 +114,13 @@ const DescriptionWrapper = ({
     if ((catalogPart as any).$$typeof) {
       renderParts.push(catalogPart);
     } else {
-      const catalogPartString = catalogPart as string;
-
-      // Поиск по имени в регулярке на Edge и IE не работает,
-      // из-за этого используется данная библиотека
-      const regEx = XRegExp(GALLERY_MACROS);
-      const galleryMacrosMatchGroups = XRegExp.exec(catalogPartString, regEx);
-
-      if (galleryMacrosMatchGroups?.length > 1) {
-        const foundMacros = galleryMacrosMatchGroups[0];
-        const galleryName = galleryMacrosMatchGroups[1];
-        const galleryParts = getPartsBetween(catalogPartString, foundMacros);
-
-        if (galleryParts[0]) {
-          // prettier-ignore
-          const className
-            = counterObj.part++ % 2 ? OPEN_PART_CLASS : CLOSE_PART_CLASS;
-          renderParts.push(
-            <div
-              className={`${baseClassName} ${className}`}
-              dangerouslySetInnerHTML={{ __html: galleryParts[0] }}
-            />
-          );
-        }
-
-        // Gallery
-        renderParts.push(<Gallery galleryName={galleryName} />);
-
-        if (galleryParts.length > 1 && galleryParts[galleryParts.length - 1]) {
-          // prettier-ignore
-          const className
-            = counterObj.part++ % 2 ? OPEN_PART_CLASS : CLOSE_PART_CLASS;
-          renderParts.push(
-            <div
-              className={`${baseClassName} ${className}`}
-              dangerouslySetInnerHTML={{
-                __html: galleryParts[galleryParts.length - 1],
-              }}
-            />
-          );
-        }
-      } else if (counterObj.part++ % 2) {
-        renderParts.push(
-          <div
-            className={`${baseClassName} ${OPEN_PART_CLASS}`}
-            dangerouslySetInnerHTML={{ __html: catalogPartString }}
-          />
-        );
-      } else {
-        renderParts.push(
-          <div
-            className={`${baseClassName} ${CLOSE_PART_CLASS}`}
-            dangerouslySetInnerHTML={{ __html: catalogPartString }}
-          />
-        );
-      }
+      renderParts.push(
+        ...InjectReactComponents({
+          baseClassName,
+          counterObj,
+          renderPart: catalogPart,
+        })
+      );
     }
   }
 

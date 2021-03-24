@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import Card from "@core/antd/Card";
-import { Title } from "@core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
 import LazyImage from "@core/components/LazyImage";
 import WithRouterPush, {
   TWithRouter,

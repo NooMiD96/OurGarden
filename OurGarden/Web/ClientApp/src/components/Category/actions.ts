@@ -8,17 +8,17 @@ import { ICategory } from "./State";
 // #region ACTIONS
 export const actionsList = {
   getCategoryListRequest: (): t.IGetCategoryListRequest => ({
-    type: t.GET_CATEGORY_LIST_REQUEST
+    type: t.GET_CATEGORY_LIST_REQUEST,
   }),
   getCategoryListSuccess: (
     payload: ICategory[]
   ): t.IGetCategoryListSuccess => ({
     type: t.GET_CATEGORY_LIST_SUCCESS,
-    payload
+    payload,
   }),
   getCategoryListError: (): t.IGetCategoryListError => ({
-    type: t.GET_CATEGORY_LIST_ERROR
-  })
+    type: t.GET_CATEGORY_LIST_ERROR,
+  }),
 };
 // #endregion
 // ----------------
@@ -32,12 +32,12 @@ export const actionCreators = {
     const apiUrl = "GetCategories";
 
     const fetchUrl = `/api/${controllerName}/${apiUrl}`;
-    const fetchProps = {
+    const fetchProps: RequestInit = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8"
-      }
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     };
 
     const requestStart = () => dispatch(actionsList.getCategoryListRequest());
@@ -54,8 +54,8 @@ export const actionCreators = {
       requestErrorAction: actionsList.getCategoryListError,
       requestStart,
       requestSuccess,
-      saveRequest: false
+      saveRequest: false,
     })(dispatch, getState);
-  }
+  },
 };
 // #endregion

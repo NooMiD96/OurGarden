@@ -1,10 +1,10 @@
 import React from "react";
 
+import Title from "@core/antd/Typography/Title";
 import CardConfirmationForm from "./CardConfirmationForm";
 
 import { ICardConfirmation } from "./ICardConfirmation";
 import { DisplayTypeEnum } from "../../TState";
-import { Title } from "@src/core/antd/Typography";
 
 const CardConfirmation = (props: ICardConfirmation) => {
   const totalPrice = props.productList

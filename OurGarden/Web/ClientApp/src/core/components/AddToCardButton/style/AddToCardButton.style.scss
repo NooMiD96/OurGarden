@@ -14,5 +14,11 @@
   .ant-input-group-addon {
     padding: 0;
     border: 0;
+
+    @media (max-width: 360px) {
+      .ant-btn {
+        padding: 4px 8px;
+      }
+    }
   }
 }

@@ -8,7 +8,7 @@
   line-height: initial;
 
   .company-logo {
-    background: no-repeat url(../image/logo.png);
+    background: no-repeat url(../image/logo.webp);
     background-size: contain;
     width: 180px;
     height: 180px;
@@ -46,7 +46,7 @@
     flex: 0 1 70%;
 
     > div,
-    > .ant-badge {
+    > .badge-wrapper {
       margin-left: 2em;
     }
 
@@ -80,7 +80,7 @@
     }
 
     .archive-icon,
-    .ant-badge {
+    .badge-wrapper {
       display: flex;
       align-items: flex-end;
       flex: 0 1 32px;
@@ -90,12 +90,12 @@
       }
     }
 
-    .ant-badge {
+    .badge-wrapper {
       height: 32px;
       align-self: flex-end;
     }
 
-    .ant-badge .ant-badge-count {
+    .badge-wrapper .ant-badge-count {
       font-size: 14px;
       font-weight: 700;
     }
@@ -134,7 +134,7 @@
     .ant-col {
       flex-basis: 55%;
 
-      .ant-badge {
+      .badge-wrapper {
         order: 1;
       }
 
@@ -148,7 +148,7 @@
   @media (max-width: 767px) {
     .ant-col {
       .archive-icon,
-      .ant-badge {
+      .badge-wrapper {
         display: flex;
         align-items: flex-end;
         flex: 0 1 52px;
@@ -168,7 +168,7 @@
     .ant-col {
       flex-basis: 77%;
 
-      .ant-badge {
+      .badge-wrapper {
         order: -1;
         margin-left: 1em;
       }
@@ -193,7 +193,7 @@
     .ant-col {
       flex-basis: 100%;
 
-      .ant-badge,
+      .badge-wrapper,
       .company-info {
         order: initial;
         margin-left: 0.3em;

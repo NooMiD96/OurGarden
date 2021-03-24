@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import NewProductInCardModal from "@src/core/components/Modals/NewProductInCardModal";
-import PhotoListModal from "@src/core/components/Modals/PhotoListModal";
-import FeedbackModal from "@src/core/components/Modals/FeedbackModal";
-
-import { MODAL_TIMEOUT } from "@src/core/constants";
+import { MODAL_TIMEOUT } from "@core/constants";
 
 import { ModalOpenType } from "../State";
 import { TState } from "../TState";
-import { INewProductInCardModal } from "@src/core/components/Modals/NewProductInCardModal/interfaces/INewProductInCardModal";
-import { IPhotoListModal } from "@src/core/components/Modals/PhotoListModal/interfaces/IPhotoListModal";
-import { IFeedbackModal } from "@src/core/components/Modals/FeedbackModal/interfaces/IFeedbackModal";
+import { INewProductInCardModal } from "@core/components/Modals/NewProductInCardModal/interfaces/INewProductInCardModal";
+import { IPhotoListModal } from "@core/components/Modals/PhotoListModal/interfaces/IPhotoListModal";
+import { IFeedbackModal } from "@core/components/Modals/FeedbackModal/interfaces/IFeedbackModal";
 
 const ModalWindowDump = (state: TState) => {
   const {
@@ -24,18 +20,15 @@ const ModalWindowDump = (state: TState) => {
   } = state;
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [modalCloseTimer, setModalCloseTimer] = useState(
-    null as NodeJS.Timeout | null
-  );
-  const [ComponentToRender, setComponentToRender] = useState(
-    NewProductInCardModal
-  );
+  const [modalCloseTimer, setModalCloseTimer] = useState(null as any);
+  const [componentType, setComponentType] = useState(ModalOpenType.Closed);
+  const [ComponentToRender, setComponentToRender] = useState(null as any);
   const [componentProps, setComponentProps] = useState({});
 
   useEffect(() => {
     switch (modalOpenType) {
       case ModalOpenType.AddToCard: {
-        setComponentToRender(NewProductInCardModal);
+        setComponentType(modalOpenType);
 
         // Снимаем фокус с элемента, чтобы после закрытия модалки
         // фокус не вернулся.
@@ -70,7 +63,7 @@ const ModalWindowDump = (state: TState) => {
       }
 
       case ModalOpenType.Photo: {
-        setComponentToRender(PhotoListModal);
+        setComponentType(modalOpenType);
 
         if (!photoState) {
           setModalOpen(false);
@@ -93,7 +86,7 @@ const ModalWindowDump = (state: TState) => {
       }
 
       case ModalOpenType.Feedback: {
-        setComponentToRender(FeedbackModal);
+        setComponentType(modalOpenType);
 
         const props: IFeedbackModal = {
           isModalOpen: false,
@@ -124,7 +117,47 @@ const ModalWindowDump = (state: TState) => {
     }
   }, [router.location.hash]);
 
-  return <ComponentToRender {...componentProps} isModalOpen={isModalOpen} />;
+  useEffect(() => {
+    const getComponent = async (type: ModalOpenType) => {
+      let component = null;
+      switch (type) {
+        case ModalOpenType.AddToCard:
+          component = await import(
+            /* webpackChunkName: "NewProductInCardModal" */ "@core/components/Modals/NewProductInCardModal"
+          );
+          break;
+
+        case ModalOpenType.Photo:
+          component = await import(
+            /* webpackChunkName: "PhotoListModal" */ "@core/components/Modals/PhotoListModal"
+          );
+          break;
+
+        case ModalOpenType.Feedback:
+          component = await import(
+            /* webpackChunkName: "FeedbackModal" */ "@core/components/Modals/FeedbackModal"
+          );
+          break;
+
+        default:
+          break;
+      }
+      if (component) {
+        setComponentToRender(component);
+      }
+    };
+
+    getComponent(componentType);
+  }, [componentType]);
+
+  if (!ComponentToRender) {
+    return null;
+  }
+
+  return (
+    // eslint-disable-next-line react/jsx-pascal-case
+    <ComponentToRender.default {...componentProps} isModalOpen={isModalOpen} />
+  );
 };
 
 export default ModalWindowDump;

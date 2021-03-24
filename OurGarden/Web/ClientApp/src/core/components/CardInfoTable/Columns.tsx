@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Title } from "@core/antd/Typography";
+import Title from "@core/antd/Typography/Title";
 import LazyImage from "@core/components/LazyImage";
 import GenerateLink from "@src/core/components/GenerateLink";
 import NumberInput from "@core/components/NumberInput";

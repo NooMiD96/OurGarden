@@ -7,10 +7,7 @@ import Col from "@src/core/antd/Col";
 import PhoneNumberInput, {
   CISPhoneNumberRegExp,
 } from "@src/core/components/PhoneNumberInput";
-
-import UserOutlinedIcon from "@icons/UserOutlined";
-import PhoneOutlinedIcon from "@icons/PhoneOutlined";
-import MailOutlinedIcon from "@icons/MailOutlined";
+import Svg from "@src/core/components/Svg";
 
 import { ICardConfirmationFormFields } from "./ICardConfirmation";
 
@@ -51,7 +48,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
           ]}
         >
           <Input
-            prefix={<UserOutlinedIcon />}
+            prefix={<Svg type="form-user" />}
             placeholder="Фамилия"
             onPressEnter={onSubmit}
           />
@@ -70,7 +67,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
           ]}
         >
           <Input
-            prefix={<UserOutlinedIcon />}
+            prefix={<Svg type="form-user" />}
             placeholder="Имя"
             onPressEnter={onSubmit}
           />
@@ -83,7 +80,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
           rules={[{ transform: (val: string) => val && val.trim() }]}
         >
           <Input
-            prefix={<UserOutlinedIcon />}
+            prefix={<Svg type="form-user" />}
             placeholder="Отчество"
             onPressEnter={onSubmit}
           />
@@ -104,7 +101,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
         >
           <PhoneNumberInput
             placeholder="Телефон"
-            prefix={<PhoneOutlinedIcon className="input-icon" />}
+            prefix={<Svg type="form-phone" className="input-icon" />}
             onPressEnter={onSubmit}
           />
         </FormItem>
@@ -124,7 +121,7 @@ const CardConfirmationFormFields = (props: ICardConfirmationFormFields) => {
         >
           <Input
             placeholder="Почта"
-            prefix={<MailOutlinedIcon className="input-icon" />}
+            prefix={<Svg type="form-mail" className="input-icon" />}
             onPressEnter={onSubmit}
           />
         </FormItem>

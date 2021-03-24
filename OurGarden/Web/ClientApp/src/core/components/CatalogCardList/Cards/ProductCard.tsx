@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
 import LazyImage from "@core/components/LazyImage";
-import { Paragraph } from "@core/antd/Typography";
+import Paragraph from "@core/antd/Typography/Paragraph";
 import WithRouterPush, {
   TWithRouter,
 } from "@src/core/components/WithRouterPush";

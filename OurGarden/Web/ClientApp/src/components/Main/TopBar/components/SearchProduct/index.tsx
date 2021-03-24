@@ -114,6 +114,7 @@ const SearchProduct = (props: TWithRouter<any>) => {
           enterButton="Найти"
           onSearch={onSearch}
           value={searchValue}
+          aria-label="Поиск товара"
         />
       </AutoComplete>
       <span id="product-popup-container" />

@@ -1,7 +1,7 @@
 import React from "react";
 
-import Button from "@src/core/antd/Button";
-import NumberInput from "@src/core/components/NumberInput";
+import Button from "@core/antd/Button";
+import NumberInput from "@core/components/NumberInput";
 
 import { IAddToCardButton } from "./interfaces/IAddToCardButton";
 

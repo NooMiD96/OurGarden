@@ -11,6 +11,7 @@ const MainMobileLink = ({
   <a
     className={`number-wrapper ${linkClassName}`}
     href={`tel:${MAIN_MOBILE_FORMATTED}`}
+    aria-label="Номер телефона для связи"
     onClick={() => ymId && window.ym(ymId, "reachGoal", "PHONE_CLICK")}
   >
     {prefixIcon}
