@@ -3,7 +3,7 @@ import ruRU from "antd/es/locale/ru_RU";
 
 import AntdLayout, { Header, Content } from "@core/antd/Layout";
 import ConfigProvider from "@core/antd/ConfigProvider";
-// // import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
+import RenderEmptyProvider from "@core/components/RenderEmptyProvider";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import ModalWindow from "./ModalWindow";

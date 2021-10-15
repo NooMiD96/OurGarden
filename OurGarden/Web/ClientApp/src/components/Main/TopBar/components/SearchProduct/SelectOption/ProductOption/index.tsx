@@ -1,6 +1,5 @@
 import React from "react";
 
-import LazyImage from "@core/components/LazyImage";
 import GenerateLink from "@src/core/components/GenerateLink";
 
 import { getPreviewPhotoSrc } from "@core/utils/photo";
@@ -10,7 +9,7 @@ import { ICategory } from "@components/Category/State";
 import { ISubcategory } from "@components/Subcategory/State";
 import { IProduct } from "@components/Product/State";
 
-const ProductOption = (item: IProductOption) => {
+const ProductOption = (item: IProductOption, LazyImageComponent: any) => {
   let link = `/Catalog/${item.categoryId}`;
 
   if (item.subcategoryId) {
@@ -29,12 +28,15 @@ const ProductOption = (item: IProductOption) => {
     value: link,
     label: (
       <div className="search-menu-item" title={item.alias} key={link}>
-        <LazyImage
-          className="search-menu-item-image"
-          src={imgSrc}
-          alt={item.alias}
-          visibleByDefault
-        />
+        {LazyImageComponent && (
+          // eslint-disable-next-line react/jsx-pascal-case
+          <LazyImageComponent.default
+            className="search-menu-item-image"
+            src={imgSrc}
+            alt={item.alias}
+            visibleByDefault
+          />
+        )}
         <GenerateLink
           onClick={(e) => {
             e.preventDefault();

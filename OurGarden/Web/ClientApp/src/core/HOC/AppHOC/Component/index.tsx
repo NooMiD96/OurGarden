@@ -2,18 +2,21 @@ import React from "react";
 import { withRouter } from "react-router";
 import { fetch } from "domain-task";
 
-import PageNotFound from "@core/components/PageNotFound";
 import LoadingHOC from "@core/HOC/LoadingHOC";
 
-import { TState } from "@components/Main/State/TState";
+import { TState, TComponentState } from "@components/Main/State/TState";
 
-export class AppHOC extends React.Component<TState, {}> {
+export class AppHOC extends React.Component<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
     if (typeof window !== "undefined") {
       props.clearAllRequest();
     }
+
+    this.state = {
+      PageNotFoundComponent: undefined,
+    };
   }
 
   // eslint-disable-next-line camelcase
@@ -53,6 +56,15 @@ export class AppHOC extends React.Component<TState, {}> {
         }
       );
     }
+    if (this.props.isPageNotFound) {
+      import(
+        /* webpackChunkName: "PageNotFound" */ "@core/components/PageNotFound"
+      ).then((component) => {
+        this.setState({
+          PageNotFoundComponent: component,
+        });
+      });
+    }
   }
 
   resetState = () => {
@@ -62,9 +74,14 @@ export class AppHOC extends React.Component<TState, {}> {
 
   render() {
     const { isPageNotFound, children, pending } = this.props;
+    const { PageNotFoundComponent } = this.state;
 
     if (isPageNotFound) {
-      return <PageNotFound />;
+      if (!PageNotFoundComponent) {
+        return <LoadingHOC pending>{children}</LoadingHOC>;
+      }
+      // eslint-disable-next-line react/jsx-pascal-case
+      return <PageNotFoundComponent.default />;
     }
 
     return <LoadingHOC pending={!!pending.length}>{children}</LoadingHOC>;

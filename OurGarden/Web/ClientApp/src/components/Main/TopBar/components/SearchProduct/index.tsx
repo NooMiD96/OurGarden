@@ -1,8 +1,6 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState, useEffect, useRef } from "react";
-import { fetch } from "domain-task";
 
-import Search from "@core/antd/Search";
-import AutoComplete from "@core/antd/AutoComplete";
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
 import WithRouterPush, {
@@ -10,25 +8,20 @@ import WithRouterPush, {
 } from "@src/core/components/WithRouterPush";
 
 import debounce from "lodash.debounce";
+import { fetchProducts } from "./utils";
 
 import { IProduct } from "@src/components/Product/State";
-
-const fetchProducts = async (search: string) => {
-  const encodedSearch = encodeURIComponent(search);
-
-  const result = await fetch(`/api/Search?search=${encodedSearch}`, {
-    credentials: "same-origin",
-    method: "GET",
-  }).then((res: Response) => res.json());
-
-  return result;
-};
 
 let debounceOnSearch: any;
 
 const SearchProduct = (props: TWithRouter<any>) => {
   const autoCompleteElement: React.RefObject<any> = useRef(null);
 
+  const [AutoCompleteComponent, setAutoCompleteComponent] = useState(
+    null as any
+  );
+  const [SearchComponent, setSearchComponent] = useState(null as any);
+  const [LazyImageComponent, setLazyImageComponent] = useState(null as any);
   const [pending, setLoading] = useState(false as boolean);
   const [productList, setProductList] = useState([] as IProduct[]);
   const [searchIsActive, setSearchActive] = useState(false as boolean);
@@ -72,6 +65,16 @@ const SearchProduct = (props: TWithRouter<any>) => {
 
   useEffect(() => {
     debounceOnSearch = debounce(onSearch, 350);
+
+    Promise.all([
+      import(/* webpackChunkName: "Search" */ "@core/antd/Search"),
+      import(/* webpackChunkName: "AutoComplete" */ "@core/antd/AutoComplete"),
+      import(/* webpackChunkName: "LazyImage" */ "@core/components/LazyImage"),
+    ]).then(([search, autoComplete, lazyImage]: any[]) => {
+      setSearchComponent(search);
+      setAutoCompleteComponent(autoComplete);
+      setLazyImageComponent(lazyImage);
+    });
   }, []);
 
   let dataSource: any[] = [];
@@ -81,45 +84,50 @@ const SearchProduct = (props: TWithRouter<any>) => {
   } else if (!productList.length && searchIsActive) {
     dataSource.push(EmptyOption());
   } else if (productList.length) {
-    dataSource = productList.map(ProductOption);
+    // prettier-ignore
+    dataSource = productList.map((product) => ProductOption(product, LazyImageComponent));
   }
 
-  return (
-    <React.Fragment>
-      <AutoComplete
-        ref={autoCompleteElement}
-        listHeight={512}
-        listItemHeight={115}
-        options={dataSource}
-        onSearch={(val) => {
-          setSearchValue(val);
-          debounceOnSearch(val);
-        }}
-        // prettier-ignore
-        getPopupContainer={() => document.getElementById("product-popup-container")!}
-        defaultActiveFirstOption={false}
-        onSelect={onSelect}
-        value={searchValue}
-      >
-        <Search
-          placeholder="Поиск..."
+  if (AutoCompleteComponent && SearchComponent) {
+    return (
+      <React.Fragment>
+        <AutoCompleteComponent.default
+          ref={autoCompleteElement}
+          listHeight={512}
+          listItemHeight={115}
+          options={dataSource}
+          onSearch={(val: React.SetStateAction<string>) => {
+            setSearchValue(val);
+            debounceOnSearch(val);
+          }}
           // prettier-ignore
-          prefix={(
-            <LottieWebIcon
-              type="search"
-              isActive={searchIsActive}
-              onClick={resetSearchValue}
-            />
-          )}
-          enterButton="Найти"
-          onSearch={onSearch}
+          getPopupContainer={() => document.getElementById("product-popup-container")!}
+          defaultActiveFirstOption={false}
+          onSelect={onSelect}
           value={searchValue}
-          aria-label="Поиск товара"
-        />
-      </AutoComplete>
-      <span id="product-popup-container" />
-    </React.Fragment>
-  );
+        >
+          <SearchComponent.default
+            placeholder="Поиск..."
+            // prettier-ignore
+            prefix={(
+              <LottieWebIcon
+                type="search"
+                isActive={searchIsActive}
+                onClick={resetSearchValue}
+              />
+            )}
+            enterButton="Найти"
+            onSearch={onSearch}
+            value={searchValue}
+            aria-label="Поиск товара"
+          />
+        </AutoCompleteComponent.default>
+        <span id="product-popup-container" />
+      </React.Fragment>
+    );
+  }
+
+  return <div />;
 };
 
 export default WithRouterPush<any>(SearchProduct as any);

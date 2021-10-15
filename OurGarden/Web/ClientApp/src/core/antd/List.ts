@@ -5,7 +5,5 @@ import "antd/es/list/style/index.css";
 import "./Spin";
 import "./Pagination";
 
-export {
-  Item,
-};
+export { Item };
 export default List;

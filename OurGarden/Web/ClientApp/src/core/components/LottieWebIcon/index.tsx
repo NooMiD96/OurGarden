@@ -6,6 +6,7 @@ import Remove from "./icons/Remove";
 import Search from "./icons/Search";
 
 import { getLottie, getJsonIcon } from "./utils";
+import { IMPORT_DELAY } from "@src/core/constants";
 
 import { TLottiePlayer, ILottieWebIconProps } from "./ILottieWebIcon";
 
@@ -42,7 +43,7 @@ export const LottieWebIcon = ({ type, ...props }: ILottieWebIconProps) => {
         }, 1_000);
       }
       // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
-    }, 2_500);
+    }, IMPORT_DELAY);
 
     return () => {
       clearTimeout(timer);

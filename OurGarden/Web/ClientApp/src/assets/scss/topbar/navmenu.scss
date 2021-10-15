@@ -1,4 +1,10 @@
 .navigation {
+  &.temporary-tabs-container {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+  }
+
   .MuiTabs-root {
     height: 50px;
     margin: 0 0 16px;

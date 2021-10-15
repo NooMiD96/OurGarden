@@ -5,11 +5,14 @@ import { actionCreators } from "./actions";
 
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {};
+export type TComponentState = {
+  PageNotFoundComponent: any;
+};
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IAppState & RouteComponentProps<{}>;
-export type TOwnProps = {};
+export type TStateToProps = IAppState &
+  RouteComponentProps<Record<string, any>>;
+export type TOwnProps = Record<string, unknown>;
 export type TMapStateToProps = TStateToProps &
   TOwnProps & {
     children?: React.ReactNode;
@@ -17,7 +20,7 @@ export type TMapStateToProps = TStateToProps &
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps & {};
+export type TMapDispatchToProps = TDispatchToProps & Record<string, unknown>;
 // -----------------------------
 // COMBINE REDUX PROPS
 export type TState = TMapStateToProps & TMapDispatchToProps;

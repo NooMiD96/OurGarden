@@ -1,12 +1,13 @@
+/* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 import { Location } from "history";
 
 import GenerateLink from "@core/components/GenerateLink";
-import Tabs, { Tab } from "@core/materialUI/tabs";
 
 import { getActiveRoute } from "@core/helpers/route/getActiveRoute";
+import { IMPORT_DELAY } from "@src/core/constants";
 
 import { IApplicationState } from "@src/Store";
 
@@ -22,18 +23,35 @@ const tabList = [
 
 export class NavMenu extends React.PureComponent<
   RouterState,
-  { tabIndex: number | false }
+  {
+    tabIndex: number | false;
+    TabsComponent: any;
+  }
 > {
   constructor(props: RouterState) {
     super(props);
 
     this.state = {
       tabIndex: this.getActiveTabIndex(props.location),
+      TabsComponent: undefined,
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      import(/* webpackChunkName: "Tabs" */ "@core/materialUI/tabs").then(
+        (tabsComponent) => {
+          this.setState({
+            TabsComponent: tabsComponent,
+          });
+        }
+      );
+    }, IMPORT_DELAY);
   }
 
   componentDidUpdate(prevProps: RouterState) {
     if (prevProps.location !== this.props.location) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         tabIndex: this.getActiveTabIndex(this.props.location),
       });
@@ -57,28 +75,38 @@ export class NavMenu extends React.PureComponent<
   };
 
   render() {
-    const { tabIndex } = this.state;
+    const { tabIndex, TabsComponent } = this.state;
+
+    if (TabsComponent) {
+      return (
+        <React.Fragment>
+          <TabsComponent.default
+            value={tabIndex}
+            onChange={this.handleChange}
+            className="navigation"
+            variant="scrollable"
+            scrollButtons="auto"
+            classes={{ indicator: "d-none" }}
+          >
+            {tabList.map((x) => (
+              <TabsComponent.Tab
+                key={x.link || "Home"}
+                label={<GenerateLink {...x} />}
+                disableFocusRipple
+                disableRipple
+              />
+            ))}
+          </TabsComponent.default>
+        </React.Fragment>
+      );
+    }
 
     return (
-      <React.Fragment>
-        <Tabs
-          value={tabIndex}
-          onChange={this.handleChange}
-          className="navigation"
-          variant="scrollable"
-          scrollButtons="auto"
-          classes={{ indicator: "d-none" }}
-        >
-          {tabList.map((x) => (
-            <Tab
-              key={x.link || "Home"}
-              label={<GenerateLink {...x} />}
-              disableFocusRipple
-              disableRipple
-            />
-          ))}
-        </Tabs>
-      </React.Fragment>
+      <div className="navigation temporary-tabs-container">
+        {tabList.map((x) => (
+          <GenerateLink key={x.link || "Home"} {...x} />
+        ))}
+      </div>
     );
   }
 }

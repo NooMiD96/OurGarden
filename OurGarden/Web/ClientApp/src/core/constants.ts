@@ -20,3 +20,5 @@ export const GALLERY_MACROS = "{{gallery=(?<galleryName>.+)}}";
 export const MODAL_TIMEOUT = 5_000;
 
 export const CARD_PATH = "/Card";
+
+export const IMPORT_DELAY = 2_500;

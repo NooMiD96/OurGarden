@@ -1,7 +1,5 @@
 import * as React from "react";
-import AntdSider, {
-  SiderProps as AntdSiderProps,
-} from "antd/es/layout/Sider";
+import AntdSider, { SiderProps as AntdSiderProps } from "antd/es/layout/Sider";
 import "./Layout";
 
 type ISider = AntdSiderProps;

@@ -5,9 +5,7 @@ import webpack, { Plugin } from "webpack";
 import AppSettings from "../../../appsettings.json";
 
 const getGeneralPlugins = (): Plugin[] => [
-  // @ant-design/icons
-  // new webpack.IgnorePlugin(/@ant-design\/icons/),
-  // new webpack.IgnorePlugin(/@ant-design\/react-slick/),
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
   // hide warning in the webpack
   new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, "node-noop"),

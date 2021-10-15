@@ -151,6 +151,11 @@ const getClientBundleConfig = (
             test: /[\\/]node_modules[\\/][^\\/]*lodash[^\\/]*[\\/]/,
             priority: -5,
           },
+          reactable: {
+            chunks: "all",
+            test: /[\\/]node_modules[\\/][^\\/]*(buffer|readable-stream|regenerator-runtime)[^\\/]*[\\/]/,
+            priority: 100,
+          },
         },
       },
     },

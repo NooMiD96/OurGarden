@@ -1,7 +1,7 @@
 import * as React from "react";
 import AntdButton, {
   NativeButtonProps,
-  ButtonType
+  ButtonType,
 } from "antd/es/button/button";
 import "antd/es/button/style/index.css";
 
