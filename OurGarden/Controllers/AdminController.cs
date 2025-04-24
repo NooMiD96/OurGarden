@@ -1,11 +1,9 @@
-﻿using Core.Helpers;
-
+﻿using Core.Antiforgery;
+using Core.Helpers;
+using DataBase.Abstraction.Identity.Helpers;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
-
 using System.Diagnostics;
-
-using static Core.Antiforgery.Xsrf;
 
 namespace Web.Controllers
 {
@@ -27,7 +25,7 @@ namespace Web.Controllers
                     userName = User.Identity.Name,
                     userType = User.GetUserRole()
                 });
-                ViewData["xpt"] = XsrfToXpt(_antiforgery.GetTokens(HttpContext));
+                ViewData["xpt"] = Xsrf.XsrfToXpt(_antiforgery.GetTokens(HttpContext));
             }
 
             return View();

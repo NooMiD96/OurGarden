@@ -1,13 +1,10 @@
-﻿using DataBase.Abstraction.Identity;
+﻿using Core.Antiforgery;
+using DataBase.Abstraction.Identity;
 using DataBase.Core;
-
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using System.Threading.Tasks;
-
-using static Core.Antiforgery.Xsrf;
 
 namespace Web.Controllers.Api
 {
@@ -33,51 +30,6 @@ namespace Web.Controllers.Api
             _antiforgery = antiforgery;
         }
 
-        //[HttpPost("[action]")]
-        //public async Task<IActionResult> Registration([FromBody] RegistrationModel userModel)
-        //{
-        //    var user = new ApplicationUser
-        //    {
-        //        UserName = userModel.UserName,
-        //        Email = userModel.Email
-        //    };
-        //    _logger.LogDebug($"Registration: UserName:{user.UserName}, Email:{user.Email}");
-
-        //    if (userModel.IsValid(_userManager, user, out var error))
-        //    {
-        //        _logger.LogDebug($"Registration: Model is valid");
-
-        //        var result = await _userManager.CreateAsync(user, userModel.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            _logger.LogDebug($"Registration: Create user is Succeeded");
-
-        //            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        //            //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-        //            //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-        //            //await _context.AddNewUserAsync(user.Id);
-        //            await _userManager.AddToRoleAsync(user, UserRoles.User);
-        //            await _signInManager.SignInAsync(user, isPersistent: true);
-
-        //            return Success(_service.SuccessUserAuth(user.UserName, UserRoles.User));
-        //        }
-        //        else
-        //        {
-        //            _logger.LogDebug($"Registration: Create user is Failure");
-
-        //            // TODO: can't create
-        //            // return error description
-        //            return BadRequest(result.Errors.FirstOrDefault()?.Description ?? _pleaseTryAgain);
-        //        }
-        //    }
-        //    _logger.LogDebug($"Registration: Model is invalid");
-
-        //    // TODO: not valid
-        //    // return error description
-        //    return BadRequest(error.Description ?? _pleaseTryAgain);
-        //}
-
         [HttpPost("[action]")]
         public async Task<IActionResult> Authentication([FromBody] LoginModel userModel)
         {
@@ -98,11 +50,6 @@ namespace Web.Controllers.Api
 
                 if (result.Succeeded)
                 {
-                    //if (result.RequiresTwoFactor)
-                    //    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                    //if (result.IsLockedOut)
-                    //    return RedirectToAction(nameof(Lockout));
-
                     var userRoleDefined = await _userManager.GetRoleAsync(user);
 
                     return Success(_service.SuccessUserAuth(user.UserName, userRoleDefined));
@@ -132,7 +79,7 @@ namespace Web.Controllers.Api
 
             if (_signInManager.IsSignedIn(User))
             {
-                return Success(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
+                return Success(Xsrf.XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
             }
             return BadRequest("Не удалось получить подтверждение. " + _pleaseTryAgain);
         }

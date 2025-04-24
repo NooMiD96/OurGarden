@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,26 +7,20 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.32" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.32" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.32" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiService.Abstraction\ApiService.Abstraction.csproj" />
-    <ProjectReference Include="..\ApiService.Core\ApiService.Core.csproj" />
     <ProjectReference Include="..\ApiService\ApiService.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
     <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
     <ProjectReference Include="..\PagePingerHostService\PagePingerHostService.csproj" />
-    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
-    <ProjectReference Include="..\EmailService\EmailService.csproj" />
-    <ProjectReference Include="..\ImageService.Abstraction\PhotoService.Abstraction.csproj" />
-    <ProjectReference Include="..\ImageService\PhotoService.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\OrderCleanerHostService\OrderCleanerHostService.csproj" />
     <ProjectReference Include="..\SiteMapHostService\SiteMapHostService.csproj" />
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
+    <ProjectReference Include="..\ImageService\ImageService.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

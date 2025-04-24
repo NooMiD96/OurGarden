@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace Core.Helpers
+namespace DataBase.Abstraction.Identity.Helpers
 {
     public static class ClaimHelper
     {
@@ -9,7 +9,7 @@ namespace Core.Helpers
 
         public static int GetUserId(this ClaimsPrincipal claims)
         {
-            var success = Int32.TryParse(claims.FindFirstValue(UserIdDefault), out var userId);
+            var success = int.TryParse(claims.FindFirstValue(UserIdDefault), out var userId);
 
             return success
                 ? userId

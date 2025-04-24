@@ -12,7 +12,6 @@ using PhotoService.Abstraction.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ApiService.Core
@@ -69,9 +68,18 @@ namespace ApiService.Core
                 for (var i = 0; i < entityDTO.AddFiles.Count; i += 2)
                 {
                     var photoFile = entityDTO.AddFiles.ElementAt(i);
+                    using var photoFileStream = photoFile.OpenReadStream();
                     var previewFile = entityDTO.AddFiles.ElementAt(i + 1);
+                    using var previewFileStream = photoFile.OpenReadStream();
 
-                    var photo = await _photoSaver.AddFileToRepository(photoFile, previewFile, updateDB: false, maxPixel: maxPixel);
+                    var photo = await _photoSaver.AddFileToRepository(
+                        photoFileStream,
+                        photoFile.FileName,
+                        previewFileStream,
+                        previewFile.FileName,
+                        updateDB: false,
+                        maxPixel: maxPixel
+                    );
 
                     entity.Photos.Add(photo);
 
@@ -114,8 +122,8 @@ namespace ApiService.Core
             {
                 for (var i = 0; i < entityDTO.UpdateFiles.Count; i++)
                 {
-                    var newPreview = entityDTO.UpdateFiles.ElementAt(i);
-                    if (!Guid.TryParse(newPreview.FileName, out var fileGuid))
+                    var newPreviewFile = entityDTO.UpdateFiles.ElementAt(i);
+                    if (!Guid.TryParse(newPreviewFile.FileName, out var fileGuid))
                     {
                         continue;
                     }
@@ -123,7 +131,14 @@ namespace ApiService.Core
                     var file = entity.Photos.FirstOrDefault(x => x.PhotoId == fileGuid);
                     if (file != null)
                     {
-                        _photoSaver.UpdateFilePreview(file, newPreview, maxPixel: maxPixel);
+                        using var newPreviewFileStream = newPreviewFile.OpenReadStream();
+
+                        _photoSaver.UpdateFilePreview(
+                            file, 
+                            newPreviewFileStream,
+                            newPreviewFile.FileName,
+                            maxPixel: maxPixel
+                        );
                     }
                 }
             }

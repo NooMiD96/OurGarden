@@ -1,4 +1,4 @@
-﻿using static Core.Helpers.JsonHelper;
+﻿using Core.Helpers;
 
 namespace Core
 {
@@ -6,9 +6,9 @@ namespace Core
     {
         public static T DeepClone<T> (this T data)
         {
-            var stringData = Serialize(data);
+            var stringData = JsonHelper.Serialize(data);
 
-            return Deserialize<T>(stringData);
+            return JsonHelper.Deserialize<T>(stringData);
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-
-using PhotoService.Abstraction.Model;
-
+﻿using PhotoService.Abstraction.Model;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace PhotoService.Abstraction
@@ -23,21 +21,23 @@ namespace PhotoService.Abstraction
         #endregion
 
         /// <summary>
-        /// Сохраняет фотографию на диск и в БД.
-        /// При наличии превью изображения, сохраняет и его.
+        /// Сохраняет фотографию и превью на диск и в БД.
         /// </summary>
-        Task<Photo> AddFileToRepository(IFormFile photo,
-                                        IFormFile previewPhoto = null,
+        Task<Photo> AddFileToRepository(Stream photo,
+                                        string photoFileName,
+                                        Stream previewPhoto,
+                                        string previewPhotoFileName,
                                         bool updateDB = true,
-                                        int maxPixel = 0);
+                                        int maxPixel = MAX_PIXEL);
 
         /// <summary>
         /// Обновление фотографии есть обновление его превью изображения.
         /// В случае, если такого изображения не было, то будет создано новое из переданного.
         /// </summary>
         void UpdateFilePreview(Photo file,
-                               IFormFile newPreviewPhoto,
-                               int maxPixel = 0);
+                               Stream newPreviewPhoto,
+                               string newPreviewPhotoFileName,
+                               int maxPixel = MAX_PIXEL);
 
         /// <summary>
         /// Удаляет фото из БД и с диска.

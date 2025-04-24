@@ -154,9 +154,9 @@ namespace ApiService.Core
                                     var entity = await _repository.GetSubcategory(urlSplit[1], urlSplit[2], includeProducts: true);
 
                                     return GetEntitySeoInfo(section,
-                                                      entity,
-                                                      entity,
-                                                      entityProductListAliases: entity?.Products);
+                                                            entity,
+                                                            entity,
+                                                            entityProductListAliases: entity?.Products);
                                 }
                             case 4:
                                 {
@@ -195,8 +195,6 @@ namespace ApiService.Core
         /// <returns></returns>
         private async ValueTask<(string metaTitle, string metaDescription, string metaKeywords)> GetMainPageSeoInfo(string url)
         {
-            SeoInformationSection section;
-            string metaValue = "";
             PageInfo pageInfo;
 
             switch (url)
@@ -215,12 +213,6 @@ namespace ApiService.Core
 
                 case "catalog":
                     {
-                        //section = _seoInformation.Category;
-                        //var categories = await _repository.GetCategories();
-
-                        //metaValue = GetDescriptionAggregate(categories, default);
-                        //break;
-
                         pageInfo = await _repository.GetPageInfo(PageInfo.CatalogPageId);
                         return (
                             pageInfo.SeoTitle,
@@ -302,22 +294,6 @@ namespace ApiService.Core
                 default:
                     return default;
             }
-
-            if (section is null)
-            {
-                return default;
-            }
-
-            return (
-                section.Title,
-                section.Description
-                       .Replace(
-                           "{{valueList}}",
-                           metaValue,
-                           StringComparison.InvariantCultureIgnoreCase
-                       ),
-                section.Keywords
-            );
         }
 
         /// <summary>

@@ -1,14 +1,9 @@
 ﻿using EmailService.Abstraction;
-
 using MailKit.Net.Smtp;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 using MimeKit;
-
 using Model;
-
 using System;
 using System.Threading.Tasks;
 

@@ -1,22 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Configurations>Debug;Release;Stage</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove=".editorconfig" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.32" />
+	<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.32" />
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
-    <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
-    <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
     <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>

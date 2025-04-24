@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataBase.Abstraction.Identity\DataBase.Abstraction.Identity.csproj" />
     <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
   </ItemGroup>
 

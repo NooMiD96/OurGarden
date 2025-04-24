@@ -7,10 +7,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\DataBase.Abstraction\DataBase.Abstraction.csproj" />
     <ProjectReference Include="..\DataBase.Context\DataBase.Context.csproj" />
     <ProjectReference Include="..\DataBase.Core\DataBase.Core.csproj" />
-    <ProjectReference Include="..\ImageService.Abstraction\PhotoService.Abstraction.csproj" />
+    <ProjectReference Include="..\ImageService.Abstraction\ImageService.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>
