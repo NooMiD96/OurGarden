@@ -47,22 +47,20 @@ export class Carousel<T> extends React.PureComponent<ICarouselProps<T>> {
     }
 
     return (
-      <React.Fragment>
-        <AntdCarousel
-          className={`${className} ${hideDotsClassName}`}
-          autoplay
-          effect="fade"
-          ref={this.carouselRef}
-          adaptiveHeight
-          arrows
-          draggable
-          lazyLoad="progressive"
-          prevArrow={<PrevArrow />}
-          nextArrow={<NextArrow />}
-        >
-          {carouselSource}
-        </AntdCarousel>
-      </React.Fragment>
+      <AntdCarousel
+        className={`${className} ${hideDotsClassName}`}
+        autoplay
+        effect="fade"
+        ref={this.carouselRef}
+        adaptiveHeight
+        arrows
+        draggable
+        lazyLoad="progressive"
+        prevArrow={<PrevArrow />}
+        nextArrow={<NextArrow />}
+      >
+        {carouselSource}
+      </AntdCarousel>
     );
   }
 }

@@ -17,8 +17,6 @@ export type TMapStateToProps = TStateToProps & TOwnProps;
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
 export type TMapDispatchToProps = TDispatchToProps & {
-  push: Push;
-  replace: Replace;
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 };
 // -----------------------------

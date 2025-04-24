@@ -15,13 +15,13 @@ export class FileUploader extends React.PureComponent<
 > {
   state: IImageUploaderState = {
     loading: false,
-    imageUrl: this.props.oldImageUrl as string
+    imageUrl: this.props.oldImageUrl as string,
   };
 
   handleChange = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "uploading") {
       this.setState({
-        loading: true
+        loading: true,
       });
       return;
     }
@@ -29,10 +29,10 @@ export class FileUploader extends React.PureComponent<
       this.props.onUpload(info.file.originFileObj);
       // Get this url from response in real world.
       getBase64(
-        imageUrl =>
+        (imageUrl) =>
           this.setState({
             imageUrl,
-            loading: false
+            loading: false,
           }),
         info.file.originFileObj
       );

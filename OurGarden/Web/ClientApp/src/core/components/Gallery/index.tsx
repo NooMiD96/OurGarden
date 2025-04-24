@@ -1,10 +1,8 @@
 import React from "react";
 import { fetch } from "domain-task";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 import Carousel from "@core/components/Carousel";
 
 import { actionCreators } from "@src/components/ModalWindow/actions";
@@ -17,10 +15,7 @@ import "./style/Gallery.style.scss";
 
 const controllerName = "Gallery";
 const apiUrl = "GetGallery";
-export class Gallery extends React.PureComponent<
-  TWithRouter<IGalleryProps>,
-  IGalleryState
-> {
+export class Gallery extends React.PureComponent<IGalleryProps, IGalleryState> {
   state: IGalleryState = {
     loading: false,
     photos: [],
@@ -80,7 +75,7 @@ export class Gallery extends React.PureComponent<
       return <div />;
     }
 
-    const { galleryName, push, showPhotoModalWindow } = this.props;
+    const { galleryName, navigate, showPhotoModalWindow } = this.props;
 
     return (
       <React.Fragment>
@@ -90,12 +85,10 @@ export class Gallery extends React.PureComponent<
           getKey={(x) => x.photoId}
           getAlt={(_, index) => `${galleryName}_${index + 1}`}
           getTitle={(_, index) => `${galleryName}_${index + 1}`}
-          // prettier-ignore
           getImageSrc={(x) => x.previewUrl || x.url}
           onClick={(x) => {
             showPhotoModalWindow(x, photos);
-            push({ hash: `photo=${x.photoId}` });
-            //
+            navigate(`#photo=${x.photoId}`);
           }}
         />
       </React.Fragment>
@@ -103,6 +96,10 @@ export class Gallery extends React.PureComponent<
   }
 }
 
+export const GalleryWithNavigation = (props: any) => (
+  <Gallery {...props} navigate={useNavigate()} />
+);
+
 export default connect(null, {
   showPhotoModalWindow: actionCreators.showPhotoModalWindow,
-})(WithRouterPush<IGalleryProps>(Gallery as any));
+})(GalleryWithNavigation) as any;

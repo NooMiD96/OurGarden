@@ -67,8 +67,7 @@ class NumberInput extends React.Component<INumberInput, unknown> {
     return (
       <Input
         {...props}
-        // @ts-ignore
-        enterkeyhint="done"
+        enterKeyHint="done"
         ref={this.inputRef}
         onChange={this.onChange}
         onBlur={this.onBlur}

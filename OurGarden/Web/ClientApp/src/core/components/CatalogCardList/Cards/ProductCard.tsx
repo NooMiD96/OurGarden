@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import Card from "@core/antd/Card";
 import AddToCard from "@core/components/AddToCard";
 import LazyImage from "@core/components/LazyImage";
 import Paragraph from "@core/antd/Typography/Paragraph";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 import GenerateLink from "../../GenerateLink";
 
 import { actionsList } from "@components/UserCard/actions";
@@ -24,10 +22,11 @@ export interface IProductCardProps {
 
 export interface IProductCard extends IProductCardProps {
   addToCard: typeof actionsList.addProductToCard;
+  navigate: NavigateFunction;
 }
 
-const ProductCard = (props: TWithRouter<IProductCard>) => {
-  const { item, push, ymId } = props;
+const ProductCard = (props: IProductCard) => {
+  const { item, navigate, ymId } = props;
   const [itemCount, setItemCount] = useState("1");
 
   const addToCardHandler = (e?: IMouseClickEvent | IPressEnterEvent) => {
@@ -51,12 +50,11 @@ const ProductCard = (props: TWithRouter<IProductCard>) => {
       hoverable
       cover={<LazyImage alt={item.alias} src={item.photoUrl} />}
       onClick={() => {
-        push(item.link);
+        navigate(item.link);
       }}
     >
       <Card.Meta
-        // prettier-ignore
-        title={(
+        title={
           <Paragraph ellipsis={META_TITLE_PARAMS}>
             <GenerateLink
               onClick={(e) => {
@@ -66,23 +64,24 @@ const ProductCard = (props: TWithRouter<IProductCard>) => {
               title={item.alias}
             />
           </Paragraph>
-        )}
-        // prettier-ignore
-        description={(
+        }
+        description={
           <AddToCard
             itemCount={itemCount}
             setItemCount={setItemCount}
             product={item}
             addToCard={addToCardHandler}
           />
-        )}
+        }
       />
     </Card>
   );
 };
 
-export default WithRouterPush<IProductCardProps>(
-  connect(null, {
-    addToCard: actionsList.addProductToCard,
-  })(ProductCard) as any
+export const ProductCardWithNavigation = (props: any) => (
+  <ProductCard {...props} navigate={useNavigate()} />
 );
+
+export default connect(null, {
+  addToCard: actionsList.addProductToCard,
+})(ProductCardWithNavigation) as any;

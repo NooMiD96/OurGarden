@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Provider } from "react-redux";
-import { StaticRouter } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 import { renderToString } from "react-dom/server";
 import { createMemoryHistory } from "history";
 import {
@@ -36,7 +36,6 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
   const history = createMemoryHistory();
   // check access to the requested url and change history entries
   history.replace(urlAfterBasename);
-
   // create a store and dispatch the user information
   const store = configureStore(history);
 
@@ -58,7 +57,6 @@ const preloader: BootFunc = (params: BootFuncParams) => new Promise<RenderResult
           <Provider store={store}>
             <StaticRouter
               basename={basename}
-              context={routerContext}
               location={params.location.path}
             >
               {AppRoutes}

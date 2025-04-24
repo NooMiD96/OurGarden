@@ -1,5 +1,6 @@
 import React from "react";
 import _isEqual from "lodash.isequal";
+import { useLocation, useParams } from "react-router-dom";
 
 import ProductContent from "./ProductContent";
 
@@ -15,26 +16,26 @@ export class Product extends React.PureComponent<TState, TComponentState> {
 
     const {
       product,
-      match: {
-        params: { categoryId, subcategoryId, productId },
-      },
+      params: { categoryId, subcategoryId, productId },
     } = props;
 
-    // prettier-ignore
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       if (
-        !product
-        || categoryId !== product.categoryId
-        || subcategoryId !== product.subcategoryId
-        || productId !== product.productId
+        !product ||
+        categoryId !== product.categoryId ||
+        subcategoryId !== product.subcategoryId ||
+        productId !== product.productId
       ) {
-        props.getProduct(categoryId, subcategoryId, productId);
+        categoryId &&
+          subcategoryId &&
+          productId &&
+          props.getProduct(categoryId, subcategoryId, productId);
       }
 
       props.getBreadcrumb({
         categoryId,
         subcategoryId,
-        productId
+        productId,
       });
     }
   }
@@ -42,14 +43,15 @@ export class Product extends React.PureComponent<TState, TComponentState> {
   componentDidUpdate(prevProps: TState) {
     const {
       getProduct,
-      match: {
-        params: { categoryId, subcategoryId, productId },
-      },
+      params: { categoryId, subcategoryId, productId },
       getBreadcrumb,
     } = this.props;
 
-    if (!_isEqual(prevProps.match.params, this.props.match.params)) {
-      getProduct(categoryId, subcategoryId, productId);
+    if (!_isEqual(prevProps.params, this.props.params)) {
+      categoryId &&
+        subcategoryId &&
+        productId &&
+        getProduct(categoryId, subcategoryId, productId);
 
       getBreadcrumb({
         categoryId,
@@ -64,7 +66,6 @@ export class Product extends React.PureComponent<TState, TComponentState> {
       product,
       addProductToCard,
       ymId,
-      push,
       showPhotoModalWindow,
       showFeedbackModalWindow,
     } = this.props;
@@ -72,20 +73,19 @@ export class Product extends React.PureComponent<TState, TComponentState> {
     return (
       <div className={`wysiwyg-wrapper content ${WHITE_BLOCK}`}>
         {product && (
-          <>
-            <ProductContent
-              product={product}
-              addProductToCard={addProductToCard}
-              ymId={ymId}
-              push={push}
-              showPhotoModalWindow={showPhotoModalWindow}
-              showFeedbackModalWindow={showFeedbackModalWindow}
-            />
-          </>
+          <ProductContent
+            product={product}
+            addProductToCard={addProductToCard}
+            ymId={ymId}
+            showPhotoModalWindow={showPhotoModalWindow}
+            showFeedbackModalWindow={showFeedbackModalWindow}
+          />
         )}
       </div>
     );
   }
 }
 
-export default Product;
+export default (props: any) => (
+  <Product {...props} location={useLocation()} params={useParams()} />
+);

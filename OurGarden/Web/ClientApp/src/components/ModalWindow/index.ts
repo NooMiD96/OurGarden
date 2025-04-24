@@ -14,7 +14,6 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => (<TMapStateToProps>{
   ...state.modalWindow,
-  router: state.router,
   ...ownProp
 });
 

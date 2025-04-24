@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { push, replace } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
@@ -15,15 +14,12 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => ({
   ...state.category,
-  ...state.router,
   ...ownProp
 } as TMapStateToProps);
 
 const mapDispatchToProps: TMapDispatchToProps = {
   ...actionCreators,
   setBreadcrumb: breadcrumbActions.setBreadcrumb,
-  push,
-  replace
 };
 
 export default connect<

@@ -1,6 +1,8 @@
 import React from "react";
 
-import CKEditor from "@ckeditor/ckeditor5-react";
+//@ts-ignore
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+//@ts-ignore
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { confirm, IConfirmReturn } from "@core/antd/Modal";
 import Input from "@core/antd/Input";
@@ -119,7 +121,7 @@ export class CKEditorWrapper extends React.PureComponent<IProps, IState> {
         <CKEditor
           editor={ClassicEditor}
           data={data}
-          onInit={this.editorInitHandler}
+          onReady={this.editorInitHandler}
           config={this.config}
         />
       </div>

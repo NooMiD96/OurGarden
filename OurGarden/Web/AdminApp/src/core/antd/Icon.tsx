@@ -36,7 +36,7 @@ class CustomIcon extends React.PureComponent<
       this.setState({ svgProps: svgProps });
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
-        throw new Error(err.message);
+        throw new Error((err as Error).message);
       }
     }
   }

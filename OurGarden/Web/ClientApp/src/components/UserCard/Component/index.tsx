@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import CardInfo from "./CardInfo";
 import CardConfirmation from "./CardConfirmation";
@@ -28,20 +29,18 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
   }
 
   componentDidUpdate(prevProps: TState) {
-    // prettier-ignore
     // Если изменился ключ локации, значит был
     // изменён роутер на тот же, где и находимся
     // (иначе бы данный компонент уже не рендерился).
     // В этом случае нужно обнулить параметры.
     if (
-      prevProps.location.key
-      && this.props.location.key
-      && prevProps.location.key !== this.props.location.key
-      && this.state.displayType !== DisplayTypeEnum.CardInfo
+      prevProps.location.key &&
+      this.props.location.key &&
+      prevProps.location.key !== this.props.location.key &&
+      this.state.displayType !== DisplayTypeEnum.CardInfo
     ) {
-      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        displayType: DisplayTypeEnum.CardInfo
+        displayType: DisplayTypeEnum.CardInfo,
       });
       this.props.setOrderId();
       this.props.cleanErrorInner();
@@ -150,4 +149,4 @@ export class UserCard extends React.PureComponent<TState, TComponentState> {
   }
 }
 
-export default UserCard;
+export default (props: any) => <UserCard {...props} location={useLocation()} />;

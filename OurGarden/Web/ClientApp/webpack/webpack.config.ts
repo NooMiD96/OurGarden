@@ -3,9 +3,6 @@ import getSharedConfig from "./shareConfig";
 import getServerBundleConfig from "./serverBundleConfig";
 import getClientBundleConfig from "./clientBundleConfig";
 
-// const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-// const smp = new SpeedMeasurePlugin();
-
 module.exports = (env: { [key: string]: string }) => {
   const {
     projectFolder,

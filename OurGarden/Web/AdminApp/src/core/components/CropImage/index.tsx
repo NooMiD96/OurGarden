@@ -79,8 +79,11 @@ export class CropImage extends React.Component<IProps, IState> {
         }
 
         // blob.name = fileName;
+        //@ts-ignore
         this.fileUrl && window.URL.revokeObjectURL(this.fileUrl);
+        //@ts-ignore
         this.fileUrl = window.URL.createObjectURL(blob);
+        //@ts-ignore
         resolve(this.fileUrl);
       }, "image/jpeg");
     });

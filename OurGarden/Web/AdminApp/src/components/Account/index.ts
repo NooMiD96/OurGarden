@@ -22,4 +22,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, IApplicationState>(
   mapStateToProps,
   mapDispatchToProps
-)(Account as any);
+)(Account as any) as any;

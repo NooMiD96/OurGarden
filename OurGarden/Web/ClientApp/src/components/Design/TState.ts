@@ -1,4 +1,4 @@
-import { Push } from "connected-react-router";
+import { NavigateFunction } from "react-router-dom";
 
 import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 
@@ -6,23 +6,24 @@ import { actionCreators as mainActionCreators } from "@components/Main/State/act
 import { actionCreators as breadcrumbActions } from "@components/Breadcrumb/actions";
 
 // STATE OF COMPONENT
-export type TComponentState = Record<string, unknown>;
+export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = {
-  isDataWasGeted: boolean;
+  isDataWasReceive: boolean;
   pageInfo?: IPageInfo;
 };
-export type TOwnProps = Record<string, unknown>;
+export type TOwnProps = {};
+
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = {
-  push: Push;
   getPageInfo: typeof mainActionCreators.getPageInfo;
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 };
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps & TMapDispatchToProps;
+export type TState = TMapStateToProps &
+  TMapDispatchToProps & { navigate: NavigateFunction };

@@ -1,5 +1,6 @@
 import React from "react";
 import _isEqual from "lodash.isequal";
+import { useParams } from "react-router-dom";
 
 import NewsContent from "./NewsContent";
 
@@ -13,13 +14,11 @@ export class News extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    const {
-      match: { params },
-    } = props;
+    const { params } = props;
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       if (!props.selectedNew || props.selectedNew.newsId !== params.newsId) {
-        props.getNews(params.newsId);
+        params.newsId && props.getNews(params.newsId);
       }
 
       props.getBreadcrumb({
@@ -29,14 +28,10 @@ export class News extends React.PureComponent<TState, TComponentState> {
   }
 
   componentDidUpdate(prevProps: TState) {
-    const {
-      getNews,
-      match: { params },
-      getBreadcrumb,
-    } = this.props;
+    const { getNews, params, getBreadcrumb } = this.props;
 
-    if (!_isEqual(prevProps.match.params, this.props.match.params)) {
-      getNews(params.newsId);
+    if (!_isEqual(prevProps.params, this.props.params)) {
+      params.newsId && getNews(params.newsId);
 
       getBreadcrumb({
         newsId: params.newsId,
@@ -49,14 +44,10 @@ export class News extends React.PureComponent<TState, TComponentState> {
 
     return (
       <div className={`news-wrapper content ${WHITE_BLOCK}`}>
-        {selectedNew && (
-          <>
-            <NewsContent selectedNew={selectedNew} />
-          </>
-        )}
+        {selectedNew && <NewsContent selectedNew={selectedNew} />}
       </div>
     );
   }
 }
 
-export default News;
+export default (props: any) => <News {...props} params={useParams()} />;

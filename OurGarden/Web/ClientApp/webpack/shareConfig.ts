@@ -20,24 +20,24 @@ const getSharedConfig = (
     // Add built modules information
     stats: {
       modules: false,
-      children: false
+      children: false,
     },
     // https://webpack.js.org/configuration/resolve/#resolve-extensions
     // Can import files without extansions
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
-      alias: getAlias()
+      alias: getAlias(),
     },
     // https://webpack.js.org/configuration/module/
     module: {
       rules: [
         ...getAssetsModuleRules(env, fileNameTemplate),
-        ...getJsModuleRules()
-      ]
+        ...getJsModuleRules(),
+      ],
     },
     plugins: getGeneralPlugins(),
     optimization: optimizationConfiguration,
-    mode: buildModeString
+    mode: buildModeString,
   };
 
   if (devtool) {

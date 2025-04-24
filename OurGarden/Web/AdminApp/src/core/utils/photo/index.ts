@@ -26,7 +26,6 @@ export const getAddFilesDTO = async (files: UploadFile[]): Promise<File[]> => {
     if (file.originFileObj) {
       filesDTO.push(file.originFileObj as File);
 
-      // eslint-disable-next-line no-await-in-loop
       const previewFile = await getPreviewFileByBlobUrl(
         file.preview!,
         file.name
@@ -46,7 +45,6 @@ export const getUpdateFilesDTO = async (
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
-    // eslint-disable-next-line no-await-in-loop
     const previewFile = await getPreviewFileByBlobUrl(file.url, file.uid);
     filesDTO.push(previewFile);
   }
@@ -59,15 +57,15 @@ export const getDefaultFileList = (photos: IPhoto[]) => {
     return [];
   }
 
-  // prettier-ignore
   return photos.map(
-    (photo) => ({
-      uid: photo.photoId,
-      name: photo.photoId,
-      status: "done",
-      url: photo.url,
-      preview: photo.previewUrl,
-    } as UploadFile)
+    (photo) =>
+      ({
+        uid: photo.photoId,
+        name: photo.photoId,
+        status: "done",
+        url: photo.url,
+        preview: photo.previewUrl,
+      } as UploadFile)
   );
 };
 

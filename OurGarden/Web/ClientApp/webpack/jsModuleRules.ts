@@ -3,16 +3,16 @@
 import { RuleSetRule } from "webpack";
 import { LoaderOptions } from "ts-loader/dist/interfaces";
 
-const getJsModuleRules = (): RuleSetRule[] => [
+const getJsModuleRules = (): RuleSetRule[] => ([
   // TS module for webpack
   {
     test: /\.(ts|tsx|js|jsx)?$/,
-    include: /src/,
+    include: /(src|react-router-dom)/,
     loader: "ts-loader",
     options: <LoaderOptions>{
       allowTsInNodeModules: true,
     },
   },
-];
+]);
 
 export default getJsModuleRules;

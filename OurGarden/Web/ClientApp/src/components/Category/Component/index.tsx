@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
 
@@ -26,7 +27,6 @@ export class Category extends React.PureComponent<TState, unknown> {
   render() {
     const {
       categoryList,
-      replace,
       location: { state: locationState },
     } = this.props;
 
@@ -37,15 +37,9 @@ export class Category extends React.PureComponent<TState, unknown> {
     }));
 
     return (
-      <>
-        <CatalogCardList
-          replace={replace}
-          locationState={locationState}
-          dataList={dataList}
-        />
-      </>
+      <CatalogCardList locationState={locationState} dataList={dataList} />
     );
   }
 }
 
-export default Category;
+export default (props: any) => <Category {...props} location={useLocation()} />;

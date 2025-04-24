@@ -12,7 +12,7 @@ export class About extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       props.getPageInfo(ABOUT_PAGE_ID);
 
       props.setBreadcrumb({

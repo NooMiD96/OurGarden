@@ -1,14 +1,10 @@
 import React from "react";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
-/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-
-const CompanyInfo = ({ push }: TWithRouter<any>) => (
-  <div className="company-logo" onClick={() => push("/")} />
+const CompanyInfo = ({ navigate }: { navigate: NavigateFunction }) => (
+  <div className="company-logo" onClick={() => navigate("/")} />
 );
 
-/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-
-export default WithRouterPush<any>(CompanyInfo as any);
+export default (props: any) => (
+  <CompanyInfo {...props} navigate={useNavigate()} />
+);

@@ -42,7 +42,7 @@ export const reducer: Reducer<IAppState> = (
     case t.DATA_WAS_GETED: {
       const newState: IAppState = {
         ...state,
-        isDataWasGeted: action.payload,
+        isDataWasReceive: action.payload,
       };
 
       return newState;

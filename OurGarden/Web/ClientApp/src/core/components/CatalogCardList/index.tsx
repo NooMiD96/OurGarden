@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Row from "@src/core/antd/Row";
 import Col from "@src/core/antd/Col";
@@ -52,13 +53,7 @@ export class Catalog<T> extends React.PureComponent<
       pageSize,
     });
 
-    if (this.props.replace) {
-      this.props.replace({
-        state: {
-          page,
-        },
-      });
-    }
+    this.props.navigate(".", { state: { page } });
   };
 
   getItemToDisplay = (item: TDataItem<T>) => {
@@ -116,4 +111,4 @@ export class Catalog<T> extends React.PureComponent<
   }
 }
 
-export default Catalog;
+export default (props: any) => <Catalog {...props} navigate={useNavigate()} />;

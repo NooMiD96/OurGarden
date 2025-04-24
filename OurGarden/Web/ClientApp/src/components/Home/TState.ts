@@ -1,5 +1,3 @@
-import { Push } from "connected-react-router";
-
 import { INewsListState } from "@components/NewsList/State";
 import { IPageInfo } from "@src/core/interfaces/IPageInfo";
 
@@ -12,7 +10,7 @@ export type TComponentState = {};
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = INewsListState & {
-  isDataWasGeted: boolean;
+  isDataWasReceive: boolean;
   ymId: number;
   pageInfo?: IPageInfo;
 };
@@ -21,7 +19,6 @@ export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof newsListActionCreators & {
-  push: Push;
   getPageInfo: typeof mainActionCreators.getPageInfo;
   setBreadcrumb: typeof breadcrumbActions.setBreadcrumb;
 };

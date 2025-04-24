@@ -3,12 +3,12 @@ import Loadable from "react-loadable";
 
 import LoadingIcon from "@src/core/components/Loading";
 
-export function AsyncComponent(
+export const AsyncComponent = (
   loader: () => Promise<Record<string, unknown>>,
   modules: [string],
   webpack: () => [any]
-) {
-  const asyncComponentLoadable = Loadable({
+) => {
+  const AsyncComponentLoadable = Loadable({
     loader,
     loading: LoadingIcon,
     modules,
@@ -22,5 +22,5 @@ export function AsyncComponent(
     },
   });
 
-  return asyncComponentLoadable;
-}
+  return <AsyncComponentLoadable />;
+};

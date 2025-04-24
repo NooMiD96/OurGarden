@@ -1,5 +1,4 @@
-import { RouteComponentProps } from "react-router";
-import { Push, RouterState } from "connected-react-router";
+import { Params } from "react-router-dom";
 
 import { INewsState } from "./State";
 import { actionCreators } from "./actions";
@@ -12,16 +11,14 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = INewsState &
-  RouterState &
-  RouteComponentProps<{
-    newsId: string;
-  }> & { isDataWasGeted: boolean };
+export type TStateToProps = INewsState & {
+  params: Readonly<Params<"newsId">>;
+} & { isDataWasReceive: boolean };
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
-export type TDispatchToProps = typeof actionCreators & { push: Push };
+export type TDispatchToProps = typeof actionCreators;
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS

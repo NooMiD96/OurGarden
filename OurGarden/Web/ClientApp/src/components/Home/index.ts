@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
 
 import { IApplicationState } from "@src/Store";
 
@@ -16,7 +15,7 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => ({
   ...state.newsList,
-  isDataWasGeted: state.app.isDataWasGeted,
+  isDataWasReceive: state.app.isDataWasReceive,
   ymId: state.app.ymId,
   pageInfo: state.app.pageInfo,
   ...ownProp
@@ -26,7 +25,6 @@ const mapDispatchToProps: TMapDispatchToProps = {
   ...newsListActionCreators,
   getPageInfo: mainActionCreators.getPageInfo,
   setBreadcrumb: breadcrumbActions.setBreadcrumb,
-  push,
 };
 
 export default connect<

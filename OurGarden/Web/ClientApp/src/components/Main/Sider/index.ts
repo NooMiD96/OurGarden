@@ -12,13 +12,12 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => ({
   ...state.category,
-  ...state.router,
-  isDataWasGeted: state.app.isDataWasGeted,
+  isDataWasReceive: state.app.isDataWasReceive,
   ...ownProp
 });
 
 const mapDispatchToProps: TMapDispatchToProps = {
-  ...actionCreators
+  ...actionCreators,
 };
 
 export default connect<

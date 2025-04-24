@@ -11,7 +11,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState, context: typeof MobileContext) {
     super(props, context);
 
-    if (!props.isDataWasGeted && !props.categoryList.length) {
+    if (!props.isDataWasReceive && !props.categoryList.length) {
       this.props.getCategoryList();
     }
   }
@@ -40,7 +40,7 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
   };
 
   render() {
-    const { location, categoryList } = this.props;
+    const { categoryList } = this.props;
     const { isCollapsed, isCollapsible } = this.state;
 
     return (
@@ -58,7 +58,6 @@ export class Sider extends React.PureComponent<TState, TComponentState> {
         </div>
         <CategoryList
           categoryList={categoryList}
-          location={location}
           setCollapse={isCollapsible && this.setCollapse}
         />
       </AntdSider>

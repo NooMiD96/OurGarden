@@ -16,7 +16,7 @@ export interface IWrapRequest<T> {
 
 export interface IAppState {
   pending: boolean[];
-  isDataWasGeted: boolean;
+  isDataWasReceive: boolean;
   errorInner: string;
   isPageNotFound: boolean;
   ymId: number;
@@ -26,7 +26,7 @@ export interface IAppState {
 
 export const unloadedState: IAppState = {
   pending: [],
-  isDataWasGeted: false,
+  isDataWasReceive: false,
   errorInner: "",
   isPageNotFound: false,
   ymId: 0,

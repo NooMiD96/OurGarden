@@ -6,4 +6,4 @@ export default styled.div`
   .home-title {
     text-align: center;
   }
-`;
+` as any;

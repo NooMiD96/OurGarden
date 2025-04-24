@@ -1,5 +1,4 @@
-import { RouteComponentProps } from "react-router-dom";
-import { RouterState, Push, Replace } from "connected-react-router";
+import { Location, Params } from "react-router-dom";
 
 import { IProductListState } from "./State";
 import { actionCreators } from "./actions";
@@ -9,21 +8,19 @@ import { actionCreators } from "./actions";
 export type TComponentState = Record<string, unknown>;
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IProductListState &
-  RouterState &
-  RouteComponentProps<{
-    categoryId: string;
-    subcategoryId: string;
-  }> & { isDataWasGeted: boolean; ymId: number };
+export type TStateToProps = IProductListState & {
+  params: Readonly<Params<"categoryId" | "subcategoryId">>;
+} & {
+  isDataWasReceive: boolean;
+  ymId: number;
+};
 export type TOwnProps = Record<string, unknown>;
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof actionCreators;
-export type TMapDispatchToProps = TDispatchToProps & {
-  push: Push;
-  replace: Replace;
-};
+export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------
 // COMBINE REDUX PROPS
-export type TState = TMapStateToProps & TMapDispatchToProps;
+export type TState = TMapStateToProps &
+  TMapDispatchToProps & { location: Location<any> };

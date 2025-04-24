@@ -24,7 +24,8 @@ const columnTypesDef: { [key: string]: ColDef } = {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressToolPanel: true
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true
   },
   actionColumn: {
     cellRendererFramework: ActionRenderer,
@@ -37,7 +38,8 @@ const columnTypesDef: { [key: string]: ColDef } = {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressToolPanel: true
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true
   },
   number: {
     filter: "agNumberColumnFilter"

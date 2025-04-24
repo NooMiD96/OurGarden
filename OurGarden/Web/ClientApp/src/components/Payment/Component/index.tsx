@@ -12,7 +12,7 @@ export class Payment extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       props.getPageInfo(PAYMENT_PAGE_INFO_ID);
 
       props.setBreadcrumb({

@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
 
 import Component from "./Component";
 
@@ -16,8 +15,7 @@ const mapStateToProps = (
   ownProp: TOwnProps
 ): TMapStateToProps => ({
   ...state.product,
-  ...state.router,
-  isDataWasGeted: state.app.isDataWasGeted,
+  isDataWasReceive: state.app.isDataWasReceive,
   ymId: state.app.ymId,
   ...ownProp
 } as TMapStateToProps);
@@ -27,7 +25,6 @@ const mapDispatchToProps: TMapDispatchToProps = {
   addProductToCard: userCardActions.addProductToCard,
   showPhotoModalWindow: modalWindowsActions.showPhotoModalWindow,
   showFeedbackModalWindow: modalWindowsActions.showFeedbackModalWindow,
-  push,
 };
 
 export default connect<

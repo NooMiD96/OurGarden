@@ -63,7 +63,7 @@ export const ActionCreators = {
         try {
           xpt = await GetXsrf(data);
         } catch (err) {
-          return errorCreater(err.message);
+          return errorCreater((err as Error).message);
         }
 
         if (xpt) {

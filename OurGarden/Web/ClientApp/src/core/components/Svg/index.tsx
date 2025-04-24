@@ -22,7 +22,7 @@ class Svg extends React.PureComponent<ISvgProps, ISvgState> {
       }
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
-        throw new Error(err.message);
+        throw new Error((err as Error).message);
       }
     }
   }

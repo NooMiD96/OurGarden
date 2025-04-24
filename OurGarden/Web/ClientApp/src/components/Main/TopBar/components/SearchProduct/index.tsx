@@ -1,11 +1,8 @@
-/* eslint-disable react/jsx-pascal-case */
 import React, { useState, useEffect, useRef } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import LottieWebIcon from "@core/components/LottieWebIcon";
 import { LoadOption, EmptyOption, ProductOption } from "./SelectOption";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 
 import debounce from "lodash.debounce";
 import { fetchProducts } from "./utils";
@@ -14,7 +11,7 @@ import { IProduct } from "@src/components/Product/State";
 
 let debounceOnSearch: any;
 
-const SearchProduct = (props: TWithRouter<any>) => {
+const SearchProduct = (props: { navigate: NavigateFunction }) => {
   const autoCompleteElement: React.RefObject<any> = useRef(null);
 
   const [AutoCompleteComponent, setAutoCompleteComponent] = useState(
@@ -55,7 +52,7 @@ const SearchProduct = (props: TWithRouter<any>) => {
   };
 
   const onSelect = (val: any) => {
-    props.push(val);
+    props.navigate(val);
     process.nextTick(() => {
       if (autoCompleteElement?.current?.blur) {
         autoCompleteElement.current.blur();
@@ -84,8 +81,9 @@ const SearchProduct = (props: TWithRouter<any>) => {
   } else if (!productList.length && searchIsActive) {
     dataSource.push(EmptyOption());
   } else if (productList.length) {
-    // prettier-ignore
-    dataSource = productList.map((product) => ProductOption(product, LazyImageComponent));
+    dataSource = productList.map((product) =>
+      ProductOption(product, LazyImageComponent)
+    );
   }
 
   if (AutoCompleteComponent && SearchComponent) {
@@ -100,22 +98,22 @@ const SearchProduct = (props: TWithRouter<any>) => {
             setSearchValue(val);
             debounceOnSearch(val);
           }}
-          // prettier-ignore
-          getPopupContainer={() => document.getElementById("product-popup-container")!}
+          getPopupContainer={() =>
+            document.getElementById("product-popup-container")!
+          }
           defaultActiveFirstOption={false}
           onSelect={onSelect}
           value={searchValue}
         >
           <SearchComponent.default
             placeholder="Поиск..."
-            // prettier-ignore
-            prefix={(
+            prefix={
               <LottieWebIcon
                 type="search"
                 isActive={searchIsActive}
                 onClick={resetSearchValue}
               />
-            )}
+            }
             enterButton="Найти"
             onSearch={onSearch}
             value={searchValue}
@@ -130,4 +128,6 @@ const SearchProduct = (props: TWithRouter<any>) => {
   return <div />;
 };
 
-export default WithRouterPush<any>(SearchProduct as any);
+export default (props: any) => (
+  <SearchProduct {...props} navigate={useNavigate()} />
+);

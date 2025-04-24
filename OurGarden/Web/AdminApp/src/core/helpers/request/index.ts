@@ -5,20 +5,21 @@ type TBody<T> = T & {
   addFiles?: File[] | null;
   updateFiles?: File[] | null;
 };
-
 const generateFormBody: <T>(data: TBody<T>) => FormData = data => {
   const formData = new FormData();
-
+  
   let key: keyof typeof data;
   for (key in data) {
     if (data.hasOwnProperty(key) && !_isNil(data[key])) {
       let field = data[key];
       if (typeof field !== "string") {
+        //@ts-ignore
         field = field.toString();
       }
 
       formData.append(
         `${key[0].toUpperCase()}${key.slice(1).toLowerCase()}`,
+        //@ts-ignore
         field
       );
     }

@@ -36,7 +36,6 @@ export const getJsonIcon = async (type: TIcons) => {
       return json.default;
 
     default:
-      // eslint-disable-next-line
       const exhaustiveCheck: never = type;
       return json;
   }

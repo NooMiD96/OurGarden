@@ -21,7 +21,6 @@ const Search = ({ lottie, onClick, isActive }: ISearch) => {
 
   useEffect(() => {
     if (!lottie) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => {};
     }
 
@@ -35,7 +34,7 @@ const Search = ({ lottie, onClick, isActive }: ISearch) => {
             renderer: "svg",
             loop: false,
             autoplay: false,
-            animationData: json
+            animationData: json,
           })
         );
       }
@@ -63,14 +62,14 @@ const Search = ({ lottie, onClick, isActive }: ISearch) => {
       maxWidth: "22px",
       cursor: "pointer",
       outline: "0px solid transparent",
-      justifyContent: "center"
+      justifyContent: "center",
     },
     onClick,
     onKeyDown: onClick,
     tabIndex: 0,
     role: "button",
     "aria-label": "Поиск товара",
-    "aria-pressed": false
+    "aria-pressed": false,
   };
 
   return (

@@ -10,9 +10,6 @@ import FeedbackForm from "./Components/FeedbackForm";
 import Form, { hasErrors, useForm } from "@src/core/antd/Form";
 import Loading from "@core/components/Loading";
 
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 import { sendFeedback } from "./utils";
 
 import { IFeedbackModal } from "./interfaces/IFeedbackModal";
@@ -22,7 +19,7 @@ export const FeedbackModal = ({
   isModalOpen,
   onCloseModal,
   product,
-}: TWithRouter<IFeedbackModal>) => {
+}: IFeedbackModal) => {
   const [form] = useForm();
   const [isLoading, setLoadingState] = useState(false);
   const [errorMessage, setErrorText] = useState("");
@@ -120,6 +117,4 @@ export const FeedbackModal = ({
   );
 };
 
-// Без WithRouterPush не работает тот рендер,
-// который используется в ModalWindowDump
-export default WithRouterPush<IFeedbackModal>(FeedbackModal as any);
+export default FeedbackModal;

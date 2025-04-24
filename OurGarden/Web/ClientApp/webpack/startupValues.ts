@@ -43,7 +43,7 @@ const getStartupValues = (env: { [key: string]: string }, dirname: string) => {
     isShowInBrowser,
     fileNameTemplate,
     buildModeString,
-    optimizationConfiguration
+    optimizationConfiguration,
   };
 };
 

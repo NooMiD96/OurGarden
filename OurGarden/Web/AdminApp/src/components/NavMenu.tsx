@@ -1,6 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { RouterState } from "connected-react-router";
 
 import Menu from "@core/antd/Menu";
 import Sider from "@core/antd/LayoutSider";
@@ -8,22 +6,23 @@ import Sider from "@core/antd/LayoutSider";
 import GenerateLink from "@src/core/components/GenerateLink";
 import { getActiveRoute } from "@src/core/helpers/route/getActiveRoute";
 
-import { IApplicationState } from "@src/Store";
+import { useLocation } from "react-router-dom";
 
 const navList = [
   { key: "Главная", title: "Главная", link: "" },
-  { key: "Новости и акции", title: "Новости и акции", link: "Новости и акции" },
-  { key: "Категории", title: "Категории", link: "Категории" },
-  { key: "Подкатегории", title: "Подкатегории", link: "Подкатегории" },
-  { key: "Товары", title: "Товары", link: "Товары" },
-  { key: "Заказы", title: "Заказы", link: "Заказы" },
-  { key: "Клиенты", title: "Клиенты", link: "Клиенты" },
-  { key: "Фотогалерея", title: "Фотогалерея", link: "Фотогалерея" },
-  { key: "Страницы", title: "Страницы", link: "Страницы" },
+  { key: "Новости и акции", title: "Новости и акции", link: "news" },
+  { key: "Категории", title: "Категории", link: "categories" },
+  { key: "Подкатегории", title: "Подкатегории", link: "subcategories" },
+  { key: "Товары", title: "Товары", link: "products" },
+  { key: "Заказы", title: "Заказы", link: "orders" },
+  { key: "Клиенты", title: "Клиенты", link: "clients" },
+  { key: "Фотогалерея", title: "Фотогалерея", link: "gallery" },
+  { key: "Страницы", title: "Страницы", link: "pages" },
 ];
 
-export const NavMenu = (props: RouterState) => {
-  const selectedKeys = getActiveRoute(navList, props.location);
+export const NavMenu = () => {
+  const location = useLocation();
+  const selectedKeys = getActiveRoute(navList, location);
 
   return (
     <Sider>
@@ -58,8 +57,4 @@ export const NavMenu = (props: RouterState) => {
   );
 };
 
-export default connect(
-  (state: IApplicationState): RouterState => ({
-    ...state.router,
-  })
-)(NavMenu);
+export default NavMenu;

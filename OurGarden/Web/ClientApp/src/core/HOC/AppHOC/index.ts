@@ -9,7 +9,7 @@ import { actionCreators } from "@components/Main/State/actions";
 import {
   TOwnProps,
   TMapStateToProps,
-  TMapDispatchToProps
+  TMapDispatchToProps,
 } from "@components/Main/State/TState";
 
 import Component from "./Component";
@@ -24,7 +24,7 @@ const mapStateToProps = (
 } as TMapStateToProps);
 
 const mapDispatchToProps: TMapDispatchToProps = {
-  ...actionCreators
+  ...actionCreators,
 };
 
 export default connect<

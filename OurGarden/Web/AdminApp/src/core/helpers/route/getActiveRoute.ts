@@ -16,10 +16,8 @@ const getActiveRoute = (
         }
       }
     }
-    return [tabList[0]];
+    return [tabList[0].key];
   }
 };
 
-export {
-  getActiveRoute
-};
+export { getActiveRoute };

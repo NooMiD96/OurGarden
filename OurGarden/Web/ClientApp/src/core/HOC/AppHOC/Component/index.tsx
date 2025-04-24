@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router";
+import { useLocation } from "react-router-dom";
 import { fetch } from "domain-task";
 
 import LoadingHOC from "@core/HOC/LoadingHOC";
@@ -30,13 +30,13 @@ export class AppHOC extends React.Component<TState, TComponentState> {
   }
 
   shouldComponentUpdate(nextProps: TState) {
-    const { isPageNotFound, pending, isDataWasGeted } = this.props;
+    const { isPageNotFound, pending, isDataWasReceive } = this.props;
 
     // prettier-ignore
     if (
       isPageNotFound !== nextProps.isPageNotFound
       || pending?.length !== nextProps.pending?.length
-      || isDataWasGeted !== nextProps.isDataWasGeted
+      || isDataWasReceive !== nextProps.isDataWasReceive
     ) {
       return true;
     }
@@ -56,6 +56,7 @@ export class AppHOC extends React.Component<TState, TComponentState> {
         }
       );
     }
+
     if (this.props.isPageNotFound) {
       import(
         /* webpackChunkName: "PageNotFound" */ "@core/components/PageNotFound"
@@ -69,7 +70,7 @@ export class AppHOC extends React.Component<TState, TComponentState> {
 
   resetState = () => {
     this.props.pageNotFoundError(false);
-    this.props.dataWasGeted(false);
+    this.props.dataWasReceive(false);
   };
 
   render() {
@@ -80,7 +81,7 @@ export class AppHOC extends React.Component<TState, TComponentState> {
       if (!PageNotFoundComponent) {
         return <LoadingHOC pending>{children}</LoadingHOC>;
       }
-      // eslint-disable-next-line react/jsx-pascal-case
+
       return <PageNotFoundComponent.default />;
     }
 
@@ -88,4 +89,4 @@ export class AppHOC extends React.Component<TState, TComponentState> {
   }
 }
 
-export default withRouter(AppHOC);
+export default (props: any) => <AppHOC {...props} location={useLocation()} />;

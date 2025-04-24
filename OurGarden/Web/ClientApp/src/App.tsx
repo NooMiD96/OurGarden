@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { Layout } from "@components/Layout";
 
@@ -7,12 +7,10 @@ import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
 export const AppRoutes = (
   <Layout>
-    <Switch>
-      <Redirect exact from="/Home" to="/" />
+    <Routes>
       <Route
-        exact
         path="/"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Home" */ "@components/Home"),
           ["@components/Home"],
           () => [require.resolveWeak("@components/Home")]
@@ -21,7 +19,7 @@ export const AppRoutes = (
 
       <Route
         path="/Catalog/:categoryId/:subcategoryId/:productId"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Product" */ "@components/Product"),
           ["@components/Product"],
           () => [require.resolveWeak("@components/Product")]
@@ -31,7 +29,7 @@ export const AppRoutes = (
       <Route
         path="/Catalog/:categoryId/:subcategoryId"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(
             /* webpackChunkName: "ProductList" */ "@components/ProductList"
           ),
@@ -42,7 +40,7 @@ export const AppRoutes = (
       <Route
         path="/Catalog/:categoryId"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(
             /* webpackChunkName: "Subcategory" */ "@components/Subcategory"
           ),
@@ -54,7 +52,7 @@ export const AppRoutes = (
       <Route
         path="/Catalog"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Category" */ "@components/Category"),
           ["@components/Category"],
           () => [require.resolveWeak("@components/Category")]
@@ -64,7 +62,7 @@ export const AppRoutes = (
       <Route
         path="/Card"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "UserCard" */ "@components/UserCard"),
           ["@components/UserCard"],
           () => [require.resolveWeak("@components/UserCard")]
@@ -73,7 +71,7 @@ export const AppRoutes = (
 
       <Route
         path="/News/:newsId"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "News" */ "@components/News"),
           ["@components/News"],
           () => [require.resolveWeak("@components/News")]
@@ -83,7 +81,7 @@ export const AppRoutes = (
       <Route
         path="/News"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "NewsList" */ "@components/NewsList"),
           ["@components/NewsList"],
           () => [require.resolveWeak("@components/NewsList")]
@@ -92,7 +90,7 @@ export const AppRoutes = (
 
       <Route
         path="/Payment"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Payment" */ "@components/Payment"),
           ["@components/Payment"],
           () => [require.resolveWeak("@components/Payment")]
@@ -101,7 +99,7 @@ export const AppRoutes = (
 
       <Route
         path="/Design"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Design" */ "@components/Design"),
           ["@components/Design"],
           () => [require.resolveWeak("@components/Design")]
@@ -110,7 +108,7 @@ export const AppRoutes = (
 
       <Route
         path="/rulonnyj-gazon"
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Gazon" */ "@components/Gazon"),
           ["@components/Gazon"],
           () => [require.resolveWeak("@components/Gazon")]
@@ -120,7 +118,7 @@ export const AppRoutes = (
       <Route
         path="/Contacts"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "Contacts" */ "@components/Contacts"),
           ["@components/Contacts"],
           () => [require.resolveWeak("@components/Contacts")]
@@ -130,7 +128,7 @@ export const AppRoutes = (
       <Route
         path="/About"
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(/* webpackChunkName: "About" */ "@components/About"),
           ["@components/About"],
           () => [require.resolveWeak("@components/About")]
@@ -139,7 +137,7 @@ export const AppRoutes = (
 
       <Route
         // prettier-ignore
-        component={AsyncComponent(
+        element={AsyncComponent(
           () => import(
             /* webpackChunkName: "PageNotFound" */ "@core/components/PageNotFound"
           ),
@@ -147,6 +145,6 @@ export const AppRoutes = (
           () => [require.resolveWeak("@core/components/PageNotFound")]
         )}
       />
-    </Switch>
+    </Routes>
   </Layout>
 );

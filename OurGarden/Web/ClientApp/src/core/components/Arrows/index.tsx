@@ -38,7 +38,8 @@ const Arrow = ({
     onKeyDown={onClick}
     role="button"
     tabIndex={-1}
-    {...props}
+    data-role={props["data-role"]}
+    aria-label={props["aria-label"]}
   >
     <span className="carousel-slide" />
   </div>

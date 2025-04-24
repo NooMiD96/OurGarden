@@ -2,8 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
-import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
+import { BrowserRouter } from "react-router-dom";
 
 import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
@@ -15,7 +15,9 @@ import "@src/assets/scss/main.scss";
 let routes = App.AppRoutes;
 
 // Create browser history to use in the Redux store
-const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
+const baseUrl = document
+  .getElementsByTagName("base")[0]
+  .getAttribute("href")!;
 const history = createBrowserHistory({ basename: baseUrl });
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
@@ -27,13 +29,11 @@ function renderApp() {
   // and injects the app into a DOM element.
   // `hydrate` needed to attach created by server render with DOM
   ReactDOM.hydrate(
-    <AppContainer>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          {routes}
-        </ConnectedRouter>
-      </Provider>
-    </AppContainer>,
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <BrowserRouter basename={baseUrl}>{routes}</BrowserRouter>
+      </ConnectedRouter>
+    </Provider>,
     document.getElementById("react-app")
   );
 }
@@ -43,7 +43,6 @@ renderApp();
 // Allow Hot Module Replacement
 if (module.hot) {
   module.hot.accept("@src/App", () => {
-    // tslint:disable-next-line:no-require-imports
     routes = require<typeof App>("@src/App").AppRoutes;
     renderApp();
   });

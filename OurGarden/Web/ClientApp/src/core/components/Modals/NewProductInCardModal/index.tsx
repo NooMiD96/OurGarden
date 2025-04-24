@@ -1,10 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "@core/antd/Button";
 import { DialogContent } from "@core/materialUI/modal";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 import GenerateLink from "@src/core/components/GenerateLink";
 
 import { getLinkToProduct } from "@src/core/helpers/linkGenerator";
@@ -32,10 +30,10 @@ export const NewProductInCard = ({
   product,
   closeModal,
   isModalOpen,
-  push,
-}: TWithRouter<INewProductInCardModal>) => {
+  navigate,
+}: INewProductInCardModal) => {
   const onToCardClickHandler = () => {
-    push(CARD_PATH);
+    navigate(CARD_PATH);
     closeModal();
   };
   const onContinueClickHandler = () => {
@@ -81,4 +79,6 @@ export const NewProductInCard = ({
   );
 };
 
-export default WithRouterPush<INewProductInCardModal>(NewProductInCard as any);
+export default (props: any) => (
+  <NewProductInCard {...props} navigate={useNavigate()} />
+);

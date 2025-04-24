@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 import CatalogCardList from "@src/core/components/CatalogCardList";
 import DescriptionWrapper from "@src/core/helpers/description/DescriptionWrapper";
@@ -12,18 +13,14 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    const {
-      match: { params },
-      subcategoryList,
-    } = props;
+    const { params, subcategoryList } = props;
 
-    if (!props.isDataWasGeted) {
-      // prettier-ignore
+    if (!props.isDataWasReceive) {
       if (
-        !subcategoryList.length
-        || params.categoryId !== subcategoryList[0].categoryId
+        !subcategoryList.length ||
+        params.categoryId !== subcategoryList[0].categoryId
       ) {
-        props.getSubcategoryList(params.categoryId);
+        params.categoryId && props.getSubcategoryList(params.categoryId);
       }
 
       props.getBreadcrumb({ categoryId: params.categoryId });
@@ -31,12 +28,10 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
   }
 
   componentDidUpdate(prevProps: TState) {
-    const {
-      match: { params },
-    } = this.props;
+    const { params } = this.props;
 
-    if (prevProps.match.params.categoryId !== params.categoryId) {
-      this.props.getSubcategoryList(params.categoryId);
+    if (prevProps.params.categoryId !== params.categoryId) {
+      params.categoryId && this.props.getSubcategoryList(params.categoryId);
 
       this.props.getBreadcrumb({ categoryId: params.categoryId });
     }
@@ -46,28 +41,23 @@ export class Subcategory extends React.PureComponent<TState, TComponentState> {
     const {
       category,
       subcategoryList,
-      replace,
       location: { state: locationState },
     } = this.props;
 
-    const dataList = subcategoryList.map((x) => ({
+    const dataList = subcategoryList.map((x: any) => ({
       ...x,
       link: getLinkToProduct(x),
       photoUrl: getPreviewPhotoSrc(x),
     }));
 
     return (
-      <>
-        <DescriptionWrapper description={category?.description}>
-          <CatalogCardList
-            replace={replace}
-            locationState={locationState}
-            dataList={dataList}
-          />
-        </DescriptionWrapper>
-      </>
+      <DescriptionWrapper description={category?.description}>
+        <CatalogCardList locationState={locationState} dataList={dataList} />
+      </DescriptionWrapper>
     );
   }
 }
 
-export default Subcategory;
+export default (props: any) => (
+  <Subcategory {...props} location={useLocation()} params={useParams()} />
+);

@@ -10,8 +10,7 @@ import { getFormattedDescription } from "@src/core/helpers/description/Descripti
 
 import { IMouseClickEvent, IPressEnterEvent } from "@core/interfaces/IEvents";
 import { IProductContentProps, IProductContentState } from "./IProductContent";
-
-/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role,jsx-a11y/interactive-supports-focus */
+import { useNavigate } from "react-router-dom";
 
 export class ProductContent extends React.PureComponent<
   IProductContentProps,
@@ -107,7 +106,7 @@ export class ProductContent extends React.PureComponent<
   };
 
   render() {
-    const { product, push, showPhotoModalWindow } = this.props;
+    const { product, navigate, showPhotoModalWindow } = this.props;
     const {
       itemCount,
       showTitleBeforeProductPhoto,
@@ -140,11 +139,11 @@ export class ProductContent extends React.PureComponent<
               }`}
               onClick={() => {
                 showPhotoModalWindow(product.photos[0], product.photos);
-                push({ hash: `photo=${product.photos[0].photoId}` });
+                navigate(`#photo=${product.photos[0].photoId}`);
               }}
               onKeyDown={() => {
                 showPhotoModalWindow(product.photos[0], product.photos);
-                push({ hash: `photo=${product.photos[0].photoId}` });
+                navigate(`#photo=${product.photos[0].photoId}`);
               }}
               role="button"
             />
@@ -193,6 +192,6 @@ export class ProductContent extends React.PureComponent<
   }
 }
 
-/* eslint-enable jsx-a11y/interactive-supports-focus */
-
-export default ProductContent;
+export default (props: any) => (
+  <ProductContent {...props} navigate={useNavigate()} />
+);

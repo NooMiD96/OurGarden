@@ -26,7 +26,6 @@ export const LottieWebIcon = ({ type, ...props }: ILottieWebIconProps) => {
       if (lottieSvg === null) {
         lottieSvg = false;
 
-        // eslint-disable-next-line require-atomic-updates
         lottieSvg = await getLottie();
 
         setLottie(lottieSvg as TLottiePlayer);
@@ -42,7 +41,6 @@ export const LottieWebIcon = ({ type, ...props }: ILottieWebIconProps) => {
           }
         }, 1_000);
       }
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
     }, IMPORT_DELAY);
 
     return () => {
@@ -64,7 +62,6 @@ export const LottieWebIcon = ({ type, ...props }: ILottieWebIconProps) => {
       return <Search lottie={lottie} {...props} />;
 
     default:
-      // eslint-disable-next-line
       const exhaustiveCheck: never = type;
       return null;
   }

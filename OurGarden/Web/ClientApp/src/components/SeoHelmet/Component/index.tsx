@@ -1,11 +1,11 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import { HelmetAsync } from "@src/core/components/HelmetAsync";
 
 import { TState } from "../TState";
 
 export class SeoHelmet extends React.PureComponent<TState> {
-  // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount() {
     this.getNewPageInformation();
   }
@@ -26,4 +26,6 @@ export class SeoHelmet extends React.PureComponent<TState> {
   }
 }
 
-export default SeoHelmet;
+export default (props: any) => (
+  <SeoHelmet {...props} location={useLocation()} />
+);

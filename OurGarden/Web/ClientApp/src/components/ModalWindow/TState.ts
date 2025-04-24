@@ -1,4 +1,4 @@
-import { RouterState, goBack } from "connected-react-router";
+import { goBack } from "connected-react-router";
 import { IModalWindowState } from "./State";
 import { actionCreators } from "./actions";
 
@@ -8,9 +8,7 @@ export type TComponentState = Record<string, unknown>;
 
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = IModalWindowState & {
-  router: RouterState;
-};
+export type TStateToProps = IModalWindowState;
 // -----------------------------
 // OWN PROPS
 export type TOwnProps = Record<string, unknown>;

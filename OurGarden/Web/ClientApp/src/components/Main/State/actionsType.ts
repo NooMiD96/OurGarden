@@ -34,7 +34,7 @@ export type TRequestInformation =
 export interface IClearAllRequest {
   type: typeof CLEAR_ALL_REQUEST;
 }
-export interface IDataWasGeted {
+export interface IDataWasReceive {
   type: typeof DATA_WAS_GETED;
   payload: boolean;
 }
@@ -71,7 +71,7 @@ export type TGetPageInfo =
 export type TAppActions =
   | TRequestInformation
   | IClearAllRequest
-  | IDataWasGeted
+  | IDataWasReceive
   | IPageNotFoundError
   | ICleanErrorInner
   | ISetYandexMetricaId

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
 
 import { MODAL_TIMEOUT } from "@core/constants";
 
@@ -8,22 +9,24 @@ import { INewProductInCardModal } from "@core/components/Modals/NewProductInCard
 import { IPhotoListModal } from "@core/components/Modals/PhotoListModal/interfaces/IPhotoListModal";
 import { IFeedbackModal } from "@core/components/Modals/FeedbackModal/interfaces/IFeedbackModal";
 
-const ModalWindowDump = (state: TState) => {
+const ModalWindowDump = (props: TState) => {
   const {
     modalOpenType,
     photoState,
     feedbackState,
     newProductInCardState,
-    router,
     closeModalWindow,
     goBack,
-  } = state;
+  } = props;
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalCloseTimer, setModalCloseTimer] = useState(null as any);
   const [componentType, setComponentType] = useState(ModalOpenType.Closed);
   const [ComponentToRender, setComponentToRender] = useState(null as any);
   const [componentProps, setComponentProps] = useState({});
+  const location = useLocation();
+  const navigate = useNavigate();
+  const routeAction = useNavigationType();
 
   useEffect(() => {
     switch (modalOpenType) {
@@ -53,6 +56,7 @@ const ModalWindowDump = (state: TState) => {
               closeModalWindow();
             },
             product: { ...(newProductInCardState ?? {}) },
+            navigate,
           };
           setComponentProps(props);
 
@@ -110,12 +114,11 @@ const ModalWindowDump = (state: TState) => {
     return () => null;
   }, [modalOpenType, photoState, newProductInCardState]);
 
-  // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/withRouter.md ?
   useEffect(() => {
-    if (!router.location.hash && router.action === "POP") {
+    if (!location.hash && routeAction === "POP") {
       setModalOpen(false);
     }
-  }, [router.location.hash]);
+  }, [location.hash, routeAction]);
 
   useEffect(() => {
     const getComponent = async (type: ModalOpenType) => {
@@ -155,7 +158,6 @@ const ModalWindowDump = (state: TState) => {
   }
 
   return (
-    // eslint-disable-next-line react/jsx-pascal-case
     <ComponentToRender.default {...componentProps} isModalOpen={isModalOpen} />
   );
 };

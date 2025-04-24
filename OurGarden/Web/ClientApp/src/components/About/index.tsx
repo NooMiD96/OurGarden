@@ -13,7 +13,7 @@ const mapStateToProps = (
   state: IApplicationState,
   ownProp: TOwnProps
 ): TMapStateToProps => ({
-  isDataWasGeted: state.app.isDataWasGeted,
+  isDataWasReceive: state.app.isDataWasReceive,
   pageInfo: state.app.pageInfo,
   ...ownProp
 });

@@ -12,7 +12,7 @@ export class Gazon extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       props.getPageInfo(GAZON_PAGE_INFO_ID);
 
       props.setBreadcrumb({
@@ -36,7 +36,6 @@ export class Gazon extends React.PureComponent<TState, TComponentState> {
   render() {
     const { pageInfo } = this.props;
 
-    // prettier-ignore
     return (
       <Typography className={`content ourgarden-rulonnyj-gazon ${WHITE_BLOCK}`}>
         <DescriptionWrapper

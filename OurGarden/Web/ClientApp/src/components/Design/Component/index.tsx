@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import Typography from "@core/antd/Typography";
 import Paragraph from "@core/antd/Typography/Paragraph";
@@ -17,7 +18,7 @@ export class Design extends React.PureComponent<TState, TComponentState> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       props.getPageInfo(DESIGN_PAGE_INFO_ID);
 
       props.setBreadcrumb({
@@ -34,9 +35,8 @@ export class Design extends React.PureComponent<TState, TComponentState> {
   }
 
   render() {
-    const { push, pageInfo } = this.props;
+    const { navigate, pageInfo } = this.props;
 
-    // prettier-ignore
     return (
       <Typography className={`content ourgarden-design ${WHITE_BLOCK}`}>
         <DescriptionWrapper
@@ -48,12 +48,12 @@ export class Design extends React.PureComponent<TState, TComponentState> {
           hoverable
           cover={<div className="gazon" />}
           onClick={() => {
-            push("rulonnyj-gazon");
+            navigate("/rulonnyj-gazon");
           }}
         >
           <Card.Meta
             title="Рулонный газон."
-            description={(
+            description={
               <Paragraph
                 ellipsis={{
                   rows: 4,
@@ -69,7 +69,7 @@ export class Design extends React.PureComponent<TState, TComponentState> {
                   title="Подробнее..."
                 />
               </Paragraph>
-            )}
+            }
           />
         </Card>
       </Typography>
@@ -77,4 +77,4 @@ export class Design extends React.PureComponent<TState, TComponentState> {
   }
 }
 
-export default Design;
+export default (props: any) => <Design {...props} navigate={useNavigate()} />;

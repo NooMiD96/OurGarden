@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocation } from "react-router-dom";
 
 import CatalogCardList from "@core/components/CatalogCardList";
 import { NewsCard } from "@core/components/CatalogCardList/Cards/NewsCard";
@@ -17,7 +18,7 @@ export class NewsList extends React.PureComponent<TState, unknown> {
   constructor(props: TState) {
     super(props);
 
-    if (!props.isDataWasGeted) {
+    if (!props.isDataWasReceive) {
       if (!props.newsList.length) {
         props.getNewsList();
       }
@@ -38,7 +39,6 @@ export class NewsList extends React.PureComponent<TState, unknown> {
   render() {
     const {
       newsList,
-      replace,
       location: { state: locationState },
     } = this.props;
 
@@ -62,9 +62,8 @@ export class NewsList extends React.PureComponent<TState, unknown> {
             paginationParams={{ page: 1, pageSize: 4 }}
             rowGutter={0}
             cardTitleField="title"
-            replace={replace}
             locationState={locationState}
-            cardComponent={(props) => <NewsCard item={props.item} />}
+            cardComponent={(props: any) => <NewsCard item={props.item} />}
           />
         )}
       </div>
@@ -72,4 +71,4 @@ export class NewsList extends React.PureComponent<TState, unknown> {
   }
 }
 
-export default NewsList;
+export default (props: any) => <NewsList {...props} location={useLocation()} />;

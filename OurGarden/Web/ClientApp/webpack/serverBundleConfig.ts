@@ -13,7 +13,7 @@ const serverPlugins = (): Plugin[] => [
     // Options similar to the same options in webpackOptions.output
     filename: "[name].css",
     ignoreOrder: true,
-  }),
+  }) as any,
   new optimize.LimitChunkCountPlugin({
     maxChunks: 1,
   }),
@@ -37,6 +37,7 @@ const getServerBundleConfig = (
     // https://webpack.js.org/configuration/resolve/#resolve-mainfields
     // Import only main from package
     resolve: {
+      extensions: [".ts", ".tsx", ".js"],
       mainFields: ["main"],
     },
     target: "node",

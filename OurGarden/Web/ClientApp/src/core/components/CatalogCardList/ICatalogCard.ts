@@ -1,4 +1,4 @@
-import { replace } from "connected-react-router";
+import { NavigateFunction } from "react-router-dom";
 
 export type TDataItem<T> = T & {
   link: string;
@@ -12,7 +12,7 @@ export interface ICardComponent<T> {
 
 export interface ICatalogProps<T> {
   dataList: TDataItem<T>[];
-  replace?: typeof replace;
+  navigate: NavigateFunction;
   locationState?: any;
   cardComponent?: (props: ICardComponent<T>) => JSX.Element;
   useCardGrid?: boolean;

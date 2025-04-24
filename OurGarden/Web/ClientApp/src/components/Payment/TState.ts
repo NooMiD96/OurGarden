@@ -8,7 +8,7 @@ export type TComponentState = Record<string, unknown>;
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = {
-  isDataWasGeted: boolean;
+  isDataWasReceive: boolean;
   pageInfo?: IPageInfo;
 };
 export type TOwnProps = Record<string, unknown>;

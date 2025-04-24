@@ -1,29 +1,27 @@
 import React from "react";
-import WithRouterPush, { TWithRouter } from "@core/components/WithRouterPush";
+import { useNavigate } from "react-router-dom";
 
 import { ADDRESS, SHORT_ADDRESS } from "@core/constants";
 import { IMainAddressLink } from "./IMainAddressLink";
 
-/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/anchor-is-valid */
 const MainAddressLink = ({
   prefixIcon,
-  push,
+  navigate,
   showFullAddress = false,
   linkClassName = "",
-}: TWithRouter<IMainAddressLink>) => (
+}: IMainAddressLink) => (
   <a
     className={`email-wrapper ${linkClassName}`}
     onClick={(e) => {
       e.preventDefault();
-      if (push) {
-        push("/Contacts");
-      }
+      navigate("/Contacts");
     }}
   >
     {prefixIcon}
     <span className="text">{showFullAddress ? ADDRESS : SHORT_ADDRESS}</span>
   </a>
 );
-/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, jsx-a11y/anchor-is-valid */
 
-export default WithRouterPush<IMainAddressLink>(MainAddressLink as any);
+export default (props: any) => (
+  <MainAddressLink {...props} navigate={useNavigate()} />
+);

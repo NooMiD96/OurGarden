@@ -18,4 +18,4 @@ export default connect(
   (state: IApplicationState): IAccountState => ({
     ...state.account,
   })
-)(AccountControlComponent as any);
+)(AccountControlComponent as any) as any;

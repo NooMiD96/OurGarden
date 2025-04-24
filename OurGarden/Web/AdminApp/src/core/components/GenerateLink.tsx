@@ -4,34 +4,25 @@ import { Link } from "react-router-dom";
 const GenerateLink = ({
   title,
   link,
-  active = true
+  active = true,
 }: {
   title: string;
   link?: string;
   active?: boolean;
-}) => (
-  active
-    ? (
+}) => {
+  let linkComponent = <span>{title}</span>;
+  if (active) {
+    linkComponent = (
       <Link
-        to={(
-          "/" +
-          (
-            link === undefined
-              ? title
-              : link
-          ).replace(/\s/g, "-")
-        )}
-        
+        to={"/" + (link === undefined ? title : link).replace(/\s/g, "-")}
         className="nav-link"
       >
         {title}
       </Link>
-    )
-    : (
-      <span>
-        {title}
-      </span>
-    )
-)
+    );
+  }
+
+  return linkComponent;
+};
 
 export default GenerateLink;

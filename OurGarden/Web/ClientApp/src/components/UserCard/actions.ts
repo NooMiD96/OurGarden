@@ -57,7 +57,7 @@ export const actionsList = {
     type: t.CLEAN_ERROR_INNER,
   }),
 
-  loadCardFromLocalstate: (): t.ILoadCardFromLocalstate => ({
+  loadCardFromLocalState: (): t.ILoadCardFromLocalstate => ({
     type: t.LOAD_CARD_FROM_LOCALSTATE,
   }),
 };
@@ -127,6 +127,6 @@ export const actionCreators = {
   setOrderId: actionsList.setOrderId,
   cleanErrorInner: actionsList.cleanErrorInner,
 
-  loadCardFromLocalstate: actionsList.loadCardFromLocalstate,
+  loadCardFromLocalState: actionsList.loadCardFromLocalState,
 };
 // #endregion

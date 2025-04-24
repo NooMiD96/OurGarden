@@ -44,4 +44,4 @@ export default connect(
   (state: IApplicationState) => ({
     ymId: state.app.ymId
   })
-)(CompanyInfo);
+)(CompanyInfo) as any;

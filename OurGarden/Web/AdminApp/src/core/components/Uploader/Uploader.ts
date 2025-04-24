@@ -4,7 +4,7 @@ import { UploadFile } from "@src/core/antd/Upload";
 
 const getBase64 = (
   callback: (payload: string | ArrayBuffer) => void,
-  img?: File
+  img?: File | Blob
 ) => {
   const reader = new FileReader();
   reader.addEventListener(

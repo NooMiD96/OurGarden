@@ -14,6 +14,7 @@ export const reducer: Reducer<IHomeState> = (state: IHomeState = unloadedState, 
       } as IHomeState;
 
     default:
+      //@ts-ignore
       // eslint-disable-next-line
       const exhaustiveCheck: never = action;
   }

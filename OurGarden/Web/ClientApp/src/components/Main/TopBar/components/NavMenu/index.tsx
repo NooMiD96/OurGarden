@@ -1,15 +1,13 @@
 /* eslint-disable react/jsx-pascal-case */
 import React from "react";
-import { connect } from "react-redux";
 import { RouterState } from "connected-react-router";
 import { Location } from "history";
+import { useLocation } from "react-router-dom";
 
 import GenerateLink from "@core/components/GenerateLink";
 
 import { getActiveRoute } from "@core/helpers/route/getActiveRoute";
 import { IMPORT_DELAY } from "@src/core/constants";
-
-import { IApplicationState } from "@src/Store";
 
 const tabList = [
   { title: "Главная", link: "" },
@@ -111,8 +109,4 @@ export class NavMenu extends React.PureComponent<
   }
 }
 
-export default connect(
-  (state: IApplicationState): RouterState => ({
-    ...state.router,
-  })
-)(NavMenu);
+export default (props: any) => <NavMenu {...props} location={useLocation()} />;

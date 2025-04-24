@@ -12,7 +12,6 @@ const mapStateToProps = (
   state: IApplicationState,
   ownProp: TOwnProps
 ): TMapStateToProps => <any>{
-  ...state.router,
   ...state.pageSeoInformation,
   ...ownProp,
 };

@@ -93,7 +93,14 @@ namespace Web
                     HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
                     ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Web", "ClientApp"),
                     HotModuleReplacement = true,
-                    ReactHotModuleReplacement = true
+                    ReactHotModuleReplacement = true,
+                    EnvironmentVariables = new Dictionary<string, string>
+                    {
+                        {
+                            "NODE_OPTIONS",
+                            "--openssl-legacy-provider"
+                        }
+                    }
                 });
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
@@ -108,8 +115,14 @@ namespace Web
                 /// Неделя
                 cachePeriod = "604800";
 
-                app.UseStatusCodePagesWithReExecute("/")
-                   .UseHsts();
+                app.UseStatusCodePagesWithReExecute("/");
+
+                var useHsts = Configuration.GetValue<bool>("UseHsts", true);
+                if (useHsts)
+                {
+                    logger.LogInformation("Use Hsts settings.");
+                    app.UseHsts();
+                }
 
                 logger.LogInformation($"Hosting environment: Production\nContent root path: {Directory.GetCurrentDirectory()}\nNow listening on: {String.Join(", ", serverAddressesFeature.Addresses)}");
             }

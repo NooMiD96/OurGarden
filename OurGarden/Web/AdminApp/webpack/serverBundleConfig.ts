@@ -3,16 +3,16 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import merge from 'webpack-merge';
 import path from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, Plugin } from 'webpack';
 
 import AppSettings from "../../../appsettings.json";
 
-const serverPlugins = () => [
+const serverPlugins = (): Plugin[] => [
   // https://github.com/webpack-contrib/mini-css-extract-plugin
   new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     filename: `[name].css`,
-  }),
+  }) as any,
 ];
 
 // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -22,29 +22,30 @@ const getServerBundleConfig = (
 ): Configuration => {
   const serverBundleConfig = merge(sharedConfig(), {
     entry: {
-      [AppSettings.SpaServerFileName]: './src/boot-server/boot-server.tsx',
+      [AppSettings.SpaServerFileName]: "./src/boot-server/boot-server.tsx",
     },
     output: {
-      filename: '[name].js',
-      chunkFilename: '[name].js',
+      filename: "[name].js",
+      chunkFilename: "[name].js",
       path: path.join(projectFolder, AppSettings.SpaAdminPhysicalServerPath),
-      libraryTarget: 'commonjs',
+      libraryTarget: "commonjs",
     },
     // https://webpack.js.org/configuration/resolve/#resolve-mainfields
     // Import only main from package
     resolve: {
-      mainFields: ['main']
+      extensions: [".ts", ".tsx", ".js"],
+      mainFields: ["main"]
     },
     optimization: {
       splitChunks: {
         chunks: "async",
       }
     },
-    target: 'node',
+    target: "node",
     plugins: serverPlugins(),
   });
 
   return serverBundleConfig;
-}
+};
 
 export default getServerBundleConfig;

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import LottieWebIcon from "@core/components/LottieWebIcon";
-import WithRouterPush, {
-  TWithRouter,
-} from "@src/core/components/WithRouterPush";
 
 import { actionCreators } from "@src/components/UserCard/actions";
 import { CARD_PATH } from "@src/core/constants";
@@ -14,14 +12,15 @@ import { IApplicationState } from "@src/Store";
 
 interface ICard {
   totalCount: number;
-  loadCardFromLocalstate: typeof actionCreators.loadCardFromLocalstate;
+  loadCardFromLocalState: typeof actionCreators.loadCardFromLocalState;
 }
 
-const Card = (props: TWithRouter<ICard>) => {
+const Card = (props: ICard) => {
   const [WrapperComponent, setWrapperComponent] = useState(null as any);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    props.loadCardFromLocalstate();
+    props.loadCardFromLocalState();
   }, []);
 
   useEffect(() => {
@@ -37,13 +36,13 @@ const Card = (props: TWithRouter<ICard>) => {
 
     loadComponent(props.totalCount);
   }, [props.totalCount]);
+
   const icon = (
-    <LottieWebIcon type="archive" onClick={() => props.push(CARD_PATH)} />
+    <LottieWebIcon type="archive" onClick={() => navigate(CARD_PATH)} />
   );
 
   if (WrapperComponent) {
     return (
-      // eslint-disable-next-line react/jsx-pascal-case
       <WrapperComponent.default
         className="badge-wrapper"
         style={{ backgroundColor: DARK_GREEN_COLOR, color: "#fff" }}
@@ -57,13 +56,11 @@ const Card = (props: TWithRouter<ICard>) => {
   return <span className="badge-wrapper">{icon}</span>;
 };
 
-export default WithRouterPush<any>(
-  connect(
-    (state: IApplicationState) => ({
-      totalCount: state.userCard.totalCount,
-    }),
-    {
-      loadCardFromLocalstate: actionCreators.loadCardFromLocalstate,
-    }
-  )(Card) as any
-);
+export default connect(
+  (state: IApplicationState) => ({
+    totalCount: state.userCard.totalCount,
+  }),
+  {
+    loadCardFromLocalState: actionCreators.loadCardFromLocalState,
+  }
+)(Card) as any;

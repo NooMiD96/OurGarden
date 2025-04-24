@@ -1,5 +1,3 @@
-import { RouterState } from "connected-react-router";
-
 import { actionCreators } from "@src/components/Category/actions";
 import { ICategoryState } from "@src/components/Category/State";
 
@@ -11,8 +9,7 @@ export type TComponentState = {
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = ICategoryState &
-  RouterState & { isDataWasGeted: boolean };
+export type TStateToProps = ICategoryState & { isDataWasReceive: boolean };
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps & TOwnProps;
 // -----------------------------

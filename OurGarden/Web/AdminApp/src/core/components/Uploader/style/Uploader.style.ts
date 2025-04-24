@@ -13,4 +13,4 @@ export default styled.div`
     width: 100%;
     outline: none;
   }
-`;
+` as any;

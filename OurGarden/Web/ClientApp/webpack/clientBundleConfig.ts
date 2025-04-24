@@ -163,16 +163,7 @@ const getClientBundleConfig = (
   });
 
   if (isDevBuild) {
-    clientBundleConfig!.plugins!.push(
-      // https://github.com/webpack-contrib/copy-webpack-plugin
-      // new CopyWebpackPlugin([{
-      //   from: "src/sw.ts",
-      //   to: "service-worker.js",
-      // }])
-      new CaseSensitivePathsPlugin()
-    );
-  } else {
-    // clientBundleConfig.entry["service-worker"] = "./src/sw.ts";
+    clientBundleConfig!.plugins!.push(new CaseSensitivePathsPlugin());
   }
 
   return clientBundleConfig;

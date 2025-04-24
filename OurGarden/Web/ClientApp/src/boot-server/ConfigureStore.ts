@@ -14,14 +14,14 @@ import * as StoreModule from "@src/Store";
 const { reducers } = StoreModule;
 type ApplicationState = StoreModule.IApplicationState;
 
-// prettier-ignore
 const buildRootReducer = (
   historyForRouterReducer: History,
   appReducers: ReducersMapObject<ApplicationState, AnyAction>
-) => combineReducers<ApplicationState>({
-  ...appReducers,
-  router: connectRouter(historyForRouterReducer),
-});
+) =>
+  combineReducers<ApplicationState>({
+    ...appReducers,
+    router: connectRouter(historyForRouterReducer),
+  });
 
 export default function configureStore(history: History) {
   const allReducers = buildRootReducer(history, reducers as any);

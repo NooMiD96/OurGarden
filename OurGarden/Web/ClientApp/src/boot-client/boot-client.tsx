@@ -2,10 +2,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
-import { AppContainer } from "react-hot-loader";
 import { createBrowserHistory } from "history";
 import Loadable from "react-loadable";
 import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter } from "react-router-dom";
 
 import { IApplicationState } from "@src/Store";
 import * as App from "@src/App";
@@ -41,16 +41,16 @@ if (window !== null && window !== undefined) {
       // This code starts up the React app when it runs in a browser. It sets up the routing configuration
       // and injects the app into a DOM element.
       // `hydrate` needed to attach created by server render with DOM
-      ReactDOM.hydrate(
-        <AppContainer>
-          <HelmetProvider>
-            <MobileContext.Provider value={isMobileBrowser}>
-              <Provider store={store}>
-                <ConnectedRouter history={history}>{routes}</ConnectedRouter>
-              </Provider>
-            </MobileContext.Provider>
-          </HelmetProvider>
-        </AppContainer>,
+      ReactDOM.render(
+        <HelmetProvider>
+          <MobileContext.Provider value={isMobileBrowser}>
+            <Provider store={store}>
+              <ConnectedRouter history={history}>
+                <BrowserRouter basename={baseUrl}>{routes}</BrowserRouter>
+              </ConnectedRouter>
+            </Provider>
+          </MobileContext.Provider>
+        </HelmetProvider>,
         document.getElementById("react-app")
       );
     }
