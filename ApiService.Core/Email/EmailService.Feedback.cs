@@ -58,8 +58,7 @@ namespace ApiService.Core.Email
             string htmlMessage;
             try
             {
-                var mjmlMessage = await RenderMjml(bodyMjmlFormattedString);
-                htmlMessage = mjmlMessage.Html;
+                htmlMessage = await RenderMjml(bodyMjmlFormattedString);
             }
             catch (Exception ex)
             {

@@ -1,20 +1,13 @@
 ﻿using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
-
 using Core.Helpers;
 using Core.Utils;
-
 using DataBase.Abstraction.Repositories;
-
 using EmailService.Abstraction;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
-using Mjml.AspNetCore;
-
+using Mjml.Net;
 using Model;
-
 using System;
 using System.IO;
 using System.Linq;
@@ -30,11 +23,6 @@ namespace ApiService.Core.Email
         private readonly ILogger _logger;
 
         private readonly IOurGardenRepository _repository;
-
-        /// <summary>
-        /// Сервис по рендеру шаблона Mjml.
-        /// </summary>
-        private readonly IMjmlServices _mjmlServices;
 
         /// <summary>
         /// Настройки сервиса по отправке писем.
@@ -60,14 +48,12 @@ namespace ApiService.Core.Email
         /// </summary>
         public EmailService(ILogger<EmailService> logger,
                             IOurGardenRepository repository,
-                            IMjmlServices mjmlServices,
                             IOptions<EmailServiceConfigurationOptions> emailOption,
                             IOptions<RootOptions> rootOptions,
                             IEmailSender emailSender)
         {
             _logger = logger;
             _repository = repository;
-            _mjmlServices = mjmlServices;
             _emailServiceOptions = emailOption.Value;
             _rootOptions = rootOptions.Value;
             _emailSender = emailSender;
@@ -151,19 +137,21 @@ namespace ApiService.Core.Email
         /// то будет вызвано исключение.
         /// </summary>
         /// <param name="view">Шаблон</param>
-        private async Task<MjmlResponse> RenderMjml(string view)
+        private async Task<string> RenderMjml(string view)
         {
-            var mjmlMessage = await _mjmlServices.Render(view);
-            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Length ?? -1) != 0)
+            var mjmlRenderer = new MjmlRenderer();
+
+            var mjmlMessage = await mjmlRenderer.RenderAsync(view);
+            if (string.IsNullOrEmpty(mjmlMessage.Html) && (mjmlMessage.Errors?.Count ?? -1) != 0)
             {
                 throw new Exception(
                     $"Ошибка при формировании письма. Используемый шаблон:\n" +
                         $"{view}\n" +
-                        $"Полученные ошибки:\n{mjmlMessage.Errors.Select(x => x.Message).Aggregate((acc, val) => $"{acc}\n{val}")}."
+                        $"Полученные ошибки:\n{mjmlMessage.Errors.Select(x => x.Error).Aggregate((acc, val) => $"{acc}\n{val}")}."
                 );
             }
 
-            return mjmlMessage;
+            return mjmlMessage.Html;
         }
 
         /// <summary>
