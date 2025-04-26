@@ -1,6 +1,6 @@
 import { IItemDictionary } from "@components/Category/State";
 
-export const parseCategoryIdField = <T extends any>(
+export const parseCategoryIdField = <T extends Record<string, any>>(
   field: string,
   data: T,
   categoryList?: IItemDictionary[]
@@ -16,7 +16,7 @@ export const parseCategoryIdField = <T extends any>(
   return parseIdField(field, data);
 };
 
-export const parseSubcategoryIdField = <T extends any>(
+export const parseSubcategoryIdField = <T extends Record<string, any>>(
   field: string,
   data: T,
   categoryList?: IItemDictionary[]
@@ -40,7 +40,7 @@ export const parseSubcategoryIdField = <T extends any>(
   return parseIdField(field, data);
 };
 
-export const parseIdField = <T extends any>(field: string, data: T) => {
+export const parseIdField = <T extends Record<string, any>>(field: string, data: T) => {
   const idValue = data[field];
   const value = idValue.replace(/-/g, " ");
   return `${value[0].toUpperCase()}${value.slice(1).toLowerCase()}`;

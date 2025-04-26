@@ -1,5 +1,4 @@
 using DependencyInjections;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -10,22 +9,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-
 using Serilog;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using static DependencyInjections.DataBaseDependencyInjection;
 using static DependencyInjections.SecureDependencyInjection;
 
 namespace Web
 {
-    [Obsolete]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -47,14 +41,17 @@ namespace Web
                     .AddConfigurations(Configuration)
                     .AddEmailService()
                     .AddServices()
-                    .AddHostServices()
-                    .AddNodeServices();
+                    .AddHostServices();
+
+            services.AddHttpClient();
+
+            services.AddNodeServices();
 
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(x =>
                     {
-                        x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                         x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     });
 

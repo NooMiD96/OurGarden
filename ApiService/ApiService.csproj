@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Configurations>Debug;Release;Stage</Configurations>
   </PropertyGroup>
 
@@ -9,7 +9,6 @@
     <ProjectReference Include="..\ApiService.Abstraction\ApiService.Abstraction.csproj" />
     <ProjectReference Include="..\ApiService.Core\ApiService.Core.csproj" />
     <ProjectReference Include="..\DataBase.Repository\DataBase.Repository.csproj" />
-    <ProjectReference Include="..\EmailService.Abstraction\EmailService.Abstraction.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
