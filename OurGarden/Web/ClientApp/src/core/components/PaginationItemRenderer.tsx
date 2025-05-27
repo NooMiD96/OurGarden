@@ -5,7 +5,7 @@ import React from "react";
 const PaginationItemRenderer = (
   page: number,
   type: "page" | "prev" | "next" | "jump-prev" | "jump-next",
-  originalElement: React.ReactElement<HTMLElement>
+  originalElement: React.ReactNode
 ) => originalElement;
 
 /* eslint-enable jsx-a11y/anchor-is-valid */

@@ -4,19 +4,13 @@ using ApiService.Abstraction.Core;
 using ApiService.AdminApi;
 using ApiService.Api;
 using ApiService.Core;
-
 using Microsoft.Extensions.DependencyInjection;
-
+using OrderCleanerHostService;
 using OrderCleanerHostService.Abstraction;
-
 using PagePingerHostService;
 using PagePingerHostService.Abstraction;
-
 using PhotoService;
 using PhotoService.Abstraction;
-
-using Services.BackgroundWork.OrderCleaner;
-
 using SiteMapHostService;
 using SiteMapHostService.Abstraction;
 

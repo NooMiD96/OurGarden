@@ -1,12 +1,9 @@
 ﻿#if !DEBUG
 using Core.Helpers;
 #endif
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using OrderCleanerHostService.Abstraction;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;

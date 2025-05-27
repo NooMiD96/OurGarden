@@ -10,9 +10,15 @@ namespace Web
         {
             using var app = Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-                .ConfigureWebHostDefaults(webHostBuilder => webHostBuilder.UseStartup<Startup>())
+                .ConfigureWebHostDefaults(webHostBuilder => {
+                    webHostBuilder.ConfigureKestrel(k =>
+                    {
+                        k.AddServerHeader = false;
+                    });
+                    webHostBuilder.UseStartup<Startup>();
+                })
                 .Build();
-                
+
             app.Run();
         }
     }

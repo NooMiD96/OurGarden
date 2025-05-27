@@ -11,25 +11,27 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaClientRoot)node_modules\**;$(SpaAdminRoot)node_modules\**</DefaultItemExcludes>
     <Configurations>Debug;Release;Stage</Configurations>
     <UserSecretsId>f609d782-7b75-48d6-ab49-0a3d2bab00bd</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.32" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1-Preview.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,28 +80,28 @@
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
 
-    <Exec Command="yarn --version" ContinueOnError="true">
+    <Exec Command="npm --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Yarn is required to build and run this project. To continue, please install Node.js from https://yarnpkg.com/, and then restart your command prompt or IDE." />
+    <Error Condition="'$(ErrorCode)' != '0'" Text="npm is required to build and run this project." />
   </Target>
   
   <Target Name="UpdateWebPackages">
-    <Message Importance="high" Text="Run Update Web Packages. Restoring dependencies using 'yarn'." />
+    <Message Importance="high" Text="Run Update Web Packages. Restoring dependencies using 'npm i'." />
     
-    <Exec WorkingDirectory="$(SpaClientRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaClientRoot)" Command="npm i" />
 
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn" />
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="npm i" />
   </Target>
   
   <Target Name="BuildWebProjects" Condition=" '$(IsPublishExecuted)' != 'true' ">
     <Message Importance="high" Text="Run Build Web Projects. This may take several minutes..." />
     
     <Message Importance="high" Text="Start build Client Web" />
-    <Exec EnvironmentVariables="NODE_OPTIONS=--openssl-legacy-provider" WorkingDirectory="$(SpaClientRoot)" Command="yarn run buildProd" />
+    <Exec EnvironmentVariables="NODE_OPTIONS=--openssl-legacy-provider" WorkingDirectory="$(SpaClientRoot)" Command="npm run buildProd" />
 
     <Message Importance="high" Text="Start build Admin Web" />
-    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="yarn run buildProd" />
+    <Exec WorkingDirectory="$(SpaAdminRoot)" Command="npm run buildProd" />
   </Target>
   <!-- END Procedures -->
 

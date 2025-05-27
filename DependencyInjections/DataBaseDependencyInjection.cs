@@ -1,19 +1,15 @@
 ﻿using Core.Constants;
-
 using DataBase.Abstraction.Identity;
 using DataBase.Abstraction.Repositories;
 using DataBase.Context;
 using DataBase.Repository;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using PhotoService.Abstraction;
-
 using System;
 
 namespace DependencyInjections
@@ -31,8 +27,10 @@ namespace DependencyInjections
             services
                 .AddDbContext<OurGardenContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("OurGarden"),
-                                         x => x.MigrationsAssembly(ASSEMBLY_PATH));
+                    options.UseSqlite(
+                        Configuration.GetConnectionString("OurGarden"),
+                        x => x.MigrationsAssembly(ASSEMBLY_PATH)
+                    );
                 })
                 .AddIdentityCore<ApplicationUser>(options =>
                 {

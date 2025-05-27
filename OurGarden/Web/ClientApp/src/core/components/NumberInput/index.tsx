@@ -1,6 +1,6 @@
 import React from "react";
 
-import Input from "@core/antd/Input";
+import Input, { InputRef } from "@core/antd/Input";
 
 import {
   IKeyChangeEvent,
@@ -10,7 +10,7 @@ import { INumberInput } from "./interfaces/INumberInput";
 
 const numReg = /^0?([1-9][0-9]*)$/;
 class NumberInput extends React.Component<INumberInput, unknown> {
-  inputRef: React.RefObject<Input> | null = null;
+  inputRef: React.RefObject<InputRef> | null = null;
 
   onChange = (e: IKeyChangeEvent) => {
     e.preventDefault();

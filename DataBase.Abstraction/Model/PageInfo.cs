@@ -1,8 +1,8 @@
 ﻿using PhotoService.Abstraction.Model;
-
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DataBase.Abstraction.Model
 {
@@ -42,18 +42,23 @@ namespace DataBase.Abstraction.Model
         /// Можно ли изменить поле Alias
         /// </summary>
         public bool IsAliasCanBeEdited {
-            get => PageInfoId != HomePageId
-                && PageInfoId != DesignPageId
-                && PageInfoId != PaymentPageId
-                && PageInfoId != GazonPageId
-                && PageInfoId != CatalogPageId
-                && PageInfoId != NewsListPageId
-                && PageInfoId != ContactsPageId
-                && PageInfoId != CardPageId
-                && PageInfoId != AboutPageId;
+            get => !StaticPagesId.Contains(PageInfoId);
         }
 
         #region Static Pages Id
+
+        public static int[] StaticPagesId => new int[]
+        {
+            HomePageId,
+            DesignPageId,
+            PaymentPageId,
+            GazonPageId,
+            CatalogPageId,
+            NewsListPageId,
+            ContactsPageId,
+            CardPageId,
+            AboutPageId,
+        };
 
         public static int HomePageId { get; } = 1;
 
