@@ -5,117 +5,113 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Model;
 using System;
-using System.Data;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EmailService
+namespace EmailService;
+
+/// <summary>
+/// Сервис по отправке писем по почте.
+/// </summary>
+/// <remarks>
+/// .ctor
+/// </remarks>
+public class EmailSender(IOptions<EmailOptions> emailOption, ILogger<EmailSender> logger) : IEmailSender
 {
-    /// <summary>
-    /// Сервис по отправке писем по почте.
-    /// </summary>
-    public class EmailSender: IEmailSender
+    /// <inheritdoc/>
+    public async Task SendEmailAsync(string email, string subject, MimeEntity message)
     {
-        #region Fields
-
-        private readonly EmailOptions _emailOption;
-
-        private readonly ILogger _logger;
-
-        #endregion
-
-        #region .ctor
-
-        /// <summary>
-        /// .ctor
-        /// </summary>
-        public EmailSender(IOptions<EmailOptions> emailOption,
-                           ILogger<EmailSender> logger)
+        try
         {
-            _emailOption = emailOption.Value;
-            _logger = logger;
-        }
+            var mimeMessage = new MimeMessage();
 
-        #endregion
+            mimeMessage.From.Add(GetSenderMailbox());
+            mimeMessage.To.Add(ParseToMailbox(email));
+            mimeMessage.Subject = subject;
+            mimeMessage.Body = message;
 
-        #region IEmailSender Impl
+            using var client = new SmtpClient
+            {
+                // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
+                ServerCertificateValidationCallback = (s, c, h, e) => true
+            };
 
-        /// <inheritdoc/>
-        public async Task SendEmailAsync(string email, string subject, MimeEntity message)
-        {
             try
             {
-                var mimeMessage = new MimeMessage();
-
-                mimeMessage.From.Add(GetSenderMailbox());
-                mimeMessage.To.Add(MailboxAddress.Parse(email));
-                mimeMessage.Subject = subject;
-                mimeMessage.Body = message;
-
-                using var client = new SmtpClient
-                {
-                    // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
-                    ServerCertificateValidationCallback = (s, c, h, e) => true
-                };
-
-                try
-                {
-                    await client.ConnectAsync(_emailOption.Server, _emailOption.Port, useSsl: _emailOption.Port != 25);
-                }
-                catch (Exception ex)
-                {
-                    var msg = $"Не удалось установить соединение.";
-                    _logger.LogError(ex, $"{msg}");
-                    throw new Exception(msg, ex);
-                }
-
-                try
-                {
-                    await client.AuthenticateAsync(_emailOption.Sender, _emailOption.Password);
-                }
-                catch (Exception ex)
-                {
-                    var msg = $"Не удалось авторизоваться.";
-                    _logger.LogError(ex, $"{msg}");
-                    throw new Exception(msg, ex);
-                }
-
-                try
-                {
-                    await client.SendAsync(mimeMessage);
-                }
-                catch (Exception ex)
-                {
-                    var msg = $"Не удалось отправить письмо.";
-                    _logger.LogError(ex, $"{msg}");
-                    throw new Exception(msg, ex);
-                }
-
-                try
-                {
-                    await client.DisconnectAsync(true);
-                }
-                catch (Exception ex)
-                {
-                    var msg = $"Не удалось разорвать соединение.";
-                    _logger.LogError(ex, $"{msg}");
-                    throw new Exception(msg, ex);
-                }
+                await client.ConnectAsync(emailOption.Value.Server, emailOption.Value.Port, useSsl: emailOption.Value.Port != 25);
             }
             catch (Exception ex)
             {
-                var msg = $"Ошибка при попытке отправить письмо на почту \"{email}\" по след. причине: {ex.Message}";
-                _logger.LogError(ex, msg);
+                var msg = $"Не удалось установить соединение.";
+                logger.LogError(ex, $"{msg}");
+                throw new Exception(msg, ex);
+            }
+
+            try
+            {
+                await client.AuthenticateAsync(emailOption.Value.Sender, emailOption.Value.Password);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Не удалось авторизоваться.";
+                logger.LogError(ex, $"{msg}");
+                throw new Exception(msg, ex);
+            }
+
+            try
+            {
+                await client.SendAsync(mimeMessage);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Не удалось отправить письмо.";
+                logger.LogError(ex, $"{msg}");
+                throw new Exception(msg, ex);
+            }
+
+            try
+            {
+                await client.DisconnectAsync(true);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Не удалось разорвать соединение.";
+                logger.LogError(ex, $"{msg}");
                 throw new Exception(msg, ex);
             }
         }
-
-        private MailboxAddress GetSenderMailbox()
+        catch (Exception ex)
         {
-            var sender = new MailboxAddress(_emailOption.SenderName, _emailOption.Sender);
+            var msg = $"Ошибка при попытке отправить письмо на почту \"{email}\" по след. причине: {ex.Message}";
+            logger.LogError(ex, msg);
+            throw new Exception(msg, ex);
+        }
+    }
 
-            /// Ограчение хостинга beget:
-            /// нужно чтобы отправитель остался в формате punycode
+    private MailboxAddress GetSenderMailbox()
+    {
+        var sender = new MailboxAddress(emailOption.Value.SenderName, emailOption.Value.Sender);
+
+        /// Ограчение хостинга beget:
+        /// нужно чтобы отправитель остался в формате punycode
+        var fieldInfo = typeof(MailboxAddress).GetField("address", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        if (fieldInfo == null)
+        {
+            throw new Exception("Ошибка при указании почты отправителя.");
+        }
+
+        fieldInfo.SetValue(sender, emailOption.Value.Sender);
+
+        return sender;
+    }
+
+    private MailboxAddress ParseToMailbox(string email)
+    {
+        var mail = MailboxAddress.Parse(email);
+
+        if (email.Split("@")[1].Equals(emailOption.Value.Sender.Split("@")[1], StringComparison.InvariantCultureIgnoreCase))
+        {
             var fieldInfo = typeof(MailboxAddress).GetField("address", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (fieldInfo == null)
@@ -123,11 +119,9 @@ namespace EmailService
                 throw new Exception("Ошибка при указании почты отправителя.");
             }
 
-            fieldInfo.SetValue(sender, _emailOption.Sender);
-
-            return sender;
+            fieldInfo.SetValue(mail, email);
         }
 
-        #endregion
+        return mail;
     }
 }
