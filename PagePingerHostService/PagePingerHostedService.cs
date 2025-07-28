@@ -1,8 +1,8 @@
-﻿using PagePingerHostService.Abstraction;
-
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Options;
+using Model;
+using PagePingerHostService.Abstraction;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +26,11 @@ namespace PagePingerHostService
         /// </summary>
         private bool Disposed = false;
 
-        private readonly ILogger Logger;
+        private readonly ILogger _logger;
 
-        private readonly IPagePingerService PagePingerService;
+        private readonly IPagePingerService _pagePingerService;
+
+        private readonly PagePingerOptions _pagePingerOptions;
 
         private Timer Timer;
 
@@ -36,10 +38,11 @@ namespace PagePingerHostService
 
         #region .ctor
 
-        public PagePingerHostedService(IPagePingerService pagePingerService, ILogger<PagePingerHostedService> logger)
+        public PagePingerHostedService(IPagePingerService pagePingerService, IOptions<PagePingerOptions> pagePingerOptions, ILogger<PagePingerHostedService> logger)
         {
-            PagePingerService = pagePingerService;
-            Logger = logger;
+            _pagePingerService = pagePingerService;
+            _pagePingerOptions = pagePingerOptions.Value;
+            _logger = logger;
         }
 
         #endregion
@@ -49,13 +52,16 @@ namespace PagePingerHostService
         /// <inheritdoc/>
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Logger.LogInformation(HostServiceStart);
+            if (!_pagePingerOptions.Enabled)
+            {
+                _logger.LogInformation($"{HostServiceName} is disabled.");
 
-#if DEBUG
-            var startTimeSpan = TimeSpan.FromDays(31);
-#else
-            var startTimeSpan = TimeSpan.FromMinutes(3);
-#endif
+                return Task.CompletedTask;
+            }
+
+            _logger.LogInformation(HostServiceStart);
+
+            var startTimeSpan = TimeSpan.FromDays(_pagePingerOptions.StartTimeoutInMinutes);
 
             Timer = new Timer(DoWork, null, startTimeSpan, TimeSpan.FromMinutes(3));
 
@@ -67,13 +73,13 @@ namespace PagePingerHostService
         /// </summary>
         private void DoWork(object state)
         {
-            PagePingerService.PingMainPage();
+            _pagePingerService.PingMainPage();
         }
 
         /// <inheritdoc/>
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            Logger.LogInformation(HostServiceEnd);
+            _logger.LogInformation(HostServiceEnd);
 
             Timer?.Change(Timeout.Infinite, 0);
 

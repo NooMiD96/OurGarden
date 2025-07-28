@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Model;
 using System;
+using System.Data;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace EmailService
@@ -45,7 +47,7 @@ namespace EmailService
             {
                 var mimeMessage = new MimeMessage();
 
-                mimeMessage.From.Add(new MailboxAddress(_emailOption.SenderName, _emailOption.Sender));
+                mimeMessage.From.Add(GetSenderMailbox());
                 mimeMessage.To.Add(MailboxAddress.Parse(email));
                 mimeMessage.Subject = subject;
                 mimeMessage.Body = message;
@@ -58,7 +60,7 @@ namespace EmailService
 
                 try
                 {
-                    await client.ConnectAsync(_emailOption.Server, _emailOption.Port, useSsl: true);
+                    await client.ConnectAsync(_emailOption.Server, _emailOption.Port, useSsl: _emailOption.Port != 25);
                 }
                 catch (Exception ex)
                 {
@@ -106,6 +108,24 @@ namespace EmailService
                 _logger.LogError(ex, msg);
                 throw new Exception(msg, ex);
             }
+        }
+
+        private MailboxAddress GetSenderMailbox()
+        {
+            var sender = new MailboxAddress(_emailOption.SenderName, _emailOption.Sender);
+
+            /// Ограчение хостинга beget:
+            /// нужно чтобы отправитель остался в формате punycode
+            var fieldInfo = typeof(MailboxAddress).GetField("address", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (fieldInfo == null)
+            {
+                throw new Exception("Ошибка при указании почты отправителя.");
+            }
+
+            fieldInfo.SetValue(sender, _emailOption.Sender);
+
+            return sender;
         }
 
         #endregion

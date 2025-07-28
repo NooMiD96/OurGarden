@@ -5,36 +5,28 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+public class AdminController(IAntiforgery antiforgery) : Controller
 {
-    public class AdminController : Controller
+    public IActionResult Index()
     {
-        private readonly IAntiforgery _antiforgery;
-
-        public AdminController(IAntiforgery antiforgery)
+        if (User.Identity.IsAuthenticated)
         {
-            _antiforgery = antiforgery;
-        }
-
-        public IActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
+            ViewData["user"] = JsonHelper.Serialize(new
             {
-                ViewData["user"] = JsonHelper.Serialize(new
-                {
-                    userName = User.Identity.Name,
-                    userType = User.GetUserRole()
-                });
-                ViewData["xpt"] = Xsrf.XsrfToXpt(_antiforgery.GetTokens(HttpContext));
-            }
-
-            return View();
+                userName = User.Identity.Name,
+                userType = User.GetUserRole()
+            });
+            ViewData["xpt"] = Xsrf.XsrfToXpt(antiforgery.GetTokens(HttpContext));
         }
 
-        public IActionResult Error()
-        {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
-        }
+        return View();
+    }
+
+    public IActionResult Error()
+    {
+        ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        return View();
     }
 }

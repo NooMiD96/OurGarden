@@ -61,5 +61,4 @@ RUN apt-get update -yq \
 
 WORKDIR /app
 COPY --from=publish /app/publish .
-USER $APP_UID
-ENTRYPOINT ["dotnet", "Web.dll"]
+CMD ["dotnet", "Web.dll"]

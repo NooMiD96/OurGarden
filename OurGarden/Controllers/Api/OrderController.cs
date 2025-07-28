@@ -1,32 +1,23 @@
 ﻿using ApiService.Abstraction.Api;
 using ApiService.Abstraction.DTO.OrderDTO;
-
 using Microsoft.AspNetCore.Mvc;
-
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.Api
+namespace Web.Controllers.Api;
+
+[Route("api/[controller]")]
+[ApiController]
+public class OrderController(IOrderControllerService service) : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrderController : BaseController
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderDTO)
     {
-        private readonly IOrderControllerService _service;
+        var execResult = await service.AddOrder(orderDTO);
 
-        public OrderController(IOrderControllerService service)
-        {
-            _service = service;
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrder([FromBody]OrderCreateDTO orderDTO)
-        {
-            var execResult = await _service.AddOrder(orderDTO);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error, execResult.Result);
-        }
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error, execResult.Result);
     }
 }

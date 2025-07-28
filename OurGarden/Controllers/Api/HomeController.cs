@@ -1,91 +1,53 @@
 ﻿using ApiService.Abstraction.Api;
 using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.Api
+namespace Web.Controllers.Api;
+
+[Route("api/[controller]")]
+[ApiController]
+public class HomeController(ILogger<HomeController> logger, IHomeControllerService homeConstollerService, ISeoService seoService) : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class HomeController : BaseController
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetPageInfo([FromQuery] int pageInfoId)
     {
-        #region Fields
+        var execResult = await homeConstollerService.GetPageInfo(pageInfoId);
 
-        /// <summary>
-        /// Сервис данного контроллера.
-        /// </summary>
-        private readonly IHomeControllerService _homeConstollerService;
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
+    }
 
-        /// <summary>
-        /// Сервис основной домашний страницы
-        /// </summary>
-        private readonly ISeoService _seoService;
+    [HttpPost("[action]")]
+    public async Task<IActionResult> SendFeedback([FromBody] FeedbackDTO feedbackDTO)
+    {
+        var execResult = await homeConstollerService.SendFeedback(feedbackDTO);
 
-        /// <summary>
-        /// Logger
-        /// </summary>
-        private readonly ILogger _logger;
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
+    }
 
-        #endregion
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetPageSEOParams([FromQuery] string pathname)
+    {
+        var execResult = await seoService.GetPageSeoInformation(pathname);
 
-        #region .ctor
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
+    }
 
-        public HomeController(ILogger<HomeController> logger,
-                              IHomeControllerService homeConstollerService,
-                              ISeoService seoService)
-        {
-            _logger = logger;
-            _homeConstollerService = homeConstollerService;
-            _seoService = seoService;
-        }
-
-        #endregion
-
-        #region API
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetPageInfo([FromQuery] int pageInfoId)
-        {
-            var execResult = await _homeConstollerService.GetPageInfo(pageInfoId);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> SendFeedback([FromBody] FeedbackDTO feedbackDTO)
-        {
-            var execResult = await _homeConstollerService.SendFeedback(feedbackDTO);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetPageSEOParams([FromQuery] string pathname)
-        {
-            var execResult = await _seoService.GetPageSeoInformation(pathname);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        [HttpPost("[action]")]
-        public void LogWebAppError([FromQuery] string errorString)
-        {
-            _logger.LogError(errorString);
-        }
-
-        #endregion
+    [HttpPost("[action]")]
+    public void LogWebAppError([FromQuery] string errorString)
+    {
+        logger.LogError(errorString);
     }
 }

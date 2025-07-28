@@ -1,84 +1,55 @@
 ﻿using ApiService.Abstraction.ViewModel;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-
 using Model;
-
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using static Core.Utils.WebUtils;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+/// <summary>
+/// .ctor
+/// </summary>
+public class HomeController(IOptions<SeoServicesOptions> seoServicesOption, IOptions<RootOptions> rootOption) : Controller
 {
-    public class HomeController : Controller
+    static private bool IsFirstRequest = true;
+
+    public IActionResult Index()
     {
-        #region Fields
-
-        /// <summary>
-        /// Опции сервисов сео.
-        /// </summary>
-        private readonly SeoServicesOptions _seoServicesOption;
-
-        /// <summary>
-        /// Основные настройки приложения
-        /// </summary>
-        private readonly RootOptions _rootOption;
-
-        #endregion
-
-        #region .ctor
-
-        /// <summary>
-        /// .ctor
-        /// </summary>
-        public HomeController(IOptions<SeoServicesOptions> seoServicesOption,
-                              IOptions<RootOptions> rootOption)
+        if (Request.Path.HasValue)
         {
-            _seoServicesOption = seoServicesOption.Value;
-            _rootOption = rootOption.Value;
-        }
+            var requestPath = Request.Path.Value.ToLower();
 
-        #endregion
-
-        #region API
-
-        public IActionResult Index()
-        {
-            if (Request.Path.HasValue)
-            {
-                var requestPath = Request.Path.Value.ToLower();
-
-                if (
-                    _rootOption.SkipRoutePathEndRegex.Any(
-                        x => Regex.IsMatch(requestPath, x)
-                    )
+            if (
+                rootOption.Value.SkipRoutePathEndRegex.Any(
+                    x => Regex.IsMatch(requestPath, x)
                 )
-                {
-                    return RedirectPermanent(
-                        requestPath[0..(Request.Path.Value.LastIndexOf("/") + 1)]
-                    );
-                }
-            }
-
-            var viewModel = new HomePageViewModel()
+            )
             {
-                IsMobileBrowser = IsMobileBrowser(Request.Headers["User-Agent"].ToString()),
-                JivoSiteId = _seoServicesOption.JivoSiteId,
-                YandexMetrikaCounterId = _seoServicesOption.YandexMetrikaCounterId,
-            };
-
-            return View(viewModel);
+                return RedirectPermanent(
+                    requestPath[0..(Request.Path.Value.LastIndexOf('/') + 1)]
+                );
+            }
         }
 
-        public IActionResult Error()
+        var viewModel = new HomePageViewModel()
         {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
-        }
+            IsMobileBrowser = IsMobileBrowser(Request.Headers.UserAgent.ToString()),
+            JivoSiteId = seoServicesOption.Value.JivoSiteId,
+            YandexMetrikaCounterId = seoServicesOption.Value.YandexMetrikaCounterId,
+            IsFirstRequest = IsFirstRequest,
+        };
 
-        #endregion
+        IsFirstRequest = false;
+
+        return View(viewModel);
+    }
+
+    public IActionResult Error()
+    {
+        ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        return View();
     }
 }

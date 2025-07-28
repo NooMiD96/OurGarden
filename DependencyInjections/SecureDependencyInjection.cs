@@ -55,7 +55,10 @@ namespace DependencyInjections
             services.AddDataProtection()
                 .PersistKeysToFileSystem(
                     new DirectoryInfo(
-                        $@"{Directory.GetCurrentDirectory()}\key\"
+                        Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "key"
+                        )
                     )
                 )
                 .SetDefaultKeyLifetime(TimeSpan.FromDays(90))

@@ -14,6 +14,7 @@ namespace DependencyInjections
         {
             services.Configure<SeoInformationOption>(configuration.GetSection("SeoInformation"));
             services.Configure<OrderCleanerOptions>(configuration.GetSection("OrderCleanerOptions"));
+            services.Configure<PagePingerOptions>(configuration.GetSection("PagePingerOptions"));
             services.Configure<EmailOptions>(configuration.GetSection("EmailSettings"));
             services.Configure<EmailServiceConfigurationOptions>(configuration.GetSection("EmailServiceConfiguration"));
             services.Configure<RootOptions>(configuration);

@@ -1,65 +1,44 @@
 ﻿using ApiService.Abstraction.Api;
-
 using Microsoft.AspNetCore.Mvc;
-
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.Api
+namespace Web.Controllers.Api;
+
+[Route("api/[controller]")]
+[ApiController]
+public class NewsController(INewsControllerService service) : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class NewsController : BaseController
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetBreadcrumb([FromQuery] string newsId)
     {
-        #region Fields
-        
-        private readonly INewsControllerService _service;
+        var execResult = await service.GetBreadcrumb(newsId);
 
-        #endregion
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
+    }
 
-        #region .ctor
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAllNews()
+    {
+        var execResult = await service.GetAllNews();
 
-        public NewsController(INewsControllerService service)
-        {
-            _service = service;
-        }
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
+    }
 
-        #endregion
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetNews([FromQuery]string newsId)
+    {
+        var execResult = await service.GetNews(newsId);
 
-        #region API
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetBreadcrumb([FromQuery] string newsId)
-        {
-            var execResult = await _service.GetBreadcrumb(newsId);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllNews()
-        {
-            var execResult = await _service.GetAllNews();
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetNews([FromQuery]string newsId)
-        {
-            var execResult = await _service.GetNews(newsId);
-
-            if (execResult.IsSuccess)
-                return Success(execResult.Result);
-            else
-                return BadRequest(execResult.Error);
-        }
-
-        #endregion
+        if (execResult.IsSuccess)
+            return Success(execResult.Result);
+        else
+            return BadRequest(execResult.Error);
     }
 }

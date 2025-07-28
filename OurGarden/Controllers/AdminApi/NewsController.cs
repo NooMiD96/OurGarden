@@ -1,122 +1,116 @@
 ﻿using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
-
 using Core.Constants;
 using Core.Helpers;
-
 using DataBase.Abstraction.Repositories;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using PhotoService.Abstraction;
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Web.Services;
 using Web.Services.Controllers.AdminApi;
 
-namespace Web.Controllers.AdminApi
+namespace Web.Controllers.AdminApi;
+
+[ValidateAntiForgeryToken]
+[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+[Route("apiAdmin/[controller]")]
+[ApiController]
+public class NewsController : BaseController
 {
-    [ValidateAntiForgeryToken]
-    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("apiAdmin/[controller]")]
-    [ApiController]
-    public class NewsController : BaseController
+    private readonly IOurGardenRepository _repository;
+    private readonly NewsControllerService _service;
+    private readonly ILogger _logger;
+    private const string CONTROLLER_LOCATE = "AdminApi.NewsController";
+
+    public NewsController(IOurGardenRepository repository,
+                          ILogger<NewsController> logger,
+                          IPhotoSaver photoSaver,
+                          IPhotoEntityUpdater photoEntityUpdater)
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly NewsControllerService _service;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.NewsController";
+        _repository = repository;
+        _logger = logger;
+        _service = new NewsControllerService(_repository, _logger, photoSaver, photoEntityUpdater);
+    }
 
-        public NewsController(IOurGardenRepository repository,
-                              ILogger<NewsController> logger,
-                              IPhotoSaver photoSaver,
-                              IPhotoEntityUpdater photoEntityUpdater)
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAllNews()
+    {
+        var news = await _repository.GetNews(includeDescriptions: true);
+
+        return Success(news.OrderByDescending(x => x.Date));
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddOrUpdate([FromForm]NewsDTO newsDTO)
+    {
+        var error = "Что-то пошло не так, повторите попытку.";
+        const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+
+        try
         {
-            _repository = repository;
-            _logger = logger;
-            _service = new NewsControllerService(_repository, _logger, photoSaver, photoEntityUpdater);
-        }
+            bool isSuccess;
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllNews()
-        {
-            var news = await _repository.GetNews(includeDescriptions: true);
-
-            return Success(news.OrderByDescending(x => x.Date));
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate([FromForm]NewsDTO newsDTO)
-        {
-            var error = "Что-то пошло не так, повторите попытку.";
-            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
-
-            try
+            if (String.IsNullOrEmpty(newsDTO?.NewsId))
             {
-                bool isSuccess;
+                (isSuccess, error) = await _service.AddNews(newsDTO);
+            }
+            else
+            {
+                var oldNews = await _repository.GetNews(newsDTO.NewsId);
 
-                if (String.IsNullOrEmpty(newsDTO?.NewsId))
+                if (oldNews is null)
                 {
-                    (isSuccess, error) = await _service.AddNews(newsDTO);
-                }
-                else
-                {
-                    var oldNews = await _repository.GetNews(newsDTO.NewsId);
-
-                    if (oldNews is null)
-                    {
-                        return LogBadRequest(
-                            _logger,
-                            API_LOCATE,
-                            customError: $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsDTO.NewsId} --- {newsDTO.Alias}"
-                        );
-                    }
-
-                    if (newsDTO.Alias.TransformToId() != oldNews.Alias.TransformToId())
-                        (isSuccess, error) = await _service.FullUpdateNews(newsDTO, oldNews);
-                    else
-                        (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
-                }
-
-                if (!isSuccess)
                     return LogBadRequest(
                         _logger,
                         API_LOCATE,
-                        customError: error
+                        customError: $"Что-то пошло не так, не удалось найти новость.\nНовость: {newsDTO.NewsId} --- {newsDTO.Alias}"
                     );
+                }
 
-                return Success(isSuccess);
+                if (newsDTO.Alias.TransformToId() != oldNews.Alias.TransformToId())
+                    (isSuccess, error) = await _service.FullUpdateNews(newsDTO, oldNews);
+                else
+                    (isSuccess, error) = await _service.UpdateNews(newsDTO, oldNews);
             }
-            catch (Exception ex)
-            {
+
+            if (!isSuccess)
                 return LogBadRequest(
                     _logger,
                     API_LOCATE,
-                    exception: ex,
                     customError: error
                 );
-            }
-        }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Delete([FromQuery]string newsId)
+            return Success(isSuccess);
+        }
+        catch (Exception ex)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
-
-            var (isSuccess, error) = await _service.DeleteNews(newsId);
-
-            if (isSuccess)
-                return Success(isSuccess);
-            else
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customError: error
-                );
+            return LogBadRequest(
+                _logger,
+                API_LOCATE,
+                exception: ex,
+                customError: error
+            );
         }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Delete([FromQuery]string newsId)
+    {
+        const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
+
+        var (isSuccess, error) = await _service.DeleteNews(newsId);
+
+        if (isSuccess)
+            return Success(isSuccess);
+        else
+            return LogBadRequest(
+                _logger,
+                API_LOCATE,
+                customError: error
+            );
     }
 }

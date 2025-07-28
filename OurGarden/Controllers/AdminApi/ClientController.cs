@@ -1,102 +1,90 @@
 ﻿using Core.Constants;
-
 using DataBase.Abstraction.Model;
 using DataBase.Abstraction.Repositories;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using System;
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.AdminApi
+namespace Web.Controllers.AdminApi;
+
+[Route("apiAdmin/[controller]")]
+[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+[ApiController]
+public class ClientController(IOurGardenRepository repository, ILogger<ClientController> logger) : BaseController
 {
-    [Route("apiAdmin/[controller]")]
-    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [ApiController]
-    public class ClientController : BaseController
+    private const string CONTROLLER_LOCATE = "AdminApi.ClientController";
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll()
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.ClientController";
+        const string API_LOCATE = CONTROLLER_LOCATE + ".GetAll";
 
-        public ClientController(IOurGardenRepository repository,
-                                ILogger<ClientController> logger)
+        try
         {
-            _repository = repository;
-            _logger = logger;
+            var result = await repository.GetClients();
+            return Success(result);
         }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetAll()
+        catch (Exception ex)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetAll";
-
-            try
-            {
-                var result = await _repository.GetClients();
-                return Success(result);
-            }
-            catch (Exception ex)
-            {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    exception: ex
-                );
-            }
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                exception: ex
+            );
         }
+    }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate([FromForm]Client clientDTO)
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddOrUpdate([FromForm]Client clientDTO)
+    {
+        const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+
+        try
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
-
-            try
+            if (clientDTO.ClientId <= 0)
             {
-                if (clientDTO.ClientId <= 0)
+                var newClient = new Client()
                 {
-                    var newClient = new Client()
-                    {
-                        Email = clientDTO.Email,
-                        FIO = clientDTO.FIO,
-                        Phone = clientDTO.Phone,
-                        IsIncludeInMailing = clientDTO.IsIncludeInMailing,
-                    };
-                    await _repository.AddClient(newClient);
-                }
-                else
-                {
-                    var oldClient = await _repository.GetClient(clientDTO.ClientId);
-
-                    oldClient.Email = clientDTO.Email;
-                    oldClient.FIO = clientDTO.FIO;
-                    oldClient.Phone = clientDTO.Phone;
-                    oldClient.IsIncludeInMailing = clientDTO.IsIncludeInMailing;
-
-                    await _repository.UpdateClient(oldClient);
-                }
-
-                return Success(true);
+                    Email = clientDTO.Email,
+                    FIO = clientDTO.FIO,
+                    Phone = clientDTO.Phone,
+                    IsIncludeInMailing = clientDTO.IsIncludeInMailing,
+                };
+                await repository.AddClient(newClient);
             }
-            catch (Exception ex)
+            else
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    exception: ex
-                );
-            }
-        }
+                var oldClient = await repository.GetClient(clientDTO.ClientId);
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Delete([FromQuery]string clientId)
-        {
-            if (Int32.TryParse(clientId, out var id))
-                await _repository.DeleteClient(id);
+                oldClient.Email = clientDTO.Email;
+                oldClient.FIO = clientDTO.FIO;
+                oldClient.Phone = clientDTO.Phone;
+                oldClient.IsIncludeInMailing = clientDTO.IsIncludeInMailing;
+
+                await repository.UpdateClient(oldClient);
+            }
 
             return Success(true);
         }
+        catch (Exception ex)
+        {
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                exception: ex
+            );
+        }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Delete([FromQuery]string clientId)
+    {
+        if (Int32.TryParse(clientId, out var id))
+            await repository.DeleteClient(id);
+
+        return Success(true);
     }
 }

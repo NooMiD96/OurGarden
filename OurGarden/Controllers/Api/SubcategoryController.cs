@@ -1,114 +1,101 @@
 ﻿using ApiService.Abstraction.DTO;
-
 using Core;
-
 using DataBase.Abstraction;
 using DataBase.Abstraction.Repositories;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.Api
+namespace Web.Controllers.Api;
+
+[Route("api/[controller]")]
+[ApiController]
+public class SubcategoryController(IOurGardenRepository repository, ILogger<SubcategoryController> logger) : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SubcategoryController : BaseController
+    private const string CONTROLLER_LOCATE = "Api.SubcategoryController";
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetBreadcrumb([FromQuery] string categoryId)
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "Api.SubcategoryController";
+        const string API_LOCATE = CONTROLLER_LOCATE + ".GetBreadcrumb";
 
-        public SubcategoryController(IOurGardenRepository repository,
-                                     ILogger<SubcategoryController> logger)
+        if (String.IsNullOrEmpty(categoryId))
         {
-            _repository = repository;
-            _logger = logger;
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetBreadcrumb([FromQuery] string categoryId)
-        {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetBreadcrumb";
-
-            if (String.IsNullOrEmpty(categoryId))
-            {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customError: $"Что-то пошло не так, не удалось получить Breadcrumb."
-                );
-            }
-
-            var breadcrumb = await _repository.GetSubcategoryBreadcrumb(categoryId);
-            var order = 1;
-
-            var breadcrumbList = new List<IBreadcrumb>()
-            {
-                new BreadcrumbDTO()
-                {
-                    DisplayName = "Каталог",
-                    Url = "Catalog",
-                    Order = order++,
-                }
-            };
-
-            breadcrumbList.AddRange(
-                breadcrumb.Select(x =>
-                {
-                    x.Order = order++;
-                    return x;
-                })
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                customError: $"Что-то пошло не так, не удалось получить Breadcrumb."
             );
-
-            return Success(breadcrumbList);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetSubcategories([FromQuery] string categoryId)
+        var breadcrumb = await repository.GetSubcategoryBreadcrumb(categoryId);
+        var order = 1;
+
+        var breadcrumbList = new List<IBreadcrumb>()
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".GetSubcategories";
-
-            if (String.IsNullOrEmpty(categoryId))
+            new BreadcrumbDTO()
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customError: $"Что-то пошло не так, необходимо выбрать категорию."
-                );
+                DisplayName = "Каталог",
+                Url = "Catalog",
+                Order = order++,
             }
+        };
 
-            var category = (await _repository.GetCategory(categoryId)).DeepClone();
-
-            if (category is null)
+        breadcrumbList.AddRange(
+            breadcrumb.Select(x =>
             {
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customError: $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}",
-                    returnStatusCode: 404
-                );
-            }
+                x.Order = order++;
+                return x;
+            })
+        );
 
-            category.Subcategories = (await _repository.GetSubcategories(categoryId, isGetOnlyVisible: true))
-                .OrderBy(x => x.Alias)
-                .Select(x =>
-                {
-                    x.Category = null;
-                    return x;
-                })
-                .ToList();
+        return Success(breadcrumbList);
+    }
 
-            foreach (var entity in category.Subcategories)
-            {
-                entity.Photos = entity.Photos.OrderBy(x => x.Date).ToList();
-            }
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetSubcategories([FromQuery] string categoryId)
+    {
+        const string API_LOCATE = CONTROLLER_LOCATE + ".GetSubcategories";
 
-            return Success(category);
+        if (String.IsNullOrEmpty(categoryId))
+        {
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                customError: $"Что-то пошло не так, необходимо выбрать категорию."
+            );
         }
+
+        var category = (await repository.GetCategory(categoryId)).DeepClone();
+
+        if (category is null)
+        {
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                customError: $"Что-то пошло не так, не удалось найти выбранную категорию.\nКатегория: {categoryId}",
+                returnStatusCode: 404
+            );
+        }
+
+        category.Subcategories = (await repository.GetSubcategories(categoryId, isGetOnlyVisible: true))
+            .OrderBy(x => x.Alias)
+            .Select(x =>
+            {
+                x.Category = null;
+                return x;
+            })
+            .ToList();
+
+        foreach (var entity in category.Subcategories)
+        {
+            entity.Photos = entity.Photos.OrderBy(x => x.Date).ToList();
+        }
+
+        return Success(category);
     }
 }

@@ -1,115 +1,97 @@
 ﻿using ApiService.Abstraction.Core;
 using ApiService.Abstraction.DTO;
-
 using Core.Constants;
-
 using DataBase.Abstraction.Repositories;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using PhotoService.Abstraction;
-
 using System;
 using System.Threading.Tasks;
-
+using Web.Services;
 using Web.Services.Controllers.AdminApi;
 
-namespace Web.Controllers.AdminApi
+namespace Web.Controllers.AdminApi;
+
+[ValidateAntiForgeryToken]
+[Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+[Route("apiAdmin/[controller]")]
+[ApiController]
+public class GalleryController(IOurGardenRepository repository, ILogger<GalleryController> logger, IPhotoSaver photoSaver, IPhotoEntityUpdater photoEntityUpdater) : BaseController
 {
-    [ValidateAntiForgeryToken]
-    [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
-    [Route("apiAdmin/[controller]")]
-    [ApiController]
-    public class GalleryController : BaseController
+    private readonly GalleryControllerService _service = new GalleryControllerService(repository, photoSaver, photoEntityUpdater);
+    private const string CONTROLLER_LOCATE = "AdminApi.GalleryController";
+    private const string ERROR = "Что-то пошло не так, повторите попытку.";
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetGalleries()
     {
-        private readonly IOurGardenRepository _repository;
-        private readonly GalleryControllerService _service;
-        private readonly ILogger _logger;
-        private const string CONTROLLER_LOCATE = "AdminApi.GalleryController";
-        private const string ERROR = "Что-то пошло не так, повторите попытку.";
+        var galleries = await repository.GetGalleries();
+        return Success(galleries);
+    }
 
-        public GalleryController(IOurGardenRepository repository,
-                                 ILogger<GalleryController> logger,
-                                 IPhotoSaver photoSaver,
-                                 IPhotoEntityUpdater photoEntityUpdater)
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddOrUpdate([FromForm]GalleryDTO galleryDTO)
+    {
+        const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
+        var error = ERROR;
+
+        try
         {
-            _repository = repository;
-            _logger = logger;
-            _service = new GalleryControllerService(repository, photoSaver, photoEntityUpdater);
-        }
+            bool isSuccess;
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetGalleries()
-        {
-            var galleries = await _repository.GetGalleries();
-            return Success(galleries);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddOrUpdate([FromForm]GalleryDTO galleryDTO)
-        {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".AddOrUpdate";
-            var error = ERROR;
-
-            try
+            if (galleryDTO.GalleryId <= 0)
             {
-                bool isSuccess;
+                (isSuccess, error) = await _service.AddGallery(galleryDTO);
+            }
+            else
+            {
+                var oldGallery = await repository.GetGallery(galleryDTO.GalleryId);
 
-                if (galleryDTO.GalleryId <= 0)
-                {
-                    (isSuccess, error) = await _service.AddGallery(galleryDTO);
-                }
-                else
-                {
-                    var oldGallery = await _repository.GetGallery(galleryDTO.GalleryId);
-
-                    if (oldGallery is null)
-                        return LogBadRequest(
-                            _logger,
-                            API_LOCATE,
-                            customError: $"Что-то пошло не так, не удалось найти галерею.\n\tГалерея: {galleryDTO.GalleryId}"
-                        );
-
-                    (isSuccess, error) = await _service.UpdateGallery(galleryDTO, oldGallery);
-                }
-
-                if (!isSuccess)
+                if (oldGallery is null)
                     return LogBadRequest(
-                        _logger,
+                        logger,
                         API_LOCATE,
-                        customError: error
+                        customError: $"Что-то пошло не так, не удалось найти галерею.\n\tГалерея: {galleryDTO.GalleryId}"
                     );
 
-                return Success(isSuccess);
+                (isSuccess, error) = await _service.UpdateGallery(galleryDTO, oldGallery);
             }
-            catch (Exception ex)
-            {
+
+            if (!isSuccess)
                 return LogBadRequest(
-                    _logger,
+                    logger,
                     API_LOCATE,
-                    exception: ex,
                     customError: error
                 );
-            }
-        }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Delete([FromQuery]int galleryId)
+            return Success(isSuccess);
+        }
+        catch (Exception ex)
         {
-            const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
-
-            var (isSuccess, error) = await _service.DeleteGallery(galleryId);
-
-            if (isSuccess)
-                return Success(isSuccess);
-            else
-                return LogBadRequest(
-                    _logger,
-                    API_LOCATE,
-                    customError: error
-                );
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                exception: ex,
+                customError: error
+            );
         }
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Delete([FromQuery]int galleryId)
+    {
+        const string API_LOCATE = CONTROLLER_LOCATE + ".Delete";
+
+        var (isSuccess, error) = await _service.DeleteGallery(galleryId);
+
+        if (isSuccess)
+            return Success(isSuccess);
+        else
+            return LogBadRequest(
+                logger,
+                API_LOCATE,
+                customError: error
+            );
     }
 }

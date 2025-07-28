@@ -1,75 +1,44 @@
 ﻿using DataBase.Abstraction.Model;
 using DataBase.Abstraction.Repositories;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using System;
 using System.Threading.Tasks;
+using Web.Services;
 
-namespace Web.Controllers.Api
+namespace Web.Controllers.Api;
+
+[Route("api/[controller]")]
+[ApiController]
+public class GalleryController(ILogger<GalleryController> logger, IOurGardenRepository repository) : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class GalleryController : BaseController
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetGalleries()
     {
-        #region Fields
+        var galleries = await repository.GetGalleries();
+        return Success(galleries);
+    }
 
-        /// <summary>
-        /// Логгер.
-        /// </summary>
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private readonly IOurGardenRepository _repository;
-
-        #endregion
-
-        #region .ctor
-
-        public GalleryController(ILogger<GalleryController> logger,
-                                 IOurGardenRepository repository)
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetGallery([FromQuery] string galleryIdentify)
+    {
+        Gallery gallery;
+        if (Int32.TryParse(galleryIdentify, out var galleryId))
         {
-            _logger = logger;
-            _repository = repository;
+            gallery = await repository.GetGallery(galleryId);
+        }
+        else
+        {
+            gallery = await repository.GetGallery(galleryIdentify);
         }
 
-        #endregion
-
-        #region API
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetGalleries()
+        if (gallery == null)
         {
-            var galleries = await _repository.GetGalleries();
-            return Success(galleries);
+            var msg = $"Не удалось найти галерею с идентификатором \"{galleryIdentify}\".";
+            logger.LogError(msg);
+            return BadRequest(msg);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetGallery([FromQuery] string galleryIdentify)
-        {
-            Gallery gallery;
-            if (Int32.TryParse(galleryIdentify, out var galleryId))
-            {
-                gallery = await _repository.GetGallery(galleryId);
-            }
-            else
-            {
-                gallery = await _repository.GetGallery(galleryIdentify);
-            }
-
-            if (gallery == null)
-            {
-                var msg = $"Не удалось найти галерею с идентификатором \"{galleryIdentify}\".";
-                _logger.LogError(msg);
-                return BadRequest(msg);
-            }
-
-            return Success(gallery.Photos);
-        }
-
-        #endregion
+        return Success(gallery.Photos);
     }
 }

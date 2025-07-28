@@ -4,6 +4,7 @@
 @model ApiService.Abstraction.ViewModel.HomePageViewModel
 
 @{
+
     Layout = null;
 
     const string siteUrl = "https://xn----7sbbq5b0a1c.com/";
@@ -24,6 +25,11 @@
     string html = default;
     try
     {
+        if (Model.IsFirstRequest)
+        {
+            await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
+        }
+
         var prerenderResult = await prerenderer.RenderToString("wwwroot/client/server/main-server", customDataParameter: Model);
 
         if (!String.IsNullOrEmpty(prerenderResult.RedirectUrl))
